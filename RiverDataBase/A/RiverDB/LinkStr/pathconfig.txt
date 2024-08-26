@@ -1,0 +1,3 @@
+Data Source=COMETA\SQLEXPRESS;Initial Catalog=PRiver;Integrated Security=True
+Data Source=GLOBUS\SQLEXPRESS;Initial Catalog=PRiver;Integrated Security=True
+Data Source=DIMUS\SQLEXPRESS;Initial Catalog=PRiver;Integrated Security=True

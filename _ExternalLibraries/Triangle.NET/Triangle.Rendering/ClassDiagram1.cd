@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TriangleNet.Rendering.BoundingBox" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAABAAABAAAAAAQAEAAAAAIAAAACACAAAAAAAA=</HashCode>
+      <FileName>BoundingBox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.ColorManager" Collapsed="true">
+    <Position X="7.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAEECAACAAgRAAAAEAIEAAgAAAAIEAAAQgAAABIBA=</HashCode>
+      <FileName>ColorManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.ExtensionMethods" Collapsed="true">
+    <Position X="15.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>ExtensionMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.Projection" Collapsed="true">
+    <Position X="7.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAUAAgAAAEBQAAEAIACIQgAAAAAAABAAAEAAEAAAA=</HashCode>
+      <FileName>Projection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.RenderContext" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAIAAAEAAAABEAAACBBAAAABQAAAAQACAABAAgA=</HashCode>
+      <FileName>RenderContext.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TriangleNet.Rendering.RenderLayer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAQACAQkAAlAACBAEAAAQAAAAAQACAAEAAgAAAAAA=</HashCode>
+      <FileName>RenderLayer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TriangleNet.Rendering.RenderManager" Collapsed="true">
+    <Position X="7.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCAAAEAgAABQAAAAAACBAAEAAAAAAAAAAAEAEAgAA=</HashCode>
+      <FileName>RenderManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.Buffer.BufferBase&lt;T&gt;" Collapsed="true">
+    <Position X="2.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAIAAACQAAAAAABAAAAAQAAAAAAA=</HashCode>
+      <FileName>Buffer\BufferBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TriangleNet.Rendering.Buffer.ColorBuffer" Collapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Buffer\ColorBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.Buffer.IndexBuffer" Collapsed="true">
+    <Position X="2.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Buffer\IndexBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.Buffer.VertexBuffer" Collapsed="true">
+    <Position X="5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Buffer\VertexBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.GDI.FunctionRenderer" Collapsed="true">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAgAAABAAIAAAAAAAAAAAAEAAABAAAAAAAAA=</HashCode>
+      <FileName>GDI\FunctionRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.GDI.ImageRenderer" Collapsed="true">
+    <Position X="11.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAIAAAQAAAAAAAAAAAAAAAAEAAACAABEAEAAAAAA=</HashCode>
+      <FileName>GDI\ImageRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.GDI.LayerRenderer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAggAAAAABIAgACAAIAAAIAAAAABAAAAAEAAA=</HashCode>
+      <FileName>GDI\LayerRenderer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TriangleNet.Rendering.GDI.MeshRenderer" Collapsed="true">
+    <Position X="2.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAgAgAAAEAAIAAAAAAAAAAICAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GDI\MeshRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.GDI.RenderControl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQSDAAAAABDAAQCAAAQAAAAAAAgAAAAAAhDAAAAAAAA=</HashCode>
+      <FileName>GDI\RenderControl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TriangleNet.Rendering.GDI.Native.NativeMethods" Collapsed="true">
+    <Position X="15.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GDI\Native\NativeMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.Text.EdgeIterator" Collapsed="true">
+    <Position X="15.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Text\EdgeIterator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.Text.EpsDocument" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABoACAAYAKAAAAAAAAAAAAQAAAgAAAAAAEgwAAKAAAA=</HashCode>
+      <FileName>Text\EpsDocument.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TriangleNet.Rendering.Text.EpsImage" Collapsed="true">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIBgAAACAAAAABAQAAACAAAAiAAECBAAAAEA=</HashCode>
+      <FileName>Text\EpsImage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.Text.FormattingStreamWriter" Collapsed="true">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Text\FormattingStreamWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.Text.SvgImage" Collapsed="true">
+    <Position X="7.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAgAgAAAAABAACAAAQAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Text\SvgImage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.Util.BufferHelper" Collapsed="true">
+    <Position X="15.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Util\BufferHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.Util.ColorMap" Collapsed="true">
+    <Position X="9.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAIAAAAAAIAAAIAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Util\ColorMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TriangleNet.Rendering.Util.ReflectionHelper" Collapsed="true">
+    <Position X="15.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAEAAAAAA=</HashCode>
+      <FileName>Util\ReflectionHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="TriangleNet.Rendering.GDI.Native.GradientRect" Collapsed="true">
+    <Position X="7.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>GDI\Native\GradientRect.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="TriangleNet.Rendering.GDI.Native.GradientTriangle" Collapsed="true">
+    <Position X="9.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GDI\Native\GradientTriangle.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="TriangleNet.Rendering.GDI.Native.TriVertex" Collapsed="true">
+    <Position X="12.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAgAAAAAAAAAAAAAAABAAAABgABAAAAA=</HashCode>
+      <FileName>GDI\Native\TriVertex.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="TriangleNet.Rendering.Text.PageSize" Collapsed="true">
+    <Position X="11" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAEABAABAAAABAAAAAQAEgEAAAIABAAAACAAIAA4AA=</HashCode>
+      <FileName>Text\PageSize.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="TriangleNet.Rendering.IRenderContext" Collapsed="true">
+    <Position X="9.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAIAAAEAAAAAEAAACABAAAAAAAAAAQAAAAAAAgA=</HashCode>
+      <FileName>IRenderContext.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TriangleNet.Rendering.IRenderControl" Collapsed="true">
+    <Position X="11" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAABAAQAAAAAAAAAAAAgAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>IRenderControl.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TriangleNet.Rendering.IRenderer" Collapsed="true">
+    <Position X="12.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>IRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TriangleNet.Rendering.IRenderLayer" Collapsed="true">
+    <Position X="14.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAQkAAlAACAAEAAAQAAAAAQAAAAAAAgAAAAAA=</HashCode>
+      <FileName>IRenderLayer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TriangleNet.Rendering.Buffer.IBuffer&lt;T&gt;" Collapsed="true">
+    <Position X="7.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAACQAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Buffer\IBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="TriangleNet.Rendering.Buffer.BufferTarget" Collapsed="true">
+    <Position X="2.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAEAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Buffer\IBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="TriangleNet.Rendering.GDI.Native.GradientFillMode" Collapsed="true">
+    <Position X="0.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAIAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>GDI\Native\GradientFillMode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

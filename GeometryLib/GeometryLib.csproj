@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CB805006-1B1B-412B-9FDE-4C8E8AD7CE13}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GeometryLib</RootNamespace>
+    <AssemblyName>GeometryLib</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Aalgorithms\ConvexHull.cs" />
+    <Compile Include="Areas\MHesgGrid.cs" />
+    <Compile Include="Areas\MArea.cs" />
+    <Compile Include="Areas\MBoundary.cs" />
+    <Compile Include="Areas\MFigura.cs" />
+    <Compile Include="Areas\MPoint.cs" />
+    <Compile Include="Areas\MSegment.cs" />
+    <Compile Include="DigFunction\FunctionСhannelRose.cs" />
+    <Compile Include="Fields\Unknowns\SUnknown.cs" />
+    <Compile Include="Geometry\HEdge.cs" />
+    <Compile Include="Geometry\HSmLine.cs" />
+    <Compile Include="Geometry\CEdge.cs" />
+    <Compile Include="Geometry\CloudKnotLine.cs" />
+    <Compile Include="Geometry\HTriangle.cs" />
+    <Compile Include="Geometry\HVoronoiCell.cs" />
+    <Compile Include="Locators\TriMeshLocators.cs" />
+    <Compile Include="Locators\LineLocator.cs" />
+    <Compile Include="Locators\TriLocator.cs" />
+    <Compile Include="Points\CloudKnot.cs" />
+    <Compile Include="Points\RiverNode.cs" />
+    <Compile Include="Points\SKnot.cs" />
+    <Compile Include="Vector\Vector2.cs" />
+    <Compile Include="Vector\Vector4.cs" />
+    <Compile Include="Field3D\FieldSquare.cs" />
+    <Compile Include="Field3D\Field3D.cs" />
+    <Compile Include="Fields\Field2D.cs" />
+    <Compile Include="Fields\Field1D.cs" />
+    <Compile Include="Fields\Field.cs" />
+    <Compile Include="DigFunction\AbDigFunction.cs" />
+    <Compile Include="DigFunction\FunctionCos.cs" />
+    <Compile Include="DigFunction\FunctionCovern.cs" />
+    <Compile Include="DigFunction\DigFunction.cs" />
+    <Compile Include="DigFunction\FunctionGauss.cs" />
+    <Compile Include="DigFunction\FunctionSin.cs" />
+    <Compile Include="Geometry\GEO.cs" />
+    <Compile Include="LineStretch.cs" />
+    <Compile Include="Locators\CrossLine.cs" />
+    <Compile Include="Locators\Locator.cs" />
+    <Compile Include="Math\DMath.cs" />
+    <Compile Include="Points\TargetLinePoint.cs" />
+    <Compile Include="Points\VKnot.cs" />
+    <Compile Include="Points\HKnot.cs" />
+    <Compile Include="Points\VNode.cs" />
+    <Compile Include="Points\HNumbKnot.cs" />
+    <Compile Include="Points\VMapKnot.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Spline\TSpline.cs" />
+    <Compile Include="Vector\Vector3.cs" />
+    <Compile Include="World\ReperColorScheme.cs" />
+    <Compile Include="World\TaskRenderer.cs" />
+    <Compile Include="World\WorldScaler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{a387740f-c4f9-44f3-afa8-0b55ea4487fa}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MemLogLib\MemLogLib.csproj">
+      <Project>{4d84c29a-57f3-44d0-9520-0294dc35763e}</Project>
+      <Name>MemLogLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

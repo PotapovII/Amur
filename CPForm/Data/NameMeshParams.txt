@@ -1,0 +1,12 @@
+FlagMidle 1
+MeshType 2
+MeshRange 1
+MeshMethod 0
+ReNumberation 1
+Direction 1
+DiametrFE 0.5
+RelaxMeshOrthogonality 0.1
+CountParams 0
+
+
+

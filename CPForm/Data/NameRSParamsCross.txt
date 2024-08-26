@@ -1,0 +1,15 @@
+J 0.001
+turbViscTypeA 6
+turbViscTypeB 6
+typeEddyViscosity 2
+сrossAlgebra 0
+taskVariant 1
+bcTypeVortex 2
+crossFormGeometry 0
+axisSymmetry 0
+CountKnots 301
+CountBLKnots 800
+crossSectionNamber 0
+crossSectionType 1
+midleRadius 5.0
+velocityOnWL 1

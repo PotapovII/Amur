@@ -1,0 +1,51 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "group": "build",
+            "args": [
+                "build",
+                "${workspaceFolder}/ClootilsNetCore/ClootilsNetCore.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "buildui",
+            "command": "dotnet",
+            "type": "process",
+            "group": "build",
+            "args": [
+                "build",
+                "${workspaceFolder}/ClootilsNetCoreUI/ClootilsNetCoreUI.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "buildwinforms",
+            "command": "dotnet",
+            "type": "process",
+            "group": "build",
+            "args": [
+                "build",
+                "${workspaceFolder}/ClootilsNetFull/ClootilsNetFull.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "pack",
+            "command": "dotnet",
+            "type": "process",
+            "group": "none",
+            "args": [
+                "pack",
+                "${workspaceFolder}/Cloo/Cloo.csproj",
+                "--configuration",
+                "Release"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

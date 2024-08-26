@@ -1,0 +1,31 @@
+language: csharp
+mono: none
+group: dev
+sudo: required
+dist: xenial
+addons:
+  snaps:
+  - name: dotnet-sdk
+    classic: true
+    channel: latest/beta
+jobs:
+  include:
+    - stage: build
+      script: 
+        - sudo snap alias dotnet-sdk.dotnet dotnet
+        - dotnet --version
+        - dotnet build Cloo/Cloo.csproj
+        - dotnet build ClootilsNetCore/ClootilsNetCore.csproj
+        - dotnet build ClootilsNetCoreUI/ClootilsNetCoreUI.csproj
+    - stage: deploy
+      if: branch = master AND tag IS present
+      script:
+        - dotnet pack Cloo/Cloo.csproj --configuration Release
+      deploy:
+        - provider: script
+          skip_cleanup: true
+          script: dotnet nuget push Cloo/bin/Release/Cloo.clSharp.*.nupkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json
+        - provider: releases
+          api_key: $GITHUB_TOKEN
+          skip_cleanup: false
+

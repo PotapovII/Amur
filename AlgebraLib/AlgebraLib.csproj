@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3620FE4F-9D3E-4FA2-965E-762234334D84}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AlgebraLib</RootNamespace>
+    <AssemblyName>AlgebraLib</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Algebra.cs" />
+    <Compile Include="Tape\Algebra3DTape.cs" />
+    <Compile Include="ManagerAlgebra.cs" />
+    <Compile Include="Tape\AlgebraSweepTriDiagonal.cs" />
+    <Compile Include="Full\AlgebraGMRESS.cs" />
+    <Compile Include="Full\AlgebraCholetsky.cs" />
+    <Compile Include="Full\AlgebraLUMax.cs" />
+    <Compile Include="Tape\AlgebraLUTape.cs" />
+    <Compile Include="Full\AlgebraLU.cs" />
+    <Compile Include="AlgebraResult.cs" />
+    <Compile Include="MeshAlgebra\BCond.cs" />
+    <Compile Include="MeshAlgebra\ITPSolver.cs" />
+    <Compile Include="MeshAlgebra\PAlgebraCG.cs" />
+    <Compile Include="MeshAlgebra\ParrallelPAlgebraCG.cs" />
+    <Compile Include="MeshAlgebra\PTPSolver.cs" />
+    <Compile Include="MeshAlgebra\TPSolver.cs" />
+    <Compile Include="Sparse\Sparse1DAlgebra.cs" />
+    <Compile Include="Sparse\SparseAlgebraGMRES_P.cs" />
+    <Compile Include="Sparse\Elements\SparseElementIndex.cs" />
+    <Compile Include="Sparse\Elements\SparseColIndex.cs" />
+    <Compile Include="CSR1В\Class1.cs" />
+    <Compile Include="AOther\GmresSolver.cs" />
+    <Compile Include="Full\AFullAlgebra.cs" />
+    <Compile Include="Utils\AlgebraAdapter.cs" />
+    <Compile Include="Utils\AlgebraTestClass.cs" />
+    <Compile Include="Utils\AlgebraResultX.cs" />
+    <Compile Include="Sparse\SparseAlgebraBeCG.cs" />
+    <Compile Include="Sparse\SparseAlgebraGaussStr.cs" />
+    <Compile Include="Sparse\SparseAlgebraGMRES.cs" />
+    <Compile Include="Sparse\SparseAlgebraCG.cs" />
+    <Compile Include="Sparse\Elements\SparseAlgebra.cs" />
+    <Compile Include="Sparse\Elements\SparseRow.cs" />
+    <Compile Include="Sparse\Elements\SparseElement.cs" />
+    <Compile Include="Full\AlgebraGauss.cs" />
+    <Compile Include="Tape\AlgebraGaussTape.cs" />
+    <Compile Include="AlgebraCG_FEM.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{45fdf4ae-457a-42ae-a44c-e07a2726822f}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MemLogLib\MemLogLib.csproj">
+      <Project>{4d84c29a-57f3-44d0-9520-0294dc35763e}</Project>
+      <Name>MemLogLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

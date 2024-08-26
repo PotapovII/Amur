@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiverDB", "RiverDB\RiverDB.csproj", "{754D1A25-333C-4BE5-B275-60B22F3E3CB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectLib", "ConnectLib\ConnectLib.csproj", "{61C636B0-6531-4A16-A8C8-71B2640ADB19}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{754D1A25-333C-4BE5-B275-60B22F3E3CB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{754D1A25-333C-4BE5-B275-60B22F3E3CB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{754D1A25-333C-4BE5-B275-60B22F3E3CB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{754D1A25-333C-4BE5-B275-60B22F3E3CB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61C636B0-6531-4A16-A8C8-71B2640ADB19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61C636B0-6531-4A16-A8C8-71B2640ADB19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61C636B0-6531-4A16-A8C8-71B2640ADB19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61C636B0-6531-4A16-A8C8-71B2640ADB19}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4ADC4D17-9A68-4051-A282-93A8569D0954}
+	EndGlobalSection
+EndGlobal

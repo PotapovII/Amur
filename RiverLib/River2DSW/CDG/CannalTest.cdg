@@ -1,0 +1,107 @@
+ Transient analysis = 1
+ Mesh type = 1
+ Number of Time Steps = 1
+ Delta t Acceleration Factor = 1
+ Time = 0
+ Delta t = 10
+ Theta = 1
+ UW = 0.5
+ Eddy Viscosity Bed Shear Parameter = 0.5
+ Boundary UW Code = 0 zero for no BUW one for no xBUW two for no yBUW three for all BUW on
+ Groundwater Storativity		 = 1
+ Diffusive wave Solution = 0	 zero for fully dynamic only
+ UW Jacobian terms included = 0	 zero for not included
+ Plot Code 					= 2	 zero for xsec one for contour two for velocity and three for threeD
+ Transient Boundary Condition = 0	 zero for Steady BCs
+ Maximum Number of Iterations = 9
+ Small Depths Occur 	= 1	 zero for no small depth calculations
+ Jacobian Terms included = 1	 zero for not included
+ Eddy Viscosity Constant = 0
+ Minimum Depth for Groundwater Flow Calculation = 0.01
+ Eddy Viscosity Horizontal Shear Paramter = 0
+ Groundwater Transmissivity		 = 0.1
+ Dimensions = 2
+ Number of Variables = 3
+ [K] governing equation numbers 
+	 1 	 1 	 1 		 1 
+	 1 	 1 	 1 		 1 
+	 1 	 1 	 1 		 1 
+ Number of Parameters = 3
+ Number of Boundary Parameters = 7
+ Number of Nodes = 18
+ Number of Elements = 20
+ Number of  Boundary Elements = 14
+ Number of  Boundary Segments = 2
+ 
+
+ Node Information 
+
+ Node #, Coordinates, Parameters, Variables
+
+1	s 51.441695	425.173568	9.50102	0.300463	10 	45.3501	0.0	0.0
+2	x 0.381379	425.173566	9.50116	0.300463	10 	-2.5011	0.0	0.0
+3	x 99.618619	425.173569	9.49621	0.300463	10 	90.5038	0.0	0.0
+4	  53.984753	365.926135	9.10184	0.14247	10 	48.1325	0.0	0.0
+5	s 0.381365	344.780866	8.58243	0.1	10 	-1.5824	0.0	0.0
+6	s 99.618615	333.886251	7.70094	0.1	10 	92.2991	0.0	0.0
+7	  54.854581	297.968062	4.99451	0.1	10 	53.055	0.0	0.0
+8	s 0.381363	295.533411	4.99996	0.1	10 	2.00006	0.0	0.0
+9	s 99.618613	247.774699	4.99004	0.1	10 	95.01	0.0	0.0
+10	  58.443005	206.576889	4.99416	0.1	10 	56.4182	0.0	0.0
+11	s 0.381361	245.205655	4.99996	0.1	10 	2.00005	0.0	0.0
+12	s 99.618615	148.879290	8.99755	0.102989	10 	91.0024	0.0	0.0
+13	x 99.618617	76.493617	9.48494	0.296017	10 	90.515	0.0	0.0
+14	  36.113873	148.879337	9.00386	0.102988	10 	31.4828	0.0	0.0
+15	s 0.381364	182.123512	6.43008	0.1	10 	0.569921	0.0	0.0
+16	s 50.726909	76.493614	9.48497	0.296017	10 	44.6963	0.0	0.0
+17	s 0.381373	118.170545	9.21216	0.184879	10 	-2.21216	0.0	0.0
+18	x 0.381382	76.493612	9.49	0.296017	10 	-2.49	0.0	0.0
+
+ Element Information 
+
+ Element #, vtype, gtype, nodes
+
+1	210	210	3	1	4	0.0	0.0	0.0
+2	210	210	6	3	4	0.0	0.0	0.0
+3	210	210	7	6	4	0.0	0.0	0.0
+4	210	210	1	2	4	0.0	0.0	0.0
+5	210	210	2	5	4	0.0	0.0	0.0
+6	210	210	5	8	7	0.0	0.0	0.0
+7	210	210	5	7	4	0.0	0.0	0.0
+8	210	210	15	17	14	0.0	0.0	0.0
+9	210	210	13	12	16	0.0	0.0	0.0
+11	210	210	12	9	10	0.0	0.0	0.0
+12	210	210	11	15	10	0.0	0.0	0.0
+13	210	210	10	15	14	0.0	0.0	0.0
+14	210	210	14	16	12	0.0	0.0	0.0
+15	210	210	14	12	10	0.0	0.0	0.0
+16	210	210	16	14	17	0.0	0.0	0.0
+17	210	210	17	18	16	0.0	0.0	0.0
+20	210	210	9	6	7	0.0	0.0	0.0
+21	210	210	7	11	10	0.0	0.0	0.0
+22	210	210	7	10	9	0.0	0.0	0.0
+23	210	210	8	11	7	0.0	0.0	0.0
+
+ Boundary Element #, vtype, gtype, nodes, boundary condition codes
+1	111	111	18	16	0	0	0	0	0	0	0	0	0	0
+2	111	111	16	13	0	0	0	0	0	0	0	0	0	0
+3	111	111	13	12	100	0	0	0	0	0	0	3	0	0
+4	111	111	12	9	100	0	0	0	0	0	0	3	0	0
+5	111	111	9	6	100	0	0	0	0	0	0	3	0	0
+6	111	111	6	3	100	0	0	0	0	0	0	3	0	0
+7	111	111	3	1	0	0	0	0	0	0	0	0	0	0
+8	111	111	1	2	0	0	0	0	0	0	0	0	0	0
+9	111	111	2	5	0	0.286796	0	0	0	0	0	1	0	0
+10	111	111	5	8	0	0.286796	0	0	0	0	0	1	0	0
+14	111	111	8	11	0	0.286796	0	0	0	0	0	1	0	0
+11	111	111	11	15	0	0.286796	0	0	0	0	0	1	0	0
+12	111	111	15	17	0	0.286796	0	0	0	0	0	1	0	0
+13	111	111	17	18	0	0.286796	0	0	0	0	0	1	0	0
+
+ Boundary Seg #,Boundary type,stage,QT,start node #,end node #
+
+1	3	100	0	13	3
+2	1	0	100	2	18
+
+no more breakline segments.
+

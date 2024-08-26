@@ -1,0 +1,7 @@
+TypeBC 1
+InValue 0
+TypeBC 0
+OutValue 0 
+Avalanche 1
+TypexBLoadModel 0
+sedimentShow 0

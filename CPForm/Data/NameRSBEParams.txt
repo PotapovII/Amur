@@ -1,0 +1,6 @@
+Mu 1.1
+J 0.0002
+rho_w 1000
+Lambda 0.002
+Maning 0.08
+typeTau 1

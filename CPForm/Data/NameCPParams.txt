@@ -1,0 +1,10 @@
+time 0
+timeMax 13500
+dtime 0.05
+timeSavePeriod 0.05
+saveFileNeme Результат
+flagSave 0
+flagSP 0
+bedErosion 0
+CountBedLoad 300
+CountRiver 150

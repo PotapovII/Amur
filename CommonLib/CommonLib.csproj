@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A387740F-C4F9-44F3-AFA8-0B55EA4487FA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CommonLib</RootNamespace>
+    <AssemblyName>CommonLib</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Algebra\IAlgebraResult.cs" />
+    <Compile Include="Area\IMArea.cs" />
+    <Compile Include="Area\IMBoundary.cs" />
+    <Compile Include="Area\IMFigura.cs" />
+    <Compile Include="Area\IMHesgGrid.cs" />
+    <Compile Include="Area\IMPoint.cs" />
+    <Compile Include="Area\IMSegment.cs" />
+    <Compile Include="Area\RectangleWorld.cs" />
+    <Compile Include="BedLoad\IAvalanche.cs" />
+    <Compile Include="BedLoad\IBedLoadTask.cs" />
+    <Compile Include="Delegate\CommonDelegate.cs" />
+    <Compile Include="DrvGraphics\GradientFillMode.cs" />
+    <Compile Include="DrvGraphics\IDrvGraphic.cs" />
+    <Compile Include="DrvGraphics\TriVertex.cs" />
+    <Compile Include="FEM\IComplexFEMTask.cs" />
+    <Compile Include="FEM\IFEPoissonTask.cs" />
+    <Compile Include="FEM\IBaseFEMTask.cs" />
+    <Compile Include="FEM\IFETask.cs" />
+    <Compile Include="Fields\IField.cs" />
+    <Compile Include="Function\IFunction2D.cs" />
+    <Compile Include="Function\IDigFunction.cs" />
+    <Compile Include="Function\IFunction1D.cs" />
+    <Compile Include="Geometry\IHSmLine.cs" />
+    <Compile Include="Geometry\IHLine.cs" />
+    <Compile Include="Geometry\IHEdge.cs" />
+    <Compile Include="Geometry\IHFigure.cs" />
+    <Compile Include="IO\IBaseFormater.cs" />
+    <Compile Include="Mesh\FVM\ISFacet.cs" />
+    <Compile Include="Mesh\MWrapper\IMeshWrapperСhannelSectionCFG.cs" />
+    <Compile Include="Mesh\MWrapper\IMeshWrapperСhannelCFG.cs" />
+    <Compile Include="Mesh\MWrapper\IMeshWrapperCrossCFG.cs" />
+    <Compile Include="Mesh\MWrapper\IMeshWrapper.cs" />
+    <Compile Include="Mesh\IRiverMesh.cs" />
+    <Compile Include="Mesh\Renumberators\IFERenumberator.cs" />
+    <Compile Include="Physics\ECalkDynamicSpeed.cs" />
+    <Compile Include="Physics\ETurbViscType_1D.cs" />
+    <Compile Include="Physics\ETurbViscType.cs" />
+    <Compile Include="Geometry\IRiverPoint.cs" />
+    <Compile Include="River\TaskFileNemes.cs" />
+    <Compile Include="Physics\ECbType.cs" />
+    <Compile Include="Physics\ECritTauType.cs" />
+    <Compile Include="Physics\EWsType.cs" />
+    <Compile Include="Physics\SPhysics.cs" />
+    <Compile Include="Mesh\RegionВoundaries.cs" />
+    <Compile Include="Mesh\RVData\FixedNodeFlag.cs" />
+    <Compile Include="ChannelProcess\EBedErosion.cs" />
+    <Compile Include="Geometry\FPoint.cs" />
+    <Compile Include="Geometry\HPoint.cs" />
+    <Compile Include="Geometry\IHPoint.cs" />
+    <Compile Include="Geometry\IFPoint.cs" />
+    <Compile Include="Render\ICloud.cs" />
+    <Compile Include="Mesh\IRenderMeshGL.cs" />
+    <Compile Include="Mesh\FDM\IRectFDMesh.cs" />
+    <Compile Include="Mesh\FVM\IAFacet.cs" />
+    <Compile Include="Mesh\FVM\IFVComMesh.cs" />
+    <Compile Include="Mesh\FVM\IFVElement.cs" />
+    <Compile Include="Mesh\FVM\IFVFacet.cs" />
+    <Compile Include="Mesh\FEM\IFEBorder.cs" />
+    <Compile Include="Mesh\ILink.cs" />
+    <Compile Include="IO\ProxyTaskFormat.cs" />
+    <Compile Include="Mesh\FVM1\IFVMeshTetra4.cs" />
+    <Compile Include="Mesh\TypeBoundCond.cs" />
+    <Compile Include="Mesh\TypeRangeMesh.cs" />
+    <Compile Include="Mesh\TypeMesh.cs" />
+    <Compile Include="Mesh\FEM\IFEMesh.cs" />
+    <Compile Include="Mesh\FEM\IFElement.cs" />
+    <Compile Include="Mesh\FEM\IFENods.cs" />
+    <Compile Include="Mesh\Renumberators\IRenumberator.cs" />
+    <Compile Include="Mesh\Elements\TriElement.cs" />
+    <Compile Include="Mesh\Elements\TwoElement.cs" />
+    <Compile Include="FEM\IFForm.cs" />
+    <Compile Include="Mesh\FVM1\IFVMesh.cs" />
+    <Compile Include="Mesh\IMesh.cs" />
+    <Compile Include="IO\ATaskFormat.cs" />
+    <Compile Include="IO\IOFormater.cs" />
+    <Compile Include="EConverter\MyEnumConverter.cs" />
+    <Compile Include="EConverter\PConverters.cs" />
+    <Compile Include="Render\IGraphicsCurve.cs" />
+    <Compile Include="Render\IGraphicsData.cs" />
+    <Compile Include="Algebra\IAlgebra.cs" />
+    <Compile Include="Render\IRenderMesh.cs" />
+    <Compile Include="Render\ISaveCloud.cs" />
+    <Compile Include="River\IBoundCondition.cs" />
+    <Compile Include="Tasks\IBaseCalculationDomain.cs" />
+    <Compile Include="Tasks\ITProperty.cs" />
+    <Compile Include="Tasks\IUnknown.cs" />
+    <Compile Include="Tasks\IPropertyTask.cs" />
+    <Compile Include="Render\ISavePoint.cs" />
+    <Compile Include="River\IRiver.cs" />
+    <Compile Include="Tasks\ITask.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="River\ITaskFileNames.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MemLogLib\MemLogLib.csproj">
+      <Project>{4d84c29a-57f3-44d0-9520-0294dc35763e}</Project>
+      <Name>MemLogLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Physics\DOC\SPhysics.doc" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

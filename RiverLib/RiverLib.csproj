@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9AC6E045-03A5-4C7C-A597-D245EA7E2C04}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RiverLib</RootNamespace>
+    <AssemblyName>RiverLib</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AllWallFunctions\WallFunction_Nguyen.cs" />
+    <Compile Include="ARiver\ARiver.cs" />
+    <Compile Include="IO\RiverFormatReaderSection_1YD.cs" />
+    <Compile Include="IO\RiverFormatReaderSrossSection_RvX.cs" />
+    <Compile Include="IO\RiverFormatReader2DQuad.cs" />
+    <Compile Include="River2DBE\Green.cs" />
+    <Compile Include="IO\RiverFormatReader2DTri.cs" />
+    <Compile Include="River2DBE\ARiverBEM.cs" />
+    <Compile Include="River2DBE\RiverBECircleNewMeshAdapt.cs" />
+    <Compile Include="River2DBE\RiverBECircleNewMesh.cs" />
+    <Compile Include="River2DBE\RiverBECircleNew.cs" />
+    <Compile Include="River2DBE\RiverBECircleOld.cs" />
+    <Compile Include="River2DFVM\River2DFVM_ke\BedSin.cs" />
+    <Compile Include="River2DFVM\River2DFVM_ke\Enums.cs" />
+    <Compile Include="River2DFVM\River2DFVM_ke\ARiver2DFV.cs" />
+    <Compile Include="River2DFVM\River2DFVM_ke\River2DFV_rho_var.cs" />
+    <Compile Include="River2DFVM\River2DFVM_ke\River2DFV_rho_const.cs" />
+    <Compile Include="River2DFVM\River2DFVM_ke\Stream2FVParams.cs" />
+    <Compile Include="River2DSectionQuad\AlgebraQuad\AlgebraQuadSolver.cs" />
+    <Compile Include="River2DSectionQuad\AlgebraQuad\AlgebraVarQuadSolver.cs" />
+    <Compile Include="River2DSectionQuad\ASectionalRiverTask.cs" />
+    <Compile Include="River2DSectionQuad\Channel\FVPoissonTask.cs" />
+    <Compile Include="River2DSectionQuad\Channel\RiverSectionaChannel.cs" />
+    <Compile Include="River2DSectionQuad\Channel\RiverSectionaChannelQuad.cs" />
+    <Compile Include="River2DSectionQuad\Channel\RiverSectionaChannelTrapez.cs" />
+    <Compile Include="River2DSectionQuad\TurbulentViscosityQuadModel.cs" />
+    <Compile Include="River2DSectionQuad\OLD\RiverSectionalQuadOld.cs" />
+    <Compile Include="River2DSectionQuad\OLD\RiverSectionalQuadVar.cs" />
+    <Compile Include="River2DSectionQuad\OLD\RiverSectionalQuad_Phi.cs" />
+    <Compile Include="River2DSectionQuad\OLD\RiverSectionalQuad_SV.cs" />
+    <Compile Include="River2DSectionQuad\OLD\RiverSectionaVarQuad.cs" />
+    <Compile Include="River2DSectionQuad\ParabolicEquations\CrossSectionalRiverFlow.cs" />
+    <Compile Include="River2DSectionQuad\ParabolicEquations\ParabolicEquationsTask_FVM.cs" />
+    <Compile Include="River2DSectionQuad\RiverSectionalQuad.cs" />
+    <Compile Include="River2DSectionQuad\RiverSectionalQuadSM.cs" />
+    <Compile Include="River2DSectionQuad\RiverStreamQuadParams.cs" />
+    <Compile Include="River2DSection\Tasks\ASectionalRiverTask.cs" />
+    <Compile Include="River2DSection\OLD\SrossSectionalRiverTask.cs" />
+    <Compile Include="River2DSection\Tasks\GStaticSroSecRiverTask.cs" />
+    <Compile Include="River2DSection\Tasks\TriSroSecRiverTask.cs" />
+    <Compile Include="River2DSection\TaskEvolution.cs" />
+    <Compile Include="River2DSection\TaskVariant.cs" />
+    <Compile Include="River2DSection\Tasks\VarSroSecRiverTask.cs" />
+    <Compile Include="River2DSW\RiverMesh\GaussPoints.cs" />
+    <Compile Include="River2DWPHI\ARiverTask.cs" />
+    <Compile Include="River2DWPHI\IBoundaryCondition.cs" />
+    <Compile Include="River2DWPHI\VortexCurrentFunction2D.cs" />
+    <Compile Include="River2DWPHI\GidroParams.cs" />
+    <Compile Include="IO\RiverFormatReader1DSection.cs" />
+    <Compile Include="River1DSW\ARiver1DSW.cs" />
+    <Compile Include="River1DSW\River1DSWParams.cs" />
+    <Compile Include="River1DSW\RiverStatic1DSW.cs" />
+    <Compile Include="River2DBE\Flat\RiverBECircle.cs" />
+    <Compile Include="River2DBE\RiverBECircleParams.cs" />
+    <Compile Include="AllWallFunctions\WallFunction_Lutskoy.cs" />
+    <Compile Include="River2DSW\Algebra\RiverAlgebra.cs" />
+    <Compile Include="IO\RiverFormatReader2DCdg.cs" />
+    <Compile Include="River2DSW\ParamsRiver.cs" />
+    <Compile Include="River2DSW\River2D.cs" />
+    <Compile Include="River2DSW\RiverMesh\BoundElementRiver.cs" />
+    <Compile Include="River2DSW\RiverMesh\BoundSegmentRiver.cs" />
+    <Compile Include="River2DSW\RiverMesh\NodeRiver.cs" />
+    <Compile Include="River2DSW\RiverMesh\TriElementRiver.cs" />
+    <Compile Include="River2DSW\RiverMesh\TriRiverMesh.cs" />
+    <Compile Include="River2DBE\Flat\IFlatCircle.cs" />
+    <Compile Include="River2DBE\Flat\RiverCircleParams.cs" />
+    <Compile Include="River2DBE\Flat\FlatBECircle.cs" />
+    <Compile Include="River2DBE\Flat\FlatCircleBEM_Order0.cs" />
+    <Compile Include="RiverElisFV\PropertyType.cs" />
+    <Compile Include="RiverElisFV\YPLUS.cs" />
+    <Compile Include="RiverElisFV\WaterTaskEliz2020.cs" />
+    <Compile Include="RiverElisFV\WElizParameter.cs" />
+    <Compile Include="RiverEmpty\ARiverEmpty.cs" />
+    <Compile Include="RiverEmpty\RiverEmptyXY2DQuad.cs" />
+    <Compile Include="RiverEmpty\RiverEmptyXY2DQuad1.cs" />
+    <Compile Include="RiverEmpty\RiverFunctionX1DTest01.cs" />
+    <Compile Include="RiverEmpty\RiverFunctionX1D.cs" />
+    <Compile Include="RiverEmpty\RiverEmptyXY2D.cs" />
+    <Compile Include="RiverEmpty\RiverEmptyX1D.cs" />
+    <Compile Include="RiverEmpty\RiverEmptyY1D.cs" />
+    <Compile Include="River1DSW\RiverKGD1DSW.cs" />
+    <Compile Include="River2DSection\ReportDataRiver.cs" />
+    <Compile Include="River2DSection\RiverStreamParams.cs" />
+    <Compile Include="River2DSection\OLD\RiverStreamTask.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RiverError.cs" />
+    <Compile Include="RiverSW_FCT\SWSolver1D_FCT.cs" />
+    <Compile Include="RiverSW_FCT\SHALLOW_WATER_1D.cs" />
+    <Compile Include="RiverSW_FCT\GasDynamics_FCT.cs" />
+    <Compile Include="RiverSW_FCT\RiverSW_FCT.cs" />
+    <Compile Include="RiverSW_FCT\RiverSW_FCTParams.cs" />
+    <Compile Include="TaskFileNemes.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AlgebraLib\AlgebraLib.csproj">
+      <Project>{3620fe4f-9d3e-4fa2-965e-762234334d84}</Project>
+      <Name>AlgebraLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{45fdf4ae-457a-42ae-a44c-e07a2726822f}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEMTasksLib\FEMTasksLib.csproj">
+      <Project>{288d677a-c46f-44f8-a451-5afa1a0d4c46}</Project>
+      <Name>FEMTasksLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GeometryLib\GeometryLib.csproj">
+      <Project>{cb805006-1b1b-412b-9fde-4c8e8ad7ce13}</Project>
+      <Name>GeometryLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MemLogLib\MemLogLib.csproj">
+      <Project>{4d84c29a-57f3-44d0-9520-0294dc35763e}</Project>
+      <Name>MemLogLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mesh\MeshAdapterLib\MeshAdapterLib.csproj">
+      <Project>{2e2053d5-a41d-487f-8b7b-12f8673edf65}</Project>
+      <Name>MeshAdapterLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mesh\MeshGeneratorsLib\MeshGeneratorsLib.csproj">
+      <Project>{5f4da40d-74c6-4e31-8973-1860378b3234}</Project>
+      <Name>MeshGeneratorsLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mesh\MeshLib\MeshLib.csproj">
+      <Project>{b8062e08-76ac-4ec2-a7aa-2d7a4c601351}</Project>
+      <Name>MeshLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\_ExternalLibraries\Cloo\Cloo\Cloo.csproj">
+      <Project>{96e751dc-2902-494f-942d-0b2f789350f6}</Project>
+      <Name>Cloo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\_ExternalLibraries\InterpolationLib\InterpolationLib.csproj">
+      <Project>{0d7aa6fb-b70d-4ff1-9a05-12e3dd485ac4}</Project>
+      <Name>InterpolationLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 и x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DOC\2011  Елизарова Т.Г. Моделирование SW1D .pdf" />
+    <None Include="DOC\2013  Луцкий А.Е., Северин А.В. Простейшая реализация метода пристеночных функций.pdf" />
+    <None Include="DOC\2021 Алгоритм.pdf" />
+    <None Include="River2DSW\DOC\1992 hicks Characteristic dissipative galerkin scheme.doc" />
+    <None Include="River2DSW\DOC\1992 hicks Characteristic dissipative galerkin scheme.pdf" />
+    <None Include="River2DSW\DOC\1995 Ghanem, Ashraf H. M. 2D FEM.doc" />
+    <None Include="River2DSW\DOC\1995 Ghanem, Ashraf H. M. 2D FEM.pdf" />
+    <None Include="River2DSW\DOC\2002 River2D 29 05 2021 Алгоритм решения уравнений МВ.doc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="River2DSection\Data\NameCrossRDataOLD.txt" />
+    <Content Include="River2DSection\Data\NameCrossRData.txt" />
+    <Content Include="River2DSection\Data\NameRSParams.txt" />
+    <Content Include="River2DSection\Data\NameTaskGeometry.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="River2DBE\DOC\" />
+    <Folder Include="River2DSection\DOC\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

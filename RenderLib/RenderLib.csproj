@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3330D65D-E283-47A3-B43C-CE8C4EB2B201}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RenderLib</RootNamespace>
+    <AssemblyName>RenderLib</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Fields\CrossLine.cs" />
+    <Compile Include="Fields\MeshEdit\CPRenderControlEdit.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Fields\MeshEdit\GDI_ControlEdit.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Fields\MeshEdit\GDI_ControlEdit.Designer.cs">
+      <DependentUpon>GDI_ControlEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Fields\MeshEdit\ProxyRendererControlEdit.cs" />
+    <Compile Include="Fields\MeshEdit\TaskRendererEdit.cs" />
+    <Compile Include="Fields\SolidColorBrush.cs" />
+    <Compile Include="EditRenderOptions.cs" />
+    <Compile Include="UControl\FTaskCross.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UControl\FTaskCross.Designer.cs">
+      <DependentUpon>FTaskCross.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UControl\FunCreator.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UControl\FunCreator.Designer.cs">
+      <DependentUpon>FunCreator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Clouds\CloudsUtils.cs" />
+    <Compile Include="Clouds\CloudData.cs" />
+    <Compile Include="Clouds\CPRenderEditControlClouds.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Clouds\GDI_EditControlClouds.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Clouds\GDI_EditControlClouds.Designer.cs">
+      <DependentUpon>GDI_EditControlClouds.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Clouds\TaskRendererClouds.cs" />
+    <Compile Include="Curve\TaskRendererCurves.cs" />
+    <Compile Include="Curve\ProxyRendererControlCurves.cs" />
+    <Compile Include="Curve\CPRenderControlCurves.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Curve\GDI_Curves_Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Curve\GDI_Curves_Control.Designer.cs">
+      <DependentUpon>GDI_Curves_Control.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Clouds\ProxyRendererEditControl.cs" />
+    <Compile Include="GDI\Client.cs" />
+    <Compile Include="GDI\ViewGraphicsData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GDI\ViewGraphicsData.Designer.cs">
+      <DependentUpon>ViewGraphicsData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Fields\SavePointData.cs" />
+    <Compile Include="ShowGraphic\BMShow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShowGraphic\BMShow.Designer.cs">
+      <DependentUpon>BMShow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GDI\LoaderSavePoints.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GDI\LoaderSavePoints.Designer.cs">
+      <DependentUpon>LoaderSavePoints.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ColorScheme.cs" />
+    <Compile Include="Fields\TaskRendererFields.cs" />
+    <Compile Include="IProxyRenderer.cs" />
+    <Compile Include="Native\NativeMethods.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Fields\CPRenderControlFields.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Fields\ProxyRendererControlFields.cs" />
+    <Compile Include="RenderOptions.cs" />
+    <Compile Include="GDI\ViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GDI\ViewForm.Designer.cs">
+      <DependentUpon>ViewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Fields\GDI_Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Fields\GDI_Control.Designer.cs">
+      <DependentUpon>GDI_Control.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ShowGraphic\CoScale.cs" />
+    <Compile Include="ShowGraphic\ScaleGraph.cs" />
+    <Compile Include="ShowGraphic\ScaleValue.cs" />
+    <Compile Include="GDI\ViForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GDI\ViForm.Designer.cs">
+      <DependentUpon>ViForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TaskRenderer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{45fdf4ae-457a-42ae-a44c-e07a2726822f}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GeometryLib\GeometryLib.csproj">
+      <Project>{cb805006-1b1b-412b-9fde-4c8e8ad7ce13}</Project>
+      <Name>GeometryLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MemLogLib\MemLogLib.csproj">
+      <Project>{4d84c29a-57f3-44d0-9520-0294dc35763e}</Project>
+      <Name>MemLogLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mesh\MeshLib\MeshLib.csproj">
+      <Project>{b8062e08-76ac-4ec2-a7aa-2d7a4c601351}</Project>
+      <Name>MeshLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Clouds\CPRenderEditControlClouds.resx">
+      <DependentUpon>CPRenderEditControlClouds.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Clouds\GDI_EditControlClouds.resx">
+      <DependentUpon>GDI_EditControlClouds.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Curve\GDI_Curves_Control.resx">
+      <DependentUpon>GDI_Curves_Control.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Fields\CPRenderControlFields.resx">
+      <DependentUpon>CPRenderControlFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Fields\MeshEdit\CPRenderControlEdit.resx">
+      <DependentUpon>CPRenderControlEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Fields\MeshEdit\GDI_ControlEdit.resx">
+      <DependentUpon>GDI_ControlEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UControl\FTaskCross.resx">
+      <DependentUpon>FTaskCross.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UControl\FunCreator.resx">
+      <DependentUpon>FunCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GDI\ViewForm.resx">
+      <DependentUpon>ViewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GDI\LoaderSavePoints.resx">
+      <DependentUpon>LoaderSavePoints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Fields\GDI_Control.resx">
+      <DependentUpon>GDI_Control.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GDI\ViewGraphicsData.resx">
+      <DependentUpon>ViewGraphicsData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ShowGraphic\BMShow.resx">
+      <DependentUpon>BMShow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GDI\ViForm.resx">
+      <DependentUpon>ViForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DOCS\ClassDiagram1.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DOCS\Диаграма классов 04 11 2021.png" />
+    <None Include="Resources\SmoothMesh3.bmp" />
+    <None Include="Resources\BNodes1.bmp" />
+    <None Include="Resources\SaveB.bmp" />
+    <None Include="Resources\LoadB1.bmp" />
+    <None Include="Resources\SaveA.bmp" />
+    <None Include="Resources\LoadB.bmp" />
+    <None Include="Resources\DelNodes1.bmp" />
+    <None Include="Resources\BSNodes.bmp" />
+    <None Include="Resources\BNodes.bmp" />
+    <None Include="Resources\BEditNodes.bmp" />
+    <None Include="Resources\NextNodes.bmp" />
+    <None Include="Resources\PrevNodes.bmp" />
+    <None Include="Resources\MeshCloud.bmp" />
+    <None Include="Resources\NCloud.bmp" />
+    <None Include="Resources\SNodes.bmp" />
+    <None Include="Resources\Nodes.bmp" />
+    <None Include="Resources\LoadNodes.bmp" />
+    <None Include="Resources\EditNodes.bmp" />
+    <None Include="Resources\DelNodes.bmp" />
+    <None Include="Resources\Convert.bmp" />
+    <None Include="Resources\Cloud.bmp" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

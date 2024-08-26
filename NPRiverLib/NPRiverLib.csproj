@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{954912E8-F132-4779-8300-520F1C534665}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NPRiverLib</RootNamespace>
+    <AssemblyName>NPRiverLib</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AllWallFunctions\WallFunction_Lutskoy.cs" />
+    <Compile Include="AllWallFunctions\WallFunction_Nguyen.cs" />
+    <Compile Include="APRiver1XD\APRiver1XD.cs" />
+    <Compile Include="APRiver1XD\BEM_River2D\ARiverBE.cs" />
+    <Compile Include="APRiver1XD\BEM_River2D\Green.cs" />
+    <Compile Include="APRiver1XD\BEM_River2D\RiverBEMCircle1XD.cs" />
+    <Compile Include="APRiver1XD\BEM_River2D\RiverBEMCircleMesh1XD.cs" />
+    <Compile Include="APRiver1XD\BEM_River2D\RiverBEMCircleMeshAdapt1XD.cs" />
+    <Compile Include="APRiver1XD\BEM_River2D\RiverBEMParams1XD.cs" />
+    <Compile Include="APRiver1XD\KGD_River2D\RGD_EnumTypes.cs" />
+    <Compile Include="APRiver1XD\KGD_River2D\KGD_Eliz2024_1XD.cs" />
+    <Compile Include="APRiver1XD\KGD_River2D\RGDParameters1XD.cs" />
+    <Compile Include="APRiver1XD\KGD_River2D\YPLUS.cs" />
+    <Compile Include="APRiver1XD\SWE_River1D\ARiverSWE1XD.cs" />
+    <Compile Include="APRiver1XD\SWE_River1D\RiverSWEParams1XD.cs" />
+    <Compile Include="APRiver1XD\SWE_River1D\RiverSWE_KGD1XD.cs" />
+    <Compile Include="APRiver1XD\SWE_River1D\RiverSWEStatic1XD.cs" />
+    <Compile Include="APRiver1XD\FVM_ke_River2D\BedSin.cs" />
+    <Compile Include="APRiver1XD\FVM_ke_River2D\APatankarRiver1XD.cs" />
+    <Compile Include="APRiver1XD\FVM_ke_River2D\CPatankarStream1XD.cs" />
+    <Compile Include="APRiver1XD\FVM_ke_River2D\VPatankarStream1XD.cs" />
+    <Compile Include="APRiver1XD\FVM_ke_River2D\PatankarParams1XD.cs" />
+    <Compile Include="APRiver1YD\TriRoseRiverTask1YD.cs" />
+    <Compile Include="APRiver2XYD\APRiver2XYD.cs" />
+    <Compile Include="APRiver2XYD\River2DFST\ARiverSWE_FCT_2XYD.cs" />
+    <Compile Include="APRiver2XYD\River2DFST\GasDynamics_FCT.cs" />
+    <Compile Include="APRiver2XYD\River2DFST\ParRiverSWE_FCT.cs" />
+    <Compile Include="APRiver2XYD\River2DFST\RiverSWE_FCT_2XYD.cs" />
+    <Compile Include="APRiver2XYD\River2DFST\SWE_FCTParams_2XYD.cs" />
+    <Compile Include="APRiver2XYD\River2DSW\Algebra\RiverAlgebra.cs" />
+    <Compile Include="APRiver2XYD\River2DSW\APRiverFEM_2XYD.cs" />
+    <Compile Include="APRiver2XYD\River2DSW\ParamsRiver_2XYD.cs" />
+    <Compile Include="APRiver2XYD\River2DSW\RiverMesh\RiverBankGaussPoints.cs" />
+    <Compile Include="APRiver2XYD\River2DSW\TriRiverSW_2XYD.cs" />
+    <Compile Include="APRiver2XYD\River2DSW\RiverMesh\BoundElementRiver.cs" />
+    <Compile Include="APRiver2XYD\River2DSW\RiverMesh\BoundSegmentRiver.cs" />
+    <Compile Include="APRiver2XYD\River2DSW\RiverMesh\GaussPoints.cs" />
+    <Compile Include="APRiver2XYD\River2DSW\RiverMesh\RiverNode.cs" />
+    <Compile Include="APRiver2XYD\River2DSW\RiverMesh\TriElementRiver.cs" />
+    <Compile Include="APRiver2XYD\River2DSW\RiverMesh\TriRiverMesh.cs" />
+    <Compile Include="APRiver\ETaskStatus.cs" />
+    <Compile Include="IO\TaskReader2XYD_FCT.cs" />
+    <Compile Include="IO\TaskReaderKGD_1XD.cs" />
+    <Compile Include="IO\TaskTestClass.cs" />
+    <Compile Include="IO\TaskReaderBEM_1XD.cs" />
+    <Compile Include="IO\TaskReaderSWE_1XD.cs" />
+    <Compile Include="IO\TaskReader1YD_Rose.cs" />
+    <Compile Include="IO\TaskReader_Patankar1XD.cs" />
+    <Compile Include="IO\TaskReader2XYD_CFG.cs" />
+    <Compile Include="APRiver1YD\Params\TaskVariant.cs" />
+    <Compile Include="APRiver1YD\APRiverFEM1YD.cs" />
+    <Compile Include="APRiver1YD\APRiver1YD.cs" />
+    <Compile Include="APRiver1YD\TriSroSecRiverTask1YD.cs" />
+    <Compile Include="IO\TaskReader1YD_RvY.cs" />
+    <Compile Include="RiverEmpty\ARiverEmpty2XYD.cs" />
+    <Compile Include="RiverEmpty\ARiverEmpty1YD.cs" />
+    <Compile Include="RiverEmpty\ARiverEmpty1XD.cs" />
+    <Compile Include="RiverEmpty\ARiverBaseEmpty.cs" />
+    <Compile Include="RiverEmpty\EmptyParams.cs" />
+    <Compile Include="RiverError.cs" />
+    <Compile Include="APRiver\APRiver.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="APRiver1YD\Params\TaskEvolution.cs" />
+    <Compile Include="APRiver1YD\Params\RSCrossParams.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AlgebraLib\AlgebraLib.csproj">
+      <Project>{3620fe4f-9d3e-4fa2-965e-762234334d84}</Project>
+      <Name>AlgebraLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{a387740f-c4f9-44f3-afa8-0b55ea4487fa}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEMTasksLib\FEMTasksLib.csproj">
+      <Project>{288d677a-c46f-44f8-a451-5afa1a0d4c46}</Project>
+      <Name>FEMTasksLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GeometryLib\GeometryLib.csproj">
+      <Project>{cb805006-1b1b-412b-9fde-4c8e8ad7ce13}</Project>
+      <Name>GeometryLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MemLogLib\MemLogLib.csproj">
+      <Project>{4d84c29a-57f3-44d0-9520-0294dc35763e}</Project>
+      <Name>MemLogLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mesh\MeshAdapterLib\MeshAdapterLib.csproj">
+      <Project>{2e2053d5-a41d-487f-8b7b-12f8673edf65}</Project>
+      <Name>MeshAdapterLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mesh\MeshGeneratorsLib\MeshGeneratorsLib.csproj">
+      <Project>{5f4da40d-74c6-4e31-8973-1860378b3234}</Project>
+      <Name>MeshGeneratorsLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mesh\MeshLib\MeshLib.csproj">
+      <Project>{b8062e08-76ac-4ec2-a7aa-2d7a4c601351}</Project>
+      <Name>MeshLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\_ExternalLibraries\Cloo\Cloo\Cloo.csproj">
+      <Project>{48885e8c-19eb-4408-8a06-3792586ef500}</Project>
+      <Name>Cloo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\_ExternalLibraries\InterpolationLib\InterpolationLib.csproj">
+      <Project>{0d7aa6fb-b70d-4ff1-9a05-12e3dd485ac4}</Project>
+      <Name>InterpolationLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="APRiver2XYD\River2DSW\_DOC\Дополнения.doc" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,8 @@
+Mu 0.001
+J 0.006
+rho_w 1000
+TurbulentViscosityModel 1
+AxisSymmetry 1
+TaskVariant 1
+CountKnots 300
+CountBLKnots 500

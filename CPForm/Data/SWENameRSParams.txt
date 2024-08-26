@@ -1,0 +1,13 @@
+J 0.00416
+ViscosityModel 1
+AxisSymmetry 0
+taskVariant 0
+CountKnots 100
+CountBLKnots 100
+Lambda 0.002
+Maning 0.08
+typeTau 1
+H0 0.0411
+U0 0.45
+typeBCInlet 0
+typeBCOut 1

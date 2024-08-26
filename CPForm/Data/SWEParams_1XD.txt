@@ -1,0 +1,9 @@
+J 0.002
+Maning 0.08
+Lambda 0.02
+typeTau 1
+U0 0.45
+H0 0.5
+typeBCInlet 0
+typeBCOut 1
+CountKnots 500

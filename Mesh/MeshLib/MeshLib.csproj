@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B8062E08-76AC-4EC2-A7AA-2D7A4C601351}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MeshLib</RootNamespace>
+    <AssemblyName>MeshLib</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ATable\Elements.cs" />
+    <Compile Include="ATable\TablKnot.cs" />
+    <Compile Include="ATable\IAdressTables.cs" />
+    <Compile Include="ATable\ICreateAdressTables.cs" />
+    <Compile Include="ATable\IAdressUnknow.cs" />
+    <Compile Include="ATable\ITablKnot.cs" />
+    <Compile Include="BoundaryConditions\BoundaryConditionsQuad.cs" />
+    <Compile Include="CArea\BCValues.cs" />
+    <Compile Include="CArea\CalculationDomain.cs" />
+    <Compile Include="CArea\ABaseCalculationDomain.cs" />
+    <Compile Include="CArea\MeshWrapperСhannelSectionCFGTri.cs" />
+    <Compile Include="CArea\MeshWrapperСhannelCFGTri.cs" />
+    <Compile Include="CArea\MeshWrapperCrossCFGTri.cs" />
+    <Compile Include="CArea\MeshWrapper.cs" />
+    <Compile Include="FEMTools\FunForm\FunLagrange2D.cs" />
+    <Compile Include="FEMTools\FunForm\FunLagrange1D.cs" />
+    <Compile Include="Locators\LocatorTriMesh - Копировать.cs" />
+    <Compile Include="Mesh\Locators\CreatorMeshFacets.cs" />
+    <Compile Include="Mesh\Locators\SFacet.cs" />
+    <Compile Include="Mesh\RecMesh\ARectangleMesh.cs" />
+    <Compile Include="Mesh\RecMesh\ChannelMesh.cs" />
+    <Compile Include="Mesh\RecMesh\ChannelRectMesh.cs" />
+    <Compile Include="Mesh\RecMesh\ChannelTrapezMesh.cs" />
+    <Compile Include="Mesh\RecMesh\MeshIndex.cs" />
+    <Compile Include="Mesh\RecMesh\IRectangleMesh.cs" />
+    <Compile Include="Mesh\RecMesh\ChannelRectangleMesh.cs" />
+    <Compile Include="SaveData\CloudBedRiverNods.cs" />
+    <Compile Include="SaveData\GraphicsCurveFormat.cs" />
+    <Compile Include="SaveData\CloudRiverNods.cs" />
+    <Compile Include="SaveData\GCurve.cs" />
+    <Compile Include="SaveData\GData.cs" />
+    <Compile Include="SaveData\GPoint.cs" />
+    <Compile Include="SaveData\GraphicsCurve.cs" />
+    <Compile Include="Mesh\ArrayMesh\RenderMesh.cs" />
+    <Compile Include="Mesh\ArrayMesh\RenderMeshGL.cs" />
+    <Compile Include="Mesh\RecMesh\RectangleMesh.cs" />
+    <Compile Include="Locators\LocatorTriMesh.cs" />
+    <Compile Include="IO\UseFormats\FVМeshFormat.cs" />
+    <Compile Include="Mesh\ArrayCore\Old\DComplecsMesh.cs" />
+    <Compile Include="Mesh\ArrayCore\Mesh Core.cs" />
+    <Compile Include="Mesh\ArrayCore\Old\AMesh.cs" />
+    <Compile Include="Mesh\ArrayMesh\ArrayMesh.cs" />
+    <Compile Include="Mesh\ArrayCore\Old\FEBorder.cs" />
+    <Compile Include="Mesh\ArrayMesh\KsiMesh.cs" />
+    <Compile Include="Mesh\ArrayMesh\KsiMesh2017.cs" />
+    <Compile Include="Mesh\FVMQ\FVEMesh.cs" />
+    <Compile Include="Mesh\FVMQ\FVElem.cs" />
+    <Compile Include="Mesh\FVMQ\IFVElem.cs" />
+    <Compile Include="Mesh\FVC\AFacet.cs" />
+    <Compile Include="Mesh\FVC\FVComMesh.cs" />
+    <Compile Include="Mesh\FVC\FVElement.cs" />
+    <Compile Include="Mesh\FVC\FVFacet.cs" />
+    <Compile Include="Mesh\ArrayCore\Old\FVMTriМesh.cs" />
+    <Compile Include="Mesh\ArrayCore\Old\RecMesh.cs" />
+    <Compile Include="Mesh\Locators\LocatorRect.cs" />
+    <Compile Include="Mesh\Locators\Locator_TriMeshToQuadTrue.cs" />
+    <Compile Include="SaveData\GraphicsData.cs" />
+    <Compile Include="SaveData\SavePoint.cs" />
+    <Compile Include="BoundaryConditions\BoundaryConditionsVar.cs" />
+    <Compile Include="BoundaryConditions\BoundCondition1D.cs" />
+    <Compile Include="TODO\IMeshTask.cs" />
+    <Compile Include="IO\FiltrFileReadLine.cs" />
+    <Compile Include="IO\FileMeshProcessor.cs" />
+    <Compile Include="FEMTools\FunFormsManager.cs" />
+    <Compile Include="FEMTools\FunForm\AbFunForm.cs" />
+    <Compile Include="FEMTools\FunForm\HFForm1D.cs" />
+    <Compile Include="FEMTools\FunForm\HFFormRectangle2D.cs" />
+    <Compile Include="FEMTools\FunForm\HFFormTriangle2D.cs" />
+    <Compile Include="FEMTools\NumInegrationPoints.cs" />
+    <Compile Include="IO\UseFormats\TriМeshFormat.cs" />
+    <Compile Include="Mesh\QMesh\LineStretch.cs" />
+    <Compile Include="Mesh\FEMesh\FEMesh.cs" />
+    <Compile Include="Mesh\FEMesh\FENods.cs" />
+    <Compile Include="Mesh\FEMesh\FElement.cs" />
+    <Compile Include="Mesh\ArrayCore\Old\RectangleMesh.cs" />
+    <Compile Include="Mesh\Link.cs" />
+    <Compile Include="Mesh\Locators\Locator_TriMeshToQuad.cs" />
+    <Compile Include="Mesh\FVMQ\RectFVMesh.cs" />
+    <Compile Include="Mesh\QMesh\QMesh.cs" />
+    <Compile Include="Mesh\QMesh\QuadMesh.cs" />
+    <Compile Include="TODO\TriMeshCreate.cs" />
+    <Compile Include="Renumberator.cs" />
+    <Compile Include="ATable\IElements.cs" />
+    <Compile Include="Mesh\ArrayCore\Old\FVMesh.cs" />
+    <Compile Include="Mesh\ArrayMesh\ComplecsMesh.cs" />
+    <Compile Include="Mesh\ArrayMesh\TwoMesh.cs" />
+    <Compile Include="HStripMeshGenerator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Mesh\ArrayMesh\TriMesh.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AlgebraLib\AlgebraLib.csproj">
+      <Project>{3620fe4f-9d3e-4fa2-965e-762234334d84}</Project>
+      <Name>AlgebraLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CommonLib\CommonLib.csproj">
+      <Project>{45fdf4ae-457a-42ae-a44c-e07a2726822f}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GeometryLib\GeometryLib.csproj">
+      <Project>{cb805006-1b1b-412b-9fde-4c8e8ad7ce13}</Project>
+      <Name>GeometryLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MemLogLib\MemLogLib.csproj">
+      <Project>{4d84c29a-57f3-44d0-9520-0294dc35763e}</Project>
+      <Name>MemLogLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DOC\Хеширование при аппроксимации.doc" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

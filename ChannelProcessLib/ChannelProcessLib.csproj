@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C9C3AC13-CACB-40EE-A8DD-673742EF765F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ChannelProcessLib</RootNamespace>
+    <AssemblyName>ChannelProcessLib</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ChannelProcessPro.cs" />
+    <Compile Include="Managers\ManagerBedLoadTask.cs" />
+    <Compile Include="Managers\ManagerRiverTask.cs" />
+    <Compile Include="ChannelProcess.cs" />
+    <Compile Include="CProcParams.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AlgebraLib\AlgebraLib.csproj">
+      <Project>{3620fe4f-9d3e-4fa2-965e-762234334d84}</Project>
+      <Name>AlgebraLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BLLib\BLLib.csproj">
+      <Project>{f8ce2ed0-9994-4b88-93d1-eda182069caa}</Project>
+      <Name>BLLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{45fdf4ae-457a-42ae-a44c-e07a2726822f}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEMTasksLib\FEMTasksLib.csproj">
+      <Project>{288d677a-c46f-44f8-a451-5afa1a0d4c46}</Project>
+      <Name>FEMTasksLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GeometryLib\GeometryLib.csproj">
+      <Project>{cb805006-1b1b-412b-9fde-4c8e8ad7ce13}</Project>
+      <Name>GeometryLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MemLogLib\MemLogLib.csproj">
+      <Project>{4d84c29a-57f3-44d0-9520-0294dc35763e}</Project>
+      <Name>MemLogLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mesh\MeshLib\MeshLib.csproj">
+      <Project>{b8062e08-76ac-4ec2-a7aa-2d7a4c601351}</Project>
+      <Name>MeshLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NPRiverLib\NPRiverLib.csproj">
+      <Project>{954912e8-f132-4779-8300-520f1c534665}</Project>
+      <Name>NPRiverLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RiverLib\RiverLib.csproj">
+      <Project>{9ac6e045-03a5-4c7c-a597-d245ea7e2c04}</Project>
+      <Name>RiverLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="DOC\DOC.doc" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
