@@ -29,8 +29,8 @@ namespace RenderLib
         /// </summary>
         private void InitializeComponent()
         {
-            RenderLib.ColorScheme colorScheme2 = new RenderLib.ColorScheme();
-            RenderLib.RenderOptionsCurves renderOptionsCurves2 = new RenderLib.RenderOptionsCurves();
+            RenderLib.ColorScheme colorScheme1 = new RenderLib.ColorScheme();
+            RenderLib.RenderOptionsCurves renderOptionsCurves1 = new RenderLib.RenderOptionsCurves();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -82,6 +82,11 @@ namespace RenderLib
             this.panel9 = new System.Windows.Forms.Panel();
             this.cb_opGraphicCurvesGroup = new System.Windows.Forms.CheckBox();
             this.cb_opGraphicCurve = new System.Windows.Forms.CheckBox();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.bt_Filter = new System.Windows.Forms.Button();
+            this.cb_GroupCurve = new System.Windows.Forms.CheckBox();
+            this.label28 = new System.Windows.Forms.Label();
+            this.checkedListBoxGroup = new System.Windows.Forms.CheckedListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.panel7 = new System.Windows.Forms.Panel();
             this.label20 = new System.Windows.Forms.Label();
@@ -142,6 +147,9 @@ namespace RenderLib
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.saveFileDialog2 = new System.Windows.Forms.SaveFileDialog();
+            this.btWave = new System.Windows.Forms.Button();
+            this.label29 = new System.Windows.Forms.Label();
+            this.tb_Xc = new System.Windows.Forms.TextBox();
             this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -151,6 +159,7 @@ namespace RenderLib
             this.tabControlOption.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.panel9.SuspendLayout();
+            this.tabPage6.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.panel7.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -204,7 +213,7 @@ namespace RenderLib
             this.tabControl1.Location = new System.Drawing.Point(10, 96);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(290, 188);
+            this.tabControl1.Size = new System.Drawing.Size(290, 193);
             this.tabControl1.TabIndex = 94;
             // 
             // tabPage2
@@ -365,6 +374,9 @@ namespace RenderLib
             // tabPage5
             // 
             this.tabPage5.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.tabPage5.Controls.Add(this.label29);
+            this.tabPage5.Controls.Add(this.tb_Xc);
+            this.tabPage5.Controls.Add(this.btWave);
             this.tabPage5.Controls.Add(this.btHill);
             this.tabPage5.Controls.Add(this.label26);
             this.tabPage5.Controls.Add(this.tb_q);
@@ -383,16 +395,16 @@ namespace RenderLib
             this.tabPage5.Location = new System.Drawing.Point(4, 29);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(282, 155);
+            this.tabPage5.Size = new System.Drawing.Size(282, 160);
             this.tabPage5.TabIndex = 1;
             this.tabPage5.Text = "Анализ";
             // 
             // btHill
             // 
             this.btHill.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btHill.Location = new System.Drawing.Point(208, 114);
+            this.btHill.Location = new System.Drawing.Point(209, 93);
             this.btHill.Name = "btHill";
-            this.btHill.Size = new System.Drawing.Size(65, 27);
+            this.btHill.Size = new System.Drawing.Size(65, 28);
             this.btHill.TabIndex = 105;
             this.btHill.Text = "Холм";
             this.btHill.UseVisualStyleBackColor = true;
@@ -402,7 +414,7 @@ namespace RenderLib
             // 
             this.label26.AutoSize = true;
             this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label26.Location = new System.Drawing.Point(110, 88);
+            this.label26.Location = new System.Drawing.Point(117, 125);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(18, 20);
             this.label26.TabIndex = 104;
@@ -411,9 +423,9 @@ namespace RenderLib
             // tb_q
             // 
             this.tb_q.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tb_q.Location = new System.Drawing.Point(140, 85);
+            this.tb_q.Location = new System.Drawing.Point(141, 123);
             this.tb_q.Name = "tb_q";
-            this.tb_q.Size = new System.Drawing.Size(59, 26);
+            this.tb_q.Size = new System.Drawing.Size(63, 26);
             this.tb_q.TabIndex = 103;
             this.tb_q.Text = "0";
             // 
@@ -421,7 +433,7 @@ namespace RenderLib
             // 
             this.label25.AutoSize = true;
             this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label25.Location = new System.Drawing.Point(10, 89);
+            this.label25.Location = new System.Drawing.Point(17, 127);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(18, 20);
             this.label25.TabIndex = 102;
@@ -430,7 +442,7 @@ namespace RenderLib
             // tb_L
             // 
             this.tb_L.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tb_L.Location = new System.Drawing.Point(44, 86);
+            this.tb_L.Location = new System.Drawing.Point(46, 123);
             this.tb_L.Name = "tb_L";
             this.tb_L.Size = new System.Drawing.Size(58, 26);
             this.tb_L.TabIndex = 101;
@@ -439,9 +451,9 @@ namespace RenderLib
             // btCovern
             // 
             this.btCovern.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btCovern.Location = new System.Drawing.Point(208, 84);
+            this.btCovern.Location = new System.Drawing.Point(138, 94);
             this.btCovern.Name = "btCovern";
-            this.btCovern.Size = new System.Drawing.Size(65, 27);
+            this.btCovern.Size = new System.Drawing.Size(65, 28);
             this.btCovern.TabIndex = 100;
             this.btCovern.Text = "Яма";
             this.btCovern.UseVisualStyleBackColor = true;
@@ -450,9 +462,9 @@ namespace RenderLib
             // bt_StandardDeviation
             // 
             this.bt_StandardDeviation.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bt_StandardDeviation.Location = new System.Drawing.Point(109, 57);
+            this.bt_StandardDeviation.Location = new System.Drawing.Point(110, 65);
             this.bt_StandardDeviation.Name = "bt_StandardDeviation";
-            this.bt_StandardDeviation.Size = new System.Drawing.Size(164, 27);
+            this.bt_StandardDeviation.Size = new System.Drawing.Size(164, 28);
             this.bt_StandardDeviation.TabIndex = 99;
             this.bt_StandardDeviation.Text = "Средне квадр. отк.";
             this.bt_StandardDeviation.UseVisualStyleBackColor = true;
@@ -461,9 +473,9 @@ namespace RenderLib
             // bt_StandardDeviationCurve
             // 
             this.bt_StandardDeviationCurve.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bt_StandardDeviationCurve.Location = new System.Drawing.Point(108, 30);
+            this.bt_StandardDeviationCurve.Location = new System.Drawing.Point(110, 36);
             this.bt_StandardDeviationCurve.Name = "bt_StandardDeviationCurve";
-            this.bt_StandardDeviationCurve.Size = new System.Drawing.Size(165, 27);
+            this.bt_StandardDeviationCurve.Size = new System.Drawing.Size(165, 28);
             this.bt_StandardDeviationCurve.TabIndex = 98;
             this.bt_StandardDeviationCurve.Text = "Средне квадратич.";
             this.bt_StandardDeviationCurve.UseVisualStyleBackColor = true;
@@ -472,9 +484,9 @@ namespace RenderLib
             // bt_Average
             // 
             this.bt_Average.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bt_Average.Location = new System.Drawing.Point(108, 3);
+            this.bt_Average.Location = new System.Drawing.Point(110, 8);
             this.bt_Average.Name = "bt_Average";
-            this.bt_Average.Size = new System.Drawing.Size(165, 27);
+            this.bt_Average.Size = new System.Drawing.Size(165, 28);
             this.bt_Average.TabIndex = 97;
             this.bt_Average.Text = "Среднее значение";
             this.bt_Average.UseVisualStyleBackColor = true;
@@ -484,7 +496,7 @@ namespace RenderLib
             // 
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label23.Location = new System.Drawing.Point(10, 6);
+            this.label23.Location = new System.Drawing.Point(10, 10);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(84, 20);
             this.label23.TabIndex = 96;
@@ -494,7 +506,7 @@ namespace RenderLib
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(11, 61);
+            this.label2.Location = new System.Drawing.Point(10, 69);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 20);
             this.label2.TabIndex = 95;
@@ -503,7 +515,7 @@ namespace RenderLib
             // tb_Xa
             // 
             this.tb_Xa.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tb_Xa.Location = new System.Drawing.Point(45, 30);
+            this.tb_Xa.Location = new System.Drawing.Point(45, 36);
             this.tb_Xa.Name = "tb_Xa";
             this.tb_Xa.Size = new System.Drawing.Size(58, 26);
             this.tb_Xa.TabIndex = 93;
@@ -512,7 +524,7 @@ namespace RenderLib
             // tb_Xb
             // 
             this.tb_Xb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tb_Xb.Location = new System.Drawing.Point(45, 58);
+            this.tb_Xb.Location = new System.Drawing.Point(45, 65);
             this.tb_Xb.Name = "tb_Xb";
             this.tb_Xb.Size = new System.Drawing.Size(58, 26);
             this.tb_Xb.TabIndex = 94;
@@ -522,7 +534,7 @@ namespace RenderLib
             // 
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label22.Location = new System.Drawing.Point(10, 33);
+            this.label22.Location = new System.Drawing.Point(10, 40);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(33, 20);
             this.label22.TabIndex = 92;
@@ -531,7 +543,7 @@ namespace RenderLib
             // btSave
             // 
             this.btSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btSave.Location = new System.Drawing.Point(206, 289);
+            this.btSave.Location = new System.Drawing.Point(206, 292);
             this.btSave.Name = "btSave";
             this.btSave.Size = new System.Drawing.Size(98, 29);
             this.btSave.TabIndex = 93;
@@ -658,10 +670,11 @@ namespace RenderLib
             this.tabControlOption.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlOption.Controls.Add(this.tabPage4);
+            this.tabControlOption.Controls.Add(this.tabPage6);
             this.tabControlOption.Controls.Add(this.tabPage3);
             this.tabControlOption.Controls.Add(this.tabPage1);
             this.tabControlOption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tabControlOption.Location = new System.Drawing.Point(11, 323);
+            this.tabControlOption.Location = new System.Drawing.Point(11, 324);
             this.tabControlOption.Name = "tabControlOption";
             this.tabControlOption.SelectedIndex = 0;
             this.tabControlOption.Size = new System.Drawing.Size(290, 369);
@@ -752,6 +765,63 @@ namespace RenderLib
             this.cb_opGraphicCurve.UseVisualStyleBackColor = true;
             this.cb_opGraphicCurve.CheckedChanged += new System.EventHandler(this.cb_opGraphicCurve_CheckedChanged);
             // 
+            // tabPage6
+            // 
+            this.tabPage6.BackColor = System.Drawing.Color.Silver;
+            this.tabPage6.Controls.Add(this.bt_Filter);
+            this.tabPage6.Controls.Add(this.cb_GroupCurve);
+            this.tabPage6.Controls.Add(this.label28);
+            this.tabPage6.Controls.Add(this.checkedListBoxGroup);
+            this.tabPage6.Location = new System.Drawing.Point(4, 29);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Size = new System.Drawing.Size(282, 336);
+            this.tabPage6.TabIndex = 5;
+            this.tabPage6.Text = "Группы";
+            // 
+            // bt_Filter
+            // 
+            this.bt_Filter.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.bt_Filter.Location = new System.Drawing.Point(191, 6);
+            this.bt_Filter.Name = "bt_Filter";
+            this.bt_Filter.Size = new System.Drawing.Size(84, 29);
+            this.bt_Filter.TabIndex = 95;
+            this.bt_Filter.Text = "Принять";
+            this.bt_Filter.UseVisualStyleBackColor = true;
+            this.bt_Filter.Click += new System.EventHandler(this.bt_Filter_Click);
+            // 
+            // cb_GroupCurve
+            // 
+            this.cb_GroupCurve.AutoSize = true;
+            this.cb_GroupCurve.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cb_GroupCurve.Location = new System.Drawing.Point(129, 10);
+            this.cb_GroupCurve.Name = "cb_GroupCurve";
+            this.cb_GroupCurve.Size = new System.Drawing.Size(56, 24);
+            this.cb_GroupCurve.TabIndex = 97;
+            this.cb_GroupCurve.Text = "Все";
+            this.cb_GroupCurve.UseVisualStyleBackColor = true;
+            this.cb_GroupCurve.CheckedChanged += new System.EventHandler(this.cb_GroupCurve_CheckedChanged);
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label28.Location = new System.Drawing.Point(9, 11);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(119, 20);
+            this.label28.TabIndex = 96;
+            this.label28.Text = "Фильтр групп ";
+            // 
+            // checkedListBoxGroup
+            // 
+            this.checkedListBoxGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkedListBoxGroup.FormattingEnabled = true;
+            this.checkedListBoxGroup.Location = new System.Drawing.Point(8, 40);
+            this.checkedListBoxGroup.Name = "checkedListBoxGroup";
+            this.checkedListBoxGroup.Size = new System.Drawing.Size(267, 277);
+            this.checkedListBoxGroup.TabIndex = 10;
+            this.checkedListBoxGroup.SelectedIndexChanged += new System.EventHandler(this.checkedListBoxGroup_SelectedIndexChanged);
+            // 
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.Color.Silver;
@@ -766,7 +836,7 @@ namespace RenderLib
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage3.Size = new System.Drawing.Size(282, 336);
             this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Настройки";
+            this.tabPage3.Text = "Перья";
             // 
             // panel7
             // 
@@ -1048,7 +1118,7 @@ namespace RenderLib
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Size = new System.Drawing.Size(282, 336);
             this.tabPage1.TabIndex = 4;
-            this.tabPage1.Text = "Отрисовка";
+            this.tabPage1.Text = "Объекты";
             // 
             // panel11
             // 
@@ -1213,7 +1283,7 @@ namespace RenderLib
             // btLoad
             // 
             this.btLoad.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btLoad.Location = new System.Drawing.Point(108, 289);
+            this.btLoad.Location = new System.Drawing.Point(108, 292);
             this.btLoad.Name = "btLoad";
             this.btLoad.Size = new System.Drawing.Size(95, 29);
             this.btLoad.TabIndex = 81;
@@ -1224,7 +1294,7 @@ namespace RenderLib
             // btShow
             // 
             this.btShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btShow.Location = new System.Drawing.Point(9, 289);
+            this.btShow.Location = new System.Drawing.Point(9, 292);
             this.btShow.Name = "btShow";
             this.btShow.Size = new System.Drawing.Size(92, 29);
             this.btShow.TabIndex = 9;
@@ -1235,14 +1305,14 @@ namespace RenderLib
             // renderControl1
             // 
             this.renderControl1.BackColor = System.Drawing.Color.White;
-            colorScheme2.Background = System.Drawing.Color.White;
-            colorScheme2.FontReper = new System.Drawing.Font("Arial", 8F);
-            colorScheme2.FontValue = null;
-            colorScheme2.formatTextReper = ((uint)(2u));
-            this.renderControl1.colorScheme = colorScheme2;
+            colorScheme1.Background = System.Drawing.Color.White;
+            colorScheme1.FontReper = new System.Drawing.Font("Arial", 8F);
+            colorScheme1.FontValue = null;
+            colorScheme1.formatTextReper = ((uint)(2u));
+            this.renderControl1.colorScheme = colorScheme1;
             this.renderControl1.Location = new System.Drawing.Point(228, 3);
             this.renderControl1.Name = "renderControl1";
-            this.renderControl1.renderOptions = renderOptionsCurves2;
+            this.renderControl1.renderOptions = renderOptionsCurves1;
             this.renderControl1.Size = new System.Drawing.Size(25, 23);
             this.renderControl1.TabIndex = 0;
             this.renderControl1.Text = "renderControl1";
@@ -1360,6 +1430,36 @@ namespace RenderLib
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // btWave
+            // 
+            this.btWave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btWave.Location = new System.Drawing.Point(210, 123);
+            this.btWave.Name = "btWave";
+            this.btWave.Size = new System.Drawing.Size(65, 28);
+            this.btWave.TabIndex = 106;
+            this.btWave.Text = "Волна";
+            this.btWave.UseVisualStyleBackColor = true;
+            this.btWave.Click += new System.EventHandler(this.btWave_Click);
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label29.Location = new System.Drawing.Point(10, 99);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(28, 20);
+            this.label29.TabIndex = 108;
+            this.label29.Text = "Xc";
+            // 
+            // tb_Xc
+            // 
+            this.tb_Xc.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tb_Xc.Location = new System.Drawing.Point(45, 95);
+            this.tb_Xc.Name = "tb_Xc";
+            this.tb_Xc.Size = new System.Drawing.Size(58, 26);
+            this.tb_Xc.TabIndex = 107;
+            this.tb_Xc.Text = "1";
+            // 
             // GDI_Curves_Control
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1386,6 +1486,8 @@ namespace RenderLib
             this.tabPage4.PerformLayout();
             this.panel9.ResumeLayout(false);
             this.panel9.PerformLayout();
+            this.tabPage6.ResumeLayout(false);
+            this.tabPage6.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.panel7.ResumeLayout(false);
@@ -1526,5 +1628,13 @@ namespace RenderLib
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.TextBox tb_q;
         private System.Windows.Forms.Button btHill;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.CheckBox cb_GroupCurve;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.CheckedListBox checkedListBoxGroup;
+        private System.Windows.Forms.Button bt_Filter;
+        private System.Windows.Forms.Button btWave;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.TextBox tb_Xc;
     }
 }

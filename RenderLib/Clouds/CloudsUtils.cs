@@ -18,6 +18,8 @@ namespace RenderLib
             cloud.MinMax(0, ref MinX, ref MaxX);
             cloud.MinMax(1, ref MinY, ref MaxY);
             RectangleWorld range = new RectangleWorld((float)MinX, (float)MaxX, (float)MinY, (float)MaxY);
+            if(range.Width>0 && range.Height>0)
+                return range;
             RectangleWorld Rdata = new RectangleWorld();
             RectangleWorld World = RectangleWorld.Extension(ref range, ref Rdata);
             return World;

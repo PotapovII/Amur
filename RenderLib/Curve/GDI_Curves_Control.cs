@@ -42,7 +42,10 @@ namespace RenderLib
         /// тип кривых
         /// </summary>
         TypeGraphicsCurve tGraphicsCurve = TypeGraphicsCurve.AllCurve;
-
+        /// <summary>
+        /// Фильтр групп
+        /// </summary>
+        List<string> GNames = new List<string>();
         public GDI_Curves_Control()
         {
             InitializeComponent();
@@ -157,6 +160,7 @@ namespace RenderLib
                 else
                     graphicsData.curves[i].Check = true;
             }
+
             colorScheme.formatText = (uint)nUD_formatText.Value;
             colorScheme.formatTextReper = (uint)nUD_formatReper.Value;
 
@@ -314,30 +318,17 @@ namespace RenderLib
         /// <param name="sp"></param>
         public void SendSavePoint(ISavePoint isp)
         {
+            //List<string> filter = isp.
             Refrech(isp);
-            //if (isp != null)
-            //{
-            //    this.isp = isp;
-            //GraphicsData gd = isp.graphicsData as GraphicsData;
-            //if (gd != null)
-            //{
-            //    // Запись данных в списки компонента
-            //    SetData(gd);
-            //    // Передача данных в прокси/рендер контрол
-            //    proxyRendererControl.SetData(gd);
-            //    // отрисовка в статус бар
-            //    tSSL_Time.Text = isp.time.ToString("F4");
-            //    tSSL_Curves.Text = gd.curves.Count.ToString();
-            //    SendOption();
-            //}
-            //}
         }
         protected void Refrech(ISavePoint isp)
         {
             if (isp != null)
             {
                 this.isp = isp;
-                GraphicsData gd = isp.graphicsData.GetSubIGraphicsData(tGraphicsCurve) as GraphicsData;
+                if(checkedListBoxGroup.Items.Count==0)
+                    GNames = isp.graphicsData.GraphicGroupNames();
+                GraphicsData gd = isp.graphicsData.GetSubIGraphicsData(tGraphicsCurve, GNames) as GraphicsData;
                 if (gd != null)
                 {
                     // Запись данных в списки компонента
@@ -352,6 +343,15 @@ namespace RenderLib
             }
         }
 
+        public string GNName(string Name)
+        {
+            string[] lines = Name.Split('#');
+            if (lines.Length == 1)
+                return Name;
+            else
+                return lines[1];
+        }
+
         /// <summary>
         /// Запись данных в списки компонента
         /// </summary>
@@ -360,12 +360,13 @@ namespace RenderLib
         {
             this.graphicsData = spData;
             List<string> Names = graphicsData.GraphicNames();
+            //GNames = graphicsData.GraphicGroupNames();
             checkedListBoxCurve.Items.Clear();
-
             if (Names.Count > 0)
             {
                 foreach (var name in Names)
                     checkedListBoxCurve.Items.Add(name);
+
                 checkedListBoxCurve.SelectedIndex = 0;
 
                 for (int i = 0; i < checkedListBoxCurve.Items.Count; i++)
@@ -378,7 +379,47 @@ namespace RenderLib
             }
             else
                 checkedListBoxCurve.SelectedIndex = -1;
+            if (GNames.Count > 0)
+            {
+                foreach (var name in GNames)
+                    if(checkedListBoxGroup.Items.Contains(name) == false)
+                        checkedListBoxGroup.Items.Add(name);
+                checkedListBoxGroup.SelectedItem = 0;
+            }
+            else
+                checkedListBoxGroup.SelectedItem = -1;
+
             cb_opGraphicCurve.Checked = true;
+            cb_GroupCurve.Checked = true;
+        }
+
+        bool Look = true;
+        bool LookGroup = true;
+        private void cb_GroupCurve_CheckedChanged(object sender, EventArgs e)
+        {
+            if(LookGroup == true)
+                for (int i = 0; i < checkedListBoxGroup.Items.Count; i++)
+                {
+                    checkedListBoxGroup.SetItemChecked(i, cb_GroupCurve.Checked);
+                }
+        }
+        private void checkedListBoxGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            bool flag = false;
+            int i = checkedListBoxGroup.SelectedIndex;
+            if (i == -1) return;
+            GNames.Clear();
+            for (i = 0; i < checkedListBoxGroup.Items.Count; i++)
+            {
+                if (checkedListBoxGroup.GetItemCheckState(i) == CheckState.Checked)
+                {
+                    GNames.Add(checkedListBoxGroup.Items[i].ToString());
+                    flag = true;
+                }
+            }
+            LookGroup = false;
+            cb_GroupCurve.Checked = flag;
+            LookGroup = true;
         }
         private void cb_opGraphicCurve_CheckedChanged(object sender, EventArgs e)
         {
@@ -389,7 +430,7 @@ namespace RenderLib
                     graphicsData.curves[i].Check = cb_opGraphicCurve.Checked;
                 }
         }
-        bool Look = true;
+  
         private void checkedListBoxCurve_SelectedIndexChanged(object sender, EventArgs e)
         {
             bool flag = false;
@@ -402,29 +443,6 @@ namespace RenderLib
                     flag = true;
                     break;
                 }
-            }
-            if (cb_opGraphicCurvesGroup.Checked == true)
-            {
-                if (i == checkedListBoxCurve.Items.Count)
-                    i = checkedListBoxCurve.SelectedIndex;
-
-                bool CheckedFlag = graphicsData.curves[i].Check == flag;
-
-                string name0 = checkedListBoxCurve.Items[i].ToString();
-                string name = GetName(name0);
-
-                for (int k = 0; k < checkedListBoxCurve.Items.Count; k++)
-                {
-                    string cname = GetName(checkedListBoxCurve.Items[k].ToString());
-                    if (name == cname)
-                    {
-                        checkedListBoxCurve.SetItemChecked(k, CheckedFlag);
-                        graphicsData.curves[i].Check = CheckedFlag;
-                        flag = true;
-                    }
-                }
-                // cb_opGraphicCurve_CheckedChanged(sender, e);
-
             }
             Look = false;
             cb_opGraphicCurve.Checked = flag;
@@ -653,6 +671,7 @@ namespace RenderLib
                     graphicsData.curves[indexPole].GetCovernInterval(ref xa, ref xb, ref zetaMin);
                     tb_Xa.Text = xa.ToString("F6");
                     tb_Xb.Text = xb.ToString("F6");
+                    tb_Xc.Text = "0";
                     double L = xb - xa;
                     tb_L.Text = L.ToString("F6");
                     double q = Math.Abs(zetaMin/L);
@@ -672,15 +691,16 @@ namespace RenderLib
             {
                 try
                 {
-                    double zetaMin = 0;
+                    double zetaMax = 0;
                     double xa = 0;
                     double xb = 1;
-                    graphicsData.curves[indexPole].GetHillInterval(ref xa, ref xb, ref zetaMin);
-                    tb_Xa.Text = xa.ToString("F6");
-                    tb_Xb.Text = xb.ToString("F6");
+                    graphicsData.curves[indexPole].GetHillInterval(ref xa, ref xb, ref zetaMax);
+                    tb_Xa.Text = "0";
+                    tb_Xb.Text = xa.ToString("F6");
+                    tb_Xc.Text = xb.ToString("F6");
                     double L = xb - xa;
                     tb_L.Text = L.ToString("F6");
-                    double q = Math.Abs(zetaMin / L);
+                    double q = Math.Abs(zetaMax / L);
                     tb_q.Text = q.ToString("F6");
                 }
                 catch (Exception ee)
@@ -689,5 +709,42 @@ namespace RenderLib
                 }
             }
         }
+
+        private void btWave_Click(object sender, EventArgs e)
+        {
+            int indexPole = checkedListBoxCurve.SelectedIndex;
+            if (indexPole > -1)
+            {
+                try
+                {
+                    double zetaMin = 0;
+                    double zetaMax = 0;
+                    double xa = 0;
+                    double xb = 1;
+                    double xc = 1;
+                    double xd = 1;
+                    graphicsData.curves[indexPole].GetCovernInterval(ref xa, ref xb, ref zetaMin);
+                    graphicsData.curves[indexPole].GetHillInterval(ref xc, ref xd, ref zetaMax);
+                    double x = (xb + xc) / 2;
+                    tb_Xa.Text = xa.ToString("F6");
+                    tb_Xb.Text = xb.ToString("F6");
+                    tb_Xc.Text = xd.ToString("F6");
+                    double L = xd - xa;
+                    tb_L.Text = L.ToString("F6");
+                    double q = Math.Abs(zetaMax - zetaMin / L);
+                    tb_q.Text = q.ToString("F6");
+                }
+                catch (Exception ee)
+                {
+                    tSS_Analys.Text = ee.Message;
+                }
+            }
+        }
+
+        private void bt_Filter_Click(object sender, EventArgs e)
+        {
+            Refrech(isp);
+        }
+
     }
 }

@@ -109,11 +109,17 @@ namespace CommonLib.Areas
             if (b.Left == b.Right && b.Bottom == b.Top)
                 return a;
             else
-                return new RectangleWorld(
-                Math.Min(a.Left, b.Left),
-                Math.Max(a.Right, b.Right),
-                Math.Min(a.Bottom, b.Bottom),
-                Math.Max(a.Top, b.Top));
+            {
+                if (a.Left == a.Right && a.Bottom == a.Top)
+                    return b;
+                else
+                    return new RectangleWorld(
+                        Math.Min(a.Left, b.Left),
+                        Math.Max(a.Right, b.Right),
+                        Math.Min(a.Bottom, b.Bottom),
+                        Math.Max(a.Top, b.Top));
+            }
+                
         }
 
         /// <summary>

@@ -28,6 +28,7 @@ namespace RenderLib
         double[] Values = null;
         double MaxV = 0;
         double MinV = 0;
+        double minV, maxV;
         double SumV = 0;
         double[] ValuesX = null;
         double[] ValuesY = null;
@@ -457,14 +458,23 @@ namespace RenderLib
             int[] ScalNum = new int[IsoLine];
             double[] IsoValue = new double[IsoLine];
 
-            MinV = MinV0 + (MaxV0 - MinV0) * colorScheme.MinIsoLine / 100f;
-            MaxV = MinV0 + (MaxV0 - MinV0) * colorScheme.MaxIsoLine / 100f;
+
             if (flagOne == true)
             {
                 IsoValue[0] = ValueISO;
             }
             else
             {
+                if (renderOptions.cb_GradScaleLimit == true)
+                {
+                    MinV = renderOptions.MinValue;
+                    MaxV = renderOptions.MaxValue;
+                }
+                else
+                {
+                    MinV = MinV0 + (MaxV0 - MinV0) * colorScheme.MinIsoLine / 100f;
+                    MaxV = MinV0 + (MaxV0 - MinV0) * colorScheme.MaxIsoLine / 100f;
+                }
                 // шаг изолиний
                 double DV = (MaxV - MinV) / (IsoLine + 1);
                 for (uint i = 0; i < IsoLine; i++)
@@ -473,6 +483,7 @@ namespace RenderLib
                     IsoValue[i] = Value;
                 }
             }
+
             double[] Fn = { 0, 0, 0 };
             // цикл по КЭ
             TriElement[] elems = mesh.GetAreaElems();
@@ -484,9 +495,6 @@ namespace RenderLib
                 TriElement.TriElemValues(x, elems[elem], ref Xn);
                 TriElement.TriElemValues(y, elems[elem], ref Yn);
                 TriElement.TriElemValues(Values, elems[elem], ref Fn);
-                //mesh.ElemValues(x, elem, ref Xn);
-                //mesh.ElemValues(y, elem, ref Yn);
-                //mesh.ElemValues(Values, elem, ref Fn);
 
                 pmin = Fn.Min();
                 pmax = Fn.Max();
@@ -526,6 +534,11 @@ namespace RenderLib
                         // отрисовка изолинии
                         PointF p0 = new PointF((float)xline[0], (float)yline[0]);
                         PointF p1 = new PointF((float)xline[1], (float)yline[1]);
+
+                        if (zoom.ViewportContains(p0) == false ||
+                            zoom.ViewportContains(p1) == false)
+                            continue;
+
                         // Масштабирование
                         zoom.WorldToScreen(ref p0);
                         zoom.WorldToScreen(ref p1);
@@ -655,15 +668,16 @@ namespace RenderLib
             TriElement[] AreaElemsColor = { new TriElement(0, 1, 2), new TriElement(2, 3, 0),
                                             new TriElement(3, 2, 4), new TriElement(4, 5, 3),
                                             new TriElement(5, 4, 6), new TriElement(6, 7, 5) };
+            GetScaleLimit(ref minV, ref maxV);
             int[] cX = { 100, 150, 150, 100, 150, 100, 150, 100 };
             int[] cY = { 20, 20, 90, 90, 160, 160, 230, 230 };
-            double v13 = 2 * MinV / 3 + MaxV / 3;
-            double v23 = MinV / 3 + 2 * MaxV / 3;
-            double[] clearValue = { MinV, MinV, v13, v13, v23, v23, MaxV, MaxV };
+            double v13 = 2 * minV / 3 + maxV / 3;
+            double v23 = minV / 3 + 2 * maxV / 3;
+            double[] clearValue = { minV, minV, v13, v13, v23, v23, maxV, maxV };
             TriVertex[] triVertex = new TriVertex[8];
             for (uint i = 0; i < triVertex.Length; i++)
             {
-                Color col = colorScheme.RGBBrush(clearValue[i], MinV, MaxV);
+                Color col = colorScheme.RGBBrush(clearValue[i], minV, maxV);
                 PointF pt = new PointF(cX[i], cY[i]);
                 triVertex[i].SetTriVertex(ref pt, ref col);
             }
@@ -683,14 +697,31 @@ namespace RenderLib
                 pf = new PointF((float)X[i], (float)Y[i]);
                 pf.X = cX[1] + 5f; 
                 pf.Y = fY0[i] - colorScheme.FontValue.Size/2-1;
-                double v = MinV * (1 - i * dy) + MaxV * i * dy;
+                double v = minV * (1 - i * dy) + maxV * i * dy;
                 double vv = renderOptions.ScaleValue(v);
                 string res = String.Format(colorScheme.FormatText, vv);
                 g.DrawString(res, colorScheme.FontValue, colorScheme.BrushTextValues, pf);
             }
 
         }
-
+        /// <summary>
+        /// Выбор пределов для, заливки, шкалы и изолиний
+        /// </summary>
+        /// <param name="minV"></param>
+        /// <param name="maxV"></param>
+        public void GetScaleLimit(ref double minV, ref double maxV)
+        {
+            if (renderOptions.cb_GradScaleLimit == true)
+            {
+                minV = renderOptions.MinValue;
+                maxV = renderOptions.MaxValue;
+            }
+            else
+            {
+                minV = MinV;
+                maxV = MaxV;
+            }
+        }
     }
 }
 

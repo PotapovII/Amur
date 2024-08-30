@@ -160,6 +160,14 @@ namespace RenderLib
         /// </summary>
         public bool opGradScale = false;
         /// <summary>
+        /// Выбор пределов шкалы/изолиний
+        /// </summary>
+        public bool cb_GradScaleLimit = false;
+        /// <summary>
+        /// Пределы шкалы
+        /// </summary>
+        public float MaxValue,MinValue = 0;
+        /// <summary>
         /// Изолинии для поля
         /// </summary>
         public bool opIsoLineValues = false;
@@ -216,6 +224,9 @@ namespace RenderLib
             opVectorValues = o.opVectorValues;
             opGraphicCurve = o.opGraphicCurve;
             opGradScale = o.opGradScale;
+            cb_GradScaleLimit = o.cb_GradScaleLimit;
+            MaxValue = o.MaxValue;
+            MinValue = o.MinValue;
             a = o.a;
             b = o.b;
             opTargetLine = o.opTargetLine;

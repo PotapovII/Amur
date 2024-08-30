@@ -18,6 +18,9 @@ namespace RenderLib
     using System.Windows.Forms;
     using System.Collections.Generic;
     using System.Runtime.Serialization.Formatters.Binary;
+    using MeshLib.SaveData;
+    using GeometryLib;
+
     /// <summary>
     ///ОО: Компонент визуализации данных (сетки, и сеточных полей, кривых (устарело) ) 
     /// </summary>
@@ -61,6 +64,10 @@ namespace RenderLib
         /// Эволюционная точка сохранения 
         /// </summary>
         ISavePoint sps = null;
+        /// <summary>
+        /// Облако узлов
+        /// </summary>
+        IClouds clouds = null;
         public GDI_ControlEdit()
         {
             InitializeComponent();
@@ -525,7 +532,51 @@ namespace RenderLib
                 tLine = new LocatorTriMeshFacet(sp.mesh);
             }
         }
-
+        /// <summary>
+        /// Установка данных и опций в RendererControl
+        /// отрисовка параметров сетки в статус бар
+        /// </summary>
+        /// <param name="sp"></param>
+        public void SendSaveCloud(IClouds cloud)
+        {
+            if (cloud != null)
+            {
+                clouds = cloud;
+                // Установка данных о сетке и расчетных полей на ней
+                // определение мирового региона для отрисовки области и данных
+                // AccountingСurves - флаг учета масштаба кривых при расчете области отрисовки</param>
+                // cloudData.SetSavePoint(sp, renderOptions.ckAccountingСurves);
+                // Запись данных в списки компонента
+                SetData(clouds);
+                // Передача данных в прокси/рендер контрол
+                proxyRendererControl.SetData(clouds);
+                SendOption();
+                // отрисовка в статус бар
+                tSSL_Nods.Text = clouds.CountKnots.ToString();
+            }
+        }
+        /// <summary>
+        /// Запись данных в списки компонента
+        /// </summary>
+        /// <param name="cloudData">Данные для отрисовки</param>
+        public void SetData(IClouds clouds)
+        {
+            this.clouds = clouds;
+            int SelectedIndex = listBoxPoles.SelectedIndex;
+            List<string> Names = new List<string>(clouds.AttributNames);
+            listBoxPoles.Items.Clear();
+            if (Names.Count > 0)
+            {
+                foreach (var name in Names)
+                    listBoxPoles.Items.Add(name);
+                if (Names.Count > SelectedIndex && SelectedIndex > -1)
+                    listBoxPoles.SelectedIndex = SelectedIndex;
+                else
+                    listBoxPoles.SelectedIndex = 0;
+            }
+            else
+                listBoxPoles.SelectedIndex = -1;
+        }
         private void cb_showMesh_CheckedChanged(object sender, EventArgs e)
         {
             cb_showElementNamber.Enabled = cb_showMesh.Checked;
@@ -840,6 +891,76 @@ namespace RenderLib
                 colorScheme.PenBoundaryLine =
                 new Pen(colorScheme.PenBoundaryLine.Color,
                         (int)nUD_penBoundaryLine.Value);
+        }
+
+        private void tsb_LoadMesh_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            string sf = ofd.Filter;
+            try
+            {
+                string ext = ".bed";
+                string ext1 = ".node";
+                string ext2 = ".cdg";
+                string ext3 = ".mesh";
+                string filter = "(*" + ext + ")|*" + ext + "| ";
+                filter += "(*" + ext1 + ")|*" + ext1 + "| ";
+                filter += "(*" + ext2 + ")|*" + ext2 + "| ";
+                filter += "(*" + ext3 + ")|*" + ext3 + "| ";
+                filter += " All files (*.*)|*.*";
+                ofd.Filter = filter;
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    ImportSPMesh(ofd.FileName, ref clouds, ref sp);
+                    SendSaveCloud(clouds);
+                    SendSavePoint(sp);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            ofd.Filter = sf;
+        }
+        /// <summary>
+        /// Сохраняем облако глубин в файл 
+        /// </summary>
+        /// <param name="mesh"></param>
+        /// <param name="FileName"></param>
+        /// <param name="shift"></param>
+        public void ImportSPMesh(string FileName, ref IClouds clouds, ref SavePoint sp)
+        {
+            clouds = null;
+            sp = null;
+            using (StreamReader files = new StreamReader(FileName))
+            {
+                string FileEXT = Path.GetExtension(FileName);
+                if (FileEXT == ".bed")
+                {
+                    CloudBedRiverNods cloud = new CloudBedRiverNods();
+                    for (string line = files.ReadLine(); line != null; line = files.ReadLine())
+                    {
+                        string[] lines = line.Split(' ','\t');
+                        List<string> parts = new List<string>();
+                        foreach (string line2 in lines)
+                            if(line2!="")
+                                parts.Add(line2);
+                        lines = parts.ToArray();
+                        if (lines.Length == 5)
+                        {
+                            BedRiverNode nod = BedRiverNode.Parse(lines);
+                            cloud.AddNode(nod);
+                        }
+                    }
+                    clouds = cloud;
+                }
+                if (FileEXT == ".sp")
+                {
+                    sp = new SavePoint();
+                    sp = (SavePoint)sp.LoadSavePoint(FileName);
+                }
+                files.Close();
+            }
         }
 
         //private void nUD_penIsoLine_ValueChanged(object sender, EventArgs e)

@@ -84,6 +84,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.renderControl1 = new RenderLib.CPRenderControlFields();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.cb_GradScale = new System.Windows.Forms.CheckBox();
+            this.cb_opFillValues = new System.Windows.Forms.CheckBox();
             this.cb_showBoudaryElems = new System.Windows.Forms.CheckBox();
             this.cb_showBoudaryKnots = new System.Windows.Forms.CheckBox();
             this.cb_showBoudary = new System.Windows.Forms.CheckBox();
@@ -134,8 +136,6 @@
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton10 = new System.Windows.Forms.ToolStripButton();
-            this.cb_GradScale = new System.Windows.Forms.CheckBox();
-            this.cb_opFillValues = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             this.tabControlOption.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -827,6 +827,28 @@
             this.panel3.Size = new System.Drawing.Size(275, 193);
             this.panel3.TabIndex = 10;
             // 
+            // cb_GradScale
+            // 
+            this.cb_GradScale.AutoSize = true;
+            this.cb_GradScale.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cb_GradScale.Location = new System.Drawing.Point(157, 131);
+            this.cb_GradScale.Name = "cb_GradScale";
+            this.cb_GradScale.Size = new System.Drawing.Size(77, 24);
+            this.cb_GradScale.TabIndex = 7;
+            this.cb_GradScale.Text = "Шкала";
+            this.cb_GradScale.UseVisualStyleBackColor = true;
+            // 
+            // cb_opFillValues
+            // 
+            this.cb_opFillValues.AutoSize = true;
+            this.cb_opFillValues.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cb_opFillValues.Location = new System.Drawing.Point(10, 131);
+            this.cb_opFillValues.Name = "cb_opFillValues";
+            this.cb_opFillValues.Size = new System.Drawing.Size(93, 24);
+            this.cb_opFillValues.TabIndex = 6;
+            this.cb_opFillValues.Text = "Заливка";
+            this.cb_opFillValues.UseVisualStyleBackColor = true;
+            // 
             // cb_showBoudaryElems
             // 
             this.cb_showBoudaryElems.AutoSize = true;
@@ -1102,6 +1124,7 @@
             this.tsb_LoadMesh.Name = "tsb_LoadMesh";
             this.tsb_LoadMesh.Size = new System.Drawing.Size(28, 28);
             this.tsb_LoadMesh.Text = "Загрузить сетку";
+            this.tsb_LoadMesh.Click += new System.EventHandler(this.tsb_LoadMesh_Click);
             // 
             // tsb_Save
             // 
@@ -1209,28 +1232,6 @@
             this.toolStripButton10.Name = "toolStripButton10";
             this.toolStripButton10.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton10.Text = "toolStripButton2";
-            // 
-            // cb_GradScale
-            // 
-            this.cb_GradScale.AutoSize = true;
-            this.cb_GradScale.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cb_GradScale.Location = new System.Drawing.Point(157, 131);
-            this.cb_GradScale.Name = "cb_GradScale";
-            this.cb_GradScale.Size = new System.Drawing.Size(77, 24);
-            this.cb_GradScale.TabIndex = 7;
-            this.cb_GradScale.Text = "Шкала";
-            this.cb_GradScale.UseVisualStyleBackColor = true;
-            // 
-            // cb_opFillValues
-            // 
-            this.cb_opFillValues.AutoSize = true;
-            this.cb_opFillValues.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cb_opFillValues.Location = new System.Drawing.Point(10, 131);
-            this.cb_opFillValues.Name = "cb_opFillValues";
-            this.cb_opFillValues.Size = new System.Drawing.Size(93, 24);
-            this.cb_opFillValues.TabIndex = 6;
-            this.cb_opFillValues.Text = "Заливка";
-            this.cb_opFillValues.UseVisualStyleBackColor = true;
             // 
             // GDI_ControlEdit
             // 

@@ -157,7 +157,6 @@
             this.button6 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.renderControl1 = new RenderLib.CPRenderControlFields();
             this.panel3 = new System.Windows.Forms.Panel();
             this.cb_showBoudaryElems = new System.Windows.Forms.CheckBox();
             this.cb_showBoudaryKnots = new System.Windows.Forms.CheckBox();
@@ -192,6 +191,10 @@
             this.toolStripStatusLabel10 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tss_TaskName = new System.Windows.Forms.ToolStripStatusLabel();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.tbMin = new System.Windows.Forms.TextBox();
+            this.tbMax = new System.Windows.Forms.TextBox();
+            this.cb_GradScaleLimit = new System.Windows.Forms.CheckBox();
+            this.renderControl1 = new RenderLib.CPRenderControlFields();
             this.panel2.SuspendLayout();
             this.tbc_Task.SuspendLayout();
             this.tabPage6.SuspendLayout();
@@ -299,6 +302,7 @@
             // 
             this.panel4.BackColor = System.Drawing.SystemColors.Control;
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel4.Controls.Add(this.cb_GradScaleLimit);
             this.panel4.Controls.Add(this.cb_GradScale);
             this.panel4.Controls.Add(this.cb_opValuesKnot);
             this.panel4.Controls.Add(this.panel5);
@@ -314,7 +318,7 @@
             // 
             this.cb_GradScale.AutoSize = true;
             this.cb_GradScale.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cb_GradScale.Location = new System.Drawing.Point(161, 3);
+            this.cb_GradScale.Location = new System.Drawing.Point(177, 3);
             this.cb_GradScale.Name = "cb_GradScale";
             this.cb_GradScale.Size = new System.Drawing.Size(77, 24);
             this.cb_GradScale.TabIndex = 5;
@@ -325,7 +329,7 @@
             // 
             this.cb_opValuesKnot.AutoSize = true;
             this.cb_opValuesKnot.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cb_opValuesKnot.Location = new System.Drawing.Point(14, 24);
+            this.cb_opValuesKnot.Location = new System.Drawing.Point(11, 24);
             this.cb_opValuesKnot.Name = "cb_opValuesKnot";
             this.cb_opValuesKnot.Size = new System.Drawing.Size(146, 24);
             this.cb_opValuesKnot.TabIndex = 3;
@@ -336,6 +340,8 @@
             // 
             this.panel5.BackColor = System.Drawing.SystemColors.ControlLight;
             this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel5.Controls.Add(this.tbMax);
+            this.panel5.Controls.Add(this.tbMin);
             this.panel5.Controls.Add(this.tb_opIsoLineSelectValue);
             this.panel5.Controls.Add(this.nUD_CountIsoLine);
             this.panel5.Controls.Add(this.label5);
@@ -348,14 +354,14 @@
             this.panel5.Controls.Add(this.cb_opIsoLineValues);
             this.panel5.Location = new System.Drawing.Point(5, 71);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(238, 127);
+            this.panel5.Size = new System.Drawing.Size(249, 127);
             this.panel5.TabIndex = 4;
             // 
             // tb_opIsoLineSelectValue
             // 
             this.tb_opIsoLineSelectValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tb_opIsoLineSelectValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tb_opIsoLineSelectValue.Location = new System.Drawing.Point(182, 30);
+            this.tb_opIsoLineSelectValue.Location = new System.Drawing.Point(194, 30);
             this.tb_opIsoLineSelectValue.Name = "tb_opIsoLineSelectValue";
             this.tb_opIsoLineSelectValue.Size = new System.Drawing.Size(48, 23);
             this.tb_opIsoLineSelectValue.TabIndex = 96;
@@ -399,7 +405,7 @@
             this.cb_opIsoLineValues0.AutoSize = true;
             this.cb_opIsoLineValues0.BackColor = System.Drawing.SystemColors.ControlLight;
             this.cb_opIsoLineValues0.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cb_opIsoLineValues0.Location = new System.Drawing.Point(161, 4);
+            this.cb_opIsoLineValues0.Location = new System.Drawing.Point(171, 4);
             this.cb_opIsoLineValues0.Name = "cb_opIsoLineValues0";
             this.cb_opIsoLineValues0.Size = new System.Drawing.Size(68, 24);
             this.cb_opIsoLineValues0.TabIndex = 88;
@@ -421,7 +427,7 @@
             this.trackBarMax.Location = new System.Drawing.Point(40, 82);
             this.trackBarMax.Maximum = 100;
             this.trackBarMax.Name = "trackBarMax";
-            this.trackBarMax.Size = new System.Drawing.Size(193, 45);
+            this.trackBarMax.Size = new System.Drawing.Size(148, 45);
             this.trackBarMax.TabIndex = 13;
             this.trackBarMax.Value = 100;
             this.trackBarMax.Scroll += new System.EventHandler(this.trackBarMinMax_Scroll);
@@ -431,7 +437,7 @@
             this.trackBarMin.Location = new System.Drawing.Point(41, 55);
             this.trackBarMin.Maximum = 100;
             this.trackBarMin.Name = "trackBarMin";
-            this.trackBarMin.Size = new System.Drawing.Size(185, 45);
+            this.trackBarMin.Size = new System.Drawing.Size(144, 45);
             this.trackBarMin.TabIndex = 0;
             this.trackBarMin.Scroll += new System.EventHandler(this.trackBarMinMax_Scroll);
             // 
@@ -473,7 +479,7 @@
             // 
             this.cb_opVectorValues.AutoSize = true;
             this.cb_opVectorValues.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cb_opVectorValues.Location = new System.Drawing.Point(14, 45);
+            this.cb_opVectorValues.Location = new System.Drawing.Point(11, 45);
             this.cb_opVectorValues.Name = "cb_opVectorValues";
             this.cb_opVectorValues.Size = new System.Drawing.Size(153, 24);
             this.cb_opVectorValues.TabIndex = 2;
@@ -484,7 +490,7 @@
             // 
             this.cb_opFillValues.AutoSize = true;
             this.cb_opFillValues.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cb_opFillValues.Location = new System.Drawing.Point(14, 3);
+            this.cb_opFillValues.Location = new System.Drawing.Point(11, 3);
             this.cb_opFillValues.Name = "cb_opFillValues";
             this.cb_opFillValues.Size = new System.Drawing.Size(93, 24);
             this.cb_opFillValues.TabIndex = 0;
@@ -846,7 +852,7 @@
             this.toolStripButton3});
             this.toolStrip1.Location = new System.Drawing.Point(6, 4);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(257, 31);
+            this.toolStrip1.Size = new System.Drawing.Size(226, 31);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -1763,27 +1769,6 @@
             this.label9.TabIndex = 93;
             this.label9.Text = "Кисти для заливок";
             // 
-            // renderControl1
-            // 
-            this.renderControl1.BackColor = System.Drawing.Color.White;
-            colorSchemeFields1.Background = System.Drawing.Color.White;
-            colorSchemeFields1.FontKnot = new System.Drawing.Font("Arial", 8F);
-            colorSchemeFields1.FontReper = new System.Drawing.Font("Arial", 8F);
-            colorSchemeFields1.FontValue = null;
-            colorSchemeFields1.formatTextReper = ((uint)(2u));
-            this.renderControl1.colorScheme = colorSchemeFields1;
-            this.renderControl1.IndexTask = 0;
-            this.renderControl1.Location = new System.Drawing.Point(209, 3);
-            this.renderControl1.Name = "renderControl1";
-            this.renderControl1.Points = new System.Drawing.PointF[] {
-        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points"))),
-        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points1")))};
-            this.renderControl1.renderOptions = renderOptionsFields1;
-            this.renderControl1.Size = new System.Drawing.Size(32, 22);
-            this.renderControl1.TabIndex = 0;
-            this.renderControl1.Text = "renderControl1";
-            this.renderControl1.Visible = false;
-            // 
             // panel3
             // 
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -2040,6 +2025,59 @@
             this.tss_TaskName.Size = new System.Drawing.Size(17, 21);
             this.tss_TaskName.Text = "_";
             // 
+            // tbMin
+            // 
+            this.tbMin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbMin.Location = new System.Drawing.Point(194, 60);
+            this.tbMin.Name = "tbMin";
+            this.tbMin.Size = new System.Drawing.Size(48, 23);
+            this.tbMin.TabIndex = 97;
+            this.tbMin.Text = "1";
+            // 
+            // tbMax
+            // 
+            this.tbMax.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbMax.Location = new System.Drawing.Point(194, 86);
+            this.tbMax.Name = "tbMax";
+            this.tbMax.Size = new System.Drawing.Size(48, 23);
+            this.tbMax.TabIndex = 98;
+            this.tbMax.Text = "1";
+            // 
+            // cb_GradScaleLimit
+            // 
+            this.cb_GradScaleLimit.AutoSize = true;
+            this.cb_GradScaleLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cb_GradScaleLimit.Location = new System.Drawing.Point(177, 24);
+            this.cb_GradScaleLimit.Name = "cb_GradScaleLimit";
+            this.cb_GradScaleLimit.Size = new System.Drawing.Size(77, 24);
+            this.cb_GradScaleLimit.TabIndex = 6;
+            this.cb_GradScaleLimit.Text = "Выбор";
+            this.cb_GradScaleLimit.UseVisualStyleBackColor = true;
+            this.cb_GradScaleLimit.CheckedChanged += new System.EventHandler(this.cb_GradScaleLimit_CheckedChanged);
+            // 
+            // renderControl1
+            // 
+            this.renderControl1.BackColor = System.Drawing.Color.White;
+            colorSchemeFields1.Background = System.Drawing.Color.White;
+            colorSchemeFields1.FontKnot = new System.Drawing.Font("Arial", 8F);
+            colorSchemeFields1.FontReper = new System.Drawing.Font("Arial", 8F);
+            colorSchemeFields1.FontValue = null;
+            colorSchemeFields1.formatTextReper = ((uint)(2u));
+            this.renderControl1.colorScheme = colorSchemeFields1;
+            this.renderControl1.IndexTask = 0;
+            this.renderControl1.Location = new System.Drawing.Point(209, 3);
+            this.renderControl1.Name = "renderControl1";
+            this.renderControl1.Points = new System.Drawing.PointF[] {
+        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points"))),
+        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points1")))};
+            this.renderControl1.renderOptions = renderOptionsFields1;
+            this.renderControl1.Size = new System.Drawing.Size(32, 22);
+            this.renderControl1.TabIndex = 0;
+            this.renderControl1.Text = "renderControl1";
+            this.renderControl1.Visible = false;
+            // 
             // GDI_Control
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2271,5 +2309,8 @@
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.CheckBox cb_GradScaleLimit;
+        private System.Windows.Forms.TextBox tbMax;
+        private System.Windows.Forms.TextBox tbMin;
     }
 }

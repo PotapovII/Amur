@@ -57,6 +57,11 @@ namespace CommonLib
         /// <returns></returns>
         List<string> GraphicNames();
         /// <summary>
+        /// Имена групп кривых
+        /// </summary>
+        /// <returns></returns>
+        List<string> GraphicGroupNames();
+        /// <summary>
         /// Добавление кривой
         /// </summary>
         /// <param name="e"></param>
@@ -69,10 +74,11 @@ namespace CommonLib
         /// <param name="y"></param>
         void AddCurve(string Name, double[] x, double[] y);
         /// <summary>
-        /// Получить подмножество IGraphicsData с кривыми заданного типа
+        /// Получить подмножество IGraphicsData с кривыми заданного типа 
+        /// в активных подгруппах
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        IGraphicsData GetSubIGraphicsData(TypeGraphicsCurve type);
+        IGraphicsData GetSubIGraphicsData(TypeGraphicsCurve TGraphicsCurve, List<string> filter);
     }
 }

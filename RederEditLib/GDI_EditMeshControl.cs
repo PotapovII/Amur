@@ -457,6 +457,7 @@
                 tSSL_Nods.Text = clouds.CountKnots.ToString();
             }
         }
+
         /// <summary>
         /// Запись данных в списки компонента
         /// </summary>

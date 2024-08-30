@@ -99,6 +99,8 @@ namespace RenderLib
             }
             SetRenderOptions();
             SetColorManager();
+            tbMin.Enabled = false;
+            tbMax.Enabled = false;
         }
         /// <summary>
         /// Запись данных в списки компонента
@@ -212,6 +214,8 @@ namespace RenderLib
             renderOptions.opTargetLine = cb_TargetLine.Checked;
             // 15 06 2024 шкала для градиентной заливки
             renderOptions.opGradScale = cb_GradScale.Checked;
+
+
             // 15 07 24 изменяемый масштаб полей
             renderOptions.scaleFields = (int)nUD_formatFieldScale.Value;
             renderOptions.opIsoLineValuesShow = cb_opIsoLineValuesShow.Checked;
@@ -225,9 +229,6 @@ namespace RenderLib
             renderOptions.a.Y = aY;
             renderOptions.b.X = bX;
             renderOptions.b.Y = bY;
-
-            proxyRendererControl.colorScheme = colorScheme;
-            proxyRendererControl.renderOptions = renderOptions;
 
             int indexPole = renderOptions.indexValues;
             int Dim = 0;
@@ -246,7 +247,19 @@ namespace RenderLib
             tSS_Min.Text = MinV.ToString("F4");
             tSS_Sum.Text = SumV.ToString("F4");
             tSS_Area.Text = SAreaV.ToString("F4");
-            tSS_Int.Text = (SumV*SAreaV).ToString("F5");
+            tSS_Int.Text = (SumV * SAreaV).ToString("F5");
+            // 30 08 2024 шкала для градиентной заливки с контролем пределов
+            renderOptions.cb_GradScaleLimit = cb_GradScaleLimit.Checked;
+            if (cb_GradScaleLimit.Checked == false)
+            {
+                tbMax.Text = MaxV.ToString("F4");
+                tbMin.Text = MinV.ToString("F4");
+            }
+            CValue(ref renderOptions.MinValue, tbMin);
+            CValue(ref renderOptions.MaxValue, tbMax);
+
+            proxyRendererControl.colorScheme = colorScheme;
+            proxyRendererControl.renderOptions = renderOptions;
         }
 
         /// <summary>
@@ -983,6 +996,22 @@ namespace RenderLib
             proxyRendererControl.IndexTask = tbc_Task.SelectedIndex;
         }
 
-
+        private void cb_GradScaleLimit_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cb_GradScaleLimit.Checked == true)
+            {
+                tbMin.Enabled = true;
+                tbMax.Enabled = true;
+                trackBarMin.Enabled = false;
+                trackBarMax.Enabled = false;
+            }
+            else
+            {
+                tbMin.Enabled = false;
+                tbMax.Enabled = false;
+                trackBarMin.Enabled = true;
+                trackBarMax.Enabled = true;
+            }
+        }
     }
 }

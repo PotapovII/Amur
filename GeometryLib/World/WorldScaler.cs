@@ -222,6 +222,16 @@ namespace GeometryLib.World
                 && y > Viewport.Y && y < Viewport.Bottom);
         }
         /// <summary>
+        /// Проверка на включение
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public bool ViewportContains(PointF p)
+        {
+            return (p.X > Viewport.X && p.X < Viewport.Right
+                && p.Y > Viewport.Y && p.Y < Viewport.Bottom);
+        }
+        /// <summary>
         /// Репер системы координат
         /// </summary>
         /// <param name="p0"></param>

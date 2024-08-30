@@ -111,6 +111,11 @@ namespace RenderLib
         /// Установка цветовой схемы задачи 
         /// </summary>
         ColorSchemeEdit colorScheme { get; set; }
+        /// <summary>
+        /// Запись данных в списки компонента
+        /// </summary>
+        /// <param name="cloudData">Данные для отрисовки</param>
+        void SetData(IClouds clouds);
     }
     /// <summary>
     /// Интерфейс отрисовки данных для кривых задачи

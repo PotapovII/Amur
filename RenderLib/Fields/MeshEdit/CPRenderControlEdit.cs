@@ -17,6 +17,8 @@ namespace RenderLib
     using CommonLib.Areas;
     using GeometryLib.World;
     using CommonLib.Geometry;
+    using CommonLib;
+
     /// <summary>
     /// Визуализирует сетку с помощью GDI.
     /// </summary>
@@ -79,7 +81,15 @@ namespace RenderLib
         /// <summary>
         /// Сохраняет данные задачи в удобной для рендеринга структуре данных.
         /// </summary>
-        SavePointData data;
+        SavePointData data = null;
+        /// <summary>
+        /// Облако узлов
+        /// </summary>
+        IClouds clouds = null;
+        /// <summary>
+        /// Класс методов для отрисовки данных облака
+        /// </summary>
+        TaskRendererClouds taskRendererClouds;
         /// <summary>
         /// Класс методов для отрисовки данных
         /// </summary>
@@ -179,21 +189,67 @@ namespace RenderLib
         /// </summary>
         public void SetData(SavePointData data)
         {
-            RectangleWorld World;
             this.data = data;
             taskRenderer = new TaskRendererEdit(data);
-            // Установить масштаб для новых данных
-            if (data == null)
-                World = new RectangleWorld();
+            WorldRef();
+            //RectangleWorld World;
+            //this.data = data;
+            //taskRenderer = new TaskRendererEdit(data);
+            //// Установить масштаб для новых данных
+            //if (data == null)
+            //    World = new RectangleWorld();
+            //else
+            //    World = data.World;
+            //bool flagUpdate = оptions.ckScaleUpdate;
+            //// При первом запуске flagUpdate всегда true
+            //if (startFlag == false)
+            //{
+            //    startFlag = true;
+            //    flagUpdate = true;
+            //}
+            //zoom.Initialize(this.ClientRectangle, World, flagUpdate);
+            //initialized = true;
+        }
+
+
+        /// <summary>
+        /// Запись данных в списки компонента
+        /// </summary>
+        /// <param name="cloudData">Данные для отрисовки</param>
+        public void SetData(IClouds clouds)
+        {
+            this.clouds = clouds;
+            taskRendererClouds = new TaskRendererClouds(clouds);
+            WorldRef();
+        }
+
+        /// <summary>
+        /// Определение размера "мира"
+        /// </summary>
+        public RectangleWorld GetWorld()
+        {
+            if (data == null && clouds == null)
+                return new RectangleWorld();
             else
-                World = data.World;
-            bool flagUpdate = оptions.ckScaleUpdate;
-            // При первом запуске flagUpdate всегда true
-            if (startFlag == false)
             {
-                startFlag = true;
-                flagUpdate = true;
+                if (data != null && clouds != null)
+                {
+                    RectangleWorld worldC = CloudsUtils.GetWorld(clouds);
+                    return RectangleWorld.Extension(ref data.World, ref worldC);
+                }
+                if (clouds == null)
+                    return data.World;
+                else
+                    return CloudsUtils.GetWorld(clouds);
             }
+        }
+        /// <summary>
+        /// Определение размера "мира"
+        /// </summary>
+        public void WorldRef()
+        {
+            RectangleWorld World = GetWorld();
+            bool flagUpdate = true;
             zoom.Initialize(this.ClientRectangle, World, flagUpdate);
             initialized = true;
         }
@@ -226,7 +282,7 @@ namespace RenderLib
         public void HandleResize()
         {
             if (data == null) return;
-            zoom.Initialize(this.ClientRectangle, data.World);
+            zoom.Initialize(this.ClientRectangle, GetWorld());
             InitializeBuffer();
         }
         private void InitializeBuffer()
@@ -268,6 +324,10 @@ namespace RenderLib
             if (taskRenderer != null)
             {
                 taskRenderer.Render(g, zoom);
+            }
+            if (taskRendererClouds != null)
+            {
+                taskRendererClouds.Render(g, zoom);
             }
             this.Invalidate();
         }

@@ -162,23 +162,65 @@ namespace MeshLib
                 names.Add(p.Name);
             return names;
         }
+        /// <summary>
+        /// Имена групп кривых
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GraphicGroupNames()
+        {
+            var names = new List<string>();
+            foreach (var p in curves)
+            {
+                string gName = GroupNameFilter(p.Name);
+                if (names.Contains(gName) == false)
+                    names.Add(gName);
+            }
+            return names;
+        }
+
         public GraphicsCurve GetCurve(uint index)
         {
             return curves[(int)index % curves.Count];
         }
 
         /// <summary>
-        /// Получить подмножество IGraphicsData с кривыми заданного типа
+        /// Получить подмножество IGraphicsData с кривыми заданного типа 
+        /// в активных подгруппах
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public IGraphicsData GetSubIGraphicsData(TypeGraphicsCurve TGraphicsCurve)
+        public IGraphicsData GetSubIGraphicsData(TypeGraphicsCurve TGraphicsCurve, List<string> filter)
         {
             IGraphicsData sub = new GraphicsData();
             foreach (var p in curves)
-                if(p.TGraphicsCurve == TGraphicsCurve || TGraphicsCurve == TypeGraphicsCurve.AllCurve)
+            {
+                var Name = GroupNameFilter(p.Name);
+                if(filter.Contains(Name) == true &&
+                    (   p.TGraphicsCurve == TGraphicsCurve || 
+                        TGraphicsCurve == TypeGraphicsCurve.AllCurve ) )
                     sub.Add(p);
+            }
             return sub;
+        }
+        /// <summary>
+        /// Групповой фильтр
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <returns></returns>
+        public string GroupNameFilter(string Name)
+        {
+            try
+            {
+                string[] lines = Name.Split('#');
+                if (lines.Length == 1)
+                    return Name;
+                else
+                    return lines[1];
+            }
+            catch
+            {
+                return "Ошибка распознования имени группы";
+            }
         }
     }
 }

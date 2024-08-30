@@ -11,6 +11,8 @@ namespace RenderLib
 
     using System.Windows.Forms;
     using System.Collections.Generic;
+    using CommonLib;
+
     /// <summary>
     /// ОО: Обертка для реального контрола используемая
     /// для удобства работы с контролом в формах
@@ -100,6 +102,14 @@ namespace RenderLib
         public void SetData(SavePointData data)
         {
             renderer.SetData(data);
+        }
+        /// <summary>
+        /// Запись данных в списки компонента
+        /// </summary>
+        /// <param name="cloudData">Данные для отрисовки</param>
+        public void SetData(IClouds clouds)
+        {
+            renderer.SetData(clouds);
         }
     }
 }

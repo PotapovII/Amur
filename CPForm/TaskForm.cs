@@ -597,7 +597,7 @@ namespace CPForm
 
         private void tsm_ClearSavePoint_Click(object sender, EventArgs e)
         {
-            task.sps.ClearСurve();
+            task?.sps?.ClearСurve();
         }
     }
 }
