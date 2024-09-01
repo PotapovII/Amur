@@ -49,6 +49,7 @@
             this.insertButton = new System.Windows.Forms.ToolStripButton();
             this.btInsertData = new System.Windows.Forms.ToolStripButton();
             this.ts_ClearBadData = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -210,13 +211,15 @@
             // toolStrip1
             // 
             this.toolStrip1.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.insertButton,
             this.btInsertData,
-            this.ts_ClearBadData});
+            this.ts_ClearBadData,
+            this.toolStripButton1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 29);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(922, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(922, 31);
             this.toolStrip1.TabIndex = 605;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -226,7 +229,7 @@
             this.insertButton.Image = global::RiverDB.Properties.Resources.LoadNodes;
             this.insertButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.insertButton.Name = "insertButton";
-            this.insertButton.Size = new System.Drawing.Size(23, 22);
+            this.insertButton.Size = new System.Drawing.Size(28, 28);
             this.insertButton.Text = "Загрузка данных";
             this.insertButton.Click += new System.EventHandler(this.insertButton_Click);
             // 
@@ -236,19 +239,30 @@
             this.btInsertData.Image = global::RiverDB.Properties.Resources.Convert;
             this.btInsertData.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btInsertData.Name = "btInsertData";
-            this.btInsertData.Size = new System.Drawing.Size(23, 22);
+            this.btInsertData.Size = new System.Drawing.Size(28, 28);
             this.btInsertData.Text = "Синхронизация в БД";
             this.btInsertData.Click += new System.EventHandler(this.updateButton_Click);
             // 
             // ts_ClearBadData
             // 
             this.ts_ClearBadData.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ts_ClearBadData.Image = global::RiverDB.Properties.Resources.DelNodesB;
+            this.ts_ClearBadData.Image = global::RiverDB.Properties.Resources.DelNodes;
             this.ts_ClearBadData.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ts_ClearBadData.Name = "ts_ClearBadData";
-            this.ts_ClearBadData.Size = new System.Drawing.Size(23, 22);
+            this.ts_ClearBadData.Size = new System.Drawing.Size(28, 28);
             this.ts_ClearBadData.Text = "toolStripButton1";
             this.ts_ClearBadData.Click += new System.EventHandler(this.ts_ClearBadData_Click);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = global::RiverDB.Properties.Resources.FCloud;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(28, 28);
+            this.toolStripButton1.Text = "Выичсление  срезанных глубин";
+            this.toolStripButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // panel1
             // 
@@ -316,5 +330,6 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStripButton ts_ClearBadData;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
     }
 }

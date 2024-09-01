@@ -128,6 +128,10 @@ namespace MeshLib
             }
         }
         /// <summary>
+        /// Имя кривой
+        /// </summary>
+        public string CurveName { get => Name; set => Name = value; }
+        /// <summary>
         /// название кривой - легенда
         /// </summary>
         public string Name;

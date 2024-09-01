@@ -17,6 +17,7 @@
     using CommonLib.Geometry;
     using NPRiverLib.APRiver_2XYD.River2DSW;
     using NPRiverLib.IO;
+    using ConnectLib;
 
     public partial class ExportMRF : Form
     {
@@ -31,7 +32,7 @@
         double[][] values = null;
         
         List<int> selected = new List<int>();
-        public ExportMRF(MeshNet meshRiver, List<SegmentInfo> segInfo)
+        public ExportMRF(MeshNet meshRiver, List<SegmentInfo> segInfo,int placeID = 1)
         {
             InitializeComponent();
             this.segInfo = segInfo;
@@ -42,6 +43,9 @@
             saveFileDialog1.Filter = filter;
             Init();
             listBox1.SelectedIndex = 0;
+            // Ноль графика - отметка репера по Балтийской системе
+            double hr = ConnectDB.WaterLevelGP(placeID);
+            tb_BaltikLvl.Text = hr.ToString("F4");
         }
 
         protected void Init()

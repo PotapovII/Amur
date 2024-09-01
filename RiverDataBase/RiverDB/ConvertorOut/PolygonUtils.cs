@@ -49,10 +49,6 @@ namespace RiverDB.ConvertorOut
                 "Курс"
             };
         /// <summary>
-        /// задаваемая на форме срезка 
-        /// </summary>
-        public static double Hd = 0;
-        /// <summary>
         /// Сохранить полигон
         /// </summary>
         /// <param name="pointsTable"></param>
@@ -75,8 +71,8 @@ namespace RiverDB.ConvertorOut
                         double H = Convert.ToDouble(dr["knot_fulldepth"]);
                         double tV = Convert.ToDouble(dr["knot_temperature"]);
                         DateTime DTk = Convert.ToDateTime(dr["knot_datetime"]);
-                        double Hg = Convert.ToDouble(dr["experiment_waterlevel"]) / 100;
-                        double Ho = H - Hg + Hd;
+                        double Hg = Convert.ToDouble(dr["experiment_waterlevel"]) / 100.0;
+                        double Ho = H - Hg;
                         buf++;
                         sw.WriteLine("{0}  {1}  {2}  {3}  {4}", buf, xV, yV, Ho, marker);
                     }
@@ -93,8 +89,8 @@ namespace RiverDB.ConvertorOut
                         double H = Convert.ToDouble(dr["knot_fulldepth"]);
                         double tV = Convert.ToDouble(dr["knot_temperature"]);
                         DateTime DTk = Convert.ToDateTime(dr["knot_datetime"]);
-                        double Hg = Convert.ToDouble(dr["experiment_waterlevel"]) / 100;
-                        double Ho = H - Hg + Hd;
+                        double Hg = Convert.ToDouble(dr["experiment_waterlevel"]) / 100.0;
+                        double Ho = H - Hg;
                         double LatX = Convertor_SK42_to_WGS84.SK42BTOX(xV, yV, 10);
                         double LonY = Convertor_SK42_to_WGS84.SK42LTOY(xV, yV, 10);
                         buf++;
@@ -533,6 +529,12 @@ namespace RiverDB.ConvertorOut
         {
             try
             {
+                Vertex V = cloudPoints.Points[0];
+                double depth = V.attributes[0];
+                double sDepth = V.attributes[1];
+                // глубина срезки
+                double Hs = V.attributes[0] - V.attributes[1];
+                //V.attributes[1] = V.attributes[0] - Hs;
                 MeshNet uMmesh = null;
                 ICollection<Triangle> Triangles;
                 double[] N = null, DN_x = null, DN_y = null;
@@ -566,14 +568,19 @@ namespace RiverDB.ConvertorOut
                         if (segments[i].CountKnots == 2)
                         {
                             knot = (CloudKnot)segments[i].pointA.Point;
-                            newPoints.Add(ConvertCloudKnotToVertex(ID, Marker, knot)); 
+                            Vertex av = ConvertCloudKnotToVertex(ID, Marker, knot);
+                            av.attributes[1] = av.attributes[0] - Hs;
+                            newPoints.Add(av); 
+
                             ID++;
                             segs.Add(Marker);
                             // узлы берега накрывают узлы створа
                             if (segments[i].Marker == 1 && segments[ii].Marker > 1)
                             {
                                 knot = (CloudKnot)segments[i].pointB.Point;
-                                newPoints.Add(ConvertCloudKnotToVertex(ID, Marker, knot));
+                                Vertex bv = ConvertCloudKnotToVertex(ID, Marker, knot);
+                                bv.attributes[1] = bv.attributes[0] - Hs;
+                                newPoints.Add(bv);
                                 segs.Add(Marker);
                                 ID++;
                             }
@@ -642,6 +649,7 @@ namespace RiverDB.ConvertorOut
                                 }
 
                                 Vertex vertex = ConvertCloudKnotToVertex(ID, Marker, knot);
+                                vertex.attributes[1] = vertex.attributes[0] - Hs;
                                 newPoints.Add(vertex); ID++;
                                 segs.Add(Marker);
                             }

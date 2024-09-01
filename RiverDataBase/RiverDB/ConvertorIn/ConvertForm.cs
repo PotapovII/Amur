@@ -32,8 +32,8 @@
             InitializeComponent();
             openFileDialog1.InitialDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             openFileDialog1.FileName = "file";
-            openFileDialog1.Filter = "файл наблюдения gpx (*.gpx)|*.gpx|" +
-                                     "файл наблюдения Excel (*.xls)|*.xls|" +
+            openFileDialog1.Filter = "файл наблюдения Excel (*.xls)|*.xls|" +
+                                     "файл наблюдения gpx (*.gpx)|*.gpx|" +
                                      "файл наблюдения dat (*.dat)|*.dat|" +
                                      "All files (*.*)|*.*";
         }
@@ -57,100 +57,14 @@
         private void ForBtLoadData()
         {
             string strSelectGPX = "SELECT CAST(forknot.forknot_datetime AS DATE) as mydate FROM forknot"
-                            + " GROUP BY CAST(forknot.forknot_datetime AS DATE) ORDER BY mydate";
+                                + " GROUP BY CAST(forknot.forknot_datetime AS DATE) ORDER BY mydate";
             DataTable mapTableGPX = ConnectDB.GetDataTable(strSelectGPX, TName);
             cListBoxDatesGPX.Items.Clear();
             foreach (DataRow dr in mapTableGPX.Rows)
                 cListBoxDatesGPX.Items.Add(dr["mydate"]);
             ts_ClearBadData.Enabled = true;
         }
-        /// <summary>
-        /// Загрузка данных
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btInsertData_Click(object sender, EventArgs e)
-        {
-            if (list.Count > 0)
-            {
-                string result = "";
-                int Count = 0;
-
-                if (FileEXT == ".xls" || FileEXT == ".XLS")
-                {
-                    if (ConnectDB.DoListCommand(list, ref Count, ref result) == true)
-                    {
-                        Console.WriteLine("Данные добавлены в базу данных");
-                        BtLoadData();
-                    }
-                }
-                if (FileEXT == ".gpx" || FileEXT == ".GPX")
-                {
-                    string strCom = "update[dbo].knot set knot_latitude = forknot_latitude," +
-                    "knot_longitude = forknot_longitude, knot_datetime = " +
-                    "forknot_datetime,knot_fulldepth = forknot_fulldepth, knot_temperature =" +
-                    "forknot_temperature from knot, forknot where knot_datetime = forknot_datetime";
-                    if (ConnectDB.DoListCommand(list, ref Count, ref result) == true)
-                    {
-                        ConnectDB.DoSqlTransactionCommand(strCom);
-                        ForBtLoadData();
-                    }
-                }
-                if (FileEXT == ".dat")
-                {
-                    if (ConnectDB.DoListCommand(list, ref Count, ref result) == true)
-                    {
-                        // присвоить текст комманды SQL по вставке узла
-                        ExtStandartOld knots = (ExtStandartOld)list[0];
-                        DateTime dataTime = knots.dataTime.Date;
-                        string SdataTime = dataTime.ToString("yyyy-MM-dd HH:mm:ss:fff");
-                        string seeWaterleve = "SELECT experiment_waterlevel, experiment_datetime FROM experiment" +
-                        " where CAST(experiment_datetime AS DATE)  IN('" + SdataTime + "')";
-                        DataTable table = ConnectDB.GetDataTable(seeWaterleve, "experiment");
-                        if (table.Rows.Count == 0)
-                        {
-                            double cut = 100 * (knots.depth - knots.cutDepth);
-                            string sInsert = "insert into experiment "
-                            + "(place_id, experiment_datetime, experiment_waterlevel,experiment_MiddleWaterLevel)"
-                            + "values (1,'" + SdataTime + "'," + cut.ToString() + "," + cut.ToString() + ")";
-                            ConnectDB.SQLCommandDo(sInsert);
-                            BtLoadData();
-                            BtLoadData();
-                        }
-                    }
-                }
-                tsLab.Text = result;
-                tsLab.Text = "В базу данных добавлено " + Count.ToString()
-                        + " записей из " + list.Count.ToString() + " , файл: dat";
-                lbExp.Items.Clear();
-                list.Clear();
-            }
-        }
-        /// <summary>
-        /// выполняеем сборку мусора - не синхронизированные данных
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btClear_Click(object sender, EventArgs e)
-        {
-            string strClearErr = "delete from knot where knot.knot_id in " +
-                "( select knot.knot_id from knot where CAST(knot.knot_longitude AS int) > "+ Filter + ")";
-            string result = ConnectDB.DoSqlTransactionCommand(strClearErr);
-            if (result == "")
-                Console.WriteLine("Удаление не синхронизированных данных добавленых в базу данных");
-            else
-                Console.WriteLine(result);
-        }
-        /// <summary>
-        /// Загрузка данных различных форматов
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-       
-        }
-
+        
         private void insertButton_Click(object sender, EventArgs e)
         {
             loadDBToolStripMenuItem_Click(sender, e);
@@ -204,9 +118,11 @@
 
                 if (FileEXT == ".xls" || FileEXT == ".XLS")
                 {
-                    if (ConnectDB.DoListCommand(list, ref Count, ref result) == true)
+                    // Добавление записей в базу данных
+                    if (ConnectDB.DoListCommand(list, TypeCommand.insert, ref Count, ref result) == true)
                     {
                         Console.WriteLine("Данные добавлены в базу данных");
+                        // отрисовка
                         BtLoadData();
                     }
                 }
@@ -216,15 +132,18 @@
                     "knot_longitude = forknot_longitude, knot_datetime = " +
                     "forknot_datetime,knot_fulldepth = forknot_fulldepth, knot_temperature =" +
                     "forknot_temperature from knot, forknot where knot_datetime = forknot_datetime";
-                    if (ConnectDB.DoListCommand(list, ref Count, ref result) == true)
+                    // Добавление записей в базу данных
+                    if (ConnectDB.DoListCommand(list, TypeCommand.insert, ref Count, ref result) == true)
                     {
+                        // если успешно, обновляем поля
                         ConnectDB.DoSqlTransactionCommand(strCom);
+                        // отрисовка
                         ForBtLoadData();
                     }
                 }
                 if (FileEXT == ".dat")
                 {
-                    if (ConnectDB.DoListCommand(list, ref Count, ref result) == true)
+                    if (ConnectDB.DoListCommand(list, TypeCommand.insert, ref Count, ref result) == true)
                     {
                         // присвоить текст комманды SQL по вставке узла
                         ExtStandartOld knots = (ExtStandartOld)list[0];
@@ -262,12 +181,11 @@
         {
             Close();
         }
-
-        private void findButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        /// <summary>
+        /// Отрисовка помощи
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string[] helps = File.ReadAllLines(@"ConvertorIn\HelpConverter.txt");
@@ -289,6 +207,117 @@
                 Console.WriteLine("Удаление не синхронизированных данных добавленых в базу данных");
             else
                 Console.WriteLine(result);
+        }
+
+        #region Старые методы
+        /// <summary>
+        /// Загрузка данных
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btInsertData_Click(object sender, EventArgs e)
+        {
+            if (list.Count > 0)
+            {
+                string result = "";
+                int Count = 0;
+
+                if (FileEXT == ".xls" || FileEXT == ".XLS")
+                {
+                    if (ConnectDB.DoListCommand(list, TypeCommand.insert, ref Count, ref result) == true)
+                    {
+                        Console.WriteLine("Данные добавлены в базу данных");
+                        BtLoadData();
+                    }
+                }
+                if (FileEXT == ".gpx" || FileEXT == ".GPX")
+                {
+                    string strCom = "update[dbo].knot set knot_latitude = forknot_latitude," +
+                    "knot_longitude = forknot_longitude, knot_datetime = " +
+                    "forknot_datetime,knot_fulldepth = forknot_fulldepth, knot_temperature =" +
+                    "forknot_temperature from knot, forknot where knot_datetime = forknot_datetime";
+                    if (ConnectDB.DoListCommand(list, TypeCommand.insert, ref Count, ref result) == true)
+                    {
+                        ConnectDB.DoSqlTransactionCommand(strCom);
+                        ForBtLoadData();
+                    }
+                }
+                if (FileEXT == ".dat")
+                {
+                    if (ConnectDB.DoListCommand(list, TypeCommand.insert, ref Count, ref result) == true)
+                    {
+                        // присвоить текст комманды SQL по вставке узла
+                        ExtStandartOld knots = (ExtStandartOld)list[0];
+                        DateTime dataTime = knots.dataTime.Date;
+                        string SdataTime = dataTime.ToString("yyyy-MM-dd HH:mm:ss:fff");
+                        string seeWaterleve = "SELECT experiment_waterlevel, experiment_datetime FROM experiment" +
+                        " where CAST(experiment_datetime AS DATE)  IN('" + SdataTime + "')";
+                        DataTable table = ConnectDB.GetDataTable(seeWaterleve, "experiment");
+                        if (table.Rows.Count == 0)
+                        {
+                            double cut = 100 * (knots.depth - knots.cutDepth);
+                            string sInsert = "insert into experiment "
+                            + "(place_id, experiment_datetime, experiment_waterlevel,experiment_MiddleWaterLevel)"
+                            + "values (1,'" + SdataTime + "'," + cut.ToString() + "," + cut.ToString() + ")";
+                            ConnectDB.SQLCommandDo(sInsert);
+                            BtLoadData();
+                            BtLoadData();
+                        }
+                    }
+                }
+                tsLab.Text = result;
+                tsLab.Text = "В базу данных добавлено " + Count.ToString()
+                        + " записей из " + list.Count.ToString() + " , файл: dat";
+                lbExp.Items.Clear();
+                list.Clear();
+            }
+        }
+
+        #endregion
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            string filter = " ( ";
+            for (int i = 0; i < cListBoxDatesGPX.Items.Count; i++)
+            {
+                CheckState flag = cListBoxDatesGPX.GetItemCheckState(i);
+                if (flag == CheckState.Checked)
+                {
+                    string d = cListBoxDatesGPX.Items[i].ToString();
+                    DateTime dataA = DateTime.Parse(d);
+                    string FL = dataA.ToString("yyyy-MM-dd ");
+                    filter += "'" + FL + "',";
+                }
+            }
+            filter += " '2100.01.01' ) ";
+            string place_id = "1"; // Хабаровск
+            string strSelect = "SELECT knot_id, knot_latitude, knot_longitude, knot_fulldepth, knot_depth, knot_temperature," +
+                            " knot_speed, knot_course, knot_datetime, CAST(knot.knot_datetime AS DATE) as DTime," +
+                            " experiment_waterlevel" +
+                            " FROM knot, experiment where  experiment.place_id = " + place_id + " and " +
+                            " CAST(knot.knot_datetime AS DATE) = CAST(experiment_datetime AS DATE) " +
+                            " and CAST(knot.knot_datetime AS DATE) IN " + filter;
+            DataTable pTable = ConnectDB.GetDataTable(strSelect, TName);
+            List<IStandartSQLCommand> uList = new List<IStandartSQLCommand>();
+            foreach (DataRow dr in pTable.Rows)
+            {
+                int ID = Convert.ToInt32(dr["knot_id"]);
+                double depth = Convert.ToDouble(dr["knot_fulldepth"]);
+                double Hg = Convert.ToDouble(dr["experiment_waterlevel"]) / 100.0;
+                // Срезка глубин
+                double sDepth = depth - Hg;
+                ExtStandart point = new ExtStandart();
+                point.ID = ID;
+                point.depth = depth;
+                point.sDepth = sDepth;
+                uList.Add(point);
+            }
+            int Count = 0;
+            string result="";
+            if (ConnectDB.DoListCommand(uList, TypeCommand.update, ref Count, ref result) == true)
+            {
+                ForBtLoadData();
+            }
         }
     }
 }

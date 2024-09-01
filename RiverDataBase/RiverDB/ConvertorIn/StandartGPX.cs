@@ -43,7 +43,7 @@ namespace RiverDB.Convertors
             this.depth = depth;
             this.T = T;
         }
-        public virtual string GetCommand()
+        public virtual string GetCommand(TypeCommand com)
         {
             DateTime d = DateTime.Parse(dataTime.ToString(), null, System.Globalization.DateTimeStyles.RoundtripKind);
             string FDT = d.ToString("yyyy-MM-dd HH:mm:ss:fff");

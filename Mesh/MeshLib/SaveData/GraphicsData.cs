@@ -44,9 +44,7 @@ namespace MeshLib
                 if (curves == null)
                     curves = new List<GraphicsCurve>(g.curves.Count);
                 foreach (var c in g.curves)
-                {
-                    curves.Add(new GraphicsCurve(c));
-                }
+                    Add(new GraphicsCurve(c));
             }
         }
         /// <summary>
@@ -62,7 +60,7 @@ namespace MeshLib
             GraphicsCurve curve = new GraphicsCurve(Name);
             for (uint i = 0; i < x.Length; i++)
                 curve.Add(x[i], y[i]);
-            curves.Add(curve);
+            Add(curve);
         }
         /// <summary>
         /// Добавление кривой
@@ -71,8 +69,22 @@ namespace MeshLib
         public void Add(IGraphicsCurve ee)
         {
             GraphicsCurve e = ee as GraphicsCurve;
+     
+            //int idx = 1;
             if (e != null)
+            {
+                //MM:
+                //foreach (var p in curves)
+                //{
+                //    if (e.CurveName == p.CurveName)
+                //    {
+                //        e.CurveName = e.CurveName + idx.ToString();
+                //        idx++;
+                //        goto MM;
+                //    }
+                //}
                 curves.Add(e);
+            }
         }
         /// <summary>
         /// Очистка контейнера

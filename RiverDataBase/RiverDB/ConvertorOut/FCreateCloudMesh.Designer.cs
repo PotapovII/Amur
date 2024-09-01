@@ -242,6 +242,7 @@
             this.cListBoxDates.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cListBoxDates.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.cListBoxDates.CheckOnClick = true;
             this.cListBoxDates.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cListBoxDates.FormattingEnabled = true;
             this.cListBoxDates.Location = new System.Drawing.Point(10, 143);

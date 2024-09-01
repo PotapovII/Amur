@@ -82,7 +82,7 @@ namespace RiverDB.ConvertorOut
         /// </summary>
         string TName = "knot";
         DataTable pointsTable;
-
+        int placeID = 1; // Хабаровск
         public FCreateCloudMesh()
         {
             InitializeComponent();
@@ -93,8 +93,9 @@ namespace RiverDB.ConvertorOut
         private void btLoadData_Click(object sender, EventArgs e)
         {
             GetDataFilter();
+            
+            
         }
-
         #region Работа с БД
         /// <summary>
         /// Получить списаок дат работы экспедиций
@@ -126,7 +127,7 @@ namespace RiverDB.ConvertorOut
                 LocalLog(states[2]);
                 btSelectData.Enabled = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LocalLog(states[3]);
                 LocalLog(ex.Message);
@@ -171,7 +172,7 @@ namespace RiverDB.ConvertorOut
         /// </summary>
         protected void LoadDataNodes()
         {
-            
+
             string[] states =
             {
                 " Фильтр данных пуст! Выберете набор...",
@@ -184,7 +185,7 @@ namespace RiverDB.ConvertorOut
                    MessageBoxIcon.Information,
                    MessageBoxDefaultButton.Button1,
                    MessageBoxOptions.DefaultDesktopOnly);
-                return; 
+                return;
             }
             string filter = GetSqlFilter();
             if (filter == " (  '2100.01.01' ) ")
@@ -261,11 +262,22 @@ namespace RiverDB.ConvertorOut
                 double[] y = bmesh.GetCoords(1);
                 data.Add(new Field1D("Координата Х", x));
                 data.Add(new Field1D("Координата Y", y));
-                if(values!=null)
-                for (int i = 0; i < values.Length; i++)
+                // Ноль графика - отметка репера по Балтийской системе
+                double hr = ConnectDB.WaterLevelGP(placeID);
+                if (hr > 0)
                 {
-                    data.Add(new Field1D(ArtNames[i], values[i]));
+                    List<double> list = new List<double>();
+                    list.AddRange(values[1]);
+                    for (int i = 0; i < list.Count; i++)
+                        list[i] = hr - list[i];
+                    Field1D zeta = new Field1D("Отметки дна", list.ToArray());
+                    data.Add(zeta);
                 }
+                if (values != null)
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        data.Add(new Field1D(ArtNames[i], values[i]));
+                    }
                 double[][] p = bmesh.GetParams();
                 for (int i = 0; i < p.Length; i++)
                     data.Add(new Field1D("Фу" + i.ToString(), p[i]));
@@ -502,9 +514,9 @@ namespace RiverDB.ConvertorOut
             IPolygon cloudPoints = GetCloudPoints(pointsTable.Rows.Count, false);
 
             PolygonUtils.AddBoundaryBaseCountur(Area, ref cloudPoints);
-            
+
             MeshNet meshRiver = (MeshNet)cloudPoints.Triangulate(options, quality);
-            
+
             ShowMesh(meshRiver);
         }
 
@@ -643,17 +655,17 @@ namespace RiverDB.ConvertorOut
                 //foreach (SegmentInfo seg in segInfoF)
                 //{
                 //    Vertex a = new Vertex(seg.pA.X, seg.pA.Y);
-                    
+
                 //    Vertex b = new Vertex(seg.pB.X, seg.pB.Y);
 
                 //}
 
 
-                ExportMRF form = new ExportMRF(rMesh, segInfoF);
+                ExportMRF form = new ExportMRF(rMesh, segInfoF, placeID);
                 form.Show();
             }
         }
-        
+
 
 
         #endregion
@@ -732,7 +744,7 @@ namespace RiverDB.ConvertorOut
             filter += " All files (*.*)|*.*";
             sfd.Filter = filter;
             List<CloudKnot> knots = gdI_EditControlClouds1.Conturs;
-            if(knots.Count>2)
+            if (knots.Count > 2)
             {
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
@@ -740,7 +752,7 @@ namespace RiverDB.ConvertorOut
                     {
                         using (StreamWriter file = new StreamWriter(sfd.FileName))
                         {
-                            foreach(CloudKnot s in knots)
+                            foreach (CloudKnot s in knots)
                                 file.WriteLine(s.ToString());
                             file.Close();
                         }
@@ -775,7 +787,7 @@ namespace RiverDB.ConvertorOut
                             CloudKnot knot = CloudKnot.Parse(line);
                             gdI_EditControlClouds1.AddCloudKnotToContur(knot);
                         }
-                            
+
                     }
                 }
                 catch (Exception ex)
@@ -1070,7 +1082,7 @@ namespace RiverDB.ConvertorOut
         {
             tbMessage.Text = mes; Console.WriteLine(tbMessage.Text);
         }
- 
+
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             string[] states =
@@ -1084,7 +1096,7 @@ namespace RiverDB.ConvertorOut
                 rMesh = GetCalkMesh();
             try
             {
-                LocalLog(states[0]); 
+                LocalLog(states[0]);
                 rMesh.Refine(quality, true);
                 LocalLog(states[1]);
             }
@@ -1133,6 +1145,17 @@ namespace RiverDB.ConvertorOut
                 double[] y = bmesh.GetCoords(1);
                 sp.Add(new Field1D("Координата Х", x));
                 sp.Add(new Field1D("Координата Y", y));
+                // Ноль графика - отметка репера по Балтийской системе
+                double hr = ConnectDB.WaterLevelGP(placeID);
+                if (hr > 0)
+                {
+                    List<double> list = new List<double>();
+                    list.AddRange(values[1]);
+                    for (int i = 0; i < list.Count; i++)
+                        list[i] = hr - list[i];
+                    Field1D zeta = new Field1D("Отметки дна", list.ToArray());
+                    sp.Add(zeta);
+                }
                 if (values != null)
                     for (int i = 0; i < values.Length; i++)
                     {
@@ -1155,7 +1178,7 @@ namespace RiverDB.ConvertorOut
                     }
                     baseform.SetSavePoint(sp);
                 }
-                    
+
             }
         }
 
@@ -1220,12 +1243,12 @@ namespace RiverDB.ConvertorOut
                     LocalLog(states[4]);
                 else
                     if (artCaout == 0)
-                        LocalLog(states[2]);
-                    else
-                    {
-                        string state = states[3] + " " + artCaout.ToString();
-                        LocalLog(state);
-                    }
+                    LocalLog(states[2]);
+                else
+                {
+                    string state = states[3] + " " + artCaout.ToString();
+                    LocalLog(state);
+                }
             }
             catch (Exception ex)
             {
@@ -1278,7 +1301,7 @@ namespace RiverDB.ConvertorOut
         }
         private void tsb_BeLine_Click(object sender, EventArgs e)
         {
-            if(tsb_BeLine.Checked == true)
+            if (tsb_BeLine.Checked == true)
                 tsb_Contur.Checked = false;
             SetEditState();
         }
@@ -1330,15 +1353,15 @@ namespace RiverDB.ConvertorOut
             // линковка на основном облаке
             foreach (DataRow dr in pointsTable.Rows)
             {
-                for(int i = 0; i < sLine.Count; i++)
+                for (int i = 0; i < sLine.Count; i++)
                 {
                     if (sLine[i].LinkA == false)
                     {
                         CloudKnot a = (CloudKnot)sLine[i].A;
                         sLine[i].LinkA = CalkNode(dr, ref a, Length[i]);
-                        if(sLine[i].LinkA == true)
+                        if (sLine[i].LinkA == true)
                             sLine[i].A = a;
-                        
+
                     }
                     if (sLine[i].LinkB == false)
                     {
@@ -1437,7 +1460,7 @@ namespace RiverDB.ConvertorOut
             if (MEM.Equals(a.X, source.A.X, error) == true &&
                 MEM.Equals(a.Y, source.A.Y, error) == true)
             {
-                if(source.LinkA == true)
+                if (source.LinkA == true)
                     a = new CloudKnot((CloudKnot)source.A);
                 else
                     a = new CloudKnot(source.A.X, source.A.Y, ((CloudKnot)source.B).Attributes);

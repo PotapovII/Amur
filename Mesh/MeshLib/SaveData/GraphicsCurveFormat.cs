@@ -39,34 +39,41 @@
                 try
                 {
                     string ext = Path.GetExtension(filename);
-                    using (StreamReader file = new StreamReader(filename))
+                    string Name = Path.GetFileNameWithoutExtension(filename);
+                    switch (ext)
                     {
-                        string Name = "";
-                        int Count;
-                        double[] x = null, y = null;
-                        if (ext == extString[1]) //".fun"
-                        {
-                            Name = GetLines(file, 2)[1];
-                            Count = GetInt(file);
-                        }
-                        if (ext == extString[0] || ext == extString[1]) //".fun"
-                        {
-                            string[] X = GetLines(file, 2);
-                            string[] Y = GetLines(file, 2);
-                            MEM.Alloc(X.Length, ref x);
-                            MEM.Alloc(X.Length, ref y);
-                            for (int i = 0; i < X.Length; i++)
+                        case ".cvs":
+                        case ".fun":
+                            using (StreamReader file = new StreamReader(filename))
                             {
-                                x[i] = double.Parse(X[i].Trim(), MEM.formatter);
-                                y[i] = double.Parse(Y[i].Trim(), MEM.formatter);
-                            }
-                        }
-                        curve = new GraphicsCurve(Name, x, y);
-                        Logger.Instance.Info(" Number of points = " + (curve.Count).ToString());
+                                int Count;
+                                double[] x = null, y = null;
+                                if (ext == extString[1]) //".fun"
+                                {
+                                    Name = GetLines(file, 2)[1];
+                                    Count = GetInt(file);
+                                }
+                                if (ext == extString[0] || ext == extString[1]) //".fun"
+                                {
+                                    string[] X = GetLines(file, 2);
+                                    string[] Y = GetLines(file, 2);
+                                    MEM.Alloc(X.Length, ref x);
+                                    MEM.Alloc(X.Length, ref y);
+                                    for (int i = 0; i < X.Length; i++)
+                                    {
+                                        x[i] = double.Parse(X[i].Trim(), MEM.formatter);
+                                        y[i] = double.Parse(Y[i].Trim(), MEM.formatter);
+                                    }
+                                }
+                                Curve = new GraphicsCurve(Name, x, y);
+                                Logger.Instance.Info(" Number of points = " + (curve.Count).ToString());
 
-                        file.Close();
-                        return;
+                                file.Close();
+                                return;
+                            }
+                            break;
                     }
+                    
                 }
                 catch (Exception ex)
                 {

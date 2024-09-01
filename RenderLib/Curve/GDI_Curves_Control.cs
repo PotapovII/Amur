@@ -52,8 +52,9 @@ namespace RenderLib
             cbRefreshCurves.SelectedIndex = 0;
             tbScaleX.Enabled = false;
             tbScaleY.Enabled = false;
-            openFileDialog1.Filter = "файл - русловой процесс rpsp (*.rpsp)|*.rpsp|" +
-                         "All files (*.*)|*.*";
+            openFileDialog1.Filter = "файл - русловой процесс rpsp (*.sp)|*.sp|" +
+                                     "файл - русловой процесс rpsp (*.rpsp)|*.rpsp|" +
+                                     "All files (*.*)|*.*";
 
             saveFileDialog1.Title = "Сохранение графика функции";
 
@@ -201,10 +202,9 @@ namespace RenderLib
             else
                 Logger.Instance.Info("Ошибка! индекс поля отрицательный, список графиков пуст");
             // отсылка опций для обновления контрола
+            proxyRendererControl.SetData(graphicsData);
             proxyRendererControl.colorScheme = colorScheme;
             proxyRendererControl.renderOptions = renderOptions;
-            proxyRendererControl.SetData(graphicsData);
-
         }
 
         #region Работа со шрифтами
@@ -318,7 +318,6 @@ namespace RenderLib
         /// <param name="sp"></param>
         public void SendSavePoint(ISavePoint isp)
         {
-            //List<string> filter = isp.
             Refrech(isp);
         }
         protected void Refrech(ISavePoint isp)
@@ -326,15 +325,17 @@ namespace RenderLib
             if (isp != null)
             {
                 this.isp = isp;
+
                 if(checkedListBoxGroup.Items.Count==0)
                     GNames = isp.graphicsData.GraphicGroupNames();
+
                 GraphicsData gd = isp.graphicsData.GetSubIGraphicsData(tGraphicsCurve, GNames) as GraphicsData;
                 if (gd != null)
                 {
                     // Запись данных в списки компонента
                     SetData(gd);
                     // Передача данных в прокси/рендер контрол
-                    proxyRendererControl.SetData(gd);
+                   // proxyRendererControl.SetData(gd);
                     // отрисовка в статус бар
                     tSSL_Time.Text = isp.time.ToString("F4");
                     tSSL_Curves.Text = gd.curves.Count.ToString();
@@ -379,48 +380,39 @@ namespace RenderLib
             }
             else
                 checkedListBoxCurve.SelectedIndex = -1;
+            
             if (GNames.Count > 0)
             {
+                bool flag = false;
                 foreach (var name in GNames)
                     if(checkedListBoxGroup.Items.Contains(name) == false)
+                    {
                         checkedListBoxGroup.Items.Add(name);
+                        flag = true;
+                    }
+                if(flag == true)
+                {
+                    for (int i = 0; i < checkedListBoxGroup.Items.Count; i++)
+                    {
+                        checkedListBoxGroup.SetItemChecked(i, true);
+                    }
+                }
                 checkedListBoxGroup.SelectedItem = 0;
             }
             else
                 checkedListBoxGroup.SelectedItem = -1;
 
             cb_opGraphicCurve.Checked = true;
-            cb_GroupCurve.Checked = true;
         }
-
+        /// <summary>
+        /// Симафор для изменения cb_opGraphicCurve.Checked без вызова обработчика событий
+        /// </summary>
         bool Look = true;
-        bool LookGroup = true;
-        private void cb_GroupCurve_CheckedChanged(object sender, EventArgs e)
-        {
-            if(LookGroup == true)
-                for (int i = 0; i < checkedListBoxGroup.Items.Count; i++)
-                {
-                    checkedListBoxGroup.SetItemChecked(i, cb_GroupCurve.Checked);
-                }
-        }
-        private void checkedListBoxGroup_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            bool flag = false;
-            int i = checkedListBoxGroup.SelectedIndex;
-            if (i == -1) return;
-            GNames.Clear();
-            for (i = 0; i < checkedListBoxGroup.Items.Count; i++)
-            {
-                if (checkedListBoxGroup.GetItemCheckState(i) == CheckState.Checked)
-                {
-                    GNames.Add(checkedListBoxGroup.Items[i].ToString());
-                    flag = true;
-                }
-            }
-            LookGroup = false;
-            cb_GroupCurve.Checked = flag;
-            LookGroup = true;
-        }
+        /// <summary>
+        /// Групповое выделение/сброс чекита кривых
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cb_opGraphicCurve_CheckedChanged(object sender, EventArgs e)
         {
             if (Look == true)
@@ -430,6 +422,24 @@ namespace RenderLib
                     graphicsData.curves[i].Check = cb_opGraphicCurve.Checked;
                 }
         }
+        /// <summary>
+        /// Симафор для изменения cb_GroupCurve.Checked без вызова обработчика событий
+        /// </summary>
+        private void checkedListBoxGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int i = checkedListBoxGroup.SelectedIndex;
+            if (i == -1) return;
+            GNames.Clear();
+            for (i = 0; i < checkedListBoxGroup.Items.Count; i++)
+            {
+                if (checkedListBoxGroup.GetItemCheckState(i) == CheckState.Checked)
+                {
+                    GNames.Add(checkedListBoxGroup.Items[i].ToString());
+                }
+            }
+            Refrech(isp);
+        }
+
   
         private void checkedListBoxCurve_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -560,16 +570,16 @@ namespace RenderLib
 
         private void btLoad_Click(object sender, EventArgs e)
         {
+            IGraphicsCurve curve = new GraphicsCurve();
+            IOFormater<IGraphicsCurve> loader = curve.GetFormater();
+            openFileDialog1.Filter = loader.FilterLD;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                SavePoint sp = new SavePoint();
-                sp = (SavePoint)sp.LoadSavePoint(openFileDialog1.FileName);
-                if (sp != null)
-                {
-                    SendSavePoint(sp);
-                    cb_opGraphicCurve.Checked = false;
-                    cb_opGraphicCurve.Checked = true;
-                }
+                loader.Read(saveFileDialog1.FileName, ref curve);
+                if(isp==null)
+                    isp = new SavePoint();
+                isp.AddCurve(curve);
+                Refrech(isp);
             }
         }
 
@@ -579,8 +589,10 @@ namespace RenderLib
             if (indexPole > -1)
             {
                 IGraphicsCurve curve = graphicsData.curves[indexPole];
+                string Name = ((GraphicsCurve)curve).Name;
                 IOFormater<IGraphicsCurve> wraiter = curve.GetFormater();
                 saveFileDialog1.Filter = wraiter.FilterSD;
+                saveFileDialog1.FileName = Name;
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     wraiter.Write(curve, saveFileDialog1.FileName);
@@ -740,11 +752,24 @@ namespace RenderLib
                 }
             }
         }
-
-        private void bt_Filter_Click(object sender, EventArgs e)
+        int oldX = 0, oldY = 0;
+        private void nud_X_ValueChanged(object sender, EventArgs e)
         {
-            Refrech(isp);
+            GV(nud_X, tbScaleX,ref oldX);
         }
 
+        private void nud_Y_ValueChanged(object sender, EventArgs e)
+        {
+            GV(nud_Y, tbScaleY,ref oldY);
+        }
+
+        private void GV(NumericUpDown nud, TextBox tb, ref int old)
+        {
+            int idx = (int)nud.Value;
+            double v = double.Parse(tb.Text);
+            v = v * Math.Pow(10, idx  - old);
+            tb.Text = v.ToString();
+            old = idx;
+        }
     }
 }

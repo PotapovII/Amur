@@ -29,8 +29,8 @@ namespace RenderLib
         /// </summary>
         private void InitializeComponent()
         {
-            RenderLib.ColorScheme colorScheme1 = new RenderLib.ColorScheme();
-            RenderLib.RenderOptionsCurves renderOptionsCurves1 = new RenderLib.RenderOptionsCurves();
+            RenderLib.ColorScheme colorScheme3 = new RenderLib.ColorScheme();
+            RenderLib.RenderOptionsCurves renderOptionsCurves3 = new RenderLib.RenderOptionsCurves();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -39,6 +39,8 @@ namespace RenderLib
             this.label10 = new System.Windows.Forms.Label();
             this.cbAutoScaleX = new System.Windows.Forms.CheckBox();
             this.panel10 = new System.Windows.Forms.Panel();
+            this.nud_Y = new System.Windows.Forms.NumericUpDown();
+            this.nud_X = new System.Windows.Forms.NumericUpDown();
             this.radioButton03 = new System.Windows.Forms.RadioButton();
             this.radioButton01 = new System.Windows.Forms.RadioButton();
             this.label6 = new System.Windows.Forms.Label();
@@ -48,6 +50,9 @@ namespace RenderLib
             this.tbScaleY = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.label29 = new System.Windows.Forms.Label();
+            this.tb_Xc = new System.Windows.Forms.TextBox();
+            this.btWave = new System.Windows.Forms.Button();
             this.btHill = new System.Windows.Forms.Button();
             this.label26 = new System.Windows.Forms.Label();
             this.tb_q = new System.Windows.Forms.TextBox();
@@ -80,11 +85,8 @@ namespace RenderLib
             this.label24 = new System.Windows.Forms.Label();
             this.checkedListBoxCurve = new System.Windows.Forms.CheckedListBox();
             this.panel9 = new System.Windows.Forms.Panel();
-            this.cb_opGraphicCurvesGroup = new System.Windows.Forms.CheckBox();
             this.cb_opGraphicCurve = new System.Windows.Forms.CheckBox();
             this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.bt_Filter = new System.Windows.Forms.Button();
-            this.cb_GroupCurve = new System.Windows.Forms.CheckBox();
             this.label28 = new System.Windows.Forms.Label();
             this.checkedListBoxGroup = new System.Windows.Forms.CheckedListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -147,13 +149,12 @@ namespace RenderLib
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.saveFileDialog2 = new System.Windows.Forms.SaveFileDialog();
-            this.btWave = new System.Windows.Forms.Button();
-            this.label29 = new System.Windows.Forms.Label();
-            this.tb_Xc = new System.Windows.Forms.TextBox();
             this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.panel10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_Y)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_X)).BeginInit();
             this.tabPage5.SuspendLayout();
             this.panel5.SuspendLayout();
             this.tabControlOption.SuspendLayout();
@@ -227,7 +228,7 @@ namespace RenderLib
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(282, 155);
+            this.tabPage2.Size = new System.Drawing.Size(282, 160);
             this.tabPage2.TabIndex = 0;
             this.tabPage2.Text = "Масштаб";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -271,6 +272,8 @@ namespace RenderLib
             this.panel10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel10.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.panel10.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel10.Controls.Add(this.nud_Y);
+            this.panel10.Controls.Add(this.nud_X);
             this.panel10.Controls.Add(this.radioButton03);
             this.panel10.Controls.Add(this.radioButton01);
             this.panel10.Controls.Add(this.label6);
@@ -283,6 +286,42 @@ namespace RenderLib
             this.panel10.Name = "panel10";
             this.panel10.Size = new System.Drawing.Size(266, 104);
             this.panel10.TabIndex = 85;
+            // 
+            // nud_Y
+            // 
+            this.nud_Y.Location = new System.Drawing.Point(106, 66);
+            this.nud_Y.Maximum = new decimal(new int[] {
+            9,
+            0,
+            0,
+            0});
+            this.nud_Y.Minimum = new decimal(new int[] {
+            9,
+            0,
+            0,
+            -2147483648});
+            this.nud_Y.Name = "nud_Y";
+            this.nud_Y.Size = new System.Drawing.Size(45, 26);
+            this.nud_Y.TabIndex = 94;
+            this.nud_Y.ValueChanged += new System.EventHandler(this.nud_Y_ValueChanged);
+            // 
+            // nud_X
+            // 
+            this.nud_X.Location = new System.Drawing.Point(106, 34);
+            this.nud_X.Maximum = new decimal(new int[] {
+            9,
+            0,
+            0,
+            0});
+            this.nud_X.Minimum = new decimal(new int[] {
+            9,
+            0,
+            0,
+            -2147483648});
+            this.nud_X.Name = "nud_X";
+            this.nud_X.Size = new System.Drawing.Size(45, 26);
+            this.nud_X.TabIndex = 93;
+            this.nud_X.ValueChanged += new System.EventHandler(this.nud_X_ValueChanged);
             // 
             // radioButton03
             // 
@@ -313,7 +352,7 @@ namespace RenderLib
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label6.Location = new System.Drawing.Point(132, 36);
+            this.label6.Location = new System.Drawing.Point(5, 68);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(28, 20);
             this.label6.TabIndex = 91;
@@ -336,7 +375,7 @@ namespace RenderLib
             this.tbScaleX.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbScaleX.Location = new System.Drawing.Point(36, 33);
             this.tbScaleX.Name = "tbScaleX";
-            this.tbScaleX.Size = new System.Drawing.Size(90, 26);
+            this.tbScaleX.Size = new System.Drawing.Size(66, 26);
             this.tbScaleX.TabIndex = 90;
             this.tbScaleX.Text = "1";
             // 
@@ -355,9 +394,9 @@ namespace RenderLib
             // tbScaleY
             // 
             this.tbScaleY.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbScaleY.Location = new System.Drawing.Point(163, 33);
+            this.tbScaleY.Location = new System.Drawing.Point(36, 65);
             this.tbScaleY.Name = "tbScaleY";
-            this.tbScaleY.Size = new System.Drawing.Size(90, 26);
+            this.tbScaleY.Size = new System.Drawing.Size(67, 26);
             this.tbScaleY.TabIndex = 90;
             this.tbScaleY.Text = "1";
             // 
@@ -398,6 +437,36 @@ namespace RenderLib
             this.tabPage5.Size = new System.Drawing.Size(282, 160);
             this.tabPage5.TabIndex = 1;
             this.tabPage5.Text = "Анализ";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label29.Location = new System.Drawing.Point(10, 99);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(28, 20);
+            this.label29.TabIndex = 108;
+            this.label29.Text = "Xc";
+            // 
+            // tb_Xc
+            // 
+            this.tb_Xc.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tb_Xc.Location = new System.Drawing.Point(45, 95);
+            this.tb_Xc.Name = "tb_Xc";
+            this.tb_Xc.Size = new System.Drawing.Size(58, 26);
+            this.tb_Xc.TabIndex = 107;
+            this.tb_Xc.Text = "1";
+            // 
+            // btWave
+            // 
+            this.btWave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btWave.Location = new System.Drawing.Point(210, 123);
+            this.btWave.Name = "btWave";
+            this.btWave.Size = new System.Drawing.Size(65, 28);
+            this.btWave.TabIndex = 106;
+            this.btWave.Text = "Волна";
+            this.btWave.UseVisualStyleBackColor = true;
+            this.btWave.Click += new System.EventHandler(this.btWave_Click);
             // 
             // btHill
             // 
@@ -724,6 +793,7 @@ namespace RenderLib
             // 
             this.checkedListBoxCurve.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkedListBoxCurve.CheckOnClick = true;
             this.checkedListBoxCurve.FormattingEnabled = true;
             this.checkedListBoxCurve.Location = new System.Drawing.Point(8, 69);
             this.checkedListBoxCurve.Name = "checkedListBoxCurve";
@@ -735,23 +805,11 @@ namespace RenderLib
             // 
             this.panel9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel9.BackColor = System.Drawing.Color.White;
-            this.panel9.Controls.Add(this.cb_opGraphicCurvesGroup);
             this.panel9.Controls.Add(this.cb_opGraphicCurve);
             this.panel9.Location = new System.Drawing.Point(8, 34);
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(266, 32);
             this.panel9.TabIndex = 11;
-            // 
-            // cb_opGraphicCurvesGroup
-            // 
-            this.cb_opGraphicCurvesGroup.AutoSize = true;
-            this.cb_opGraphicCurvesGroup.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cb_opGraphicCurvesGroup.Location = new System.Drawing.Point(104, 4);
-            this.cb_opGraphicCurvesGroup.Name = "cb_opGraphicCurvesGroup";
-            this.cb_opGraphicCurvesGroup.Size = new System.Drawing.Size(80, 24);
-            this.cb_opGraphicCurvesGroup.TabIndex = 6;
-            this.cb_opGraphicCurvesGroup.Text = "Группа";
-            this.cb_opGraphicCurvesGroup.UseVisualStyleBackColor = true;
             // 
             // cb_opGraphicCurve
             // 
@@ -768,8 +826,6 @@ namespace RenderLib
             // tabPage6
             // 
             this.tabPage6.BackColor = System.Drawing.Color.Silver;
-            this.tabPage6.Controls.Add(this.bt_Filter);
-            this.tabPage6.Controls.Add(this.cb_GroupCurve);
             this.tabPage6.Controls.Add(this.label28);
             this.tabPage6.Controls.Add(this.checkedListBoxGroup);
             this.tabPage6.Location = new System.Drawing.Point(4, 29);
@@ -777,29 +833,6 @@ namespace RenderLib
             this.tabPage6.Size = new System.Drawing.Size(282, 336);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Группы";
-            // 
-            // bt_Filter
-            // 
-            this.bt_Filter.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bt_Filter.Location = new System.Drawing.Point(191, 6);
-            this.bt_Filter.Name = "bt_Filter";
-            this.bt_Filter.Size = new System.Drawing.Size(84, 29);
-            this.bt_Filter.TabIndex = 95;
-            this.bt_Filter.Text = "Принять";
-            this.bt_Filter.UseVisualStyleBackColor = true;
-            this.bt_Filter.Click += new System.EventHandler(this.bt_Filter_Click);
-            // 
-            // cb_GroupCurve
-            // 
-            this.cb_GroupCurve.AutoSize = true;
-            this.cb_GroupCurve.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cb_GroupCurve.Location = new System.Drawing.Point(129, 10);
-            this.cb_GroupCurve.Name = "cb_GroupCurve";
-            this.cb_GroupCurve.Size = new System.Drawing.Size(56, 24);
-            this.cb_GroupCurve.TabIndex = 97;
-            this.cb_GroupCurve.Text = "Все";
-            this.cb_GroupCurve.UseVisualStyleBackColor = true;
-            this.cb_GroupCurve.CheckedChanged += new System.EventHandler(this.cb_GroupCurve_CheckedChanged);
             // 
             // label28
             // 
@@ -815,11 +848,13 @@ namespace RenderLib
             // 
             this.checkedListBoxGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkedListBoxGroup.CheckOnClick = true;
             this.checkedListBoxGroup.FormattingEnabled = true;
             this.checkedListBoxGroup.Location = new System.Drawing.Point(8, 40);
             this.checkedListBoxGroup.Name = "checkedListBoxGroup";
             this.checkedListBoxGroup.Size = new System.Drawing.Size(267, 277);
             this.checkedListBoxGroup.TabIndex = 10;
+            this.checkedListBoxGroup.Click += new System.EventHandler(this.btShow_Click);
             this.checkedListBoxGroup.SelectedIndexChanged += new System.EventHandler(this.checkedListBoxGroup_SelectedIndexChanged);
             // 
             // tabPage3
@@ -1305,14 +1340,14 @@ namespace RenderLib
             // renderControl1
             // 
             this.renderControl1.BackColor = System.Drawing.Color.White;
-            colorScheme1.Background = System.Drawing.Color.White;
-            colorScheme1.FontReper = new System.Drawing.Font("Arial", 8F);
-            colorScheme1.FontValue = null;
-            colorScheme1.formatTextReper = ((uint)(2u));
-            this.renderControl1.colorScheme = colorScheme1;
+            colorScheme3.Background = System.Drawing.Color.White;
+            colorScheme3.FontReper = new System.Drawing.Font("Arial", 8F);
+            colorScheme3.FontValue = null;
+            colorScheme3.formatTextReper = ((uint)(2u));
+            this.renderControl1.colorScheme = colorScheme3;
             this.renderControl1.Location = new System.Drawing.Point(228, 3);
             this.renderControl1.Name = "renderControl1";
-            this.renderControl1.renderOptions = renderOptionsCurves1;
+            this.renderControl1.renderOptions = renderOptionsCurves3;
             this.renderControl1.Size = new System.Drawing.Size(25, 23);
             this.renderControl1.TabIndex = 0;
             this.renderControl1.Text = "renderControl1";
@@ -1430,36 +1465,6 @@ namespace RenderLib
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // btWave
-            // 
-            this.btWave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btWave.Location = new System.Drawing.Point(210, 123);
-            this.btWave.Name = "btWave";
-            this.btWave.Size = new System.Drawing.Size(65, 28);
-            this.btWave.TabIndex = 106;
-            this.btWave.Text = "Волна";
-            this.btWave.UseVisualStyleBackColor = true;
-            this.btWave.Click += new System.EventHandler(this.btWave_Click);
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label29.Location = new System.Drawing.Point(10, 99);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(28, 20);
-            this.label29.TabIndex = 108;
-            this.label29.Text = "Xc";
-            // 
-            // tb_Xc
-            // 
-            this.tb_Xc.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tb_Xc.Location = new System.Drawing.Point(45, 95);
-            this.tb_Xc.Name = "tb_Xc";
-            this.tb_Xc.Size = new System.Drawing.Size(58, 26);
-            this.tb_Xc.TabIndex = 107;
-            this.tb_Xc.Text = "1";
-            // 
             // GDI_Curves_Control
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1477,6 +1482,8 @@ namespace RenderLib
             this.tabPage2.PerformLayout();
             this.panel10.ResumeLayout(false);
             this.panel10.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_Y)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_X)).EndInit();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
             this.panel5.ResumeLayout(false);
@@ -1598,7 +1605,6 @@ namespace RenderLib
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Button buttonSetReg;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.CheckBox cb_opGraphicCurvesGroup;
         private System.Windows.Forms.Panel panel11;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.NumericUpDown nUD_formatText;
@@ -1629,12 +1635,12 @@ namespace RenderLib
         private System.Windows.Forms.TextBox tb_q;
         private System.Windows.Forms.Button btHill;
         private System.Windows.Forms.TabPage tabPage6;
-        private System.Windows.Forms.CheckBox cb_GroupCurve;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.CheckedListBox checkedListBoxGroup;
-        private System.Windows.Forms.Button bt_Filter;
         private System.Windows.Forms.Button btWave;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.TextBox tb_Xc;
+        private System.Windows.Forms.NumericUpDown nud_Y;
+        private System.Windows.Forms.NumericUpDown nud_X;
     }
 }

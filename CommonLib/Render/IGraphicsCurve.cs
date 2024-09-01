@@ -66,6 +66,10 @@ namespace CommonLib
     public interface IGraphicsCurve
     {
         /// <summary>
+        /// Имя кривой
+        /// </summary>
+        string CurveName { get; set; }
+        /// <summary>
         /// Тип кривой
         /// </summary>
         TypeGraphicsCurve TGraphicsCurve { get; set; }

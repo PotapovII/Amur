@@ -8,10 +8,26 @@
 namespace ConnectLib
 {
     /// <summary>
+    /// Тип возвращаемой комманды
+    /// </summary>
+    public enum TypeCommand
+    {
+        insert,
+        update,
+        delete
+    }
+
+    /// <summary>
     /// Стандарт для генерации строки комманды
     /// </summary>
     public interface IStandartSQLCommand
     {
-        string GetCommand();
+        /// <summary>
+        /// Возвращает запрос на вставку записи еслм ID == -1
+        /// или на обновление в противном случае
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        string GetCommand(TypeCommand com);
     }
 }

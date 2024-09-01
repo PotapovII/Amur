@@ -262,7 +262,15 @@ namespace ConnectLib
                 }
             }
         }
-        public static bool DoListCommand(List<IStandartSQLCommand> list, ref int Count, ref string Message)
+        /// <summary>
+        /// Выполнение групповых операций
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="tcom"></param>
+        /// <param name="Count"></param>
+        /// <param name="Message"></param>
+        /// <returns></returns>
+        public static bool DoListCommand(List<IStandartSQLCommand> list, TypeCommand tcom, ref int Count, ref string Message)
         {
             bool result = true;
             Count = 0;
@@ -287,7 +295,7 @@ namespace ConnectLib
                             string ss = Count.ToString() + " " + point.ToString();
                             Console.WriteLine(ss);
                             // присвоить текст комманды SQL по вставке узла
-                            command.CommandText = point.GetCommand();
+                            command.CommandText = point.GetCommand(tcom);
                             // выполнить команду SQL
                             command.ExecuteNonQuery();
                             Count++;
@@ -314,6 +322,40 @@ namespace ConnectLib
                 return result;
             }
         }
+        /// <summary>
+        /// Получение отметки нуля водомерного поста 
+        /// </summary>
+        /// <param name="placeID">1 == Хабаровск</param>
+        /// <returns></returns>
+        public static double WaterLevelGP(int placeID = 1)
+        {
+            string TName = "Place";
+            
+            try
+            {
+              string strAccessSelect = "select * from dbo.place";
+                DataTable place = ConnectDB.GetDataTable(strAccessSelect, TName);
+                if (place != null)
+                {
+                    foreach (DataRow dr in place.Rows)
+                    {
+                        int id = (int)dr["place_id"];
+                        if (placeID == id)
+                        {
+                            // Ноль графика - отметка репера по Балтийской системе
+                            double nullheight = (double)dr["place_nullheight"];
+                            return nullheight;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            { 
+                Console.WriteLine(e.Message);
+            }
+            return 0;
+        }
+
     }
 }
 

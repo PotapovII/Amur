@@ -7,6 +7,7 @@
 //---------------------------------------------------------------------------
 namespace RiverDB.Convertors
 {
+    using ConnectLib;
     using System;
     /// <summary>
     /// Расширенный формат GPX
@@ -35,7 +36,7 @@ namespace RiverDB.Convertors
         public double cutDepth;
         public ExtStandartOld() : base() { }
 
-        public override string GetCommand()
+        public override string GetCommand(TypeCommand com = TypeCommand.insert)
         {
             /// широта X
             double e = lat;
