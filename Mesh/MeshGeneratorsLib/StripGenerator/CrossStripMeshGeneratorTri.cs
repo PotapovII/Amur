@@ -267,8 +267,8 @@ namespace MeshGeneratorsLib.StripGenerator
                 MEM.Alloc(CountElements, ref mesh.AreaElems);
                 MEM.Alloc(CountBoundKnots, ref mesh.BoundKnots);
                 MEM.Alloc(CountBoundKnots, ref mesh.BoundKnotsMark);
-                MEM.Alloc(CountBoundKnots-2, ref mesh.BoundElementsMark);
-                MEM.Alloc(CountBoundKnots-2, ref mesh.BoundElems);
+                MEM.Alloc(CountBoundKnots, ref mesh.BoundElementsMark);
+                MEM.Alloc(CountBoundKnots, ref mesh.BoundElems);
 
                 // вычисление массивов координат
                 CountKnots = 0;

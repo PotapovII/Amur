@@ -47,6 +47,10 @@ namespace FEMTasksLib.FESimpleTask
     public class CFEPoissonTaskTri : AComplexFEMTask
     {
         /// <summary>
+        /// Массив для отладки
+        /// </summary>
+        public double[] tmp;
+        /// <summary>
         /// Количество узлов на КЭ
         /// </summary>
         protected uint cu = 3;
@@ -154,7 +158,7 @@ namespace FEMTasksLib.FESimpleTask
                 Logger.Instance.Info("Элементов обработано :" + elemEx.ToString());
             }
         }
-
+        
         /// <summary>
         /// Нахождение поля скоростей из решения задачи Пуассона МКЭ с постоянной правой частью
         /// </summary>
@@ -217,8 +221,11 @@ namespace FEMTasksLib.FESimpleTask
                     // добавление вновь сформированной ЛПЧ в ГПЧ
                     algebra.AddToRight(LocalRight, knots);
                 }
+                MEM.Alloc(U.Length, ref tmp);
+                algebra.GetRight(ref tmp);
                 //Удовлетворение ГУ
                 algebra.BoundConditions(bv, bc);
+
                 algebra.Solve(ref U);
                 foreach (var ee in U)
                     if (double.IsNaN(ee) == true)
@@ -787,7 +794,7 @@ namespace FEMTasksLib.FESimpleTask
         /// Расчет компонент поля скорости по функции тока
         /// </summary>
         /// <param name="result">результат решения</param>
-        public void CalcVelosity(double[] Phi, ref double[] Vx, ref double[] Vy, double R_midle = 0, int Ring = 0)
+        public void CalcVelosity(double[] Phi, ref double[] Vx, ref double[] Vy, double R_midle = 0, int Ring = 0, bool Local = true)
         {
             try
             {
@@ -812,12 +819,21 @@ namespace FEMTasksLib.FESimpleTask
                     else
                     {
                         double R_elem = R_midle + (X[i0] + X[i1] + X[i1]) / 3;
-                        tmpVx[elem] = dPhidy / R_elem;
+                        tmpVx[elem] =  dPhidy / R_elem;
                         tmpVy[elem] = -dPhidx / R_elem;
                     }
                 }
-                Interpolation(ref Vx, tmpVx);
-                Interpolation(ref Vy, tmpVy);
+
+                if (Local == true)
+                {
+                    wMesh.ConvertField(ref Vx, tmpVx);
+                    wMesh.ConvertField(ref Vy, tmpVy);
+                }
+                else
+                {
+                    Interpolation(ref Vx, tmpVx);
+                    Interpolation(ref Vy, tmpVy);
+                }
             }
             catch (Exception ex)
             {

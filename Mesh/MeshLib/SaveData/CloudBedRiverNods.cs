@@ -1,4 +1,11 @@
-﻿namespace MeshLib.SaveData
+﻿//---------------------------------------------------------------------------
+//                    ПРОЕКТ  "РУСЛОВЫЕ ПРОЦЕССЫ"
+//                         проектировщик:
+//                           Потапов И.И.
+//---------------------------------------------------------------------------
+//                 кодировка : 10.10.2023 Потапов И.И.
+//---------------------------------------------------------------------------
+namespace MeshLib.SaveData
 {
     using CommonLib;
     using System.Collections.Generic;
@@ -29,7 +36,7 @@
         }
         public CloudBedRiverNods(IClouds m)
         {
-            AttributNames = ((CloudRiverNods)m).AttributNames;
+            AttributNames = ((SavePointRiverNods)m).AttributNames;
             IHPoint[] knots = m.GetKnots();
             foreach (IBedRiverNode knot in knots)
                 CloudKnots.Add(knot);
@@ -77,6 +84,16 @@
                 CloudKnots.Add(new BedRiverNode(x, y, 1, 0.1));
             else
                 CloudKnots.Add(new BedRiverNode(x, y, Attributes[0], Attributes[1]));
+        }
+
+        /// <summary>
+        /// Добавить узел в облако
+        /// </summary>
+        public void AddNode(IHPoint node)
+        {
+            BedRiverNode n = node as BedRiverNode;
+            if(n!=null)
+                CloudKnots.Add(new BedRiverNode(n));
         }
         /// <summary>
         /// изменить маркер узла
@@ -144,30 +161,7 @@
         /// <returns></returns>
         public IField GetPole(int indexAttribut)
         {
-            //{ "Глубина", "Тепература","Скорость","Курс","Вектор скорости" };
             IField Field = null;
-            //if (indexAttribut < 4)
-            //{
-            //    double[] m = CloudKnots.Select(p => p.Attributes[indexAttribut]).ToArray();
-            //    Field = new Field1D(AttributNames[indexAttribut], m);
-            //}
-            //else
-            //{
-            //    double[] V = CloudKnots.Select(p => p.Attributes[2]).ToArray();
-            //    double[] C = CloudKnots.Select(p => p.Attributes[3]).ToArray();
-            //    double[] Vx = null;
-            //    double[] Vy = null;
-            //    MEM.Alloc(CountKnots, ref Vx, "Vx");
-            //    MEM.Alloc(CountKnots, ref Vy, "Vy");
-            //    int k = 0;
-            //    double K = 2 * Math.PI / 360;
-            //    for (int i = 0; i < CountKnots; i++)
-            //    {
-            //        Vx[k] = V[k] * Math.Sin(C[k] * K);
-            //        Vy[k] = V[k] * Math.Cos(C[k] * K);
-            //    }
-            //    Field = new Field2D(AttributNames[indexAttribut], Vx, Vy);
-            //}
             if (indexAttribut == 0)
             {
                 double[] m = CloudKnots.Select(p => p.zeta).ToArray();

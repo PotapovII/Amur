@@ -61,6 +61,12 @@
     <Compile Include="FQuadVortexStream.Designer.cs">
       <DependentUpon>FQuadVortexStream.cs</DependentUpon>
     </Compile>
+    <Compile Include="FDesna.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FDesna.Designer.cs">
+      <DependentUpon>FDesna.cs</DependentUpon>
+    </Compile>
     <Compile Include="FVortexStream.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,6 +90,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FTrapezoidStreem.resx">
       <DependentUpon>FTrapezoidStreem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FDesna.resx">
+      <DependentUpon>FDesna.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FVortexStream.resx">
       <DependentUpon>FVortexStream.cs</DependentUpon>

@@ -35,6 +35,7 @@ namespace RiverDB.ConvertorOut
     using CommonLib.Geometry;
     using MemLogLib;
     using GeometryLib.Geometry;
+    using System.Linq;
 
     public partial class FCreateCloudMesh : Form
     {
@@ -154,12 +155,12 @@ namespace RiverDB.ConvertorOut
         /// Получить полную таблицу данных
         /// </summary>
         /// <returns></returns>
-        public DataTable GetSelectDataTable(string filter)
+        public DataTable GetSelectDataTable(string filter, int Place_id = 1)
         {
             // код хабаровска 
-            string place_id = "1";
-            string strSelect = "SELECT knot_latitude, knot_longitude, knot_fulldepth, knot_depth, knot_temperature," +
-                            " knot_speed, knot_course, knot_datetime, CAST(knot.knot_datetime AS DATE) as DTime," +
+            string place_id = Place_id.ToString();
+            string strSelect = "SELECT knot_id, knot_latitude, knot_longitude, knot_fulldepth, knot_depth, knot_temperature," +
+                            " knot_speed, knot_course, knot_datetime, knot_marker, CAST(knot.knot_datetime AS DATE) as DTime," +
                             " experiment_waterlevel" +
                             " FROM knot, experiment where  experiment.place_id = " + place_id + " and " +
                             " CAST(knot.knot_datetime AS DATE) = CAST(experiment_datetime AS DATE) " +
@@ -172,7 +173,6 @@ namespace RiverDB.ConvertorOut
         /// </summary>
         protected void LoadDataNodes()
         {
-
             string[] states =
             {
                 " Фильтр данных пуст! Выберете набор...",
@@ -194,27 +194,12 @@ namespace RiverDB.ConvertorOut
                 return;
             }
             pointsTable = GetSelectDataTable(filter);
-            int k = 0;
-            //double K = 2 * Math.PI / 360;
-            sc = new CloudRiverNods();
-            int mark = 0;
-            foreach (DataRow dr in pointsTable.Rows)
+            sc = new SavePointRiverNods();
+
+            List<CloudKnot> points = GetCloudKnots();
+            foreach (CloudKnot p in points)
             {
-                double x = (double)dr["knot_longitude"];
-                double y = (double)dr["knot_latitude"];
-
-                if (rbGrad.Checked == false)
-                    Con.WGS84_To_LocalCity(ref x, ref y);
-
-                double H = (double)dr["knot_fulldepth"];
-                double sH = (double)dr["knot_depth"];
-                double T = (double)dr["knot_temperature"];
-                double V = (double)dr["knot_speed"];
-                double C = (double)dr["knot_course"];
-                //double Vx = V * Math.Sin(C * K);
-                //double Vy = V * Math.Cos(C * K);
-                sc.AddNode(x, y, mark, new double[CountAttributes] { H, sH, T, V, C });
-                k++;
+                sc.AddNode(p);
             }
             LocalLog(states[1]);
             SetSaveCloud(sc);
@@ -224,6 +209,283 @@ namespace RiverDB.ConvertorOut
                 LocalLog(Text);
                 return;
             }
+        }
+        /// <summary>
+        /// Получить вершину CloudKnot из DataRow строки 
+        /// </summary>
+        /// <param name="dr">данные DataRow</param>
+        /// <param name="k">индекс строки</param>
+        /// <param name="v">вершина</param>
+        /// <returns></returns>
+        public bool GetCloudKnot(DataRow dr, ref CloudKnot p)
+        {
+            p = null;
+            int mark = 0;
+            double FiltrVelocity = (double)nud_Velocity.Value;
+            double V = (double)dr["knot_speed"];
+            // Если определен фильтр по скорости то выбираем только узлы
+            // со скоростью меньше филтруемой скорости
+            if (cbFilterVelocity.Checked == true)
+            {
+                if (V > FiltrVelocity) return false;
+            }
+            if (cb_MarkerNods.Checked == true)
+            {
+                int knot_marker = (int)dr["knot_marker"];
+                if (knot_marker == 0) return false; 
+            }
+            double x = (double)dr["knot_longitude"];
+            double y = (double)dr["knot_latitude"];
+            if (rbGrad.Checked == false)
+                Con.WGS84_To_LocalCity(ref x, ref y);
+            double H = (double)dr["knot_fulldepth"];
+            double sH = (double)dr["knot_depth"];
+            double T = (double)dr["knot_temperature"];
+            double C = (double)dr["knot_course"];
+            int knot_id = (int)dr["knot_id"];
+            var attribs = new double[CountAttributes];
+            attribs[0] = H;
+            attribs[1] = sH;
+            attribs[2] = T;
+            attribs[3] = V;// 3.6;
+            attribs[4] = C;
+            p = new CloudKnot(x, y, attribs, mark, knot_id);
+            p.time = (DateTime)dr["knot_datetime"];
+            return true;
+        }
+
+        public bool CalkNode(DataRow dr, ref CloudKnot a, double Length)
+        {
+            double error = Length * 0.05;
+            CloudKnot v = null;
+            if( GetCloudKnot(dr, ref v) == true )
+            {
+                if (MEM.Equals(a.X, v.x, error) == true &&
+                    MEM.Equals(a.Y, v.y, error) == true)
+                {
+                    a = v;
+                    return true;
+                }
+            }
+            return false;
+            //double x = (double)dr["knot_longitude"];
+            //double y = (double)dr["knot_latitude"];
+            //if (rbGrad.Checked == false)
+            //    Con.WGS84_To_LocalCity(ref x, ref y);
+            //if (MEM.Equals(a.X, x, error) == true &&
+            //    MEM.Equals(a.Y, y, error) == true)
+            //{
+            //    double H = (double)dr["knot_fulldepth"];
+            //    double sH = (double)dr["knot_depth"];
+            //    double T = (double)dr["knot_temperature"];
+            //    double V = (double)dr["knot_speed"];
+            //    double C = (double)dr["knot_course"];
+            //    a.X = x;
+            //    a.Y = y;
+            //    a.Attributes[0] = H;
+            //    a.Attributes[1] = sH;
+            //    a.Attributes[2] = T;
+            //    a.Attributes[3] = V;
+            //    a.Attributes[4] = C;
+            //    a.ID = (int)dr["knot_id"];
+            //    a.time = (DateTime)dr["knot_datetime"];
+            //    return true;
+            //}
+        }
+
+        /// <summary>
+        /// Получить облако данных
+        /// </summary>
+        /// <param name="invertices"></param>
+        /// <param name="flagFilter"></param>
+        /// <returns></returns>
+        protected List<CloudKnot> GetCloudKnots()
+        {
+            int ID = 0;
+            List<CloudKnot> points = new List<CloudKnot>(pointsTable.Rows.Count);
+            if (cbTreckVelocity.Checked == false)
+            {
+                CloudKnot ck = null;
+                foreach (DataRow dr in pointsTable.Rows)
+                {
+                    if (GetCloudKnot(dr, ref ck) == true)
+                        points.Add(ck);
+                }
+            }
+            else
+            {
+                double FiltrVelocity = (double)nud_Velocity.Value;
+                CloudKnot node = null;
+                foreach (DataRow dr in pointsTable.Rows)
+                {
+                    if (GetCloudKnot(dr, ref node) == true)
+                        points.Add(node);
+                }
+                // Сортировка по времени
+                points.Sort((x, y) => x.time.CompareTo(y.time));
+                // 
+                double timeBreck = (double)nud_TimeBrack.Value;
+                
+                points[0].timeGroupID = ID;
+                Console.Clear();
+                HPoint velOld = null;
+                Console.Clear();
+                // Определение скоростных групп 
+                for (int i = 1; i < points.Count; i++)
+                {
+                    CloudKnot p0 = points[i - 1];
+                    CloudKnot p1 = points[i];
+                    HPoint vel = p1 - p0;
+                    var V = p0.Attributes[3];
+                    double time = (p1.time - p0.time).TotalSeconds;
+                    if (time > timeBreck)
+                    {
+                        ID++;
+                        if (velOld != null)
+                        {
+                            points[i - 1].Attributes[3] = V * velOld.x;
+                            points[i - 1].Attributes[4] = V * velOld.y;
+                            velOld = null;
+                        }
+                        else
+                        {
+                            points[i - 1].Attributes[3] = 0;
+                            points[i - 1].Attributes[4] = 0;
+                        }
+                        points[i - 1].timeGroupID = ID;
+                    }
+                    else
+                    {
+                        vel.Normalize();
+                        double LL = vel.Length();
+                        if (LL > 1.01 || V > FiltrVelocity)
+                        {
+                            vel.X = 0; vel.Y = 0;
+                        }
+                        points[i - 1].Attributes[3] = V * vel.x;
+                        points[i - 1].Attributes[4] = V * vel.y;
+                        points[i - 1].timeGroupID = ID;
+                        Console.Write(points[i - 1].ID.ToString() + " " + p0.time.ToString() + "  " +
+                        points[i - 1].timeGroupID.ToString() + "  " + V.ToString("F4") + " " + vel.ToString() + " ");
+                        Console.WriteLine(p0.ToString());
+                        velOld = vel;
+                    }
+                }
+                var Ve = points[points.Count - 1].Attributes[3];
+                points[points.Count - 1].Attributes[3] = Ve * velOld.x;
+                points[points.Count - 1].Attributes[4] = Ve * velOld.y;
+                points[points.Count - 1].timeGroupID = ID;
+                Console.WriteLine(points[points.Count - 1].ToString());
+            }
+            return points;
+        }
+
+        /// <summary>
+        /// Получить облако данных в фломате IPolygon
+        /// </summary>
+        /// <param name="invertices"></param>
+        /// <param name="flagFilter"></param>
+        /// <returns></returns>
+        protected IPolygon GetCloudPoints()
+        {
+            List<CloudKnot> points = GetCloudKnots();
+            IPolygon cloudPoints = new Polygon(points.Count);
+            int ID = 1;
+            int Marker = 0;
+            foreach (var p in points)
+            {
+                Vertex v = PolygonUtils.ConvertCloudKnotToVertex(ID++, Marker, p);
+                cloudPoints.Add(v);
+            }
+            return cloudPoints;
+        }
+
+        /// <summary>
+        /// Сопряжение линий сглаживания 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsb_LinkSMLines_Click(object sender, EventArgs e)
+        {
+            if (cListBoxDates.Items.Count <= 0) return;
+            /// Получить список линий сглаживания
+            List<IHSmLine> sLine = gdI_EditControlClouds1.GetSLines();
+            if (sLine.Count <= 0) return;
+
+            string filter = GetSqlFilter();
+            pointsTable = GetSelectDataTable(filter);
+            double[] Length = new double[sLine.Count];
+            for (int i = 0; i < sLine.Count; i++)
+                Length[i] = sLine[i].Length();
+            // линковка на основном облаке
+            foreach (DataRow dr in pointsTable.Rows)
+            {
+                for (int i = 0; i < sLine.Count; i++)
+                {
+                    if (sLine[i].LinkA == false)
+                    {
+                        CloudKnot a = (CloudKnot)sLine[i].A;
+                        sLine[i].LinkA = CalkNode(dr, ref a, Length[i]);
+                        if (sLine[i].LinkA == true)
+                            sLine[i].A = a;
+
+                    }
+                    if (sLine[i].LinkB == false)
+                    {
+                        CloudKnot a = (CloudKnot)sLine[i].B;
+                        sLine[i].LinkB = CalkNode(dr, ref a, Length[i]);
+                        if (sLine[i].LinkB == true)
+                            sLine[i].B = a;
+                    }
+                }
+            }
+            int flagLinks = 0;
+            for (int i = 0; i < sLine.Count; i++)
+            {
+                if (sLine[i].Link == true)
+                    flagLinks++;
+            }
+            if (flagLinks == sLine.Count)
+                return;
+            else
+            {
+                for (int link = 0; link < sLine.Count; link++)
+                {
+                    for (int ii = 0; ii < sLine.Count; ii++)
+                    {
+                        if (sLine[ii].Link == true)
+                        {
+                            for (int i = 0; i < sLine.Count; i++)
+                            {
+                                if (sLine[i].LinkA == false)
+                                {
+                                    CloudKnot a = (CloudKnot)sLine[i].A;
+                                    sLine[i].LinkA = CalkCloudKnotNode(sLine[ii], ref a, Length[i]);
+                                    if (sLine[i].LinkA == true)
+                                        sLine[i].A = a;
+
+                                }
+                                if (sLine[i].LinkB == false)
+                                {
+                                    CloudKnot a = (CloudKnot)sLine[i].B;
+                                    sLine[i].LinkB = CalkCloudKnotNode(sLine[ii], ref a, Length[i]);
+                                    if (sLine[i].LinkB == true)
+                                        sLine[i].B = a;
+                                }
+                            }
+                        }
+                    }
+                    flagLinks = 0;
+                    for (int i = 0; i < sLine.Count; i++)
+                    {
+                        if (sLine[i].Link == true)
+                            flagLinks++;
+                    }
+                    if (flagLinks == sLine.Count)
+                        break;
+                }
+            }
+            gdI_EditControlClouds1.SendOption();
         }
 
         /// <summary>
@@ -251,6 +513,7 @@ namespace RiverDB.ConvertorOut
         /// <param name="meshRiver"></param>
         public void ShowMesh(MeshNet meshRiver)
         {
+            //VelW(meshRiver.Vertices);
             IFEMesh bmesh = null;
             double[][] values = null;
             MeshAdapter.ConvertFrontRenumberationAndCutting(ref bmesh, ref values, meshRiver, Direction.toRight);
@@ -260,8 +523,8 @@ namespace RiverDB.ConvertorOut
                 data.SetSavePoint(0, bmesh);
                 double[] x = bmesh.GetCoords(0);
                 double[] y = bmesh.GetCoords(1);
-                data.Add(new Field1D("Координата Х", x));
-                data.Add(new Field1D("Координата Y", y));
+                data.Add("Координата Х", x);
+                data.Add("Координата Y", y);
                 // Ноль графика - отметка репера по Балтийской системе
                 double hr = ConnectDB.WaterLevelGP(placeID);
                 if (hr > 0)
@@ -270,9 +533,54 @@ namespace RiverDB.ConvertorOut
                     list.AddRange(values[1]);
                     for (int i = 0; i < list.Count; i++)
                         list[i] = hr - list[i];
-                    Field1D zeta = new Field1D("Отметки дна", list.ToArray());
-                    data.Add(zeta);
+                    data.Add("Отметки дна", list.ToArray());
                 }
+                if(cbFVelocity.Checked == true)
+                {
+                    if (cbTreckVelocity.Checked == false)
+                    {
+                        double[] Vx = null;
+                        double[] Vy = null;
+                        MEM.Alloc(x.Length, ref Vx);
+                        MEM.Alloc(x.Length, ref Vy);
+                        for (int i = 0; i < Vx.Length; i++)
+                        {
+                            double phi = values[4][i] * Math.PI / 180;
+                            Vx[i] = values[3][i] * Math.Cos(phi + Math.PI / 4);
+                            Vy[i] = values[3][i] * Math.Sin(phi + Math.PI / 4);
+                        }
+                        data.Add("Скорость по X", Vx);
+                        data.Add("Скорость по Y", Vy);
+                        data.Add("Скорость", Vx, Vy);
+                    }
+                    else
+                    {
+                        double fv = (double)nud_Velocity.Value;
+                        double[] Vx = null;
+                        double[] Vy = null;
+                        MEM.Alloc(x.Length, ref Vx);
+                        MEM.Alloc(x.Length, ref Vy);
+                        for (int i = 0; i < Vx.Length; i++)
+                        {
+                            if(Math.Abs(values[3][i]) < fv)
+                                Vx[i] = values[3][i];
+                            else
+                                Vx[i] = 0;
+                            if (Math.Abs(values[4][i]) < fv)
+                                Vy[i] = values[4][i];
+                            else
+                                Vy[i] = 0;
+                        }
+                        double mX1 = Vx.Max();
+                        double mX2 = Vx.Min();
+                        double mY1 = Vy.Max();
+                        double mY2 = Vy.Min();
+                        data.Add("Скорость по X", Vx);
+                        data.Add("Скорость по Y", Vy);
+                        data.Add("Скорость", Vx, Vy);
+                    }
+                }
+
                 if (values != null)
                     for (int i = 0; i < values.Length; i++)
                     {
@@ -303,45 +611,6 @@ namespace RiverDB.ConvertorOut
             CountSmooth = (int)nUDCountSmooth.Value;
             SmoothChecked = checkBoxSM.Checked;
         }
-        /// <summary>
-        /// Получить облако данных
-        /// </summary>
-        /// <param name="invertices"></param>
-        /// <param name="flagFilter"></param>
-        /// <returns></returns>
-        protected IPolygon GetCloudPoints(int invertices, bool flagFilter = false)
-        {
-            IPolygon cloudPoints = new Polygon(invertices);
-            int k = 1;
-            foreach (DataRow dr in pointsTable.Rows)
-            {
-                double x = (double)dr["knot_longitude"];
-                double y = (double)dr["knot_latitude"];
-                if (rbGrad.Checked == false)
-                    Con.WGS84_To_LocalCity(ref x, ref y);
-                double H = (double)dr["knot_fulldepth"];
-                double sH = (double)dr["knot_depth"];
-                double T = (double)dr["knot_temperature"];
-                double V = (double)dr["knot_speed"];
-                double C = (double)dr["knot_course"];
-                var v = new Vertex(x, y, 0);
-                // Read a vertex marker.
-                v.Label = 0;
-                v.ID = k;
-#if USE_ATTRIBS
-                var attribs = new double[CountAttributes];
-                attribs[0] = H;
-                attribs[1] = sH;
-                attribs[2] = T;
-                attribs[3] = V;
-                attribs[4] = C;
-                v.attributes = attribs;
-#endif
-                cloudPoints.Add(v);
-            }
-            return cloudPoints;
-        }
-
         /// <summary>
         /// Добавление данных с линий сглаживания в облако натурных узлов
         /// </summary>
@@ -400,7 +669,7 @@ namespace RiverDB.ConvertorOut
             if (cListBoxDates.Items.Count <= 0) return;
             string filter = GetSqlFilter();
             pointsTable = GetSelectDataTable(filter);
-            IPolygon cloudPoints = GetCloudPoints(pointsTable.Rows.Count, false);
+            IPolygon cloudPoints = GetCloudPoints();
             int pointsCount = cloudPoints.Points.Count;
             if (conturPointsCount > 2)
             {
@@ -446,7 +715,7 @@ namespace RiverDB.ConvertorOut
             // список облака точек наблюдения
             pointsTable = GetSelectDataTable(filter);
             // облака данных для генератора сетки
-            IPolygon cloudPoints = GetCloudPoints(pointsTable.Rows.Count, false);
+            IPolygon cloudPoints = GetCloudPoints();
 
             IPolygon BCloudPoints = new Polygon(cloudPoints);
             segInfo.Clear();
@@ -467,13 +736,20 @@ namespace RiverDB.ConvertorOut
             string filter = GetSqlFilter();
             pointsTable = GetSelectDataTable(filter);
             // облака данных для генератора сетки
-            IPolygon cloudPoints = GetCloudPoints(pointsTable.Rows.Count);
+            IPolygon cloudPoints = GetCloudPoints();
 
             AddSmLinesData(ref cloudPoints);
-
+            VelW(cloudPoints);
             MeshNet meshRiver = (MeshNet)cloudPoints.Triangulate(options, quality);
-            SmoothMeshNet(ref meshRiver);
+            //SmoothMeshNet(ref meshRiver);
             ShowMesh(meshRiver);
+        }
+        public void VelW(IPolygon cloudPoints)
+        {
+            foreach (var e in cloudPoints.Points)
+            {
+                Console.WriteLine("ID {0} Vx {1} Vy {2}", e.ID, e.attributes[3], e.attributes[4]);
+            }
         }
         /// <summary>
         /// Создание КЭ сетки с фильтром области
@@ -511,7 +787,7 @@ namespace RiverDB.ConvertorOut
             // список облака точек наблюдения
             pointsTable = GetSelectDataTable(filter);
             // облака данных для генератора сетки
-            IPolygon cloudPoints = GetCloudPoints(pointsTable.Rows.Count, false);
+            IPolygon cloudPoints = GetCloudPoints();
 
             PolygonUtils.AddBoundaryBaseCountur(Area, ref cloudPoints);
 
@@ -540,7 +816,7 @@ namespace RiverDB.ConvertorOut
             // список облака точек наблюдения
             pointsTable = GetSelectDataTable(filter);
             // облака данных для генератора сетки
-            cloudPoints = GetCloudPoints(pointsTable.Rows.Count, false);
+            cloudPoints = GetCloudPoints();
             if (cloudPoints != null)
                 return true;
             else
@@ -575,7 +851,16 @@ namespace RiverDB.ConvertorOut
                         return null;
                     }
                 }
-                MeshNet meshRiver = (MeshNet)polygon.Triangulate(options, quality);
+                MeshNet meshRiver = null;
+                try
+                {
+                    meshRiver = (MeshNet)polygon.Triangulate(options, quality);
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    LocalLog("Генератор не может обработать выбранное множество точек!");
+                }
                 return meshRiver;
             }
             return null;
@@ -819,6 +1104,8 @@ namespace RiverDB.ConvertorOut
                     {
                         using (StreamWriter file = new StreamWriter(sfd.FileName))
                         {
+                            int idxScale = rbMetrix.Checked == true ? 1 : 0;
+                            file.WriteLine(idxScale + " # Размерность узлов 1 - метры, 0 - градусы");
                             // сохраняем состояние выборки данных
                             file.WriteLine(cListBoxDates.Items.Count.ToString() + " # Cохраняем состояние выборки данных");
                             for (int i = 0; i < cListBoxDates.Items.Count; i++)
@@ -830,6 +1117,12 @@ namespace RiverDB.ConvertorOut
                                     file.Write("0 ");
                             }
                             file.WriteLine();
+                            WriteCB(file, "Фильтры узлов ", cbFilterVelocity);
+                            WriteCB(file, "Фильтры узлов ", cb_MarkerNods);
+                            WriteCB(file, "Фильтры узлов ", cbTreckVelocity);
+                            WriteCB(file, "Фильтры узлов ", cbFVelocity);
+                            file.WriteLine(nud_Velocity.Value.ToString() + " # Максимальная скорость в узле");
+                            file.WriteLine(nud_TimeBrack.Value.ToString() + " # Время разрыва трека в (с)");
                             file.WriteLine("# Расчетная область");
                             // сохраняем состояние фигур
                             Area = gdI_EditControlClouds1.Area;
@@ -871,6 +1164,21 @@ namespace RiverDB.ConvertorOut
                 }
             }
         }
+        public void WriteCB(StreamWriter file, string name, CheckBox cb)
+        {
+            int idxScale = cb.Checked == true ? 1 : 0;
+            file.WriteLine(idxScale + " # "+ name + " " + cb.Text);
+        }
+        public void ReadCB(StreamReader file,ref CheckBox cb)
+        {
+            string line = file.ReadLine();
+            string[] mas = (line.Trim()).Split(' ');
+            int idx = int.Parse(mas[0]);
+            if (idx > 0)
+                cb.Checked = true;
+            else
+                cb.Checked = false;
+        }
         /// <summary>
         /// Загрузка расчетной области
         /// </summary>
@@ -888,13 +1196,22 @@ namespace RiverDB.ConvertorOut
                     gdI_EditControlClouds1.ClearContur();
                     using (StreamReader file = new StreamReader(sfd.FileName))
                     {
+                        string line = file.ReadLine();
+                        string[] mas = (line.Trim()).Split(' ');
+                        int idxScale = int.Parse(mas[0]);
+                        if (idxScale > 0)
+                            rbMetrix.Checked = true;
+                        else
+                            rbGrad.Checked = true;
+                        if (tsb_BeLine.Checked == true)
+                            tsb_Contur.Checked = false;
+
                         if (cListBoxDates.Items.Count < 1)
                             GetDataFilter();
-
-                        string line = file.ReadLine();
+                        line = file.ReadLine();
                         Console.WriteLine(line);
                         line = file.ReadLine();
-                        string[] mas = (line.Trim()).Split(' ');
+                        mas = (line.Trim()).Split(' ');
                         for (int i = 0; i < mas.Length; i++)
                         {
                             if (mas[i] == "0")
@@ -902,6 +1219,16 @@ namespace RiverDB.ConvertorOut
                             else
                                 cListBoxDates.SetItemChecked(i, true);
                         }
+                        ReadCB(file, ref cbFilterVelocity);
+                        ReadCB(file, ref cb_MarkerNods);
+                        ReadCB(file, ref cbTreckVelocity);
+                        ReadCB(file, ref cbFVelocity);
+                        line = file.ReadLine();
+                        mas = (line.Trim()).Split(' ');
+                        nud_Velocity.Value = int.Parse(mas[0]);
+                        line = file.ReadLine();
+                        mas = (line.Trim()).Split(' ');
+                        nud_TimeBrack.Value = int.Parse(mas[0]);
                         LoadDataNodes();
                         string str1 = file.ReadLine(); // # Расчетная область
                         line = file.ReadLine();
@@ -926,8 +1253,6 @@ namespace RiverDB.ConvertorOut
                                 sLine.Add(ss);
                                 gdI_EditControlClouds1.LoadSmLines(sLine);
                             }
-                            if (tsb_BeLine.Checked == true)
-                                tsb_Contur.Checked = false;
                             SetEditState();
                         }
                     }
@@ -942,7 +1267,6 @@ namespace RiverDB.ConvertorOut
                 LocalLog("Контур не задан!");
             }
         }
-
         #region Меню
         private void sm_Exit_Click(object sender, EventArgs e)
         {
@@ -1232,7 +1556,7 @@ namespace RiverDB.ConvertorOut
                 #region Полная сетка по натуральным вершинам без контура
                 string filterBase = GetSqlFilter();
                 var pointsTableBase = GetSelectDataTable(filterBase);
-                IPolygon cloudPointsBase = GetCloudPoints(pointsTableBase.Rows.Count);
+                IPolygon cloudPointsBase = GetCloudPoints();
                 // генерация сетки по облаку точек
                 MeshNet meshBase = (MeshNet)cloudPointsBase.Triangulate(options, quality);
                 #endregion
@@ -1333,120 +1657,7 @@ namespace RiverDB.ConvertorOut
         {
             gdI_EditControlClouds1.ClearSmLines();
         }
-        /// <summary>
-        /// Сопряжение линий сглаживания 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tsb_LinkSMLines_Click(object sender, EventArgs e)
-        {
-            if (cListBoxDates.Items.Count <= 0) return;
-            /// Получить список линий сглаживания
-            List<IHSmLine> sLine = gdI_EditControlClouds1.GetSLines();
-            if (sLine.Count <= 0) return;
-
-            string filter = GetSqlFilter();
-            pointsTable = GetSelectDataTable(filter);
-            double[] Length = new double[sLine.Count];
-            for (int i = 0; i < sLine.Count; i++)
-                Length[i] = sLine[i].Length();
-            // линковка на основном облаке
-            foreach (DataRow dr in pointsTable.Rows)
-            {
-                for (int i = 0; i < sLine.Count; i++)
-                {
-                    if (sLine[i].LinkA == false)
-                    {
-                        CloudKnot a = (CloudKnot)sLine[i].A;
-                        sLine[i].LinkA = CalkNode(dr, ref a, Length[i]);
-                        if (sLine[i].LinkA == true)
-                            sLine[i].A = a;
-
-                    }
-                    if (sLine[i].LinkB == false)
-                    {
-                        CloudKnot a = (CloudKnot)sLine[i].B;
-                        sLine[i].LinkB = CalkNode(dr, ref a, Length[i]);
-                        if (sLine[i].LinkB == true)
-                            sLine[i].B = a;
-                    }
-                }
-            }
-            int flagLinks = 0;
-            for (int i = 0; i < sLine.Count; i++)
-            {
-                if (sLine[i].Link == true)
-                    flagLinks++;
-            }
-            if (flagLinks == sLine.Count)
-                return;
-            else
-            {
-                for (int link = 0; link < sLine.Count; link++)
-                {
-                    for (int ii = 0; ii < sLine.Count; ii++)
-                    {
-                        if (sLine[ii].Link == true)
-                        {
-                            for (int i = 0; i < sLine.Count; i++)
-                            {
-                                if (sLine[i].LinkA == false)
-                                {
-                                    CloudKnot a = (CloudKnot)sLine[i].A;
-                                    sLine[i].LinkA = CalkCloudKnotNode(sLine[ii], ref a, Length[i]);
-                                    if (sLine[i].LinkA == true)
-                                        sLine[i].A = a;
-
-                                }
-                                if (sLine[i].LinkB == false)
-                                {
-                                    CloudKnot a = (CloudKnot)sLine[i].B;
-                                    sLine[i].LinkB = CalkCloudKnotNode(sLine[ii], ref a, Length[i]);
-                                    if (sLine[i].LinkB == true)
-                                        sLine[i].B = a;
-                                }
-                            }
-                        }
-                    }
-                    flagLinks = 0;
-                    for (int i = 0; i < sLine.Count; i++)
-                    {
-                        if (sLine[i].Link == true)
-                            flagLinks++;
-                    }
-                    if (flagLinks == sLine.Count)
-                        break;
-                }
-            }
-        }
-
-
-        public bool CalkNode(DataRow dr, ref CloudKnot a, double Length)
-        {
-            double error = Length * 0.05;
-            double x = (double)dr["knot_longitude"];
-            double y = (double)dr["knot_latitude"];
-            if (rbGrad.Checked == false)
-                Con.WGS84_To_LocalCity(ref x, ref y);
-            if (MEM.Equals(a.X, x, error) == true &&
-                MEM.Equals(a.Y, y, error) == true)
-            {
-                double H = (double)dr["knot_fulldepth"];
-                double sH = (double)dr["knot_depth"];
-                double T = (double)dr["knot_temperature"];
-                double V = (double)dr["knot_speed"];
-                double C = (double)dr["knot_course"];
-                a.X = x;
-                a.Y = y;
-                a.Attributes[0] = H;
-                a.Attributes[1] = sH;
-                a.Attributes[2] = T;
-                a.Attributes[3] = V;
-                a.Attributes[4] = C;
-                return true;
-            }
-            return false;
-        }
+        
         /// <summary>
         /// Связь между линией сглаживания и узлом другой линией сглаживания 
         /// </summary>

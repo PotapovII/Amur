@@ -55,10 +55,17 @@ namespace RenderLib
                     Values[i] = val[i].Length();
                 }
             }
-            MaxV = Values.Max();
-            MinV = Values.Min();
-            if (Math.Abs(MaxV - MinV) < MEM.Error9) return false;
-            return true;
+            if (Values.Length > 0)
+            {
+                MaxV = Values.Max();
+                MinV = Values.Min();
+                    if (Math.Abs(MaxV - MinV) > MEM.Error9)
+                        return true;
+                    else
+                        return false;
+            }
+            else
+                return false;
         }
     }
 }

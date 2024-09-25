@@ -43,24 +43,32 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tpCreateMesh = new System.Windows.Forms.TabPage();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.nud_TimeBrack = new System.Windows.Forms.NumericUpDown();
+            this.cbTreckVelocity = new System.Windows.Forms.CheckBox();
+            this.cb_MarkerNods = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cbFVelocity = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.nud_Velocity = new System.Windows.Forms.NumericUpDown();
+            this.cbFilterVelocity = new System.Windows.Forms.CheckBox();
             this.btMrf = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.btSaveCloud = new System.Windows.Forms.Button();
-            this.btCreateCountursMesh = new System.Windows.Forms.Button();
-            this.cbSegmentSplitting = new System.Windows.Forms.CheckBox();
-            this.cbConformingDelaunay = new System.Windows.Forms.CheckBox();
-            this.btCreateMesh = new System.Windows.Forms.Button();
-            this.cbCreateContur = new System.Windows.Forms.CheckBox();
-            this.checkBoxSM = new System.Windows.Forms.CheckBox();
-            this.checkBoxReMeshDel = new System.Windows.Forms.CheckBox();
-            this.nUDCountSmooth = new System.Windows.Forms.NumericUpDown();
-            this.label32 = new System.Windows.Forms.Label();
-            this.nUDMaximumAngle = new System.Windows.Forms.NumericUpDown();
-            this.label31 = new System.Windows.Forms.Label();
-            this.nUDMinimumAngle = new System.Windows.Forms.NumericUpDown();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
+            this.nUDMinimumAngle = new System.Windows.Forms.NumericUpDown();
+            this.label31 = new System.Windows.Forms.Label();
+            this.nUDMaximumAngle = new System.Windows.Forms.NumericUpDown();
+            this.cbSegmentSplitting = new System.Windows.Forms.CheckBox();
+            this.label32 = new System.Windows.Forms.Label();
+            this.cbConformingDelaunay = new System.Windows.Forms.CheckBox();
+            this.nUDCountSmooth = new System.Windows.Forms.NumericUpDown();
+            this.cbCreateContur = new System.Windows.Forms.CheckBox();
+            this.checkBoxReMeshDel = new System.Windows.Forms.CheckBox();
+            this.checkBoxSM = new System.Windows.Forms.CheckBox();
             this.statusPanel = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tbMessage = new System.Windows.Forms.ToolStripStatusLabel();
@@ -101,6 +109,8 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsb_GenerWorkFile = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sm_SsaveContur = new System.Windows.Forms.ToolStripMenuItem();
@@ -138,9 +148,13 @@
             this.tpDB.SuspendLayout();
             this.panel10.SuspendLayout();
             this.tpCreateMesh.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nUDCountSmooth)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nUDMaximumAngle)).BeginInit();
+            this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_TimeBrack)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_Velocity)).BeginInit();
+            this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUDMinimumAngle)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDMaximumAngle)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDCountSmooth)).BeginInit();
             this.statusPanel.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -152,9 +166,9 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Controls.Add(this.tabControlState);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(1149, 0);
+            this.panel1.Location = new System.Drawing.Point(824, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(301, 925);
+            this.panel1.Size = new System.Drawing.Size(301, 672);
             this.panel1.TabIndex = 86;
             // 
             // tabControlState
@@ -166,7 +180,7 @@
             this.tabControlState.Location = new System.Drawing.Point(4, 0);
             this.tabControlState.Name = "tabControlState";
             this.tabControlState.SelectedIndex = 0;
-            this.tabControlState.Size = new System.Drawing.Size(293, 921);
+            this.tabControlState.Size = new System.Drawing.Size(293, 668);
             this.tabControlState.TabIndex = 92;
             // 
             // tpDB
@@ -183,7 +197,7 @@
             this.tpDB.Location = new System.Drawing.Point(4, 29);
             this.tpDB.Name = "tpDB";
             this.tpDB.Padding = new System.Windows.Forms.Padding(3);
-            this.tpDB.Size = new System.Drawing.Size(285, 888);
+            this.tpDB.Size = new System.Drawing.Size(285, 635);
             this.tpDB.TabIndex = 0;
             this.tpDB.Text = "Источник";
             // 
@@ -218,7 +232,7 @@
             this.rbMetrix.AutoSize = true;
             this.rbMetrix.Checked = true;
             this.rbMetrix.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.rbMetrix.Location = new System.Drawing.Point(64, 1);
+            this.rbMetrix.Location = new System.Drawing.Point(69, 1);
             this.rbMetrix.Name = "rbMetrix";
             this.rbMetrix.Size = new System.Drawing.Size(78, 24);
             this.rbMetrix.TabIndex = 87;
@@ -230,7 +244,7 @@
             // 
             this.rbGrad.AutoSize = true;
             this.rbGrad.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.rbGrad.Location = new System.Drawing.Point(148, 1);
+            this.rbGrad.Location = new System.Drawing.Point(153, 1);
             this.rbGrad.Name = "rbGrad";
             this.rbGrad.Size = new System.Drawing.Size(91, 24);
             this.rbGrad.TabIndex = 88;
@@ -247,7 +261,7 @@
             this.cListBoxDates.FormattingEnabled = true;
             this.cListBoxDates.Location = new System.Drawing.Point(10, 143);
             this.cListBoxDates.Name = "cListBoxDates";
-            this.cListBoxDates.Size = new System.Drawing.Size(266, 739);
+            this.cListBoxDates.Size = new System.Drawing.Size(266, 466);
             this.cListBoxDates.TabIndex = 77;
             // 
             // btLoadData
@@ -298,53 +312,162 @@
             // tpCreateMesh
             // 
             this.tpCreateMesh.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.tpCreateMesh.Controls.Add(this.panel3);
             this.tpCreateMesh.Controls.Add(this.btMrf);
-            this.tpCreateMesh.Controls.Add(this.button3);
             this.tpCreateMesh.Controls.Add(this.button2);
             this.tpCreateMesh.Controls.Add(this.button1);
             this.tpCreateMesh.Controls.Add(this.btSaveCloud);
-            this.tpCreateMesh.Controls.Add(this.btCreateCountursMesh);
-            this.tpCreateMesh.Controls.Add(this.cbSegmentSplitting);
-            this.tpCreateMesh.Controls.Add(this.cbConformingDelaunay);
-            this.tpCreateMesh.Controls.Add(this.btCreateMesh);
-            this.tpCreateMesh.Controls.Add(this.cbCreateContur);
-            this.tpCreateMesh.Controls.Add(this.checkBoxSM);
-            this.tpCreateMesh.Controls.Add(this.checkBoxReMeshDel);
-            this.tpCreateMesh.Controls.Add(this.nUDCountSmooth);
-            this.tpCreateMesh.Controls.Add(this.label32);
-            this.tpCreateMesh.Controls.Add(this.nUDMaximumAngle);
-            this.tpCreateMesh.Controls.Add(this.label31);
-            this.tpCreateMesh.Controls.Add(this.nUDMinimumAngle);
-            this.tpCreateMesh.Controls.Add(this.label12);
+            this.tpCreateMesh.Controls.Add(this.panel2);
             this.tpCreateMesh.Location = new System.Drawing.Point(4, 29);
             this.tpCreateMesh.Name = "tpCreateMesh";
-            this.tpCreateMesh.Size = new System.Drawing.Size(285, 888);
+            this.tpCreateMesh.Size = new System.Drawing.Size(285, 635);
             this.tpCreateMesh.TabIndex = 1;
             this.tpCreateMesh.Text = "Сетка";
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.panel3.Controls.Add(this.label5);
+            this.panel3.Controls.Add(this.nud_TimeBrack);
+            this.panel3.Controls.Add(this.cbTreckVelocity);
+            this.panel3.Controls.Add(this.cb_MarkerNods);
+            this.panel3.Controls.Add(this.label4);
+            this.panel3.Controls.Add(this.cbFVelocity);
+            this.panel3.Controls.Add(this.label3);
+            this.panel3.Controls.Add(this.nud_Velocity);
+            this.panel3.Controls.Add(this.cbFilterVelocity);
+            this.panel3.Location = new System.Drawing.Point(8, 253);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(274, 242);
+            this.panel3.TabIndex = 134;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label5.Location = new System.Drawing.Point(9, 146);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(209, 20);
+            this.label5.TabIndex = 132;
+            this.label5.Text = "Время разрыва трека в (с)";
+            // 
+            // nud_TimeBrack
+            // 
+            this.nud_TimeBrack.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.nud_TimeBrack.Location = new System.Drawing.Point(216, 143);
+            this.nud_TimeBrack.Maximum = new decimal(new int[] {
+            40,
+            0,
+            0,
+            0});
+            this.nud_TimeBrack.Name = "nud_TimeBrack";
+            this.nud_TimeBrack.Size = new System.Drawing.Size(50, 26);
+            this.nud_TimeBrack.TabIndex = 133;
+            this.nud_TimeBrack.Value = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+            // 
+            // cbTreckVelocity
+            // 
+            this.cbTreckVelocity.AutoSize = true;
+            this.cbTreckVelocity.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.cbTreckVelocity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbTreckVelocity.Location = new System.Drawing.Point(11, 170);
+            this.cbTreckVelocity.Name = "cbTreckVelocity";
+            this.cbTreckVelocity.Size = new System.Drawing.Size(252, 24);
+            this.cbTreckVelocity.TabIndex = 131;
+            this.cbTreckVelocity.Text = "вектор скорости  по треккеру";
+            this.cbTreckVelocity.UseVisualStyleBackColor = false;
+            // 
+            // cb_MarkerNods
+            // 
+            this.cb_MarkerNods.AutoSize = true;
+            this.cb_MarkerNods.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.cb_MarkerNods.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cb_MarkerNods.Location = new System.Drawing.Point(11, 89);
+            this.cb_MarkerNods.Name = "cb_MarkerNods";
+            this.cb_MarkerNods.Size = new System.Drawing.Size(150, 24);
+            this.cb_MarkerNods.TabIndex = 130;
+            this.cb_MarkerNods.Text = "по маркеру узла";
+            this.cb_MarkerNods.UseVisualStyleBackColor = false;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label4.Location = new System.Drawing.Point(13, 11);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(141, 20);
+            this.label4.TabIndex = 129;
+            this.label4.Text = "Фильтры узлов";
+            // 
+            // cbFVelocity
+            // 
+            this.cbFVelocity.AutoSize = true;
+            this.cbFVelocity.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.cbFVelocity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbFVelocity.Location = new System.Drawing.Point(11, 200);
+            this.cbFVelocity.Name = "cbFVelocity";
+            this.cbFVelocity.Size = new System.Drawing.Size(208, 24);
+            this.cbFVelocity.TabIndex = 128;
+            this.cbFVelocity.Text = "Создать поле скорости";
+            this.cbFVelocity.UseVisualStyleBackColor = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label3.Location = new System.Drawing.Point(9, 63);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(203, 20);
+            this.label3.TabIndex = 115;
+            this.label3.Text = "Максимальная  скорость ";
+            // 
+            // nud_Velocity
+            // 
+            this.nud_Velocity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.nud_Velocity.Location = new System.Drawing.Point(216, 60);
+            this.nud_Velocity.Maximum = new decimal(new int[] {
+            40,
+            0,
+            0,
+            0});
+            this.nud_Velocity.Name = "nud_Velocity";
+            this.nud_Velocity.Size = new System.Drawing.Size(50, 26);
+            this.nud_Velocity.TabIndex = 116;
+            this.nud_Velocity.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // cbFilterVelocity
+            // 
+            this.cbFilterVelocity.AutoSize = true;
+            this.cbFilterVelocity.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.cbFilterVelocity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbFilterVelocity.Location = new System.Drawing.Point(13, 37);
+            this.cbFilterVelocity.Name = "cbFilterVelocity";
+            this.cbFilterVelocity.Size = new System.Drawing.Size(187, 24);
+            this.cbFilterVelocity.TabIndex = 127;
+            this.cbFilterVelocity.Text = "по  модулю скорости";
+            this.cbFilterVelocity.UseVisualStyleBackColor = false;
             // 
             // btMrf
             // 
             this.btMrf.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btMrf.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btMrf.Location = new System.Drawing.Point(16, 383);
+            this.btMrf.Location = new System.Drawing.Point(16, 502);
             this.btMrf.Name = "btMrf";
             this.btMrf.Size = new System.Drawing.Size(245, 27);
             this.btMrf.TabIndex = 132;
             this.btMrf.Text = "Создание  файлов задачи";
             this.btMrf.UseVisualStyleBackColor = true;
             this.btMrf.Click += new System.EventHandler(this.btMrf_Click);
-            // 
-            // button3
-            // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button3.Location = new System.Drawing.Point(16, 335);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(245, 27);
-            this.button3.TabIndex = 131;
-            this.button3.Text = "Сетка в области с границами";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
@@ -376,162 +499,48 @@
             // 
             this.btSaveCloud.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btSaveCloud.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btSaveCloud.Location = new System.Drawing.Point(16, 447);
+            this.btSaveCloud.Location = new System.Drawing.Point(16, 535);
             this.btSaveCloud.Name = "btSaveCloud";
-            this.btSaveCloud.Size = new System.Drawing.Size(252, 27);
+            this.btSaveCloud.Size = new System.Drawing.Size(245, 27);
             this.btSaveCloud.TabIndex = 86;
             this.btSaveCloud.Text = "Сохранение  выборки";
             this.btSaveCloud.UseVisualStyleBackColor = true;
             this.btSaveCloud.Click += new System.EventHandler(this.btSaveCloud_Click);
             // 
-            // btCreateCountursMesh
+            // panel2
             // 
-            this.btCreateCountursMesh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btCreateCountursMesh.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btCreateCountursMesh.Location = new System.Drawing.Point(16, 304);
-            this.btCreateCountursMesh.Name = "btCreateCountursMesh";
-            this.btCreateCountursMesh.Size = new System.Drawing.Size(245, 27);
-            this.btCreateCountursMesh.TabIndex = 128;
-            this.btCreateCountursMesh.Text = "Создание сетки по контуру";
-            this.btCreateCountursMesh.UseVisualStyleBackColor = true;
-            this.btCreateCountursMesh.Click += new System.EventHandler(this.btCreateCountursMesh_Click);
+            this.panel2.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.panel2.Controls.Add(this.label12);
+            this.panel2.Controls.Add(this.nUDMinimumAngle);
+            this.panel2.Controls.Add(this.label31);
+            this.panel2.Controls.Add(this.nUDMaximumAngle);
+            this.panel2.Controls.Add(this.cbSegmentSplitting);
+            this.panel2.Controls.Add(this.label32);
+            this.panel2.Controls.Add(this.cbConformingDelaunay);
+            this.panel2.Controls.Add(this.nUDCountSmooth);
+            this.panel2.Controls.Add(this.cbCreateContur);
+            this.panel2.Controls.Add(this.checkBoxReMeshDel);
+            this.panel2.Controls.Add(this.checkBoxSM);
+            this.panel2.Location = new System.Drawing.Point(6, 5);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(274, 242);
+            this.panel2.TabIndex = 133;
             // 
-            // cbSegmentSplitting
+            // label12
             // 
-            this.cbSegmentSplitting.AutoSize = true;
-            this.cbSegmentSplitting.Checked = true;
-            this.cbSegmentSplitting.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbSegmentSplitting.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cbSegmentSplitting.Location = new System.Drawing.Point(12, 121);
-            this.cbSegmentSplitting.Name = "cbSegmentSplitting";
-            this.cbSegmentSplitting.Size = new System.Drawing.Size(238, 24);
-            this.cbSegmentSplitting.TabIndex = 127;
-            this.cbSegmentSplitting.Text = "Создавать узлы на контуре";
-            this.cbSegmentSplitting.UseVisualStyleBackColor = true;
-            // 
-            // cbConformingDelaunay
-            // 
-            this.cbConformingDelaunay.AutoSize = true;
-            this.cbConformingDelaunay.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cbConformingDelaunay.Location = new System.Drawing.Point(12, 149);
-            this.cbConformingDelaunay.Name = "cbConformingDelaunay";
-            this.cbConformingDelaunay.Size = new System.Drawing.Size(195, 24);
-            this.cbConformingDelaunay.TabIndex = 126;
-            this.cbConformingDelaunay.Text = "Триангуляция Делоне";
-            this.cbConformingDelaunay.UseVisualStyleBackColor = true;
-            // 
-            // btCreateMesh
-            // 
-            this.btCreateMesh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btCreateMesh.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btCreateMesh.Location = new System.Drawing.Point(16, 271);
-            this.btCreateMesh.Name = "btCreateMesh";
-            this.btCreateMesh.Size = new System.Drawing.Size(245, 27);
-            this.btCreateMesh.TabIndex = 87;
-            this.btCreateMesh.Text = "Создание сетки по облаку";
-            this.btCreateMesh.UseVisualStyleBackColor = true;
-            this.btCreateMesh.Click += new System.EventHandler(this.btCreateMesh_Click);
-            // 
-            // cbCreateContur
-            // 
-            this.cbCreateContur.AutoSize = true;
-            this.cbCreateContur.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cbCreateContur.Location = new System.Drawing.Point(12, 177);
-            this.cbCreateContur.Name = "cbCreateContur";
-            this.cbCreateContur.Size = new System.Drawing.Size(245, 24);
-            this.cbCreateContur.TabIndex = 125;
-            this.cbCreateContur.Text = "Создавать выпуклый контур";
-            this.cbCreateContur.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxSM
-            // 
-            this.checkBoxSM.AutoSize = true;
-            this.checkBoxSM.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.checkBoxSM.Location = new System.Drawing.Point(12, 204);
-            this.checkBoxSM.Name = "checkBoxSM";
-            this.checkBoxSM.Size = new System.Drawing.Size(243, 24);
-            this.checkBoxSM.TabIndex = 124;
-            this.checkBoxSM.Text = "Сглаживание  триангуляции";
-            this.checkBoxSM.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxReMeshDel
-            // 
-            this.checkBoxReMeshDel.AutoSize = true;
-            this.checkBoxReMeshDel.Checked = true;
-            this.checkBoxReMeshDel.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxReMeshDel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.checkBoxReMeshDel.Location = new System.Drawing.Point(12, 229);
-            this.checkBoxReMeshDel.Name = "checkBoxReMeshDel";
-            this.checkBoxReMeshDel.Size = new System.Drawing.Size(257, 24);
-            this.checkBoxReMeshDel.TabIndex = 123;
-            this.checkBoxReMeshDel.Text = "Перенумерация сетки Делоне";
-            this.checkBoxReMeshDel.UseVisualStyleBackColor = true;
-            // 
-            // nUDCountSmooth
-            // 
-            this.nUDCountSmooth.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.nUDCountSmooth.Location = new System.Drawing.Point(201, 86);
-            this.nUDCountSmooth.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.nUDCountSmooth.Name = "nUDCountSmooth";
-            this.nUDCountSmooth.Size = new System.Drawing.Size(50, 26);
-            this.nUDCountSmooth.TabIndex = 120;
-            this.nUDCountSmooth.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label32.Location = new System.Drawing.Point(12, 88);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(169, 20);
-            this.label32.TabIndex = 119;
-            this.label32.Text = "Циклов сглаживания";
-            // 
-            // nUDMaximumAngle
-            // 
-            this.nUDMaximumAngle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.nUDMaximumAngle.Location = new System.Drawing.Point(201, 59);
-            this.nUDMaximumAngle.Maximum = new decimal(new int[] {
-            150,
-            0,
-            0,
-            0});
-            this.nUDMaximumAngle.Minimum = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
-            this.nUDMaximumAngle.Name = "nUDMaximumAngle";
-            this.nUDMaximumAngle.Size = new System.Drawing.Size(50, 26);
-            this.nUDMaximumAngle.TabIndex = 118;
-            this.nUDMaximumAngle.Value = new decimal(new int[] {
-            120,
-            0,
-            0,
-            0});
-            // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label31.Location = new System.Drawing.Point(12, 61);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(161, 20);
-            this.label31.TabIndex = 117;
-            this.label31.Text = "Максимальный угол";
+            this.label12.AutoSize = true;
+            this.label12.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label12.Location = new System.Drawing.Point(13, 11);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(154, 20);
+            this.label12.TabIndex = 115;
+            this.label12.Text = "Минимальный угол";
             // 
             // nUDMinimumAngle
             // 
             this.nUDMinimumAngle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.nUDMinimumAngle.Location = new System.Drawing.Point(201, 32);
+            this.nUDMinimumAngle.Location = new System.Drawing.Point(202, 11);
             this.nUDMinimumAngle.Maximum = new decimal(new int[] {
             60,
             0,
@@ -551,15 +560,132 @@
             0,
             0});
             // 
-            // label12
+            // label31
             // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label12.Location = new System.Drawing.Point(12, 32);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(154, 20);
-            this.label12.TabIndex = 115;
-            this.label12.Text = "Минимальный угол";
+            this.label31.AutoSize = true;
+            this.label31.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label31.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label31.Location = new System.Drawing.Point(13, 40);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(161, 20);
+            this.label31.TabIndex = 117;
+            this.label31.Text = "Максимальный угол";
+            // 
+            // nUDMaximumAngle
+            // 
+            this.nUDMaximumAngle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.nUDMaximumAngle.Location = new System.Drawing.Point(202, 38);
+            this.nUDMaximumAngle.Maximum = new decimal(new int[] {
+            150,
+            0,
+            0,
+            0});
+            this.nUDMaximumAngle.Minimum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.nUDMaximumAngle.Name = "nUDMaximumAngle";
+            this.nUDMaximumAngle.Size = new System.Drawing.Size(50, 26);
+            this.nUDMaximumAngle.TabIndex = 118;
+            this.nUDMaximumAngle.Value = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
+            // 
+            // cbSegmentSplitting
+            // 
+            this.cbSegmentSplitting.AutoSize = true;
+            this.cbSegmentSplitting.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.cbSegmentSplitting.Checked = true;
+            this.cbSegmentSplitting.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbSegmentSplitting.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbSegmentSplitting.Location = new System.Drawing.Point(13, 100);
+            this.cbSegmentSplitting.Name = "cbSegmentSplitting";
+            this.cbSegmentSplitting.Size = new System.Drawing.Size(238, 24);
+            this.cbSegmentSplitting.TabIndex = 127;
+            this.cbSegmentSplitting.Text = "Создавать узлы на контуре";
+            this.cbSegmentSplitting.UseVisualStyleBackColor = false;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label32.Location = new System.Drawing.Point(13, 67);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(169, 20);
+            this.label32.TabIndex = 119;
+            this.label32.Text = "Циклов сглаживания";
+            // 
+            // cbConformingDelaunay
+            // 
+            this.cbConformingDelaunay.AutoSize = true;
+            this.cbConformingDelaunay.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.cbConformingDelaunay.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbConformingDelaunay.Location = new System.Drawing.Point(13, 128);
+            this.cbConformingDelaunay.Name = "cbConformingDelaunay";
+            this.cbConformingDelaunay.Size = new System.Drawing.Size(195, 24);
+            this.cbConformingDelaunay.TabIndex = 126;
+            this.cbConformingDelaunay.Text = "Триангуляция Делоне";
+            this.cbConformingDelaunay.UseVisualStyleBackColor = false;
+            // 
+            // nUDCountSmooth
+            // 
+            this.nUDCountSmooth.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.nUDCountSmooth.Location = new System.Drawing.Point(202, 65);
+            this.nUDCountSmooth.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nUDCountSmooth.Name = "nUDCountSmooth";
+            this.nUDCountSmooth.Size = new System.Drawing.Size(50, 26);
+            this.nUDCountSmooth.TabIndex = 120;
+            this.nUDCountSmooth.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // cbCreateContur
+            // 
+            this.cbCreateContur.AutoSize = true;
+            this.cbCreateContur.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.cbCreateContur.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbCreateContur.Location = new System.Drawing.Point(13, 156);
+            this.cbCreateContur.Name = "cbCreateContur";
+            this.cbCreateContur.Size = new System.Drawing.Size(245, 24);
+            this.cbCreateContur.TabIndex = 125;
+            this.cbCreateContur.Text = "Создавать выпуклый контур";
+            this.cbCreateContur.UseVisualStyleBackColor = false;
+            // 
+            // checkBoxReMeshDel
+            // 
+            this.checkBoxReMeshDel.AutoSize = true;
+            this.checkBoxReMeshDel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.checkBoxReMeshDel.Checked = true;
+            this.checkBoxReMeshDel.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxReMeshDel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.checkBoxReMeshDel.Location = new System.Drawing.Point(13, 208);
+            this.checkBoxReMeshDel.Name = "checkBoxReMeshDel";
+            this.checkBoxReMeshDel.Size = new System.Drawing.Size(257, 24);
+            this.checkBoxReMeshDel.TabIndex = 123;
+            this.checkBoxReMeshDel.Text = "Перенумерация сетки Делоне";
+            this.checkBoxReMeshDel.UseVisualStyleBackColor = false;
+            // 
+            // checkBoxSM
+            // 
+            this.checkBoxSM.AutoSize = true;
+            this.checkBoxSM.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.checkBoxSM.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.checkBoxSM.Location = new System.Drawing.Point(13, 183);
+            this.checkBoxSM.Name = "checkBoxSM";
+            this.checkBoxSM.Size = new System.Drawing.Size(243, 24);
+            this.checkBoxSM.TabIndex = 124;
+            this.checkBoxSM.Text = "Сглаживание  триангуляции";
+            this.checkBoxSM.UseVisualStyleBackColor = false;
             // 
             // statusPanel
             // 
@@ -567,9 +693,9 @@
             this.statusPanel.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.tbMessage});
-            this.statusPanel.Location = new System.Drawing.Point(0, 899);
+            this.statusPanel.Location = new System.Drawing.Point(0, 646);
             this.statusPanel.Name = "statusPanel";
-            this.statusPanel.Size = new System.Drawing.Size(1149, 26);
+            this.statusPanel.Size = new System.Drawing.Size(824, 26);
             this.statusPanel.TabIndex = 90;
             this.statusPanel.Text = "statusStrip1";
             // 
@@ -623,10 +749,12 @@
             this.toolStripButton6,
             this.toolStripSeparator11,
             this.toolStripSeparator2,
-            this.tsb_GenerWorkFile});
+            this.tsb_GenerWorkFile,
+            this.toolStripSeparator13,
+            this.toolStripSeparator14});
             this.toolStrip1.Location = new System.Drawing.Point(0, 29);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1149, 31);
+            this.toolStrip1.Size = new System.Drawing.Size(824, 31);
             this.toolStrip1.TabIndex = 91;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -928,6 +1056,16 @@
             this.tsb_GenerWorkFile.Text = "Создание файла задачи";
             this.tsb_GenerWorkFile.Click += new System.EventHandler(this.tsb_GenerWorkFile_Click);
             // 
+            // toolStripSeparator13
+            // 
+            this.toolStripSeparator13.Name = "toolStripSeparator13";
+            this.toolStripSeparator13.Size = new System.Drawing.Size(6, 31);
+            // 
+            // toolStripSeparator14
+            // 
+            this.toolStripSeparator14.Name = "toolStripSeparator14";
+            this.toolStripSeparator14.Size = new System.Drawing.Size(6, 31);
+            // 
             // menuStrip1
             // 
             this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 12F);
@@ -938,7 +1076,7 @@
             this.помошьToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1149, 29);
+            this.menuStrip1.Size = new System.Drawing.Size(824, 29);
             this.menuStrip1.TabIndex = 92;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -1169,14 +1307,14 @@
             this.gdI_EditControlClouds1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.gdI_EditControlClouds1.Location = new System.Drawing.Point(12, 61);
             this.gdI_EditControlClouds1.Name = "gdI_EditControlClouds1";
-            this.gdI_EditControlClouds1.Size = new System.Drawing.Size(1125, 835);
+            this.gdI_EditControlClouds1.Size = new System.Drawing.Size(800, 582);
             this.gdI_EditControlClouds1.TabIndex = 0;
             // 
             // FCreateCloudMesh
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1450, 925);
+            this.ClientSize = new System.Drawing.Size(1125, 672);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusPanel);
             this.Controls.Add(this.menuStrip1);
@@ -1192,10 +1330,15 @@
             this.panel10.ResumeLayout(false);
             this.panel10.PerformLayout();
             this.tpCreateMesh.ResumeLayout(false);
-            this.tpCreateMesh.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nUDCountSmooth)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nUDMaximumAngle)).EndInit();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_TimeBrack)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_Velocity)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUDMinimumAngle)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDMaximumAngle)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDCountSmooth)).EndInit();
             this.statusPanel.ResumeLayout(false);
             this.statusPanel.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
@@ -1224,10 +1367,8 @@
         private System.Windows.Forms.Button btSaveCloud;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TabPage tpCreateMesh;
-        private System.Windows.Forms.Button btCreateCountursMesh;
         private System.Windows.Forms.CheckBox cbSegmentSplitting;
         private System.Windows.Forms.CheckBox cbConformingDelaunay;
-        private System.Windows.Forms.Button btCreateMesh;
         private System.Windows.Forms.CheckBox cbCreateContur;
         private System.Windows.Forms.CheckBox checkBoxSM;
         private System.Windows.Forms.CheckBox checkBoxReMeshDel;
@@ -1242,7 +1383,6 @@
         private System.Windows.Forms.ToolStripStatusLabel tbMessage;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Button btMrf;
         private System.Windows.Forms.ToolStrip toolStrip1;
@@ -1312,5 +1452,18 @@
         private System.Windows.Forms.ToolStripMenuItem tsm_CreateBoundaryMesh;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown nud_Velocity;
+        private System.Windows.Forms.CheckBox cbFilterVelocity;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.CheckBox cbFVelocity;
+        private System.Windows.Forms.CheckBox cb_MarkerNods;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox cbTreckVelocity;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.NumericUpDown nud_TimeBrack;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
     }
 }

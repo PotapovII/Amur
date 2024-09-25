@@ -46,11 +46,12 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.insertButton = new System.Windows.Forms.ToolStripButton();
             this.btInsertData = new System.Windows.Forms.ToolStripButton();
             this.ts_ClearBadData = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.tsb_VelocityMark = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -187,6 +188,7 @@
             this.convertDBToolStripMenuItem.Name = "convertDBToolStripMenuItem";
             this.convertDBToolStripMenuItem.Size = new System.Drawing.Size(229, 26);
             this.convertDBToolStripMenuItem.Text = "Синхронизация в БД";
+            this.convertDBToolStripMenuItem.Visible = false;
             this.convertDBToolStripMenuItem.Click += new System.EventHandler(this.convertDBToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
@@ -216,12 +218,30 @@
             this.insertButton,
             this.btInsertData,
             this.ts_ClearBadData,
-            this.toolStripButton1});
+            this.toolStripButton1,
+            this.tsb_VelocityMark});
             this.toolStrip1.Location = new System.Drawing.Point(0, 29);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(922, 31);
             this.toolStrip1.TabIndex = 605;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.lbExp);
+            this.panel1.Controls.Add(this.cListBoxDates);
+            this.panel1.Controls.Add(this.cListBoxDatesGPX);
+            this.panel1.Location = new System.Drawing.Point(5, 52);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(905, 576);
+            this.panel1.TabIndex = 606;
             // 
             // insertButton
             // 
@@ -241,6 +261,7 @@
             this.btInsertData.Name = "btInsertData";
             this.btInsertData.Size = new System.Drawing.Size(28, 28);
             this.btInsertData.Text = "Синхронизация в БД";
+            this.btInsertData.Visible = false;
             this.btInsertData.Click += new System.EventHandler(this.updateButton_Click);
             // 
             // ts_ClearBadData
@@ -264,22 +285,15 @@
             this.toolStripButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
-            // panel1
+            // tsb_VelocityMark
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.lbExp);
-            this.panel1.Controls.Add(this.cListBoxDates);
-            this.panel1.Controls.Add(this.cListBoxDatesGPX);
-            this.panel1.Location = new System.Drawing.Point(5, 52);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(905, 576);
-            this.panel1.TabIndex = 606;
+            this.tsb_VelocityMark.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsb_VelocityMark.Image = global::RiverDB.Properties.Resources.FLCloud;
+            this.tsb_VelocityMark.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsb_VelocityMark.Name = "tsb_VelocityMark";
+            this.tsb_VelocityMark.Size = new System.Drawing.Size(28, 28);
+            this.tsb_VelocityMark.Text = "Маркировка скоростных узлов";
+            this.tsb_VelocityMark.Click += new System.EventHandler(this.tsb_VelocityMark_Click);
             // 
             // ConvertForm
             // 
@@ -331,5 +345,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStripButton ts_ClearBadData;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton tsb_VelocityMark;
     }
 }

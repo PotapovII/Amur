@@ -12,8 +12,21 @@ namespace ConnectLib
     /// </summary>
     public enum TypeCommand
     {
+        /// <summary>
+        /// Вставка данных об узлах
+        /// </summary>
         insert,
-        update,
+        /// <summary>
+        /// Расчет срезанных глубин в узлах
+        /// </summary>
+        updateDeapth,
+        /// <summary>
+        /// Установка маркеров для полей скорости в узлах
+        /// </summary>
+        updateMark,
+        /// <summary>
+        /// Удаление не синхронизорованных узлов
+        /// </summary>
         delete
     }
 

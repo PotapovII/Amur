@@ -24,37 +24,18 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+//---------------------------------------------------------------------------
+//                    ПРОЕКТ  "РУСЛОВЫЕ ПРОЦЕССЫ"
+//                         проектировщик:
+//                           Потапов И.И.
+//---------------------------------------------------------------------------
+//                 кодировка : 10.10.2023 Потапов И.И.
+//---------------------------------------------------------------------------
 namespace CommonLib
 {
     using System;
     using GeometryLib;
     using CommonLib.Geometry;
-
-    ///// <summary>
-    ///// ОО: ICloud - множество точек которое может содержать контурные точки
-    ///// </summary>
-    //public interface ICloud
-    //{
-    //    /// <summary>
-    //    /// Количество узлов
-    //    /// </summary>
-    //    int CountKnots { get; }
-    //    /// <summary>
-    //    /// Координаты X для узловых точек 
-    //    /// </summary>
-    //    /// <param name="dim">номер размерности</param>
-    //    /// <returns></returns>
-    //    double[] GetCoords(int dim);
-    //    /// <summary>
-    //    /// Диапазон координат для узлов сетки
-    //    /// </summary>
-    //    void MinMax(int dim, ref double min, ref double max);
-    //    /// <summary>
-    //    /// Массив маркеров вершин 
-    //    /// </summary>
-    //    int[] GetMarkKnots();
-    //}
-
     /// <summary>
     /// ОО: Отсылка данных для отрисовки
     /// </summary>
@@ -99,6 +80,10 @@ namespace CommonLib
         /// <param name="mark"></param>
         /// <param name="Atributs"></param>
         void AddNode(double x, double y, int mark, double[] Attributes = null);
+        /// <summary>
+        /// Добавить узел в облако
+        /// </summary>
+        void AddNode(IHPoint node);
         /// <summary>
         /// изменить маркер узла
         /// </summary>

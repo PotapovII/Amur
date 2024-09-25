@@ -47,6 +47,10 @@ namespace FEMTasksLib.FESimpleTask
     public class RiverCrossVortexPhiTri : ATriFEMTask
     {
         /// <summary>
+        /// Массив для отладки
+        /// </summary>
+        public double[] tmpRPhi;
+        /// <summary>
         /// Коэффициент релаксации.
         /// </summary>
         protected double w;
@@ -338,6 +342,7 @@ namespace FEMTasksLib.FESimpleTask
             Calk_TauXY_TauXZ();
         }
 
+        double[] F_Phi = null;
         /// <summary>
         /// Задача с вынужденной конвекцией, на верхней крышке области заданна скорость
         /// </summary>
@@ -363,6 +368,7 @@ namespace FEMTasksLib.FESimpleTask
             ECalkDynamicSpeed typeEddyViscosity, 
             bool flagLes, int idxMu2)
         {
+            bool Local = true;
             Init();
             _Phi = Phi;
             _Vortex = Vortex;
@@ -480,20 +486,20 @@ namespace FEMTasksLib.FESimpleTask
                 taskVortex.TaskSUPGTransportVortex_R(ref Vortex, eddyViscosity, R_midle, Ring, Ux, Uy, Uz, TauYY, TauYZ, TauZZ,
                     boundaryAdress, boundaryVortexValue, VetrexTurbTask);
                 // релаксация вихря
-                //for (int i = 0; i < CountKnots; i++)
-                //    Vortex[i] = (1 - w) * Vortex_old[i] + w * Vortex[i];
-                
+                for (int i = 0; i < CountKnots; i++)
+                    Vortex[i] = (1 - w) * Vortex_old[i] + w * Vortex[i];
+
                 // расчет функции тока
                 Console.WriteLine("Phi:");
                 //taskPhi.PoissonTaskBack(ref Phi, PhiMu, boundaryAdress, boundaryPhiValue, Vortex, R_midle, Ring);
                 taskPhi.PoissonTask0(ref Phi, boundaryAdress, boundaryPhiValue, Vortex, R_midle, Ring);
-
+                tmpRPhi = taskPhi.tmp;
                 // релаксация функции тока
                 for (int i = 0; i < CountKnots; i++)
                     Phi[i] = (1 - w) * Phi_old[i] + w * Phi[i];
                 // расчет поля скорости
                 Console.WriteLine("Vy ~ Vz:");
-                taskPhi.CalcVelosity(Phi, ref Vy, ref Vz, R_midle, Ring);
+                taskPhi.CalcVelosity(Phi, ref Vy, ref Vz, R_midle, Ring, Local);
                 //************************************************************************************************************************
                 // Считаем невязку
                 //************************************************************************************************************************

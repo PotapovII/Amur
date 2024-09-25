@@ -1245,6 +1245,7 @@ namespace MeshAdapterLib
                         {
                             values[ai][NewKnot] = e.Attributes[ai];
                         }
+                      //  Console.WriteLine("ID {0} Vx {1} Vy {2}", e.ID, e.attributes[3], e.attributes[4]);
                     }
                     // Console.WriteLine(" id {0} x {1} y {2} label {3}", e.ID, e.X, e.Y, e.Label);
                 }

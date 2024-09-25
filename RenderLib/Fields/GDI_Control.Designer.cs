@@ -37,9 +37,12 @@
             this.tbc_Task = new System.Windows.Forms.TabControl();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.cb_GradScaleLimit = new System.Windows.Forms.CheckBox();
             this.cb_GradScale = new System.Windows.Forms.CheckBox();
             this.cb_opValuesKnot = new System.Windows.Forms.CheckBox();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.tbMax = new System.Windows.Forms.TextBox();
+            this.tbMin = new System.Windows.Forms.TextBox();
             this.tb_opIsoLineSelectValue = new System.Windows.Forms.TextBox();
             this.nUD_CountIsoLine = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
@@ -157,6 +160,7 @@
             this.button6 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.renderControl1 = new RenderLib.CPRenderControlFields();
             this.panel3 = new System.Windows.Forms.Panel();
             this.cb_showBoudaryElems = new System.Windows.Forms.CheckBox();
             this.cb_showBoudaryKnots = new System.Windows.Forms.CheckBox();
@@ -191,10 +195,6 @@
             this.toolStripStatusLabel10 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tss_TaskName = new System.Windows.Forms.ToolStripStatusLabel();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.tbMin = new System.Windows.Forms.TextBox();
-            this.tbMax = new System.Windows.Forms.TextBox();
-            this.cb_GradScaleLimit = new System.Windows.Forms.CheckBox();
-            this.renderControl1 = new RenderLib.CPRenderControlFields();
             this.panel2.SuspendLayout();
             this.tbc_Task.SuspendLayout();
             this.tabPage6.SuspendLayout();
@@ -314,6 +314,18 @@
             this.panel4.Size = new System.Drawing.Size(262, 205);
             this.panel4.TabIndex = 11;
             // 
+            // cb_GradScaleLimit
+            // 
+            this.cb_GradScaleLimit.AutoSize = true;
+            this.cb_GradScaleLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cb_GradScaleLimit.Location = new System.Drawing.Point(177, 24);
+            this.cb_GradScaleLimit.Name = "cb_GradScaleLimit";
+            this.cb_GradScaleLimit.Size = new System.Drawing.Size(77, 24);
+            this.cb_GradScaleLimit.TabIndex = 6;
+            this.cb_GradScaleLimit.Text = "Выбор";
+            this.cb_GradScaleLimit.UseVisualStyleBackColor = true;
+            this.cb_GradScaleLimit.CheckedChanged += new System.EventHandler(this.cb_GradScaleLimit_CheckedChanged);
+            // 
             // cb_GradScale
             // 
             this.cb_GradScale.AutoSize = true;
@@ -356,6 +368,26 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(249, 127);
             this.panel5.TabIndex = 4;
+            // 
+            // tbMax
+            // 
+            this.tbMax.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbMax.Location = new System.Drawing.Point(194, 86);
+            this.tbMax.Name = "tbMax";
+            this.tbMax.Size = new System.Drawing.Size(48, 23);
+            this.tbMax.TabIndex = 98;
+            this.tbMax.Text = "1";
+            // 
+            // tbMin
+            // 
+            this.tbMin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbMin.Location = new System.Drawing.Point(194, 60);
+            this.tbMin.Name = "tbMin";
+            this.tbMin.Size = new System.Drawing.Size(48, 23);
+            this.tbMin.TabIndex = 97;
+            this.tbMin.Text = "1";
             // 
             // tb_opIsoLineSelectValue
             // 
@@ -536,10 +568,11 @@
             this.sb_Load.Checked = true;
             this.sb_Load.CheckState = System.Windows.Forms.CheckState.Checked;
             this.sb_Load.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.sb_Load.Location = new System.Drawing.Point(16, 151);
+            this.sb_Load.Location = new System.Drawing.Point(112, 146);
             this.sb_Load.Name = "sb_Load";
-            this.sb_Load.Size = new System.Drawing.Size(15, 14);
+            this.sb_Load.Size = new System.Drawing.Size(45, 24);
             this.sb_Load.TabIndex = 110;
+            this.sb_Load.Text = "из";
             this.sb_Load.UseVisualStyleBackColor = true;
             // 
             // cb_Save
@@ -549,10 +582,11 @@
             this.cb_Save.Checked = true;
             this.cb_Save.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cb_Save.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cb_Save.Location = new System.Drawing.Point(16, 119);
+            this.cb_Save.Location = new System.Drawing.Point(111, 116);
             this.cb_Save.Name = "cb_Save";
-            this.cb_Save.Size = new System.Drawing.Size(15, 14);
+            this.cb_Save.Size = new System.Drawing.Size(53, 24);
             this.cb_Save.TabIndex = 109;
+            this.cb_Save.Text = "как";
             this.cb_Save.UseVisualStyleBackColor = true;
             // 
             // bt_DelAll
@@ -603,9 +637,9 @@
             // 
             this.btShowTargetLine.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btShowTargetLine.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btShowTargetLine.Location = new System.Drawing.Point(154, 144);
+            this.btShowTargetLine.Location = new System.Drawing.Point(156, 87);
             this.btShowTargetLine.Name = "btShowTargetLine";
-            this.btShowTargetLine.Size = new System.Drawing.Size(99, 27);
+            this.btShowTargetLine.Size = new System.Drawing.Size(104, 27);
             this.btShowTargetLine.TabIndex = 104;
             this.btShowTargetLine.Text = "Отрисовка";
             this.btShowTargetLine.UseVisualStyleBackColor = true;
@@ -618,7 +652,7 @@
             this.cb_TargetLine.Checked = true;
             this.cb_TargetLine.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cb_TargetLine.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cb_TargetLine.Location = new System.Drawing.Point(154, 114);
+            this.cb_TargetLine.Location = new System.Drawing.Point(167, 147);
             this.cb_TargetLine.Name = "cb_TargetLine";
             this.cb_TargetLine.Size = new System.Drawing.Size(75, 24);
             this.cb_TargetLine.TabIndex = 103;
@@ -632,7 +666,7 @@
             this.cb_AllFields.Checked = true;
             this.cb_AllFields.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cb_AllFields.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cb_AllFields.Location = new System.Drawing.Point(154, 87);
+            this.cb_AllFields.Location = new System.Drawing.Point(167, 122);
             this.cb_AllFields.Name = "cb_AllFields";
             this.cb_AllFields.Size = new System.Drawing.Size(97, 24);
             this.cb_AllFields.TabIndex = 78;
@@ -643,7 +677,7 @@
             // 
             this.btLoadTargetLine.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btLoadTargetLine.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btLoadTargetLine.Location = new System.Drawing.Point(45, 145);
+            this.btLoadTargetLine.Location = new System.Drawing.Point(8, 143);
             this.btLoadTargetLine.Name = "btLoadTargetLine";
             this.btLoadTargetLine.Size = new System.Drawing.Size(98, 27);
             this.btLoadTargetLine.TabIndex = 102;
@@ -656,7 +690,7 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(8, 6);
+            this.label1.Location = new System.Drawing.Point(8, 4);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(161, 20);
             this.label1.TabIndex = 102;
@@ -666,7 +700,7 @@
             // 
             this.btSaveTargetLine.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btSaveTargetLine.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btSaveTargetLine.Location = new System.Drawing.Point(45, 115);
+            this.btSaveTargetLine.Location = new System.Drawing.Point(8, 114);
             this.btSaveTargetLine.Name = "btSaveTargetLine";
             this.btSaveTargetLine.Size = new System.Drawing.Size(98, 27);
             this.btSaveTargetLine.TabIndex = 101;
@@ -678,9 +712,9 @@
             // 
             this.tbBX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tbBX.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbBX.Location = new System.Drawing.Point(45, 56);
+            this.tbBX.Location = new System.Drawing.Point(42, 56);
             this.tbBX.Name = "tbBX";
-            this.tbBX.Size = new System.Drawing.Size(65, 23);
+            this.tbBX.Size = new System.Drawing.Size(86, 23);
             this.tbBX.TabIndex = 96;
             this.tbBX.Text = "0";
             // 
@@ -688,7 +722,7 @@
             // 
             this.button16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button16.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button16.Location = new System.Drawing.Point(45, 85);
+            this.button16.Location = new System.Drawing.Point(6, 85);
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(98, 27);
             this.button16.TabIndex = 100;
@@ -701,7 +735,7 @@
             this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label23.Location = new System.Drawing.Point(114, 61);
+            this.label23.Location = new System.Drawing.Point(137, 60);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(34, 17);
             this.label23.TabIndex = 101;
@@ -711,9 +745,9 @@
             // 
             this.tbAX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tbAX.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbAX.Location = new System.Drawing.Point(45, 27);
+            this.tbAX.Location = new System.Drawing.Point(42, 27);
             this.tbAX.Name = "tbAX";
-            this.tbAX.Size = new System.Drawing.Size(65, 23);
+            this.tbAX.Size = new System.Drawing.Size(86, 23);
             this.tbAX.TabIndex = 94;
             this.tbAX.Text = "0";
             // 
@@ -732,9 +766,9 @@
             // 
             this.tbAY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tbAY.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbAY.Location = new System.Drawing.Point(154, 29);
+            this.tbAY.Location = new System.Drawing.Point(172, 28);
             this.tbAY.Name = "tbAY";
-            this.tbAY.Size = new System.Drawing.Size(65, 23);
+            this.tbAY.Size = new System.Drawing.Size(88, 23);
             this.tbAY.TabIndex = 95;
             this.tbAY.Text = "1";
             // 
@@ -743,7 +777,7 @@
             this.label25.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label25.AutoSize = true;
             this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label25.Location = new System.Drawing.Point(113, 32);
+            this.label25.Location = new System.Drawing.Point(136, 31);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(34, 17);
             this.label25.TabIndex = 99;
@@ -753,9 +787,9 @@
             // 
             this.tbBY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tbBY.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbBY.Location = new System.Drawing.Point(154, 58);
+            this.tbBY.Location = new System.Drawing.Point(172, 57);
             this.tbBY.Name = "tbBY";
-            this.tbBY.Size = new System.Drawing.Size(65, 23);
+            this.tbBY.Size = new System.Drawing.Size(88, 23);
             this.tbBY.TabIndex = 97;
             this.tbBY.Text = "1";
             // 
@@ -1769,6 +1803,27 @@
             this.label9.TabIndex = 93;
             this.label9.Text = "Кисти для заливок";
             // 
+            // renderControl1
+            // 
+            this.renderControl1.BackColor = System.Drawing.Color.White;
+            colorSchemeFields1.Background = System.Drawing.Color.White;
+            colorSchemeFields1.FontKnot = new System.Drawing.Font("Arial", 8F);
+            colorSchemeFields1.FontReper = new System.Drawing.Font("Arial", 8F);
+            colorSchemeFields1.FontValue = null;
+            colorSchemeFields1.formatTextReper = ((uint)(2u));
+            this.renderControl1.colorScheme = colorSchemeFields1;
+            this.renderControl1.IndexTask = 0;
+            this.renderControl1.Location = new System.Drawing.Point(209, 3);
+            this.renderControl1.Name = "renderControl1";
+            this.renderControl1.Points = new System.Drawing.PointF[] {
+        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points"))),
+        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points1")))};
+            this.renderControl1.renderOptions = renderOptionsFields1;
+            this.renderControl1.Size = new System.Drawing.Size(32, 22);
+            this.renderControl1.TabIndex = 0;
+            this.renderControl1.Text = "renderControl1";
+            this.renderControl1.Visible = false;
+            // 
             // panel3
             // 
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -2024,59 +2079,6 @@
             this.tss_TaskName.Name = "tss_TaskName";
             this.tss_TaskName.Size = new System.Drawing.Size(17, 21);
             this.tss_TaskName.Text = "_";
-            // 
-            // tbMin
-            // 
-            this.tbMin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbMin.Location = new System.Drawing.Point(194, 60);
-            this.tbMin.Name = "tbMin";
-            this.tbMin.Size = new System.Drawing.Size(48, 23);
-            this.tbMin.TabIndex = 97;
-            this.tbMin.Text = "1";
-            // 
-            // tbMax
-            // 
-            this.tbMax.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbMax.Location = new System.Drawing.Point(194, 86);
-            this.tbMax.Name = "tbMax";
-            this.tbMax.Size = new System.Drawing.Size(48, 23);
-            this.tbMax.TabIndex = 98;
-            this.tbMax.Text = "1";
-            // 
-            // cb_GradScaleLimit
-            // 
-            this.cb_GradScaleLimit.AutoSize = true;
-            this.cb_GradScaleLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cb_GradScaleLimit.Location = new System.Drawing.Point(177, 24);
-            this.cb_GradScaleLimit.Name = "cb_GradScaleLimit";
-            this.cb_GradScaleLimit.Size = new System.Drawing.Size(77, 24);
-            this.cb_GradScaleLimit.TabIndex = 6;
-            this.cb_GradScaleLimit.Text = "Выбор";
-            this.cb_GradScaleLimit.UseVisualStyleBackColor = true;
-            this.cb_GradScaleLimit.CheckedChanged += new System.EventHandler(this.cb_GradScaleLimit_CheckedChanged);
-            // 
-            // renderControl1
-            // 
-            this.renderControl1.BackColor = System.Drawing.Color.White;
-            colorSchemeFields1.Background = System.Drawing.Color.White;
-            colorSchemeFields1.FontKnot = new System.Drawing.Font("Arial", 8F);
-            colorSchemeFields1.FontReper = new System.Drawing.Font("Arial", 8F);
-            colorSchemeFields1.FontValue = null;
-            colorSchemeFields1.formatTextReper = ((uint)(2u));
-            this.renderControl1.colorScheme = colorSchemeFields1;
-            this.renderControl1.IndexTask = 0;
-            this.renderControl1.Location = new System.Drawing.Point(209, 3);
-            this.renderControl1.Name = "renderControl1";
-            this.renderControl1.Points = new System.Drawing.PointF[] {
-        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points"))),
-        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points1")))};
-            this.renderControl1.renderOptions = renderOptionsFields1;
-            this.renderControl1.Size = new System.Drawing.Size(32, 22);
-            this.renderControl1.TabIndex = 0;
-            this.renderControl1.Text = "renderControl1";
-            this.renderControl1.Visible = false;
             // 
             // GDI_Control
             // 

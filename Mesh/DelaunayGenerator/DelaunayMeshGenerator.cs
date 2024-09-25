@@ -37,29 +37,47 @@ namespace DelaunayGenerator
         /// halfedges[i] это индекс двойной полуреберья в соседнем 
         /// треугольнике (или -1 для внешних полуребер на выпуклой оболочке).
         /// </summary>
-        public int[] Halfedges;
+        public int[] HalfEdges;
         /// <summary>
         /// Массив координат входных точек 
         /// </summary>
         public IHPoint[] Points;
         /// <summary>
-        /// Массив индексов, которые указывают на выпуклую оболочку входных данных 
-        /// против часовой стрелки
+        /// Размерность оболочки
+        /// </summary>
+        private int hashSize;
+        /// <summary>
+        /// Массив индексов выпуклой оболочки данных против часовой стрелки
         /// </summary>
         public int[] Hull;
-        private int hashSize;
+        /// <summary>
+        /// Массив индексов выпуклой оболочки данных против часовой стрелки
+        /// </summary>
         private int[] hullPrev;
+        /// <summary>
+        /// Массив индексов выпуклой оболочки данных против часовой стрелки
+        /// </summary>
         private int[] hullNext;
+        /// <summary>
+        /// Массив индексов выпуклой оболочки данных против часовой стрелки
+        /// </summary>
         private int[] hullTri;
         /// <summary>
         /// хэш-таблица для ребер
         /// </summary>
         private int[] hullHash;
+        /// <summary>
+        /// индекс точки отсортьированной по растоянию от центра
+        /// </summary>
         private int[] ids;
-
+        /// <summary>
+        /// Координаты центра окружности 
+        /// </summary>
         private double cx;
         private double cy;
-
+        /// <summary>
+        /// счетчик треугольников
+        /// </summary>
         private int trianglesLen;
         /// <summary>
         /// Массив входных координат в форме [x0, y0, x1, y1, ....] типа, 
@@ -138,7 +156,7 @@ namespace DelaunayGenerator
             MEM.Alloc(Points.Length, ref coordsX);
             MEM.Alloc(Points.Length, ref coordsY);
             MEM.Alloc(maxTriangles * 3, ref Triangles);
-            MEM.Alloc(maxTriangles * 3, ref Halfedges);
+            MEM.Alloc(maxTriangles * 3, ref HalfEdges);
             MEM.Alloc(points.Length, ref hullPrev);
             MEM.Alloc(points.Length, ref hullNext);
             MEM.Alloc(points.Length, ref hullTri);
@@ -152,7 +170,7 @@ namespace DelaunayGenerator
                 coordsY[i] = p.Y;
             }
 
-            
+            #region поиска границ рамки с точками
             var minX = coordsX[0];
             var minY = coordsY[0];
             var maxX = coordsX[0];
@@ -170,7 +188,10 @@ namespace DelaunayGenerator
                 if (y > maxY) maxY = y;
                 ids[i] = i;
             }
+            #endregion
 
+            #region поиск начального треугольника
+            // поиск центра рамки 
             var cx = (minX + maxX) / 2;
             var cy = (minY + maxY) / 2;
 
@@ -210,10 +231,7 @@ namespace DelaunayGenerator
 
             var i1x = coordsX[i1];
             var i1y = coordsY[i1];
-
             var minRadius = double.PositiveInfinity;
-
-            // find the third point which forms the smallest circumcircle with the first two
             // найдите третью точку, которая образует наименьшую окружность с первыми двумя
             for (int i = 0; i < points.Length; i++)
             {
@@ -230,10 +248,13 @@ namespace DelaunayGenerator
 
             if (minRadius == double.PositiveInfinity)
             {
-                throw new Exception("No Delaunay triangulation exists for this input.");
+                // Если три точки не найдены! То...
+                throw new Exception("Для этих входных данных не существует триангуляции Делоне!");
             }
-
-            if (Orient(i0, i1, i2))
+            #endregion
+            
+            // Выберем оринтацию вершин начального треугольника
+            if (Orient(i0, i1, i2) == true)
             {
                 var i = i1;
                 var x = i1x;
@@ -245,21 +266,20 @@ namespace DelaunayGenerator
                 i2x = x;
                 i2y = y;
             }
-
+            /// Центр окружности проведенной по трем вершинами с координатами ...
             var center = Circumcenter(i0x, i0y, i1x, i1y, i2x, i2y);
             this.cx = center.X;
             this.cy = center.Y;
-
+            // Расчет растояний от центра окружности 1 треугольника до точек триангуляции
             var dists = new double[points.Length];
             for (var i = 0; i < points.Length; i++)
             {
                 dists[i] = Dist(center.X, center.Y, i);
             }
-
-            // отсортируйте точки по расстоянию от центра окружности исходного треугольника
+            // быстрая сортировка точек по расстоянию от центра окружности исходного треугольника
             Quicksort(ids, dists, 0, points.Length - 1);
 
-            // set up the seed triangle as the starting hull
+            
             // установите начальный треугольник в качестве начальной оболочки
             hullStart = i0;
             hullSize = 3;
@@ -275,46 +295,46 @@ namespace DelaunayGenerator
             hullHash[HashKey(i0x, i0y)] = i0;
             hullHash[HashKey(i1x, i1y)] = i1;
             hullHash[HashKey(i2x, i2y)] = i2;
-
+            // счетчик треугольников
             trianglesLen = 0;
+            // Добавление 1 треугольника в список треугольников
             AddTriangle(i0, i1, i2, -1, -1, -1);
 
+            #region Поиск выпуклой оболочки и триангуляция
             double xp = 0;
             double yp = 0;
-
+            // Поиск выпуклой оболочки и триангуляция
             for (var k = 0; k < ids.Length; k++)
             {
+                // обработка текущего k - го узла
                 var i = ids[k];
                 var x = coordsX[i];
                 var y = coordsY[i];
 
-                // skip near-duplicate points
-                // пропускать почти совпадающие точки
+                // игнорировать почти совпадающие точки
                 if (k > 0 && Math.Abs(x - xp) <= EPSILON && Math.Abs(y - yp) <= EPSILON) continue;
                 xp = x;
                 yp = y;
 
-                // skip seed triangle points
-                // пропускать начальные точки треугольника
+                // игнорировать  начальные точки треугольника
                 if (i == i0 || i == i1 || i == i2) 
                     continue;
 
-                // find a visible edge on the convex hull using edge hash
-                // найдите видимый край на выпуклой оболочке, используя хэш ребра
+                // поиск видимого края выпуклой оболочки, используя хэш ребра
                 var start = 0;
                 for (var j = 0; j < hashSize; j++)
                 {
                     var key = HashKey(x, y);
                     start = hullHash[(key + j) % hashSize];
-                    if (start != -1 && start != hullNext[start]) break;
+                    if (start != -1 && start != hullNext[start]) 
+                        break;
                 }
-
 
                 start = hullPrev[start];
                 var e = start;
                 var q = hullNext[e];
 
-                while (!Orient(i, e, q))
+                while (Orient(i, e, q) == false)
                 {
                     e = q;
                     if (e == start)
@@ -324,27 +344,26 @@ namespace DelaunayGenerator
                     }
                     q = hullNext[e];
                 }
+                // скорее всего, это почти повторяющаяся точка; пропустите ее
+                if (e == int.MaxValue) 
+                    continue;
 
-                if (e == int.MaxValue) // скорее всего, это почти повторяющаяся точка; пропустите ее
-                    continue; // likely a near-duplicate point; skip it
-
-                // add the first triangle from the point
                 //  добавьте первый треугольник от точки
                 var t = AddTriangle(e, i, hullNext[e], -1, -1, hullTri[e]);
 
                 // recursively flip triangles from the point until they satisfy the Delaunay condition
                 // рекурсивно переворачивайте треугольники от точки к точке, пока они не удовлетворят условию Делоне
                 hullTri[i] = Legalize(t + 2);
-                // следите за граничными треугольниками на корпусе
+                // следите за граничными треугольниками на оболочке
                 hullTri[e] = t; // keep track of boundary triangles on the hull
                 hullSize++;
 
                 // walk forward through the hull, adding more triangles and flipping recursively
-                // пройдите вперед по корпусу, добавляя больше треугольников и переворачивая их рекурсивно
+                // пройдите вперед по оболочке, добавляя больше треугольников и переворачивая их рекурсивно
                 var next = hullNext[e];
                 q = hullNext[next];
 
-                while (Orient(i, next, q))
+                while (Orient(i, next, q) == true)
                 {
                     t = AddTriangle(next, i, q, hullTri[i], -1, hullTri[next]);
                     hullTri[i] = Legalize(t + 2);
@@ -360,7 +379,7 @@ namespace DelaunayGenerator
                 if (e == start)
                 {
                     q = hullPrev[e];
-                    while (Orient(i, q, e))
+                    while (Orient(i, q, e) == true)
                     {
                         t = AddTriangle(q, i, e, -1, hullTri[e], hullTri[q]);
                         Legalize(t + 2);
@@ -368,18 +387,16 @@ namespace DelaunayGenerator
                         hullNext[e] = e; // mark as removed
                         hullSize--;
                         e = q;
-
                         q = hullPrev[e];
                     }
                 }
 
-                // update the hull indices
+                
                 // пометить как удаленный
                 hullStart = hullPrev[i] = e;
                 hullNext[e] = hullPrev[next] = i;
                 hullNext[i] = next;
-
-                // save the two new edges in the hash table
+                                
                 // сохраните два новых ребра в хэш-таблице
                 hullHash[HashKey(x, y)] = i;
                 hullHash[HashKey(coordsX[e], coordsY[e])] = e;
@@ -392,17 +409,24 @@ namespace DelaunayGenerator
                 Hull[i] = s;
                 s = hullNext[s];
             }
+            #endregion
             // get rid of temporary arrays
             // избавиться от временных массивов
             hullPrev = hullNext = hullTri = null; 
-
             // trim typed triangle mesh arrays
             // обрезка типизированных треугольных сетчатых массивов
             Triangles = Triangles.Take(trianglesLen).ToArray();
-            Halfedges = Halfedges.Take(trianglesLen).ToArray();
+            HalfEdges = HalfEdges.Take(trianglesLen).ToArray();
         }
 
         #region CreationLogic
+        /// <summary>
+        /// знак верктоного произведения построенного на касательных к двум граням
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="q"></param>
+        /// <param name="r"></param>
+        /// <returns></returns>
         bool Orient(int i, int q, int r)
         {
             return (coordsY[q] - coordsY[i]) * (coordsX[r] - coordsX[q]) - (coordsX[q] - coordsX[i]) * (coordsY[r] - coordsY[q]) < 0;
@@ -417,7 +441,7 @@ namespace DelaunayGenerator
             // рекурсия устранена с помощью стека фиксированного размера
             while (true)
             {
-                var b = Halfedges[a];
+                var b = HalfEdges[a];
 
                 // если пара треугольников не удовлетворяет условию Делоне
                 // (p1 находится внутри описанной окружности [p0, pl, pr]),
@@ -466,7 +490,7 @@ namespace DelaunayGenerator
                     Triangles[a] = p1;
                     Triangles[b] = p0;
 
-                    var hbl = Halfedges[bl];
+                    var hbl = HalfEdges[bl];
 
                     // edge swapped on the other side of the hull (rare); fix the halfedge reference
                     // ребро поменяно местами на другой стороне корпуса (редко);
@@ -485,7 +509,7 @@ namespace DelaunayGenerator
                         } while (e != hullStart);
                     }
                     Link(a, hbl);
-                    Link(b, Halfedges[ar]);
+                    Link(b, HalfEdges[ar]);
                     Link(ar, bl);
 
                     var br = b0 + (b + 1) % 3;
@@ -523,25 +547,35 @@ namespace DelaunayGenerator
                    dy * (ex * cp - bp * fx) +
                    ap * (ex * fy - ey * fx) < 0;
         }
-
+        /// <summary>
+        /// Добавление треугольника в список треугольников
+        /// </summary>
+        /// <param name="i0">индекс вершины 0</param>
+        /// <param name="i1">индекс вершины 1</param>
+        /// <param name="i2">индекс вершины 2</param>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
         private int AddTriangle(int i0, int i1, int i2, int a, int b, int c)
         {
-            var t = trianglesLen;
-            Triangles[t] = i0;
-            Triangles[t + 1] = i1;
-            Triangles[t + 2] = i2;
+            var triangleID = trianglesLen;
+            Triangles[triangleID] = i0;
+            Triangles[triangleID + 1] = i1;
+            Triangles[triangleID + 2] = i2;
 
-            Link(t, a);
-            Link(t + 1, b);
-            Link(t + 2, c);
+            Link(triangleID, a);
+            Link(triangleID + 1, b);
+            Link(triangleID + 2, c);
 
             trianglesLen += 3;
-            return t;
+            return triangleID;
         }
-        private void Link(int a, int b)
+        private void Link(int triangleID, int b)
         {
-            Halfedges[a] = b;
-            if (b != -1) Halfedges[b] = a;
+            HalfEdges[triangleID] = b;
+            if (b != -1) 
+                HalfEdges[b] = triangleID;
         }
         private int HashKey(double x, double y) => (int)(Math.Floor(PseudoAngle(x - cx, y - cy) * hashSize) % hashSize);
         private static double PseudoAngle(double dx, double dy)
@@ -549,6 +583,13 @@ namespace DelaunayGenerator
             var p = dx / (Math.Abs(dx) + Math.Abs(dy));
             return (dy > 0 ? 3 - p : 1 + p) / 4; // [0..1]
         }
+        /// <summary>
+        /// быстрая сортировка точек по расстоянию от центра окружности исходного треугольника
+        /// </summary>
+        /// <param name="ids">индекс сортируемой точки</param>
+        /// <param name="dists">дистанции от центра до сортируемой точки</param>
+        /// <param name="left">начальный номер узла сортируемых массивов</param>
+        /// <param name="right">конечный номер узла сортируемых массивов</param></param>
         private static void Quicksort(int[] ids, double[] dists, int left, int right)
         {
             if (right - left <= 20)
@@ -617,6 +658,9 @@ namespace DelaunayGenerator
             var y = (dx * cl - ex * bl) * d;
             return x * x + y * y;
         }
+        /// <summary>
+        /// Центр окружности проведенной по трем вершинами с координатами ...
+        /// </summary>
         private static HPoint Circumcenter(double ax, double ay, double bx, double by, double cx, double cy)
         {
             var dx = bx - ax;
@@ -657,7 +701,7 @@ namespace DelaunayGenerator
         {
             for (var e = 0; e < Triangles.Length; e++)
             {
-                if (e > Halfedges[e])
+                if (e > HalfEdges[e])
                 {
                     var p = Points[Triangles[e]];
                     var q = Points[Triangles[NextHalfedge(e)]];
@@ -670,10 +714,10 @@ namespace DelaunayGenerator
             if (triangleVerticeSelector == null) triangleVerticeSelector = x => GetCentroid(x);
             for (var e = 0; e < Triangles.Length; e++)
             {
-                if (e < Halfedges[e])
+                if (e < HalfEdges[e])
                 {
                     var p = triangleVerticeSelector(TriangleOfEdge(e));
-                    var q = triangleVerticeSelector(TriangleOfEdge(Halfedges[e]));
+                    var q = triangleVerticeSelector(TriangleOfEdge(HalfEdges[e]));
                     yield return new HEdge(e, p, q);
                 }
             }
@@ -826,7 +870,7 @@ namespace DelaunayGenerator
             {
                 yield return incoming;
                 var outgoing = NextHalfedge(incoming);
-                incoming = Halfedges[outgoing];
+                incoming = HalfEdges[outgoing];
             } while (incoming != -1 && incoming != start);
         }
         /// <summary>
@@ -852,7 +896,7 @@ namespace DelaunayGenerator
             var triangleEdges = EdgesOfTriangle(t);
             foreach (var e in triangleEdges)
             {
-                var opposite = Halfedges[e];
+                var opposite = HalfEdges[e];
                 if (opposite >= 0)
                 {
                     adjacentTriangles.Add(TriangleOfEdge(opposite));

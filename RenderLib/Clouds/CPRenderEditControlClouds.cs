@@ -138,7 +138,7 @@ namespace RenderLib
 
             this.zoom = new WorldScaler(true);
             this.context = new BufferedGraphicsContext();
-            this.clouds = new CloudRiverNods();
+            this.clouds = new SavePointRiverNods();
             this.pIndex = 0;
 
 
@@ -831,20 +831,59 @@ namespace RenderLib
         /// <param name="CountKnots"></param>
         /// <param name="Mark"></param>
         /// <param name="p"></param>
-        public void UpDateFig(int FigSelectedIndex, int PointsSelectedIndex, int SegmentSelectedIndex, int CountKnots, int Marker, CloudKnot p)
+        //public void UpDateFig(int FigSelectedIndex, int PointsSelectedIndex, int SegmentSelectedIndex, 
+        //    int CountKnots, int Marker, CloudKnot p)
+        //{
+        //    IMFigura fig = Area[FigSelectedIndex];
+        //    // Обновление точки
+        //    IMPoint pp = fig.GetPoint(PointsSelectedIndex);
+        //    pp.Point = p;
+        //    for (int i = 0; i < fig.Count; i++)
+        //    {
+        //        fig.Points[i].Status = FigureStatus.UnselectedShape;
+        //        fig.Segments[i].Status = FigureStatus.UnselectedShape;
+        //    }
+        //    pp.Status = FigureStatus.SelectedShape;
+        //    // Обновление сегмента
+        //    IMSegment sg = fig.GetSegment(SegmentSelectedIndex);
+        //    sg.CountKnots = CountKnots;
+        //    sg.Marker = Marker;
+        //    sg.Status = FigureStatus.SelectedShape;
+        //    Invalidate();
+        //    this.Render();
+        //}
+        /// <summary>
+        /// Обновление точек фигуры
+        /// </summary>
+        /// <param name="FigSelectedIndex"></param>
+        /// <param name="PointsSelectedIndex"></param>
+        /// <param name="p"></param>
+        public void UpDateFigPoint(int FigSelectedIndex, int PointsSelectedIndex, CloudKnot p)
         {
             IMFigura fig = Area[FigSelectedIndex];
             // Обновление точки
             IMPoint pp = fig.GetPoint(PointsSelectedIndex);
             pp.Point = p;
             for (int i = 0; i < fig.Count; i++)
-            {
                 fig.Points[i].Status = FigureStatus.UnselectedShape;
-                fig.Segments[i].Status = FigureStatus.UnselectedShape;
-            }
             pp.Status = FigureStatus.SelectedShape;
+            Invalidate();
+            this.Render();
+        }
+        /// <summary>
+        /// Обновление фигуры
+        /// </summary>
+        /// <param name="FigSelectedIndex"></param>
+        /// <param name="SegmentSelectedIndex"></param>
+        /// <param name="CountKnots">Количество вершин на сегменте</param>
+        /// <param name="Marker">Маркер границы</param>
+        public void UpDateFigSegment(int FigSelectedIndex, int SegmentSelectedIndex,int CountKnots, int Marker)
+        {
+            IMFigura fig = Area[FigSelectedIndex];
             // Обновление сегмента
             IMSegment sg = fig.GetSegment(SegmentSelectedIndex);
+            for (int i = 0; i < fig.Count; i++)
+                fig.Segments[i].Status = FigureStatus.UnselectedShape;
             sg.CountKnots = CountKnots;
             sg.Marker = Marker;
             sg.Status = FigureStatus.SelectedShape;
@@ -899,7 +938,7 @@ namespace RenderLib
         /// <summary>
         /// Выбор активной линии сгласживания
         /// </summary>
-        public void SelectSLines(int idx, ref int Count)
+        public double SelectSLines(int idx, ref int Count)
         {
             for (int i = 0; i < sLines.Count; i++)
                 sLines[i].Selected = 0;
@@ -907,6 +946,7 @@ namespace RenderLib
             Count = sLines[idx].Count;
             Invalidate();
             this.Render();
+            return sLines[idx].Length();
         }
         public void UpDateSLines(int idx, int Count)
         {

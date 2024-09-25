@@ -14,8 +14,6 @@
         /// Фильтр синхронизации данных по долготе >
         /// </summary>
         string Filter = "190";
-
-
         string FileEXT = "";
         string FName = "";
         /// <summary>
@@ -46,9 +44,9 @@
 
         private void BtLoadData()
         {
-            string strSelect = "SELECT CAST(knot.knot_datetime AS DATE) as mydate FROM knot"
-                            + " GROUP BY CAST(knot.knot_datetime AS DATE) ORDER BY mydate";
-            DataTable mapTable = ConnectDB.GetDataTable(strSelect, TName);
+            string sql = "SELECT CAST(knot.knot_datetime AS DATE) as mydate FROM knot"
+                       + " GROUP BY CAST(knot.knot_datetime AS DATE) ORDER BY mydate";
+            DataTable mapTable = ConnectDB.GetDataTable(sql, TName);
             cListBoxDates.Items.Clear();
             foreach (DataRow dr in mapTable.Rows)
                 cListBoxDates.Items.Add(dr["mydate"]);
@@ -56,15 +54,15 @@
         }
         private void ForBtLoadData()
         {
-            string strSelectGPX = "SELECT CAST(forknot.forknot_datetime AS DATE) as mydate FROM forknot"
-                                + " GROUP BY CAST(forknot.forknot_datetime AS DATE) ORDER BY mydate";
-            DataTable mapTableGPX = ConnectDB.GetDataTable(strSelectGPX, TName);
+            string sql = "SELECT CAST(forknot.forknot_datetime AS DATE) as mydate FROM forknot"
+                       + " GROUP BY CAST(forknot.forknot_datetime AS DATE) ORDER BY mydate";
+            DataTable mapTableGPX = ConnectDB.GetDataTable(sql, TName);
             cListBoxDatesGPX.Items.Clear();
             foreach (DataRow dr in mapTableGPX.Rows)
                 cListBoxDatesGPX.Items.Add(dr["mydate"]);
             ts_ClearBadData.Enabled = true;
         }
-        
+
         private void insertButton_Click(object sender, EventArgs e)
         {
             loadDBToolStripMenuItem_Click(sender, e);
@@ -107,6 +105,7 @@
                         list = new List<IStandartSQLCommand>();
                 }
             }
+            convertDBToolStripMenuItem_Click(sender, e);
         }
 
         private void convertDBToolStripMenuItem_Click(object sender, EventArgs e)
@@ -128,13 +127,13 @@
                 }
                 if (FileEXT == ".gpx" || FileEXT == ".GPX")
                 {
-                    string strCom = "update[dbo].knot set knot_latitude = forknot_latitude," +
-                    "knot_longitude = forknot_longitude, knot_datetime = " +
-                    "forknot_datetime,knot_fulldepth = forknot_fulldepth, knot_temperature =" +
-                    "forknot_temperature from knot, forknot where knot_datetime = forknot_datetime";
                     // Добавление записей в базу данных
                     if (ConnectDB.DoListCommand(list, TypeCommand.insert, ref Count, ref result) == true)
                     {
+                        string strCom = "update[dbo].knot set knot_latitude = forknot_latitude," +
+                        "knot_longitude = forknot_longitude, knot_datetime = " +
+                        "forknot_datetime,knot_fulldepth = forknot_fulldepth, knot_temperature =" +
+                        "forknot_temperature from knot, forknot where knot_datetime = forknot_datetime";
                         // если успешно, обновляем поля
                         ConnectDB.DoSqlTransactionCommand(strCom);
                         // отрисовка
@@ -149,8 +148,9 @@
                         ExtStandartOld knots = (ExtStandartOld)list[0];
                         DateTime dataTime = knots.dataTime.Date;
                         string SdataTime = dataTime.ToString("yyyy-MM-dd HH:mm:ss:fff");
-                        string seeWaterleve = "SELECT experiment_waterlevel, experiment_datetime FROM experiment" +
-                        " where CAST(experiment_datetime AS DATE)  IN('" + SdataTime + "')";
+                        string seeWaterleve = "SELECT experiment_waterlevel, " +
+                            "experiment_datetime FROM experiment" +
+                            " where CAST(experiment_datetime AS DATE)  IN('" + SdataTime + "')";
                         DataTable table = ConnectDB.GetDataTable(seeWaterleve, "experiment");
                         if (table.Rows.Count == 0)
                         {
@@ -190,7 +190,7 @@
         {
             string[] helps = File.ReadAllLines(@"ConvertorIn\HelpConverter.txt");
             lbExp.Items.Clear();
-            foreach(string help in helps)
+            foreach (string help in helps)
                 lbExp.Items.Add(help);
         }
         /// <summary>
@@ -313,10 +313,50 @@
                 uList.Add(point);
             }
             int Count = 0;
-            string result="";
-            if (ConnectDB.DoListCommand(uList, TypeCommand.update, ref Count, ref result) == true)
+            string result = "";
+            if (ConnectDB.DoListCommand(uList, TypeCommand.updateDeapth, ref Count, ref result) == true)
             {
                 ForBtLoadData();
+            }
+        }
+        /// <summary>
+        /// Внесение макрера скорости для точек
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsb_VelocityMark_Click(object sender, EventArgs e)
+        {
+            lbExp.Items.Clear();
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                // имя файла
+                string FileName = openFileDialog1.FileName;
+                FName = Path.GetFileName(FileName);
+                // расширение файла
+                FileEXT = Path.GetExtension(FileName).ToLower();
+                try
+                {
+                    if (FileEXT == ".xls")
+                    {
+                        List<IStandartSQLCommand> listMarkUpdate = Convert_GPX_to_Standart.LoadExcel(FileName);
+                        foreach (var p in listMarkUpdate)
+                            lbExp.Items.Add(((StandartGPX)p).ToString());
+                        tsLab.Text = "Загружен файл наблюдений за поверхностной скоростью " + FName + 
+                            " содержащий " + lbExp.Items.Count.ToString() + " записей";
+                        int Count = 0;
+                        string result = "";
+                        if (ConnectDB.DoListCommand(listMarkUpdate, TypeCommand.updateMark, ref Count, ref result) == true)
+                        {
+                            ForBtLoadData();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    if (list == null)
+                        list = new List<IStandartSQLCommand>();
+                }
             }
         }
     }

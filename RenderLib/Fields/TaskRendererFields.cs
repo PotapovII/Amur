@@ -19,6 +19,7 @@ namespace RenderLib
     using GeometryLib.Vector;
     using GeometryLib.World;
     using CommonLib.DrvGraphics;
+    using CommonLib.Geometry;
 
     /// <summary>
     /// ОО: Класс методов для отрисовки данных
@@ -32,6 +33,8 @@ namespace RenderLib
         double SumV = 0;
         double[] ValuesX = null;
         double[] ValuesY = null;
+        FPoint[] VeLLines = null;
+        float[] LengthLines = null;
         /// <summary>
         /// Флаги объектов отрисовки
         /// </summary>
@@ -84,9 +87,6 @@ namespace RenderLib
                 // заливка
                 if (renderOptions.opFillValues == true)
                     NativeRenderFillField(g);
-                // шкала для заливки
-                if (renderOptions.opGradScale == true)
-                    GradientScale(g);
                 // сетка (элементы)
                 if (renderOptions.showMesh == true)
                     RenderTriangles(g);
@@ -120,8 +120,11 @@ namespace RenderLib
                 // Отрисовка функций 
                 if (renderOptions.opGraphicCurve == true)
                     RenderCurve(g);
+                // шкала для заливки
+                if (renderOptions.opGradScale == true)
+                    GradientScale(g);
                 // отрисовка створа
-                if(renderOptions.opTargetLine == true)
+                if (renderOptions.opTargetLine == true)
                     RenderTargetLine(g);
                 // Отрисовка координатных осей
                 if (renderOptions.coordReper == true)
@@ -576,19 +579,69 @@ namespace RenderLib
                 return;
             if (ValuesY == null)
                 return;
-            int line = 50;
-            PointF pt, pv;
             double LValue = MaxV - MinV;
+            MEM.Alloc(Values.Length, ref VeLLines);
+            MEM.Alloc(Values.Length, ref LengthLines);
+            for (int i = 0; i < Values.Length; i++)
+            {
+                float dt = 15;
+                float dxV = (float)(ValuesX[i] / LValue);
+                float dyV = (float)(ValuesY[i] / LValue);
+                VeLLines[i] = new FPoint(dxV * dt, dyV * dt);
+                LengthLines[i] = VeLLines[i].Length();
+            }
+            float max = LengthLines.Max();
+            PointF ps = new PointF(max,max);
+            zoom.WorldToScreen(ref ps);
+            float maxPS = ((FPoint)ps).Length();
+            int line = 100;
+            int PixelVel = 100;
+            float scale = PixelVel / maxPS;
+
+
+            PointF pt, pv,pL,pR,pp;
+            float a = 0.15f;
+            float b = 0.7f;
             for (int i = 0; i < Values.Length; i++)
             {
                 pt = new PointF((float)X[i], (float)Y[i]);
                 zoom.WorldToScreen(ref pt);
-                g.FillEllipse(colorScheme.BrushPoint, pt.X - 2.5f, pt.Y - 2.5f, 5, 5);
+               // g.FillEllipse(colorScheme.BrushPoint, pt.X - 1.5f, pt.Y - 1.5f, 3, 3);
+                
+              //  if (MEM.Equals(LengthLines[i], 0) == true) continue;
+              //  pv = (PointF)VeLLines[i];
+              //  zoom.WorldToScreen(ref pv);
+              //  pv.X= pv.X * scale + pt.X; pv.Y = pv.Y * scale + pt.Y;
+              //  g.DrawLine(colorScheme.PenVectorLine, pt, pv);
+
+              ////  Console.WriteLine(pv.ToString());
+              //  // основание наконечника
+              //  pp = new PointF(b * pt.X + (1 - b) * pv.X, b * pt.Y - (1 - b) * pv.X);
+              //  FPoint norm = VeLLines[i].GetOrt();
+              //  FPoint L =  a * norm * PixelVel;
+              //  FPoint R = -L;
+              //  pL = new PointF(pp.X + L.X, pp.Y + L.Y);
+                // pR = new PointF(pp.X + R.X, pp.Y + R.Y);
+
+                //  g.DrawLine(colorScheme.PenVectorLine, pL, pv);
+                // g.DrawLine(colorScheme.PenVectorLine, pR, pv);
+
+
 
                 float dxv = (float)(line * ValuesX[i] / LValue);
                 float dyv = (float)(line * ValuesY[i] / LValue);
+                FPoint norm = new FPoint(-dyv, dxv);
+                FPoint L = norm * a;
+                FPoint R = -L;
+
+
                 pv = new PointF(pt.X + dxv, pt.Y - dyv);
+                pp = new PointF(pt.X + b * dxv, pt.Y - b * dyv);
+                pL = new PointF(pp.X + L.X, pp.Y + L.Y);
+                pR = new PointF(pp.X + R.X, pp.Y + R.Y);
                 g.DrawLine(colorScheme.PenVectorLine, pt, pv);
+                g.DrawLine(colorScheme.PenVectorLine, pL, pv);
+                g.DrawLine(colorScheme.PenVectorLine, pR, pv);
             }
         }
         /// <summary>

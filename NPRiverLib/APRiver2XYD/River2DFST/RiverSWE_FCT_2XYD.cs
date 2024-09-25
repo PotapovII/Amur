@@ -331,7 +331,7 @@ namespace NPRiverLib.APRiver2XYD.River2DFST
         public override void AddMeshPolesForGraphics(ISavePoint sp)
         {
 
-            Get(ref b_zeta, ref b_h, ref b_qx, ref b_qy, ref b_u, ref b_v);
+            Get(ref b_zeta, ref b_h, ref b_qy, ref b_qx, ref b_v, ref b_u);
 
             sp.Add("Расход ", b_qx, b_qy);
             sp.Add("Расход qx", b_qx);

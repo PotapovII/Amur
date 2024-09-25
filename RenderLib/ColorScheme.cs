@@ -115,7 +115,7 @@ namespace RenderLib
         {
             get
             {
-                formatTextReper = formatTextReper < 8 ? formatTextReper : 8;
+                formatTextReper = formatTextReper < 14 ? formatTextReper : 14;
                 return "{0:f" + formatTextReper.ToString() + "}";
             }
         }

@@ -277,20 +277,41 @@ namespace RenderLib
             renderer.UpDatePoint( coord, atr,  indexFig,  indexPoint);
         }
 
+        ///// <summary>
+        ///// Обновление активных позиций фигуры
+        ///// </summary>
+        ///// <param name="FigSelectedIndex"></param>
+        ///// <param name="PointsSelectedIndex"></param>
+        ///// <param name="SegmentSelectedIndex"></param>
+        ///// <param name="CountKnots"></param>
+        ///// <param name="Mark"></param>
+        ///// <param name="p"></param>
+        //public void UpDateFig(int FigSelectedIndex, int PointsSelectedIndex, 
+        //    int SegmentSelectedIndex, int CountKnots, int Mark, CloudKnot p)
+        //{
+        //    renderer.UpDateFig(FigSelectedIndex, PointsSelectedIndex, SegmentSelectedIndex, CountKnots, Mark, p);
+        //}
         /// <summary>
-        /// Обновление активных позиций фигуры
+        /// Обновление фигуры
+        /// </summary>
+        /// <param name="FigSelectedIndex"></param>
+        /// <param name="SegmentSelectedIndex"></param>
+        /// <param name="CountKnots">Количество вершин на сегменте</param>
+        /// <param name="Marker">Маркер границы</param>
+        public void UpDateFigSegment(int FigSelectedIndex, int SegmentSelectedIndex, int CountKnots, int Marker)
+        {
+            renderer.UpDateFigSegment(FigSelectedIndex, SegmentSelectedIndex, CountKnots, Marker);
+        }
+        /// <summary>
+        /// Обновление точек фигуры
         /// </summary>
         /// <param name="FigSelectedIndex"></param>
         /// <param name="PointsSelectedIndex"></param>
-        /// <param name="SegmentSelectedIndex"></param>
-        /// <param name="CountKnots"></param>
-        /// <param name="Mark"></param>
         /// <param name="p"></param>
-        public void UpDateFig(int FigSelectedIndex, int PointsSelectedIndex, int SegmentSelectedIndex, int CountKnots, int Mark, CloudKnot p)
+        public void UpDateFigPoint(int FigSelectedIndex, int PointsSelectedIndex, CloudKnot p)
         {
-            renderer.UpDateFig(FigSelectedIndex, PointsSelectedIndex, SegmentSelectedIndex, CountKnots, Mark, p);
+            renderer.UpDateFigPoint(FigSelectedIndex, PointsSelectedIndex, p);
         }
-
         /// <summary>
         /// Групповое обновление количества узлов на сегментах
         /// </summary>
@@ -321,9 +342,9 @@ namespace RenderLib
         /// <summary>
         /// Выбор активной линии сгласживания
         /// </summary>
-        public void SelectSLines(int idx,ref int Count)
+        public double SelectSLines(int idx,ref int Count)
         {
-            renderer.SelectSLines(idx, ref Count);
+            return renderer.SelectSLines(idx, ref Count);
         }
         /// <summary>
         /// Установить новое количество внутренних вершин линии сгласживания
@@ -350,6 +371,5 @@ namespace RenderLib
         //    return Area.GetRegion();
         //}
         #endregion
-
     }
 }

@@ -87,6 +87,8 @@ namespace CommonLib.Geometry
             x = a.x;
             y = a.y;
         }
+        
+
 
         public virtual FPoint Clone()
         {
@@ -174,12 +176,11 @@ namespace CommonLib.Geometry
 
         public static implicit operator PointF(FPoint p)
         {
-            return new PointF((float)p.x, (float)p.y);
+            return new PointF(p.x, p.y);
         }
-
         public static implicit operator FPoint(PointF p)
         {
-            return new FPoint((float)p.X, (float)p.Y);
+            return new FPoint(p.X, p.Y);
         }
 
         public static float Length(float x1, float y1, float x2, float y2)

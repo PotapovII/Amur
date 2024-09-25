@@ -16,15 +16,39 @@ namespace TriMeshGeneratorLib
     public class RVControl
     {
         public int trans;
+        /// <summary>
+        /// Тип сетки
+        /// </summary>
         public int meshtype;
+        /// <summary>
+        /// Размерность
+        /// </summary>
         public int dims;
+        /// <summary>
+        /// Количество переменных
+        /// </summary>
         public int CountVars;
+        /// <summary>
+        /// Количество параметров
+        /// </summary>
         public int knotParams;
         public int bparams;
         public int[] Keqns = new int[12];
+        /// <summary>
+        /// Количество узлов
+        /// </summary>
         public int CountNodes;
+        /// <summary>
+        /// Количество конечных элементов
+        /// </summary>
         public int CountElements;
+        /// <summary>
+        /// Количество граничных элементов
+        /// </summary>
         public int CountBoundElements;
+        /// <summary>
+        /// Количество сегментов
+        /// </summary>
         public int CountBoundSegs;
     }
 }

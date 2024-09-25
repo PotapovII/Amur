@@ -614,7 +614,14 @@ namespace RenderLib
                 {
                     double xa = double.Parse(tb_Xa.Text, MEM.formatter);
                     double xb = double.Parse(tb_Xb.Text, MEM.formatter);
-                    tSS_Analys.Text = graphicsData.curves[indexPole].AverageCurve(xa, xb).ToString("F4");
+                    if (MEM.Equals(xb - xa, MEM.Error10) == false)
+                    {
+                        tSS_Analys.Text = graphicsData.curves[indexPole].AverageCurve(xa, xb).ToString("F4");
+                    }
+                    else
+                    {
+                        tSS_Analys.Text = "Xa == Xb! Диапазон задан не верно!";
+                    }
                 }
                 catch (Exception ee)
                 {

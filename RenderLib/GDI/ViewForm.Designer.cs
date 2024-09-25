@@ -138,7 +138,7 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Location = new System.Drawing.Point(12, 11);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(651, 683);
+            this.panel1.Size = new System.Drawing.Size(651, 606);
             this.panel1.TabIndex = 1;
             // 
             // label1
@@ -170,7 +170,7 @@
             this.listBoxPoles.ItemHeight = 20;
             this.listBoxPoles.Location = new System.Drawing.Point(3, 3);
             this.listBoxPoles.Name = "listBoxPoles";
-            this.listBoxPoles.Size = new System.Drawing.Size(221, 274);
+            this.listBoxPoles.Size = new System.Drawing.Size(221, 197);
             this.listBoxPoles.TabIndex = 8;
             // 
             // panel2
@@ -188,7 +188,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel2.Location = new System.Drawing.Point(676, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(253, 704);
+            this.panel2.Size = new System.Drawing.Size(253, 627);
             this.panel2.TabIndex = 9;
             // 
             // tabControlOption
@@ -203,7 +203,7 @@
             this.tabControlOption.Location = new System.Drawing.Point(9, 381);
             this.tabControlOption.Name = "tabControlOption";
             this.tabControlOption.SelectedIndex = 0;
-            this.tabControlOption.Size = new System.Drawing.Size(235, 309);
+            this.tabControlOption.Size = new System.Drawing.Size(235, 232);
             this.tabControlOption.TabIndex = 80;
             // 
             // tabPage1
@@ -214,7 +214,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(227, 280);
+            this.tabPage1.Size = new System.Drawing.Size(227, 203);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Объекты";
             // 
@@ -228,7 +228,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(227, 270);
+            this.tabPage2.Size = new System.Drawing.Size(227, 280);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Кисти";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -470,7 +470,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(227, 270);
+            this.tabPage3.Size = new System.Drawing.Size(227, 280);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Перья";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -760,7 +760,7 @@
             this.tabPage4.Controls.Add(this.cb_coordReper);
             this.tabPage4.Location = new System.Drawing.Point(4, 25);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(227, 270);
+            this.tabPage4.Size = new System.Drawing.Size(227, 280);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "XY";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -949,12 +949,12 @@
             // 
             this.renderControl1.BackColor = System.Drawing.Color.White;
             colorSchemeFields1.Background = System.Drawing.Color.White;
-            colorSchemeFields1.FontReper = new System.Drawing.Font("Arial", 8F);
             colorSchemeFields1.FontKnot = new System.Drawing.Font("Arial", 8F);
             colorSchemeFields1.FontReper = new System.Drawing.Font("Arial", 8F);
             colorSchemeFields1.FontValue = null;
             colorSchemeFields1.formatTextReper = ((uint)(2u));
             this.renderControl1.colorScheme = colorSchemeFields1;
+            this.renderControl1.IndexTask = 0;
             this.renderControl1.Location = new System.Drawing.Point(206, 3);
             this.renderControl1.Name = "renderControl1";
             this.renderControl1.Points = new System.Drawing.PointF[] {
@@ -1037,7 +1037,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.ClientSize = new System.Drawing.Size(929, 704);
+            this.ClientSize = new System.Drawing.Size(929, 627);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "ViewForm";

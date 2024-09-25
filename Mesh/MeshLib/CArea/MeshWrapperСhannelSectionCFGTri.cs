@@ -575,11 +575,12 @@ namespace MeshLib.CArea
                         break;
                     case 1:
                         {
-                            // однородные ГУ для вихря на WL
+                            // дно
                             double[] bc = null;
                             CalkBedVortex(Phi, Vortex, w, ref bc);
                             for (int i = 0; i < bc.Length; i++)
                                 bcVortexValue[i] = bc[i];
+                            // однородные ГУ для вихря на WL
                             int idx = boundaryBedAdress.Length;
                             for (int i = idx; i < bc.Length; i++)
                                 bcVortexValue[i] = 0;
@@ -588,9 +589,11 @@ namespace MeshLib.CArea
                     case 2:
                         {
                             double[] bc = null;
+                            // дно
                             CalkBedVortex(Phi, Vortex, w, ref bc);
                             for (int i = 0; i < bc.Length; i++)
                                 bcVortexValue[i] = bc[i];
+                            // WL
                             CalkWaterLevelVortex(Phi, Vortex, wlVelosity, w, ref bc);
                             int idx = boundaryBedAdress.Length;
                             for (int i = 0; i < bc.Length; i++)
@@ -600,9 +603,11 @@ namespace MeshLib.CArea
                         break;
                     case 3:
                         {
+                            // дно
                             double[] bc = null;
                             for (int i = 0; i < boundaryBedAdress.Length; i++)
                                 bcVortexValue[i] = 0;
+                            // WL
                             CalkWaterLevelVortex(Phi, Vortex, wlVelosity, w, ref bc);
                             int idx = boundaryBedAdress.Length;
                             for (int i = 0; i < bc.Length; i++)

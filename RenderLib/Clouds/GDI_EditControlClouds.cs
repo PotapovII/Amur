@@ -169,9 +169,6 @@ namespace RenderLib
             DelLastKnotCountur();
         }
         #endregion
-
-
-
         #region Работа с интерфейсом
         ///// <summary>
         ///// Установка региона
@@ -199,6 +196,7 @@ namespace RenderLib
         /// <param name="p"></param>
         public void DelSmLines()
         {
+            tb_LLS.Text = "";
             control.DelSmLines();
         }
         /// <summary>
@@ -206,6 +204,7 @@ namespace RenderLib
         /// </summary>
         public void ClearSmLines()
         {
+            tb_LLS.Text = "";
             control.ClearSmLines();
         }
         /// <summary>
@@ -277,9 +276,6 @@ namespace RenderLib
             lbBoundary.Items.Clear();
         }
         #endregion
-
-
-
         /// <summary>
         /// Запись данных в списки компонента
         /// </summary>
@@ -335,7 +331,9 @@ namespace RenderLib
         {
             SendOption();
         }
-
+        /// <summary>
+        /// Обновить опции компонента
+        /// </summary>
         public void SendOption()
         {
 
@@ -735,6 +733,11 @@ namespace RenderLib
                 lbBoundary.SelectedIndex = oldidx;
             }
         }
+        /// <summary>
+        /// Выбор сегмента
+        /// </summary>
+        /// <param name="SegmentSelectedIndex"></param>
+        /// <param name="FigSelectedIndex"></param>
         private void SelectedSegment(int SegmentSelectedIndex, int FigSelectedIndex)
         {
             if (SegmentSelectedIndex != -1 && FigSelectedIndex != -1)
@@ -747,22 +750,29 @@ namespace RenderLib
             }
         }
         /// <summary>
-        /// Обновление информации о точке
+        /// Обновление информации о сегменте
         /// </summary>
         private void UpDateFigure(int PointsSelectedIndex, int SegmentSelectedIndex, int FigSelectedIndex)
         {
             if (PointsSelectedIndex != -1 && FigSelectedIndex != -1 && SegmentSelectedIndex != -1)
             {
-                CloudKnot p = GetCloudKnot();
-
-                IMFigura fig = control.GetFig(FigSelectedIndex);
-                IMSegment sf = fig.Segments[SegmentSelectedIndex];
                 int CountKnots = LOG.Int(tbSegCountKnots.Text);
                 int Marker = cbSegMark.SelectedIndex + 1;
-                control.UpDateFig(FigSelectedIndex, PointsSelectedIndex, SegmentSelectedIndex, CountKnots, Marker, p);
+                control.UpDateFigSegment(FigSelectedIndex, SegmentSelectedIndex, CountKnots, Marker);
             }
         }
-
+        /// <summary>
+        /// Обновление информации о точке
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btPointFig_Click(object sender, EventArgs e)
+        {
+            int PointsSelectedIndex = listBoxPoints.SelectedIndex;
+            int FigSelectedIndex = listBoxFig.SelectedIndex;
+            CloudKnot p = GetCloudKnot();
+            control.UpDateFigPoint(FigSelectedIndex, PointsSelectedIndex, p);
+        }
         /// <summary>
         /// Загрузить информацию об точке
         /// </summary>
@@ -821,7 +831,6 @@ namespace RenderLib
                 if(CountKnots == 2)
                     tbSegCountKnots.Text = "20";
             }
-
             UpDateFigure(listBoxPoints.SelectedIndex,
                          listBoxSegments.SelectedIndex,
                          listBoxFig.SelectedIndex);
@@ -844,7 +853,7 @@ namespace RenderLib
             }
             if (listBoxSLine.SelectedIndex == -1 && SLines.Count > 0)
             {
-                listBoxSLine.SelectedIndex = 0;
+                listBoxSLine.SelectedIndex = listBoxSLine.Items.Count-1;
                 SLines[listBoxSLine.SelectedIndex].Selected = 1;
                 tb_SmLineCount.Text = SLines[listBoxSLine.SelectedIndex].Count.ToString();
             }
@@ -857,8 +866,13 @@ namespace RenderLib
             if (listBoxSLine.SelectedIndex != -1)
             {
                 int Count = 0;
-                control.SelectSLines(listBoxSLine.SelectedIndex, ref Count);
+                double L = control.SelectSLines(listBoxSLine.SelectedIndex, ref Count);
+                tb_LLS.Text = L.ToString();
                 tb_SmLineCount.Text = Count.ToString();
+            }
+            else
+            {
+                tb_LLS.Text = "";
             }
         }
         /// <summary>
@@ -884,7 +898,10 @@ namespace RenderLib
                 }
             }
             else
+            {
                 Logger.Instance.Info("Линии сглаживания не определены !");
+                tb_LLS.Text = "";
+            }
         }
         /// <summary>
         /// Получить список линий сглаживания
@@ -899,7 +916,6 @@ namespace RenderLib
         /// </summary>
         private void bt_bt_OpDateSmLine_Click(object sender, EventArgs e)
         {
-
             if (listBoxSLine.SelectedIndex != -1)
             {
                 try
@@ -915,7 +931,10 @@ namespace RenderLib
                 }
             }
             else
+            {
                 Logger.Instance.Info("Линии сглаживания не определены !");
+                tb_LLS.Text = "";
+            }
         }
         /// <summary>
         /// Загрузка линий сглаживания
@@ -925,12 +944,6 @@ namespace RenderLib
         {
             control.LoadSmLines(sl);
         }
-
-        private void bt_LinkLines_Click(object sender, EventArgs e)
-        {
-        
-        }
         #endregion
-
     }
 }

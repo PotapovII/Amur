@@ -48,45 +48,44 @@ namespace RiverDB.Convertors
             this.ID = ID;
         }
         /// <summary>
-        /// Комманда на вставку
+        /// Комманда на вставку / обновление
         /// </summary>
         /// <returns></returns>
         public override string GetCommand(TypeCommand com)
         {
-            if (com == TypeCommand.insert)
+            switch(com)
             {
-                /// широта X
-                double e = lat;
-                /// долгота Y
-                double n = lon;
-                string SdataTime = dataTime.ToString("yyyy-MM-dd HH:mm:ss:fff");
-                string s = "insert into knot "
-                    + "(knot_depth, knot_fulldepth, knot_step, knot_speed, knot_course, knot_datetime"
-                    + ",knot_n, knot_e, knot_latitude, knot_longitude, knot_temperature, knot_marker)"
-                    + "values (" + sDepth.ToString() + "," + depth.ToString() + "," + step.ToString() + ","
-                    + speed.ToString() + "," + course.ToString() + ",'" + SdataTime + "'," + n.ToString() + ","
-                    + e.ToString() + "," + lat.ToString() + "," + lon.ToString() + "," + T.ToString() + ", 0)";
-                return s;
-            }
-            else
-            {
-                //string sql = "UPDATE[dbo].[knot] " +
-                //    "SET[" +
-                //    "knot_datetime] = " + SdataTime +
-                //    ",[knot_latitude] = " + lat.ToString("F12") +
-                //    ",[knot_longitude] = " + lon.ToString("F12") +
-                //    ",[knot_depth] = " + sDepth.ToString("F5") +
-                //    ",[knot_fulldepth] " + depth.ToString("F5") +
-                //    ",[knot_temperature] = " + T.ToString() +
-                //    ",[knot_step] = " + step.ToString() +
-                //    ",[knot_speed] = " + speed.ToString()+
-                //    ",[knot_course] = " + course.ToString() +
-                //    ",[knot_marker] = '0'" +
-                //    " WHERE knot_id =" + ID.ToString();
-                string sql = "UPDATE[dbo].[knot] " +
-                "SET [knot_depth] = " + sDepth.ToString("F5") +",[knot_fulldepth] = " + depth.ToString("F5") +
-                " WHERE knot_id =" + ID.ToString();
-                return sql;
+                // Установка маркера скорости
+                case TypeCommand.updateDeapth:
+                    {
+                        string sql = "UPDATE[dbo].[knot] " +
+                        "SET [knot_depth] = " + sDepth.ToString("F5") + ",[knot_fulldepth] = " + depth.ToString("F5") +
+                        " WHERE knot_id =" + ID.ToString();
+                        return sql;
+                    }
+                case TypeCommand.updateMark:
+                    {
+                        string SdataTime = dataTime.ToString("yyyy-MM-dd HH:mm:ss:fff");
+                        string sql = "UPDATE[dbo].[knot] " +
+                        "SET [knot_marker] = 1  WHERE knot_datetime = '" + SdataTime + "'";
+                        return sql;
+                    }
+                default:
+                case TypeCommand.insert:
+                    {
+                        /// широта X
+                        double e = lat;
+                        /// долгота Y
+                        double n = lon;
+                        string SdataTime = dataTime.ToString("yyyy-MM-dd HH:mm:ss:fff");
+                        string s = "insert into knot "
+                            + "(knot_depth, knot_fulldepth, knot_step, knot_speed, knot_course, knot_datetime"
+                            + ",knot_n, knot_e, knot_latitude, knot_longitude, knot_temperature, knot_marker)"
+                            + "values (" + sDepth.ToString() + "," + depth.ToString() + "," + step.ToString() + ","
+                            + speed.ToString() + "," + course.ToString() + ",'" + SdataTime + "'," + n.ToString() + ","
+                            + e.ToString() + "," + lat.ToString() + "," + lon.ToString() + "," + T.ToString() + ", 0)";
+                        return s;
+                    }
             }
         }
         public new string ToString()

@@ -124,6 +124,7 @@ namespace MeshGeneratorsLib.StripGenerator
                     }
                 }
             }
+          //  LOG.Print("map", map);
         }
     }
 }

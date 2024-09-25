@@ -14,7 +14,8 @@ namespace TriMeshGeneratorLib
         /// клучевые слова
         /// </summary>
 
-        public static HashSet<string> keyWord = new HashSet<string> { "Ver", "Count", "Boundary", "RVElement", "Node", "ID", "no" };
+        public static HashSet<string> keyWord = new HashSet<string> 
+        { "Ver", "Count", "Boundary", "RVElement", "Node", "ID", "no" };
 
         public static int CountLines = 0;
         public static string[] GetLines(StreamReader file)
@@ -24,7 +25,8 @@ namespace TriMeshGeneratorLib
                 string line = file.ReadLine();
                 if (line == null)
                     return null;
-                string[] lines = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] lines = line.Split(new char[] { ' ', '\t' }, 
+                            StringSplitOptions.RemoveEmptyEntries);
                 if (lines.Length == 0) continue;
                 if (keyWord.Contains(lines[0]))
                 {

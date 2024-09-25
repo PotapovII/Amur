@@ -1,17 +1,24 @@
-﻿namespace MeshLib.SaveData
+﻿//---------------------------------------------------------------------------
+//                    ПРОЕКТ  "РУСЛОВЫЕ ПРОЦЕССЫ"
+//                         проектировщик:
+//                           Потапов И.И.
+//---------------------------------------------------------------------------
+//                 кодировка : 10.10.2023 Потапов И.И.
+//---------------------------------------------------------------------------
+namespace MeshLib.SaveData
 {
-    using CommonLib;
-    using System.Collections.Generic;
-    using System.Linq;
-    using GeometryLib;
-    using MemLogLib;
     using System;
-    using CommonLib.Geometry;
+    using System.Linq;
+    using System.Collections.Generic;
 
+    using MemLogLib;
+    using CommonLib;
+    using GeometryLib;
+    using CommonLib.Geometry;
     /// <summary>
     /// ОО: Cloud - множество маркированных точек 
     /// </summary>
-    public class CloudRiverNods : IClouds
+    public class SavePointRiverNods : IClouds
     {
         /// <summary>
         /// имена атрибутов
@@ -19,21 +26,21 @@
         public string[] AttributNames { get; }
 
         public List<CloudKnot> CloudKnots = new List<CloudKnot>();
-        public CloudRiverNods()
+        public SavePointRiverNods()
         {
-            AttributNames = new string[6]
-            { "Глубина", "Срез.глубина", "Тепература","Скорость","Курс","Вектор скорости" };
+            AttributNames = new string[7]
+            { "Глубина", "Срез.глубина", "Тепература","Скорость X","Скорость Y","Вектор скорости","Код узла" };
         }
 
-        public CloudRiverNods(CloudRiverNods m)
+        public SavePointRiverNods(SavePointRiverNods m)
         {
             AttributNames = m.AttributNames;
             foreach (CloudKnot knot in m.CloudKnots)
                 CloudKnots.Add(knot);
         }
-        public CloudRiverNods(IClouds m)
+        public SavePointRiverNods(IClouds m)
         {
-            AttributNames = ((CloudRiverNods)m).AttributNames;
+            AttributNames = ((SavePointRiverNods)m).AttributNames;
             IHPoint[] knots = m.GetKnots();
             foreach (CloudKnot knot in knots)
                 CloudKnots.Add(knot);
@@ -57,6 +64,16 @@
         {
             CloudKnots.Add(new CloudKnot(x, y, Attributes, mark));
         }
+        /// <summary>
+        /// Добавить узел в облако
+        /// </summary>
+        public void AddNode(IHPoint node)
+        {
+            CloudKnot cn =  node as CloudKnot;
+            if(cn != null)
+                CloudKnots.Add(new CloudKnot(cn));
+        }
+
         /// <summary>
         /// изменить маркер узла
         /// </summary>
@@ -123,105 +140,26 @@
         /// <returns></returns>
         public IField GetPole(int indexAttribut)
         {
-            //{ "Глубина", "Тепература","Скорость","Курс","Вектор скорости" };
             IField Field = null;
-            if (indexAttribut < 4)
+            if (indexAttribut < 5)
             {
                 double[] m = CloudKnots.Select(p => p.Attributes[indexAttribut]).ToArray();
                 Field = new Field1D(AttributNames[indexAttribut], m);
             }
             else
+            if (indexAttribut == 5)
             {
-                double[] V = CloudKnots.Select(p => p.Attributes[2]).ToArray();
-                double[] C = CloudKnots.Select(p => p.Attributes[3]).ToArray();
-                double[] Vx = null;
-                double[] Vy = null;
-                MEM.Alloc(CountKnots, ref Vx, "Vx");
-                MEM.Alloc(CountKnots, ref Vy, "Vy");
-                int k = 0;
-                double K = 2 * Math.PI / 360;
-                for (int i = 0; i < CountKnots; i++)
-                {
-                    Vx[k] = V[k] * Math.Sin(C[k] * K);
-                    Vy[k] = V[k] * Math.Cos(C[k] * K);
-                }
+                double[] Vx = CloudKnots.Select(p => p.Attributes[3]).ToArray();
+                double[] Vy = CloudKnots.Select(p => p.Attributes[4]).ToArray();
                 Field = new Field2D(AttributNames[indexAttribut], Vx, Vy);
+            }
+            else
+            {
+                double[] m = CloudKnots.Select(p => (double)p.ID).ToArray();
+                Field = new Field1D(AttributNames[indexAttribut], m);
             }
             return Field;
         }
     
     }
-
-    ///// <summary>
-    ///// ОО: Cloud - множество маркированных точек 
-    ///// </summary>
-    //public class Cloud : ICloud
-    //{
-    //    /// <summary>
-    //    /// Координаты узловых точек и параметров определенных в них
-    //    /// </summary>
-    //    public double[] CoordsX;
-    //    public double[] CoordsY;
-    //    /// <summary>
-    //    /// Массив меток  для граничных узловых точек
-    //    /// </summary>
-    //    public int[] KnotsMark;
-
-    //    public Cloud(double[] coordsX, double[] coordsY, int[] knotsMark)
-    //    {
-    //        MEM.MemCopy(ref CoordsX, coordsX);
-    //        MEM.MemCopy(ref CoordsY, coordsY);
-    //        MEM.MemCopy(ref KnotsMark, knotsMark);
-    //    }
-
-    //    public Cloud(Cloud m)
-    //    {
-    //        MEM.MemCopy(ref CoordsX, m.CoordsX);
-    //        MEM.MemCopy(ref CoordsY, m.CoordsY);
-    //        MEM.MemCopy(ref KnotsMark, m.KnotsMark);
-    //    }
-    //    public Cloud(ICloud m)
-    //    {
-    //        MEM.MemCopy(ref CoordsX, m.GetCoords(0));
-    //        MEM.MemCopy(ref CoordsY, m.GetCoords(1));
-    //        MEM.MemCopy(ref KnotsMark, m.GetMarkKnots());
-    //    }
-
-    //    /// <summary>
-    //    /// Количество узлов
-    //    /// </summary>
-    //    public int CountKnots
-    //    {
-    //        get { return CoordsX == null ? 0 : CoordsX.Length; }
-    //    }
-    //    /// <summary>
-    //    /// Координаты X для узловых точек 
-    //    /// </summary>
-    //    /// <param name="dim">номер размерности</param>
-    //    /// <returns></returns>
-    //    /// <summary>
-    //    /// Координаты X или Y для узловых точек 
-    //    /// </summary>
-    //    public double[] GetCoords(int dim)
-    //    {
-    //        if (dim == 0)
-    //            return CoordsX;
-    //        else
-    //            return CoordsY;
-    //    }
-    //    /// <summary>
-    //    /// Диапазон координат для узлов сетки
-    //    /// </summary>
-    //    public void MinMax(int dim, ref double min, ref double max)
-    //    {
-    //        var mas = GetCoords(dim);
-    //        max = mas == null ? double.MaxValue : mas.Max();
-    //        min = mas == null ? double.MinValue : mas.Min();
-    //    }
-    //    /// <summary>
-    //    /// Массив маркеров вершин 
-    //    /// </summary>
-    //    public int[] GetMarkKnots() { return KnotsMark; }
-    //}
-
 }

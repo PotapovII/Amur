@@ -18,6 +18,10 @@ namespace GeometryLib
     public class CloudKnot : HPoint
     {
         /// <summary>
+        /// Маркер узла (состояние контексное) от задачи
+        /// </summary>
+        public int ID;
+        /// <summary>
         /// Свойства в узлах (состояние контексное) от задачи
         /// </summary>
         public double[] Attributes = null;
@@ -25,35 +29,35 @@ namespace GeometryLib
         /// Маркер узла (состояние контексное) от задачи
         /// </summary>
         public int mark;
-
+        /// <summary>
+        /// Время создания/ используется для сортировки точек в облаке
+        /// </summary>
+        [NonSerialized]
+        public DateTime time;
+        /// <summary>
+        /// номер группы для сортированных точек в облаке
+        /// </summary>
+        [NonSerialized]
+        public int timeGroupID = 0;
         public CloudKnot() : base() { Attributes = new double[1]; mark = 0; }
-        public CloudKnot(double xx, double yy, double[] atr, int mark = 0)
+        public CloudKnot(double xx, double yy, double[] atr, int mark = 0, int ID = -1)
             : base(xx, yy)
         {
             this.mark = mark;
+            this.ID = ID;
             MEM.MemCopy(ref Attributes, atr);
         }
-        public CloudKnot(HPoint coord, HPoint atrib, int mark = 0)
+        public CloudKnot(HPoint coord, double[] Atrs, int mark = 0, int ID = -1)
             : base(coord)
         {
             this.mark = mark;
-            Attributes = new double[] { atrib.x, atrib.y };
-        }
-        public CloudKnot(HPoint coord, double[] Atrs, int mark = 0)
-            : base(coord)
-        {
-            this.mark = mark;
+            this.ID = ID;
             MEM.MemCopy(ref Attributes, Atrs);
-        }
-        public CloudKnot(Vector2 coord, Vector2 atrib, int mark = 0)
-            : base(coord.X, coord.Y)
-        {
-            this.mark = mark;
-            Attributes = new double[] { atrib.X, atrib.Y };
         }
         public CloudKnot(CloudKnot p) : base(p)
         {
             this.mark = p.mark;
+            this.ID = p.ID;
             MEM.MemCopy(ref Attributes, p.Attributes);
         }
 
@@ -61,7 +65,8 @@ namespace GeometryLib
         {
             string s = " " + x.ToString("F15") +
                        " " + y.ToString("F15") +
-                      " " + mark.ToString();
+                       " " + mark.ToString() +
+                       " " + ID.ToString();
             for (int j = 0; j < Attributes.Length; j++)
                 s += " " + Attributes[j].ToString(Filter);
             return s;
@@ -70,7 +75,8 @@ namespace GeometryLib
         {
             string s = " " + x.ToString("F15") +
                        " " + y.ToString("F15") +
-                      " " + mark.ToString();
+                       " " + mark.ToString() +
+                       " " + ID.ToString();
             for (int j = 0; j < Attributes.Length; j++)
                 s += " " + Attributes[j].ToString("F4");
             return s;
@@ -82,12 +88,13 @@ namespace GeometryLib
             double xx = double.Parse(mas[0], MEM.formatter);
             double yy = double.Parse(mas[1], MEM.formatter);
             int _mark = int.Parse(mas[2]);
-            int count = mas.Length - 3;
+            int _ID = int.Parse(mas[3]);
+            int count = mas.Length - 4;
             count = count <= 0 ? 1 : count;
             double[] v = new double[count];
-            for (int j = 3; j < mas.Length; j++)
-                v[j - 3] = double.Parse(mas[j], MEM.formatter);
-            CloudKnot p = new CloudKnot(xx, yy, v, _mark);
+            for (int j = 4; j < mas.Length; j++)
+                v[j - 4] = double.Parse(mas[j], MEM.formatter);
+            CloudKnot p = new CloudKnot(xx, yy, v, _mark, _ID);
             return p;
         }
 
@@ -116,13 +123,13 @@ namespace GeometryLib
         /// <param name="B"></param>
         /// <param name="s">параметр интерполяции изменяется от 0 до 1</param>
         /// <returns></returns>
-        public static CloudKnot Interpolation(CloudKnot A, CloudKnot B, double s, int mark = 0)
+        public static CloudKnot Interpolation(CloudKnot A, CloudKnot B, double s, int mark = 0, int ID = 0)
         {
             double N1 = 1 - s;
             double N2 = s;
             double x = A.x * N1 + B.x * N2;
             double y = A.y * N1 + B.y * N2;
-            CloudKnot V = new CloudKnot(x, y, new double[A.Attributes.Length], mark);
+            CloudKnot V = new CloudKnot(x, y, new double[A.Attributes.Length], mark, ID);
             for (int k = 0; k < A.Attributes.Length; k++)
                 V.Attributes[k] = A.Attributes[k] * N1 + B.Attributes[k] * N2;
             return V;

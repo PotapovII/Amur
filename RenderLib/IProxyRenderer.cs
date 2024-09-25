@@ -276,8 +276,22 @@ namespace RenderLib
         /// <param name="CountKnots"></param>
         /// <param name="Mark"></param>
         /// <param name="p"></param>
-        void UpDateFig(int FigSelectedIndex, int PointsSelectedIndex, int SegmentSelectedIndex, int CountKnots, int Mark, CloudKnot p);
-
+        //void UpDateFig(int FigSelectedIndex, int PointsSelectedIndex, int SegmentSelectedIndex, int CountKnots, int Mark, CloudKnot p);
+        /// <summary>
+        /// Обновление точек фигуры
+        /// </summary>
+        /// <param name="FigSelectedIndex"></param>
+        /// <param name="PointsSelectedIndex"></param>
+        /// <param name="p"></param>
+        void UpDateFigPoint(int FigSelectedIndex, int PointsSelectedIndex, CloudKnot p);
+        /// <summary>
+        /// Обновление фигуры
+        /// </summary>
+        /// <param name="FigSelectedIndex"></param>
+        /// <param name="SegmentSelectedIndex"></param>
+        /// <param name="CountKnots">Количество вершин на сегменте</param>
+        /// <param name="Marker">Маркер границы</param>
+        void UpDateFigSegment(int FigSelectedIndex, int SegmentSelectedIndex, int CountKnots, int Marker);
         /// <summary>
         /// Групповое обновление количества узлов на сегментах
         /// </summary>
@@ -303,7 +317,7 @@ namespace RenderLib
         /// </summary>
         /// <param name="idx">номер линии</param>
         /// <param name="Count">количество внутренних вершин </param>
-        void SelectSLines(int idx, ref int Count);
+        double SelectSLines(int idx, ref int Count);
         /// <summary>
         /// Установить новое количество внутренних вершин линии сгласживания
         /// </summary>
@@ -313,10 +327,6 @@ namespace RenderLib
         //void ClearNewFig();
         //void SetRegion(PointF a, PointF b);
         //RectangleWorld GetRegion();
-
-
-
-
         #endregion
     }
 
