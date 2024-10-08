@@ -52,7 +52,11 @@ namespace TriMeshGeneratorLib
         }
         public override RVNode[] GetNodes() { return Nodes; }
         public override RVNode GetNode(int i) { return Nodes[i]; }
-        public override void SetNode(int i, RVNode elemNodes) { if (i < 3) Nodes[i] = elemNodes; }
+        public override void SetNode(int i, RVNode elemNodes)
+        { 
+            if (i < 3) 
+                Nodes[i] = elemNodes; 
+        }
         public virtual RVSegment GetEdge(int i) { return Edges[i]; }
         public virtual void SetEdge(int i, RVSegment ep) { if (i < 3) Edges[i] = ep; }
         public override int GetNodeIndex(RVNode nP)
@@ -157,18 +161,18 @@ namespace TriMeshGeneratorLib
                     if ((l1.length() > l2.length()) && (l1.length() > l3.length()))
                     {
                         RVNode bisectNode = new RVNode(100, 100, 100);
-                        l3.LocateNodeAadInterpolation(0.5, bisectNode);
+                        l3.LocateNodeAndInterpolation(0.5, bisectNode);
                         RVSegment bisectSeg = new RVSegment(1, cNode, bisectNode);
                         double r = l1.intersectd(bisectSeg);
                         RVNode intersectNode = new RVNode(100, 100, 100);
-                        l1.LocateNodeAadInterpolation(r, intersectNode);
+                        l1.LocateNodeAndInterpolation(r, intersectNode);
                         RVTriangle tri = new RVTriangle(1, intersectNode, bisectNode, Nodes[0]);
                         an[0] = tri.Area();
 
-                        l2.LocateNodeAadInterpolation(0.5, bisectNode);
+                        l2.LocateNodeAndInterpolation(0.5, bisectNode);
                         bisectSeg.SetNode(1, bisectNode);
                         r = l2.intersectd(bisectSeg);
-                        l1.LocateNodeAadInterpolation(r, intersectNode);
+                        l1.LocateNodeAndInterpolation(r, intersectNode);
                         tri.SetNode(1, Nodes[1]);
                         tri.SetNode(2, bisectNode);
                         an[1] = tri.Area();
@@ -178,18 +182,18 @@ namespace TriMeshGeneratorLib
                     else if (l2.length() > l3.length())
                     {
                         RVNode bisectNode = new RVNode(100, 100, 100);
-                        l1.LocateNodeAadInterpolation(0.5, bisectNode);
+                        l1.LocateNodeAndInterpolation(0.5, bisectNode);
                         RVSegment bisectSeg = new RVSegment(1, cNode, bisectNode);
                         double r = l2.intersectd(bisectSeg);
                         RVNode intersectNode = new RVNode(100, 100, 100);
-                        l2.LocateNodeAadInterpolation(r, intersectNode);
+                        l2.LocateNodeAndInterpolation(r, intersectNode);
                         RVTriangle tri = new RVTriangle(1, intersectNode, bisectNode, Nodes[1]);
                         an[1] = tri.Area();
 
-                        l3.LocateNodeAadInterpolation(0.5, bisectNode);
+                        l3.LocateNodeAndInterpolation(0.5, bisectNode);
                         bisectSeg.SetNode(1, bisectNode);
                         r = l2.intersectd(bisectSeg);
-                        l2.LocateNodeAadInterpolation(r, intersectNode);
+                        l2.LocateNodeAndInterpolation(r, intersectNode);
                         tri.SetNode(1, Nodes[2]);
                         tri.SetNode(2, bisectNode);
                         an[2] = tri.Area();
@@ -199,18 +203,18 @@ namespace TriMeshGeneratorLib
                     else
                     {
                         RVNode bisectNode = new RVNode(100, 100, 100);
-                        l2.LocateNodeAadInterpolation(0.5, bisectNode);
+                        l2.LocateNodeAndInterpolation(0.5, bisectNode);
                         RVSegment bisectSeg = new RVSegment(1, cNode, bisectNode);
                         double r = l3.intersectd(bisectSeg);
                         RVNode intersectNode = new RVNode(100, 100, 100);
-                        l3.LocateNodeAadInterpolation(r, intersectNode);
+                        l3.LocateNodeAndInterpolation(r, intersectNode);
                         RVTriangle tri = new RVTriangle(1, intersectNode, bisectNode, Nodes[2]);
                         an[2] = tri.Area();
 
-                        l1.LocateNodeAadInterpolation(0.5, bisectNode);
+                        l1.LocateNodeAndInterpolation(0.5, bisectNode);
                         bisectSeg.SetNode(1, bisectNode);
                         r = l3.intersectd(bisectSeg);
-                        l3.LocateNodeAadInterpolation(r, intersectNode);
+                        l3.LocateNodeAndInterpolation(r, intersectNode);
                         tri.SetNode(1, Nodes[0]);
                         tri.SetNode(2, bisectNode);
                         an[0] = tri.Area();
@@ -295,9 +299,14 @@ namespace TriMeshGeneratorLib
                 {
                     return this;
                 }
+                // ищем треугольник с количеством узлов меньше 3
                 RVElement aP = Inside(nodeP);
                 while (aP.Count() != 3)
+                {
                     aP = aP.Inside(nodeP);
+                    if (aP == null) return null;
+                }    
+                    
                 return (RVTriangle)aP;
             }
             return null;
@@ -428,7 +437,7 @@ namespace TriMeshGeneratorLib
         /// <param name="y"></param>
         /// <param name="nP"></param>
         /// <returns></returns>
-        public RVNode LocateNodeAadInterpolation(double x, double y, RVNode nP)
+        public RVNode LocateNodeAndInterpolation(double x, double y, RVNode nP)
         {
             double[] weights = new double[3];
             double X21 = Nodes[1].X - Nodes[0].X;
@@ -478,7 +487,7 @@ namespace TriMeshGeneratorLib
         /// <param name="nP"></param>
         /// <returns></returns>
 
-        public RVNode LocateNodeAadInterpolation(RVNode nP)
+        public RVNode LocateNodeAndInterpolation(RVNode nP)
         {
             double[] weights = new double[3];
             double X21 = Nodes[1].X - Nodes[0].X;

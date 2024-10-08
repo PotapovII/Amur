@@ -11,6 +11,8 @@ namespace GeometryLib.Vector
     using System.Text;
     using System.Globalization;
     using System.Runtime.CompilerServices;
+    using CommonLib.Geometry;
+
     /// <summary>
     /// Представляет двухмерный вещественный вектор с полями двойной точности.
     /// </summary>
@@ -25,6 +27,11 @@ namespace GeometryLib.Vector
         ///  Координата Y вектора.
         /// </summary>
         public double Y;
+        public Vector2(IHPoint p)
+        {
+            X = p.X;
+            Y = p.Y;
+        }
         //
         // Сводка:
         //     Возвращает вектор, два элемента которого равны нулю.

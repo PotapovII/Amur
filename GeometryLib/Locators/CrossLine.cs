@@ -10,6 +10,7 @@ namespace GeometryLib.Locators
     using MemLogLib;
     using System.Runtime.CompilerServices;
     using System;
+    using GeometryLib.Vector;
 
     /// <summary>
     /// ОО: Работа с двумя линиями
@@ -262,6 +263,88 @@ namespace GeometryLib.Locators
                 p.X = 0; p.Y = 0;
             }
             return L;
+        }
+        /// <summary>
+        /// Поиск точки p - пересечения отрезка v11 , v12  с отрезком v21 , v22
+        /// </summary>
+        public static bool IsCrossing(HPoint v11, HPoint v12, HPoint v21, HPoint v22, ref IHPoint p)
+        {
+            if (HPoint.Equals(v11, v22))
+            {
+                p = v11; return true;
+            }
+            if (HPoint.Equals(v11, v21))
+            {
+                p = v11; return true;
+            }
+            if (HPoint.Equals(v12, v22))
+            {
+                p = v12; return true;
+            }
+            if (HPoint.Equals(v12, v21))
+            {
+                p = v12; return true;
+            }
+            Vector3 cut1 = new Vector3(v12 - v11);
+            Vector3 cut2 = new Vector3(v22 - v21);
+
+            Vector3 prod1 = Vector3.Cross(cut1, new Vector3(v21 - v11));
+            Vector3 prod2 = Vector3.Cross(cut1, new Vector3(v22 - v11));
+
+            // Отсекаем пограничные случаи
+            if (Math.Sign(prod1.Z) == Math.Sign(prod2.Z) ||
+                MEM.Equals(prod1.Z, 0) == true ||
+                MEM.Equals(prod1.Z, 0) == true)
+                return false;
+
+            prod1 = Vector3.Cross(cut2, new Vector3(v11 - v21));
+            prod2 = Vector3.Cross(cut2, new Vector3(v12 - v21));
+
+            // Отсекаем пограничные случаи
+            if (Math.Sign(prod1.Z) == Math.Sign(prod2.Z) ||
+                MEM.Equals(prod1.Z, 0) == true ||
+                MEM.Equals(prod1.Z, 0) == true)
+                return false;
+
+            // точка пересечения
+            p.X = v11.X + cut1.X * Math.Abs(prod1.Z) / Math.Abs(prod2.Z - prod1.Z);
+            p.Y = v11.Y + cut1.Y * Math.Abs(prod1.Z) / Math.Abs(prod2.Z - prod1.Z);
+
+            return true;
+        }
+        /// <summary>
+        /// Проверить существование точки пересечения двух отрезков
+        /// </summary>
+        public static bool IsCrossing(HPoint v11, HPoint v12, HPoint v21, HPoint v22)
+        {
+            if (HPoint.Equals(v11, v22) ||
+                HPoint.Equals(v11, v21) ||
+                HPoint.Equals(v12, v22) ||
+                HPoint.Equals(v12, v21))
+                return true;
+
+            Vector3 cut1 = new Vector3(v12 - v11);
+            Vector3 cut2 = new Vector3(v22 - v21);
+
+            Vector3 prod1 = Vector3.Cross(cut1, new Vector3(v21 - v11));
+            Vector3 prod2 = Vector3.Cross(cut1, new Vector3(v22 - v11));
+
+            // Отсекаем пограничные случаи
+            if (Math.Sign(prod1.Z) == Math.Sign(prod2.Z) ||
+             MEM.Equals(prod1.Z, 0) == true ||
+             MEM.Equals(prod1.Z, 0) == true)
+                return false;
+
+            prod1 = Vector3.Cross(cut2, new Vector3(v11 - v21));
+            prod2 = Vector3.Cross(cut2, new Vector3(v12 - v21));
+
+            // Отсекаем пограничные случаи
+            if (Math.Sign(prod1.Z) == Math.Sign(prod2.Z) ||
+                MEM.Equals(prod1.Z, 0) == true ||
+                MEM.Equals(prod1.Z, 0) == true)
+                return false;
+
+            return true;
         }
     }
 }

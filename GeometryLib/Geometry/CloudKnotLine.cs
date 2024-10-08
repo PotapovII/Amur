@@ -32,22 +32,86 @@ OTHER DEALINGS IN THE SOFTWARE.
 //           кодировка : 01.08.2024 Потапов И.И.
 //---------------------------------------------------------------------------
 using CommonLib.Geometry;
+using GeometryLib.Locators;
+using GeometryLib.Vector;
+using MemLogLib;
+using System;
 
 namespace GeometryLib.Geometry
 {
     /// <summary>
     /// Линия
     /// </summary>
-    public class CloudKnotLine : IHLine
+    public class HLine : IHLine
     {
         /// <summary>
         /// Начало линии
         /// </summary>
-        public IHPoint A { get; set; }
+        public IHPoint A { get; set; } = null;
         /// <summary>
         /// Конец линии
         /// </summary>
-        public IHPoint B { get; set; }
+        public IHPoint B { get; set; } = null;
+
+        public HLine()
+        {
+            A = new HKnot();
+            B = new HKnot();
+        }
+        public HLine(IHPoint a, IHPoint b)
+        {
+            A = a.IClone();
+            B = b.IClone();
+        }
+        /// <summary>
+        /// Проверить существование точки пересечения двух линий
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public bool IsCrossing(IHLine a, IHLine b)
+        {
+            return CrossLine.IsIntersectingAlternative(a.A, a.B, b.A, b.B);
+        }
+        /// <summary>
+        /// Проверить существование точки пересечения двух линий
+        /// </summary>
+        public bool IsCrossing(IHPoint a, IHPoint b, IHPoint c, IHPoint d)
+        {
+            return CrossLine.IsIntersectingAlternative(a, b, c, d);
+        }
+        /// <summary>
+        /// Проверить существование точки пересечения двух линий и вернуть точку пересечения
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public bool IsCrossing(IHLine a, IHLine b, ref IHPoint p)
+        {
+            return CrossLine.IsIntersectingAlternative(a.A, a.B, b.A, b.B, ref p);
+        }
+        /// <summary>
+        /// Проверить существование точки пересечения двух отрезков
+        /// </summary>
+        public bool IsCrossing(HPoint v11, HPoint v12, HPoint v21, HPoint v22)
+        {
+            return CrossLine.IsCrossing(v11, v12, v21, v22);
+        }
+        /// <summary>
+        /// Проверить существование точки пересечения двух отрезков и вычислить ее
+        /// </summary>
+        public bool IsCrossing(HPoint v11, HPoint v12, HPoint v21, HPoint v22, ref IHPoint p)
+        {
+            return CrossLine.IsCrossing(v11, v12, v21, v22, ref p);
+        }
+    }
+
+    /// <summary>
+    /// Линия
+    /// </summary>
+    public class CloudKnotLine : HLine,  IHLine
+    {
         public CloudKnotLine()
         {
             A = new CloudKnot(); 

@@ -78,7 +78,6 @@
     <Compile Include="StripGenerator\CrossStripMeshGenerator.cs" />
     <Compile Include="StripGenerator\IStripMeshGenerator.cs" />
     <Compile Include="StripGenerator\HStripMeshGeneratorTri.cs" />
-    <Compile Include="IMeshGenerator.cs" />
     <Compile Include="OLD\HBaseMeshGener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleMeshGenerator.cs" />

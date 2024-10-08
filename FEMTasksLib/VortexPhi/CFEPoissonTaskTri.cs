@@ -211,7 +211,8 @@ namespace FEMTasksLib.FESimpleTask
                         // Вычисление ЛЖМ
                         for (int ai = 0; ai < cu; ai++)
                             for (int aj = 0; aj < cu; aj++)
-                                LaplMatrix[ai][aj] = (b[ai] * b[aj] + c[ai] * c[aj] + nR * c[aj]) * S[elem];
+                                LaplMatrix[ai][aj] = (b[ai] * b[aj] + c[ai] * c[aj] + nR * b[aj]) * S[elem];
+                                //LaplMatrix[ai][aj] = (b[ai] * b[aj] + c[ai] * c[aj] + nR * c[aj]) * S[elem];
                         // Вычисление ЛПЧ
                         for (int j = 0; j < cu; j++)
                             LocalRight[j] = R_elem * mQ * S[elem] / 3;

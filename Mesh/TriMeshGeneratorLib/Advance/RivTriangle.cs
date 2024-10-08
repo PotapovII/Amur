@@ -155,18 +155,18 @@ namespace TriMeshGeneratorLib.Advance
                     if ((l1.length() > l2.length()) && (l1.length() > l3.length()))
                     {
                         RivNode bisectNode = new RivNode(100, 100, 100);
-                        l3.LocateNodeAadInterpolation(0.5, bisectNode);
+                        l3.LocateNodeAndInterpolation(0.5, bisectNode);
                         RivEdge bisectSeg = new RivEdge(1, cNode, bisectNode);
                         double r = l1.intersectd(bisectSeg);
                         RivNode intersectNode = new RivNode(100, 100, 100);
-                        l1.LocateNodeAadInterpolation(r, intersectNode);
+                        l1.LocateNodeAndInterpolation(r, intersectNode);
                         RivTriangle tri = new RivTriangle(1, intersectNode, bisectNode, Nodes[0]);
                         an[0] = tri.Area();
 
-                        l2.LocateNodeAadInterpolation(0.5, bisectNode);
+                        l2.LocateNodeAndInterpolation(0.5, bisectNode);
                         bisectSeg.SetNode(1, bisectNode);
                         r = l2.intersectd(bisectSeg);
-                        l1.LocateNodeAadInterpolation(r, intersectNode);
+                        l1.LocateNodeAndInterpolation(r, intersectNode);
                         tri.SetNode(1, Nodes[1]);
                         tri.SetNode(2, bisectNode);
                         an[1] = tri.Area();
@@ -176,18 +176,18 @@ namespace TriMeshGeneratorLib.Advance
                     else if (l2.length() > l3.length())
                     {
                         RivNode bisectNode = new RivNode(100, 100, 100);
-                        l1.LocateNodeAadInterpolation(0.5, bisectNode);
+                        l1.LocateNodeAndInterpolation(0.5, bisectNode);
                         RivEdge bisectSeg = new RivEdge(1, cNode, bisectNode);
                         double r = l2.intersectd(bisectSeg);
                         RivNode intersectNode = new RivNode(100, 100, 100);
-                        l2.LocateNodeAadInterpolation(r, intersectNode);
+                        l2.LocateNodeAndInterpolation(r, intersectNode);
                         RivTriangle tri = new RivTriangle(1, intersectNode, bisectNode, Nodes[1]);
                         an[1] = tri.Area();
 
-                        l3.LocateNodeAadInterpolation(0.5, bisectNode);
+                        l3.LocateNodeAndInterpolation(0.5, bisectNode);
                         bisectSeg.SetNode(1, bisectNode);
                         r = l2.intersectd(bisectSeg);
-                        l2.LocateNodeAadInterpolation(r, intersectNode);
+                        l2.LocateNodeAndInterpolation(r, intersectNode);
                         tri.SetNode(1, Nodes[2]);
                         tri.SetNode(2, bisectNode);
                         an[2] = tri.Area();
@@ -197,18 +197,18 @@ namespace TriMeshGeneratorLib.Advance
                     else
                     {
                         RivNode bisectNode = new RivNode(100, 100, 100);
-                        l2.LocateNodeAadInterpolation(0.5, bisectNode);
+                        l2.LocateNodeAndInterpolation(0.5, bisectNode);
                         RivEdge bisectSeg = new RivEdge(1, cNode, bisectNode);
                         double r = l3.intersectd(bisectSeg);
                         RivNode intersectNode = new RivNode(100, 100, 100);
-                        l3.LocateNodeAadInterpolation(r, intersectNode);
+                        l3.LocateNodeAndInterpolation(r, intersectNode);
                         RivTriangle tri = new RivTriangle(1, intersectNode, bisectNode, Nodes[2]);
                         an[2] = tri.Area();
 
-                        l1.LocateNodeAadInterpolation(0.5, bisectNode);
+                        l1.LocateNodeAndInterpolation(0.5, bisectNode);
                         bisectSeg.SetNode(1, bisectNode);
                         r = l3.intersectd(bisectSeg);
-                        l3.LocateNodeAadInterpolation(r, intersectNode);
+                        l3.LocateNodeAndInterpolation(r, intersectNode);
                         tri.SetNode(1, Nodes[0]);
                         tri.SetNode(2, bisectNode);
                         an[0] = tri.Area();
@@ -426,7 +426,7 @@ namespace TriMeshGeneratorLib.Advance
         /// <param name="y"></param>
         /// <param name="nP"></param>
         /// <returns></returns>
-        public RivNode LocateNodeAadInterpolation(double x, double y, RivNode nP)
+        public RivNode LocateNodeAndInterpolation(double x, double y, RivNode nP)
         {
             double[] weights = new double[3];
             double X21 = Nodes[1].X - Nodes[0].X;
@@ -476,7 +476,7 @@ namespace TriMeshGeneratorLib.Advance
         /// <param name="nP"></param>
         /// <returns></returns>
 
-        public RivNode LocateNodeAadInterpolation(RivNode nP)
+        public RivNode LocateNodeAndInterpolation(RivNode nP)
         {
             double[] weights = new double[3];
             double X21 = Nodes[1].X - Nodes[0].X;

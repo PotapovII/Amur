@@ -9,7 +9,7 @@ namespace TriMeshGeneratorLib.Advance
 {
     using System.Collections.Generic;
     /// <summary>
-    /// Огрничитель
+    /// Ограничитель
     /// </summary>
     public struct RivBox
     {

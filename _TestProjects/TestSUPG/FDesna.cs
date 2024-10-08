@@ -102,9 +102,12 @@
                 case 0: 
                     Geometry = Create(YDesna1, HDesna1);
                     break;
+                case 1:
+                case 2:
                 case 3:
                     Geometry = Create(YDesna4, HDesna4);
                     break;
+                case 4:
                 case 5:
                     Geometry = Create(YDesnaT, HDesnaT);
                     break;
@@ -199,8 +202,7 @@
             IDigFunction VelosityUy = null;
             #region Река Десна (Розовский)
 
-            
-
+  
             // выбор граничных условий створа
             switch (lb_CrossNamber.SelectedIndex)
             {

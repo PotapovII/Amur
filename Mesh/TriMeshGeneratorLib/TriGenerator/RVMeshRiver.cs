@@ -139,7 +139,7 @@ namespace TriMeshGeneratorLib
                 if ((r > 0) && (r < 1.0))
                 {
                     intersectNodes[i] = (RVNodeHabitat)physics.CreateNewNode(1, 100, 100);
-                    elementSegs[i].LocateNodeAadInterpolation(r, intersectNodes[i]);
+                    elementSegs[i].LocateNodeAndInterpolation(r, intersectNodes[i]);
                 }
             }
 
@@ -169,7 +169,7 @@ namespace TriMeshGeneratorLib
                 r = 0.0;
 
             hNBoundNode = (RVNodeHabitat)physics.CreateNewNode(1, 100, 100);
-            segPathP.LocateNodeAadInterpolation(r, hNBoundNode);
+            segPathP.LocateNodeAndInterpolation(r, hNBoundNode);
 
             for (int i = 0; i < 3; i++)
             {
@@ -228,7 +228,7 @@ namespace TriMeshGeneratorLib
                 if ((r > 0) && (r < 1.0))
                 {
                     intersectNodes[i] = (RVNodeHabitat)physics.CreateNewNode(1, 100, 100);
-                    elementSegs[i].LocateNodeAadInterpolation(r, intersectNodes[i]);
+                    elementSegs[i].LocateNodeAndInterpolation(r, intersectNodes[i]);
                 }
             }
 
@@ -347,7 +347,7 @@ namespace TriMeshGeneratorLib
                         else r = 0.0;
 
                         intersectNodes[i] = (RVNodeHabitat)physics.CreateNewNode(1, 100, 100);
-                        elementSegs[i].LocateNodeAadInterpolation(r, intersectNodes[i]);
+                        elementSegs[i].LocateNodeAndInterpolation(r, intersectNodes[i]);
                     }
                 }
 
@@ -540,7 +540,7 @@ namespace TriMeshGeneratorLib
             tempHNP2 = (RVNodeHabitat)nodesList.NextItem();
             tempSeg = new RVSegment(1, tempHNP1, tempHNP2);
             newStartHNP = (RVNodeHabitat)physics.CreateNewNode(1, 100, 100);
-            tempSeg.LocateNodeAadInterpolation(0, newStartHNP);
+            tempSeg.LocateNodeAndInterpolation(0, newStartHNP);
             newStartHNP.Fixed = RVFixedNodeFlag.fixedNode;
             AddNode(newStartHNP);
 
@@ -562,7 +562,7 @@ namespace TriMeshGeneratorLib
                     if (noOfNodesAppended == (noOfNodes - 1)) break;
                     r = incrementLength / segmentsListength;
                     newHNP = (RVNodeHabitat)physics.CreateNewNode(1, 100, 100);
-                    tempSeg.LocateNodeAadInterpolation(r, newHNP);
+                    tempSeg.LocateNodeAndInterpolation(r, newHNP);
                     newHNP.Fixed = RVFixedNodeFlag.fixedNode;
                     lastNodeP = (RVNodeHabitat)nodesList.LastItem();
                     AddNode(newHNP);
@@ -588,7 +588,7 @@ namespace TriMeshGeneratorLib
             lastNodeP = newHNP;
             tempSeg = new RVSegment(1, tempHNP1, tempHNP2);
             newHNP = (RVNodeHabitat)physics.CreateNewNode(1, 100, 100);
-            tempSeg.LocateNodeAadInterpolation(0, newHNP);  //may want to delete tempSeg when done with it
+            tempSeg.LocateNodeAndInterpolation(0, newHNP);  //may want to delete tempSeg when done with it
             newHNP.Fixed = RVFixedNodeFlag.fixedNode;
             AddNode(newHNP);
             segNum = boundarySegmentsList.Count + 1;
@@ -600,7 +600,7 @@ namespace TriMeshGeneratorLib
 
             lastNodeP = newHNP;
             newHNP = (RVNodeHabitat)physics.CreateNewNode(1, 100, 100);
-            tempSeg.LocateNodeAadInterpolation(1, newHNP);
+            tempSeg.LocateNodeAndInterpolation(1, newHNP);
             newHNP.Fixed = RVFixedNodeFlag.fixedNode;
             AddNode(newHNP);
             segNum = boundarySegmentsList.Count + 1;
@@ -637,7 +637,7 @@ namespace TriMeshGeneratorLib
                     if (noOfNodesAppended == (noOfNodes - 1)) break;
                     r = incrementLength / segmentsListength;
                     newHNP = (RVNodeHabitat)physics.CreateNewNode(1, 100, 100);
-                    tempSeg.LocateNodeAadInterpolation(r, newHNP);
+                    tempSeg.LocateNodeAndInterpolation(r, newHNP);
                     newHNP.Fixed = RVFixedNodeFlag.fixedNode;
                     lastNodeP = (RVNodeHabitat)nodesList.LastItem();
                     AddNode(newHNP);
@@ -663,7 +663,7 @@ namespace TriMeshGeneratorLib
             lastNodeP = newHNP;
             tempSeg = new RVSegment(1, tempHNP1, tempHNP2);
             newHNP = (RVNodeHabitat)physics.CreateNewNode(1, 100, 100);
-            tempSeg.LocateNodeAadInterpolation(0, newHNP);
+            tempSeg.LocateNodeAndInterpolation(0, newHNP);
             newHNP.Fixed = RVFixedNodeFlag.fixedNode;
             AddNode(newHNP);
             segNum = boundarySegmentsList.Count + 1;
@@ -797,10 +797,10 @@ namespace TriMeshGeneratorLib
             {
                 hNstartP = (RVNodeHabitat)physics.CreateNewNode(1, 100, 100);
                 r1 = USbsP.intersectd(USsegPathP);
-                USbsP.LocateNodeAadInterpolation(r1, hNstartP);
+                USbsP.LocateNodeAndInterpolation(r1, hNstartP);
                 hNendP = (RVNodeHabitat)physics.CreateNewNode(1, 100, 100);
                 r1 = DSbsP.intersectd(DSsegPathP);
-                DSbsP.LocateNodeAadInterpolation(r1, hNendP);
+                DSbsP.LocateNodeAndInterpolation(r1, hNendP);
             }
 
             //getting the starting and end CountNodes int the psi = Qtotal streamline
@@ -809,10 +809,10 @@ namespace TriMeshGeneratorLib
             {
                 hNstartP = (RVNodeHabitat)physics.CreateNewNode(1, 100, 100);
                 r1 = DSbsP.intersectd(DSsegPathP);
-                DSbsP.LocateNodeAadInterpolation(r1, hNstartP);
+                DSbsP.LocateNodeAndInterpolation(r1, hNstartP);
                 hNendP = (RVNodeHabitat)physics.CreateNewNode(1, 100, 100);
                 r1 = USbsP.intersectd(USsegPathP);
-                USbsP.LocateNodeAadInterpolation(r1, hNendP);
+                USbsP.LocateNodeAndInterpolation(r1, hNendP);
             }
 
             //mapping the streamline that is along the right boundary
@@ -826,7 +826,7 @@ namespace TriMeshGeneratorLib
                 {
                     lastNodeP = (RVNodeHabitat)nodesList.LastItem();
                     nP = (RVNodeHabitat)physics.CreateNewNode(1, 100, 100);
-                    bsP.LocateNodeAadInterpolation(1, nP);
+                    bsP.LocateNodeAndInterpolation(1, nP);
                     AddNode(nP);
                     if (boundarySegmentsList.FirstItem() == null) segNum = 1;
                     else segNum = boundarySegmentsList.Count + 1;
@@ -864,7 +864,7 @@ namespace TriMeshGeneratorLib
                 {
                     lastNodeP = (RVNodeHabitat)nodesList.LastItem();
                     nP = (RVNodeHabitat)physics.CreateNewNode(1, 100, 100);
-                    bsP.LocateNodeAadInterpolation(1, nP);
+                    bsP.LocateNodeAndInterpolation(1, nP);
                     AddNode(nP);
                     if (boundarySegmentsList.FirstItem() == null) segNum = 1;
                     else segNum = boundarySegmentsList.Count + 1;
@@ -961,7 +961,7 @@ namespace TriMeshGeneratorLib
                     else r = 0.0;
 
                     intersectNodes[i] = (RVNodeHabitat)physics.CreateNewNode(1, 100, 100);
-                    elementSegs[i].LocateNodeAadInterpolation(r, intersectNodes[i]);
+                    elementSegs[i].LocateNodeAndInterpolation(r, intersectNodes[i]);
                 }
             }
 
@@ -1681,7 +1681,7 @@ namespace TriMeshGeneratorLib
                         {
                             if (tBP.Status == StatusFlag.Activate)
                             {
-                                tP.LocateNodeAadInterpolation(cNode);
+                                tP.LocateNodeAndInterpolation(cNode);
                                 nP.Ks=cNode.Ks;
                                 dz = cNode.Z - nP.Z;
                                 nP.Z = nP.Z + dz;
@@ -1983,12 +1983,12 @@ namespace TriMeshGeneratorLib
                     {
                         if (tBoundP.Status == StatusFlag.Activate)
                         {
-                            tMeshP.LocateNodeAadInterpolation(x, y, nP);
+                            tMeshP.LocateNodeAndInterpolation(x, y, nP);
                             sN.Init(nP.X, nP.Y, nP.Z);
                             triangle = bedTIN.WhichTriangle(sN);
                             if (triangle != null)
                             {
-                                triangle.LocateNodeAadInterpolation(sN);
+                                triangle.LocateNodeAndInterpolation(sN);
                                 nP.Ks = sN.Ks;
                                 dz = sN.Z - nP.Z;
                                 nP.Z = nP.Z + dz;
@@ -2128,7 +2128,7 @@ namespace TriMeshGeneratorLib
                                 dtP = bedMesh.WhichTriangle(sN);
                                 if (dtP != null)
                                 {
-                                    dtP.LocateNodeAadInterpolation(sN);
+                                    dtP.LocateNodeAndInterpolation(sN);
                                     dz = sN.Z - nP.Z;
                                     nP.Init(xN, yN, nP.Z + dz);
                                     nP.Ks = sN.Ks;
@@ -2191,7 +2191,7 @@ namespace TriMeshGeneratorLib
                         dtP = bedMesh.WhichTriangle(sN);
                         if (dtP != null)
                         {
-                            dtP.LocateNodeAadInterpolation(sN);
+                            dtP.LocateNodeAndInterpolation(sN);
                             dz = sN.Z - nP.Z;
                             nP.Init(xN, yN, nP.Z + dz);
                             nP.Ks = sN.Ks;
@@ -2213,7 +2213,7 @@ namespace TriMeshGeneratorLib
                         dtP = bedMesh.WhichTriangle(sN);
                         if (dtP != null)
                         {
-                            dtP.LocateNodeAadInterpolation(sN);
+                            dtP.LocateNodeAndInterpolation(sN);
                             dz = sN.Z - nP.Z;
                             nP.Init(xNew[iin], yNew[iin], nP.Z + dz);
                             nP.Ks = sN.Ks;
@@ -2270,7 +2270,7 @@ namespace TriMeshGeneratorLib
                         {
                             if (tBP.Status == StatusFlag.Activate)
                             {
-                                tP.LocateNodeAadInterpolation(cNode);
+                                tP.LocateNodeAndInterpolation(cNode);
                                 nP.Ks = cNode.Ks;
                                 dz = cNode.Z - nP.Z;
                                 nP.Z = nP.Z + dz;

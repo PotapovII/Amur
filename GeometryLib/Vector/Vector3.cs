@@ -11,6 +11,8 @@ namespace GeometryLib.Vector
     using System.Globalization;
     using System.Runtime.CompilerServices;
     using MemLogLib;
+    using CommonLib.Geometry;
+
     /// <summary>
     /// Представляет трехмерный вещественный вектор с полями двойной точности.
     /// </summary>
@@ -40,7 +42,12 @@ namespace GeometryLib.Vector
             Y = y;
             Z = z;
         }
-
+        public Vector3(IHPoint p)
+        {
+            X = p.X;
+            Y = p.Y;
+            Z = 0;
+        }
         public static Vector3 Zero => default(Vector3);
         /// <summary>
         /// Вектор, три элемента которого равны единице (то есть он возвращает вектор (1,1,1).
