@@ -24,7 +24,7 @@ namespace DelaunayGenerator
         /// <summary>
         /// Размер стека для перестройки треугольников по Делоне
         /// </summary>
-        private readonly int[] EdgeStack = new int[1024];
+        private int[] EdgeStack;
         /// <summary>
         ///  Массив индексов вершин треугольника (каждая группа 
         ///  из трех чисел образует треугольник). 
@@ -33,7 +33,7 @@ namespace DelaunayGenerator
         public int[] Triangles;
         /// <summary>
         /// Ссылки индексов ребер треугольника на ребра сопряженных треугольников
-        // (или -1 для ребер на выпуклой оболочке).
+        // (или -1 для ребер на выпуклой оболочке). (Ребра диаграмы Вронского)
         /// </summary>
         public int[] HalfEdges;
         /// <summary>
@@ -178,6 +178,7 @@ namespace DelaunayGenerator
             this.Boundary = Boundary;
             hashSize = (int)Math.Ceiling(Math.Sqrt(points.Length));
             var maxTriangles = 2 * points.Length - 5;
+            MEM.Alloc(points.Length, ref EdgeStack);
             MEM.Alloc(Points.Length, ref coordsX);
             MEM.Alloc(Points.Length, ref coordsY);
             MEM.Alloc(maxTriangles * 3, ref Triangles);
@@ -202,18 +203,19 @@ namespace DelaunayGenerator
             cx = points.Sum(x => x.X) / (points.Length);
             cy = points.Sum(x => x.Y) / (points.Length);
             pc = new HPoint(cx, cy);
+            // Если контур границы определен
             if (Boundary != null)
             {
                 if (Boundary.Length > 2)
                 {
                     for (var i = 0; i < points.Length; i++)
                     {
+                        // Проверка принадлежности точки контуру границы
                         mark[i] = InArea(i);
                     }
                 }
             }
-           
-
+            // Начальное состояние адресации вершин
             for (int i = 0; i < points.Length; i++)
                 ids[i] = i;
 
@@ -230,7 +232,7 @@ namespace DelaunayGenerator
                 }
             }
             minDist = double.PositiveInfinity;
-            // найдите точку, ближайшую к наачльной
+            // найдите точку, ближайшую к начальной
             for (int i = 0; i < points.Length; i++)
             {
                 if (i == i0) continue;
@@ -244,7 +246,7 @@ namespace DelaunayGenerator
             }
             double minRadius = double.PositiveInfinity;
             // найдите третью точку, которая образует
-            // наименьшую окружность с первыми двумя
+            // наименьшую окружность с первыми двумя точками
             for (int i = 0; i < points.Length; i++)
             {
                 if (i == i0 || i == i1) continue;
@@ -274,19 +276,17 @@ namespace DelaunayGenerator
             Circumcenter();
             // Расчет растояний от центра окружности 1
             // треугольника до точек триангуляции
-           
             for (var i = 0; i < points.Length; i++)
             {
                 if (mark[i] == false) continue;
                 dists[i] = Dist(i);
             }
-            
             // быстрая сортировка точек по расстоянию от
             // центра окружности исходного треугольника
             Quicksort(ids, dists, 0, points.Length - 1);
-           
-            // установите начальный треугольник в качестве
-            // начальной оболочки
+
+            #region начальная оболочка из первого треугольника
+            // стартовый условно нулевой узел входа в оболочку
             hullStart = i0;
             CountHullKnots = 3;
             hullNext[i0] = i1;
@@ -308,6 +308,7 @@ namespace DelaunayGenerator
             trianglesLen = 0;
             // Добавление 1 треугольника в список треугольников
             AddTriangle(i0, i1, i2, -1, -1, -1);
+            #endregion
 
             #region Поиск выпуклой оболочки и триангуляция
             // Поиск выпуклой оболочки и триангуляция
@@ -315,16 +316,16 @@ namespace DelaunayGenerator
             {
                 // добавление текущего k - го узла
                 int i = ids[k];
-                 if (mark[i] == false) continue;
+                // узлы за границей контура                
+                if (mark[i] == false) 
+                    continue;
                 // игнорировать  начальные точки треугольника
                 if (i == i0 || i == i1 || i == i2) 
                     continue;
-
                 // поиск  края видимой выпуклой оболочки, используя хэш ребра
                 int start = 0;
-                
-                // поиск близких по хешированному псевдо углу узлов
-                // на выпуклой оболочке 
+                // поиск близкого узла на выпуклой оболочке 
+                // по псевдо углу хеширования  
                 for (int j = 0; j < hashSize; j++)
                 {
                     int key = HashKey(i);
@@ -351,7 +352,15 @@ namespace DelaunayGenerator
                 // скорее всего, это почти повторяющаяся точка; пропустите ее
                 if (e == int.MaxValue) 
                     continue;
-                //  добавьте первый треугольник от точки
+                // если e - hullNext[e] - на видимой границе оболочки
+                //  добавьте первый треугольник от точки i
+                //    hullTri[e]
+                //        |
+                // -- e ---- hullNext[e] ---
+                //     \       /
+                //  -1  \     / -1
+                //       \   /
+                //         i        
                 int t = AddTriangle(e, i, hullNext[e], -1, -1, hullTri[e]);
                 // рекурсивная перестройки треугольников от точки к точке,
                 // пока они не удовлетворят условию Делоне
@@ -367,8 +376,19 @@ namespace DelaunayGenerator
                 /// при движении вперед по контуру 
                 while (Orient(i, nextW, nextE) == true)
                 {
-                    //if (CheckIn(i, nextW, nextE) == false)
+                    //if (CheckIn(nextW, i, nextE) == false)
                     //    break;
+                    // если nextW - hullNext[nextW] - на видимой границе оболочки
+                    //  добавьте первый треугольник от точки i
+                    //
+                    //                 hullTri[nextW]
+                    //                     |
+                    //       ---- nextW ----- hullNext[nextW] ---
+                    //               \         /
+                    //    hullTri[i]  \       / -1
+                    //                 \     /
+                    //                  \   /
+                    //                    i    
                     // добавить треугольник 
                     t = AddTriangle(nextW, i, nextE, hullTri[i], -1, hullTri[nextW]);
                     //  проверка и перестройка по Делоне
@@ -381,15 +401,25 @@ namespace DelaunayGenerator
                     nextE = hullNext[nextW];
                 }
                 // пройдите назад с другой стороны,
-              
                 int prewE = e;
                 if (prewE == start)
                 {
                    int prewW = hullPrev[prewE];
                     while (Orient(i, prewW, prewE) == true)
                     {
-                        //if (CheckIn(i, prewW, prewE) == false)
+                        //if (CheckIn(prewW, i, prewE) == false)
                         //    break;
+                        //  если prewW  - prewE - на видимой границе оболочки
+                        //  добавьте первый треугольник от точки i
+                        //
+                        //                 hullTri[prewW]
+                        //                     |
+                        //       ----  nextW -----  prewE ---
+                        //               \         /
+                        //            -1  \       / hullTri[prewE]
+                        //                 \     /
+                        //                  \   /
+                        //                    i    
                         // добавить треугольник 
                         t = AddTriangle(prewW, i, prewE, -1, hullTri[prewE], hullTri[prewW]);
                         //  проверка и перестройка по Делоне
@@ -423,12 +453,11 @@ namespace DelaunayGenerator
             // удаляем временные массивы
             hullPrev = hullNext = hullTri = null; 
             // обрезка треангуляционных массивов
-            // Элементы
+            // узлы треугольных элементов
             Triangles = Triangles.Take(trianglesLen).ToArray();
-            // Связи
+            // ребра диаграмы Вронского
             HalfEdges = HalfEdges.Take(trianglesLen).ToArray();
         }
-
         #region CreationLogic
         /// <summary>
         /// знак верктоного произведения построенного на касательных к двум граням

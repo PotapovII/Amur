@@ -999,30 +999,21 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             }
             for (i = 1; i < imax; i++)
                 v[i][jmax] = (v[i][jmax - 1] + vmin) * factor;
-
-            double hh = 2 * Dx[1][1];
-            // Инициализация данных
-            for (i = 1; i < imax; i++)
+            // подсос потока на входной границе
+            if (Params.velocityInsBoundary == true)
             {
-                double bx = x[i][0];
-                if ((Params.Wen1 >= bx && Params.V1_inlet < MEM.Error10) ||
-                    (Params.Wen2 + Params.Wen1 > bx && 
-                    Params.Wen1 <= bx && Params.V2_inlet < MEM.Error10) ||
-                    (Params.Wen3 + Params.Wen2 + Params.Wen1 + hh > bx && 
-                    Params.Wen2 + Params.Wen1 <= bx && Params.V3_inlet < MEM.Error10))
+                double hh = 2 * Dx[1][1];
+                // Инициализация данных
+                for (i = 1; i < imax; i++)
                 {
-                    if (Params.Wen1 >= bx && Params.Wen1 - hh < bx)
+                    double bx = x[i][0];
+                    if ((Params.Wen1 >= bx && Params.V1_inlet < MEM.Error10) ||
+                        (Params.Wen2 + Params.Wen1 > bx &&
+                        Params.Wen1 <= bx && Params.V2_inlet < MEM.Error10) ||
+                        (Params.Wen3 + Params.Wen2 + Params.Wen1 + hh > bx &&
+                        Params.Wen2 + Params.Wen1 <= bx && Params.V3_inlet < MEM.Error10))
                     {
-                        v[i][1] = v[i][2] = 0;
-                        v[i][0] = v[i][2] = 0;
-                        tke[i][0] = tke[i][2] = 0;
-                        dis[i][0] = dis[i][2] = 0;
-                        mut[i][0] = mut[i][2] = 0;
-                    }
-                    else
-                    {
-                        if (Params.Wen2 + Params.Wen1 <= bx &&
-                            Params.Wen2 + Params.Wen1 + hh > bx)
+                        if (Params.Wen1 >= bx && Params.Wen1 - hh < bx)
                         {
                             v[i][1] = v[i][2] = 0;
                             v[i][0] = v[i][2] = 0;
@@ -1032,11 +1023,23 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                         }
                         else
                         {
-                            v[i][1] = Math.Max(0, v[i][2]);
-                            v[i][0] = Math.Max(0, v[i][2]);
-                            tke[i][0] = tke[i][2];
-                            dis[i][0] = dis[i][2];
-                            mut[i][0] = mut[i][2];
+                            if (Params.Wen2 + Params.Wen1 <= bx &&
+                                Params.Wen2 + Params.Wen1 + hh > bx)
+                            {
+                                v[i][1] = v[i][2] = 0;
+                                v[i][0] = v[i][2] = 0;
+                                tke[i][0] = tke[i][2] = 0;
+                                dis[i][0] = dis[i][2] = 0;
+                                mut[i][0] = mut[i][2] = 0;
+                            }
+                            else
+                            {
+                                v[i][1] = Math.Max(0, v[i][2]);
+                                v[i][0] = Math.Max(0, v[i][2]);
+                                tke[i][0] = tke[i][2];
+                                dis[i][0] = dis[i][2];
+                                mut[i][0] = mut[i][2];
+                            }
                         }
                     }
                 }

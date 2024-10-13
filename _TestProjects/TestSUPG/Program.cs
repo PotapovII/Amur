@@ -23,6 +23,8 @@
             Console.WriteLine("3. Канал трапецивидный");
             Console.WriteLine("4. Река Десна");
             Console.WriteLine("5. Старые тесты");
+            Console.WriteLine("6. Тест 2D");
+            Console.WriteLine("7. Тест 1D");
             Console.WriteLine("Esc: выход");
             try
             {
@@ -39,6 +41,17 @@
                     Application.Run(new FDesna());
                 if (consoleKeyInfo.Key == ConsoleKey.D5)
                     Application.Run(new FMain());
+                if (consoleKeyInfo.Key == ConsoleKey.D6)
+                {
+                    PhiVortex task = new PhiVortex();
+                    task.Solver();
+                }
+                if (consoleKeyInfo.Key == ConsoleKey.D7)
+                {
+                    Test0 t = new Test0();
+                    t.Do();
+                    t.DoR();
+                }
                 Console.Clear();
                 goto M;
             }

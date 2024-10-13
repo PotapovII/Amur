@@ -20,6 +20,7 @@ namespace TestSUPG
         public double[] mu = new double[N];
         public double[] VortexA = new double[N];
 
+
         public void Do()
         {
             double H = 0.14;
@@ -86,6 +87,8 @@ namespace TestSUPG
                     break;
                 }
             }
+            Console.WriteLine("Нажать любую клавишу");
+            Console.ReadKey();
         }
         public void DoR()
         {
@@ -197,6 +200,8 @@ namespace TestSUPG
                     break;
                 }
             }
+            Console.WriteLine("Нажать любую клавишу");
+            Console.ReadKey();
         }
     }
 }

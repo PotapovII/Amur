@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="PhiVortex.cs" />
     <Compile Include="FMain.cs">
       <SubType>Form</SubType>
     </Compile>

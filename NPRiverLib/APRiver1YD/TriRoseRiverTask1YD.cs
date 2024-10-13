@@ -516,10 +516,11 @@ namespace NPRiverLib.APRiver1YD
 
                     bool flagLes = false;
                     double[] eddyViscosityUx = null;
+                    double[] RR = null;
                     // Искомые поля
                     taskVortexPhi.CalkVortexStream(
                     ref Phi,  ref Vortex, ref Ux, ref Uy, ref Uz, ref eddyViscosityUx, ref eddyViscosity, 
-                    ref TauY, ref TauZ, ref TauYY, ref TauYZ, ref TauZZ,
+                    ref TauY, ref TauZ, ref TauYY, ref TauYZ, ref TauZZ, ref RR,
                     // Граничные условия для потоковой скорости и боковой скорости на свободной поверхности
                     mbU, mAdressU, mbV, mQ, VortexBC_G2, Params.velocityOnWL, VortexBC_G2, Params.typeEddyViscosity, 
                     flagLes,(int)Params.turbViscTypeB);
@@ -539,6 +540,7 @@ namespace NPRiverLib.APRiver1YD
                     unknowns.Add(new Unknown("Скорость Uy", Uy));
                     unknowns.Add(new Unknown("Скорость Uz", Uz));
                     unknowns.Add(new CalkPapams("Поле скорости", Uy, Uz));
+                    if(RR!=null) unknowns.Add(new CalkPapams("Radius", RR));
                     unknowns.Add(new CalkPapams("Поле напряжений T_xy", TauY));
                     unknowns.Add(new CalkPapams("Поле напряжений T_xz", TauZ));
                     unknowns.Add(new CalkPapams("Поле напряжений T_yy", TauYY));

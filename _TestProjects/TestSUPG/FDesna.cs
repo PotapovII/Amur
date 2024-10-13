@@ -26,10 +26,19 @@
 
         double diametrFE;
         double R_midle = 5; //- 0.8;
-
+        /// <summary>
+        /// Створ 1
+        /// </summary>
         double[] YDesna1 = { -1, 0,  4.0, 10.5, 19.0, 27.0, 34.5, 42.5, 53.5, 60.5, 65,  70.5, 80.5, 89.5, 98.5, 109.5, 122,  135.5, 147,  148.5, 157.5, 158.5 };
         double[] HDesna1 = { -1, 0, 1.55,  3.3, 3.3,  3.6,  3.65,  3.7, 3.75, 3.4,  3.3, 3.4,  3.45, 3,    3,    2.95,  2.55, 2.8,   2.05, 1.4,       0,  -1   };
-
+        /// <summary>
+        /// Створ 3
+        /// </summary>
+        double[] YDesna3 = { -26.5, 27.5, 28.5,  33, 34,  38.0, 41.5, 45.0, 50.0, 53.5, 58, 64.5, 68.0, 72.0, 77.0, 83.0, 88.0, 90.0, 99,  103.0, 109, 118.5, 124.5, 127.5, 131.0, 141.5, 145,  151, 157, 159.5, 160.5};
+        double[] HDesna3 = { -1, 0,   0.30, 0.6, 0.8, 1.2,  1.6,  1.8,  1.9,  1.8,   2, 2.4,  2.6,  2.8,  3.4,  3.4,  4.0,  3.8,  5.0, 5.2,   5.2, 6.1,   7.6,   6.0,   6.0,    4.8,  5.25, 3.2, 2.2, 0,     -1 };
+        /// <summary>
+        /// Створ 4
+        /// </summary>
         double[] YDesna4 = { 28, 29, 39, 43.5, 48.5, 52.0, 56.0, 63.5, 69.5, 74.0, 78.5, 83.5, 89.0, 93.0, 99.5, 104.5, 113, 120.0, 127,  130.0, 134, 139.5, 146.5, 151, 155, 160, 161 };
         double[] HDesna4 = { -1,  0, 0.55, 0.8, 1.45, 1.5, 2.2,  2.8,  3.15, 3.6,  4.0,  4.0,  4.25, 4.6,  4.7,  5.0,   5.4, 6.6,   6.05, 5.95,  6.1, 6.0,   5.6,   3.0, 1.2,  0,  -1 };
 
@@ -51,7 +60,7 @@
             listBoxAMu.SelectedIndex = 11;
             lb_VortexBC_G2.SelectedIndex = 2;
             SelectedIndexSave = lb_VortexBC_G2.SelectedIndex; 
-            lb_CrossNamber.SelectedIndex = 5;
+            lb_CrossNamber.SelectedIndex = 2;
             lb_Algebra.SelectedIndex = 0;
             lb_MeshGen.SelectedIndex = 0;
             ls_Type__U_star.SelectedIndex = 0;
@@ -104,6 +113,8 @@
                     break;
                 case 1:
                 case 2:
+                    Geometry = Create(YDesna3, HDesna3);
+                    break;
                 case 3:
                     Geometry = Create(YDesna4, HDesna4);
                     break;
@@ -187,16 +198,12 @@
             double Q = SPhysics.GRAV * SPhysics.rho_w * J;
             int Ring = (int)lb_Ring.SelectedIndex;
 
-            
-
-
             MEM.Alloc(mesh.CountKnots, ref bKnotsU, -1);
             MEM.Alloc(mesh.CountKnots, ref bKnotsV, -1);
             MEM.Alloc(mesh.CountKnots, ref mBC_U, 0);
             MEM.Alloc(mesh.CountKnots, ref mBC_V, 0);
             MEM.Alloc(mesh.CountKnots, ref mQ, Q);
             MEM.Alloc(mesh.CountKnots, ref meddyViscosity, 0.3);
-            
 
             IDigFunction VelosityUx = null;
             IDigFunction VelosityUy = null;
@@ -222,17 +229,24 @@
                     break;
                 case 2: // Створ 3 Десна
                     {
+                        double[] YDesna3S = { 0, 50.0, 72.0, 90.0, 109, 127.5, 145, 159.5 };
+                        double[] YDesna3U = { 0, 0.27, 0.47, 0.52, 0.55, 0.55, 0.55, 0 };
+                        //double[] YDesna3V = { 0, 0.02, 0.06, 0.06, 0.7, 0.08, 0.04, 0 };
+                        double[] YDesna3V = { 0, 0.02, 0.03, 0.06, 0.7, 0.08, 0.04, 0 };
+                        VelosityUx = new DigFunction(YDesna3S, YDesna3U, "Створ");
+                        VelosityUy = new DigFunction(YDesna3S, YDesna3V, "Створ");
+                        R_midle = Rr - (YDesna3S[YDesna3S.Length - 1] - YDesna3S[0]) / 2;
                     }
                     break;
                 case 3: // Створ 4 Десна
                     {
-                        double[] YDesna3S = { 0, 52.0, 69.5, 99.5, 120, 139.5, 160.0 };
-                        double[] YDesna3U = { 0, 0.4,   0.4, 0.45, 0.55, 0.45,  0 };
-                        //double[] YDesna3V = { 0, 0.02, 0.06, 0.03, 0.05, 0.04, 0 };
-                        double[] YDesna3V = { 0, 0.05, 0.05, 0.05, 0.05, 0.05, 0 };
-                        VelosityUx = new DigFunction(YDesna3S, YDesna3U, "Створ");
-                        VelosityUy = new DigFunction(YDesna3S, YDesna3V, "Створ");
-                        R_midle = Rr - (YDesna3S[YDesna3S.Length - 1] - YDesna3S[0]) / 2;
+                        double[] YDesna4S = { 0, 52.0, 69.5, 99.5, 120, 139.5, 160.0 };
+                        double[] YDesna4U = { 0, 0.4, 0.4, 0.45, 0.5, 0.47, 0 };
+                        double[] YDesna4V = { 0, 0.02, 0.06, 0.04, 0.05, 0.04, 0 };
+                        //double[] YDesna3V = { 0, 0.05, 0.05, 0.05, 0.05, 0.05, 0 };
+                        VelosityUx = new DigFunction(YDesna4S, YDesna4U, "Створ");
+                        VelosityUy = new DigFunction(YDesna4S, YDesna4V, "Створ");
+                        R_midle = Rr - (YDesna4S[YDesna4S.Length - 1] - YDesna4S[0]) / 2;
                     }
                     break;
                 case 4: // Створ 5 Десна
@@ -243,7 +257,6 @@
                 case 5: // Тест
                     {
                         //double[] YDesnaT = { -1, 0, 10.0, 150, 160, 161 };
-
                         //YDesnaT = { -1, 0,  1.0,  15,  16, 17 };
                         double[] YDesnaU = { 0, 0, 1.5,  1.5,  0, 0 };
                         //double[] YDesnaV = { 0, 0.1, 0.1,  0.1,  0.1, 0.1,   0.1, 0.1,   0 };
@@ -278,21 +291,10 @@
                 {
                     if (cbBoundaryG2_Ux.Checked == true)
                     {
-                        //double U1 = VelosityUx.FunctionValue(x1);
-                        //double U2 = VelosityUx.FunctionValue(x2);
-                        //Console.WriteLine(" U1 {0:F4}  U2 {0:F4} i1 {2}  i2 {3}", U1, U2, idx1, idx2);
                         bKnotsU[idx1] = 1;
                         bKnotsU[idx2] = 1;
-                        //if(cb_smoothing.Checked == true && CalkU!=null)
-                        //{
-                        //    mBC_U[idx1] = CalkU(x1);
-                        //    mBC_U[idx2] = CalkU(x2);
-                        //}
-                        //else
-                        {
-                            mBC_U[idx1] = VelosityUx.FunctionValue(x1);
-                            mBC_U[idx2] = VelosityUx.FunctionValue(x2);
-                        }
+                        mBC_U[idx1] = VelosityUx.FunctionValue(x1);
+                        mBC_U[idx2] = VelosityUx.FunctionValue(x2);
                     }
                     bKnotsV[idx1] = 1;
                     mBC_V[idx1] = VelosityUy.FunctionValue(x1);
@@ -347,11 +349,11 @@
             bool flagLes = cb_Mu_YZ.Checked;
             double[] eddyViscosityUx = null;
             int idxMu2 = listBoxAMu2.SelectedIndex;
-
+            double[] RR = null;
             task.CalkVortexStream(
                 // Искомые поля
                 ref mPhi, ref mVortex, ref mVx, ref mVy, ref mVz, ref eddyViscosityUx, ref meddyViscosity,
-                ref tauXY, ref tauXZ, ref tauYY, ref tauYZ, ref tauZZ,
+                ref tauXY, ref tauXZ, ref tauYY, ref tauYZ, ref tauZZ, ref RR,
                 // Граничные условия для потоковой скорости и боковой скорости на свободной поверхности
                 mbU, mAdressU, mbV, mQ, flagIndexUy, flagUx, VortexBC_G2, typeEddyViscosity, flagLes, idxMu2);
 
@@ -389,6 +391,7 @@
             sp.Add("tauYY", tauYY);
             sp.Add("tauYZ", tauYZ);
             sp.Add("tauZZ", tauZZ);
+            sp.Add("Radius", RR);
 
             if (mDistance != null)
                 sp.Add("mDistance", mDistance);

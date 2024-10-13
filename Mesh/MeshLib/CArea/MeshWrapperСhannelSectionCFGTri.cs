@@ -512,9 +512,10 @@ namespace MeshLib.CArea
                         {
                             double R = R_min + x.Sum() / 3;
                             newVortex = -2 * phi / (h * h * R);
+                            //newVortex = -2 * phi / (h * h);
                         }
                         long kk = wlVelosity.Length - 1 - nod;
-                        newVortex += -2 * wlVelosity[kk] / h;
+                        newVortex += - 2 * wlVelosity[kk] / h;
                         bcWLVortexValue[nod] = (1 - w) * Vortex[idx];
                         bcWLVortexValue[nod] += w * newVortex;
                         //bcWLVortexValue[nod] = newVortex;
