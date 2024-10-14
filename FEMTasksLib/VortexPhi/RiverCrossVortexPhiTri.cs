@@ -359,6 +359,7 @@ namespace FEMTasksLib.FESimpleTask
             ref double[] tauYY,
             ref double[] tauYZ,
             ref double[] tauZZ,
+            ref double[] RR,
             double[] velosityUx, uint[] mAdressU,
             double[] velosityUy,
             double[] Q,
@@ -387,6 +388,7 @@ namespace FEMTasksLib.FESimpleTask
             int Ring = wm.GetRing();
             residual = double.MaxValue;
             MEM.Alloc(mesh.CountKnots, ref Vx, 0);
+            MEM.Alloc(mesh.CountKnots, ref RR, 0);
             double J = Q[0] / (SPhysics.GRAV * SPhysics.rho_w);
             double[][] tDef = null;
             double[] E2 = null;
@@ -402,10 +404,14 @@ namespace FEMTasksLib.FESimpleTask
             double[] eddyViscosityUx_old = null;
             MEM.MemCopy(ref eddyViscosityUx, eddyViscosity);
             MEM.MemCopy(ref eddyViscosityUx_old, eddyViscosity);
+            X = mesh.GetCoords(0);             
+            for (int i = 0; i < mesh.CountKnots; i++)
+                RR[i] = R_midle + X[i];
+
             // цикл по нелинейности
             for (n = 0; n < 1000; n++)
             {
-            //    MEM.MemCopy(ref Ux_old, Ux);
+                MEM.MemCopy(ref Ux_old, Ux);
                 MEM.MemCopy(ref Phi_old, Phi);
                 MEM.MemCopy(ref Vortex_old, Vortex);
                 MEM.MemCopy(ref eddyViscosity_old, eddyViscosity);
@@ -492,7 +498,8 @@ namespace FEMTasksLib.FESimpleTask
                 // расчет функции тока
                 Console.WriteLine("Phi:");
                 //taskPhi.PoissonTaskBack(ref Phi, PhiMu, boundaryAdress, boundaryPhiValue, Vortex, R_midle, Ring);
-                taskPhi.PoissonTask0(ref Phi, boundaryAdress, boundaryPhiValue, Vortex, R_midle, Ring);
+                //taskPhi.PoissonTask0(ref Phi, boundaryAdress, boundaryPhiValue, Vortex, R_midle, Ring);
+                taskPhi.PoissonTaskCircle(ref Phi, boundaryAdress, boundaryPhiValue, Vortex, R_midle, Ring);
                 tmpRPhi = taskPhi.tmp;
                 // релаксация функции тока
                 for (int i = 0; i < CountKnots; i++)

@@ -39,6 +39,7 @@ namespace FEMTasksLib.FESimpleTask
     using CommonLib;
     using CommonLib.Mesh;
     using AlgebraLib;
+    using System.Linq;
 
     /// <summary>
     /// ОО: Решение задачи Пуассона на симплекс сетке
@@ -211,7 +212,8 @@ namespace FEMTasksLib.FESimpleTask
                         // Вычисление ЛЖМ
                         for (int ai = 0; ai < cu; ai++)
                             for (int aj = 0; aj < cu; aj++)
-                                LaplMatrix[ai][aj] = (b[ai] * b[aj] + c[ai] * c[aj] + nR * c[aj]) * S[elem];
+                                LaplMatrix[ai][aj] = (b[ai] * b[aj] + c[ai] * c[aj] + nR * b[aj]) * S[elem];
+                                //LaplMatrix[ai][aj] = (b[ai] * b[aj] + c[ai] * c[aj] + nR * c[aj]) * S[elem];
                         // Вычисление ЛПЧ
                         for (int j = 0; j < cu; j++)
                             LocalRight[j] = R_elem * mQ * S[elem] / 3;
@@ -238,6 +240,92 @@ namespace FEMTasksLib.FESimpleTask
                 Logger.Instance.Info("Элементов обработано :" + elemEx.ToString());
             }
         }
+
+        /// <summary>
+        /// <summary>
+        /// Нахождение поля скоростей из решения задачи Пуассона МКЭ с постоянной правой частью
+        /// </summary>
+        /// <param name="U">искомая функция</param>
+        /// <param name="eddyViscosity">диффузия</param>
+        /// <param name="bc">адреса ГУ 1 рода</param>
+        /// <param name="bv">значения ГУ 1 рода</param>
+        /// <param name="Q">правая часть</param>
+        public virtual void PoissonTaskCircle(ref double[] U, uint[] bc, double[] bv, double[] Q, double R_midle = 0, int Ring = 0)
+        {
+            int elemEx = 0;
+            try
+            {
+                // локальная матрица часть СЛАУ
+                double[][] LaplMatrix = new double[3][]
+                {
+                       new double[3]{ 0,0,0 },
+                       new double[3]{ 0,0,0 },
+                       new double[3]{ 0,0,0 }
+                };
+
+                algebra.Clear();
+                for (int elem = 0; elem < mesh.CountElements; elem++)
+                {
+                    elemEx = elem;
+                    // локальная правая часть СЛАУ
+                    double[] LocalRight = { 0, 0, 0 };
+                    double[] b = dNdx[elem];
+                    double[] c = dNdy[elem];
+                    uint i0 = eKnots[elem].Vertex1;
+                    uint i1 = eKnots[elem].Vertex2;
+                    uint i2 = eKnots[elem].Vertex3;
+                    uint[] knots = { i0, i1, i2 };
+                    double mQ = (Q[i0] + Q[i1] + Q[i2]) / 3;
+
+                    if (Ring == 0)
+                    {
+                        // Вычисление ЛЖМ
+                        for (int ai = 0; ai < cu; ai++)
+                            for (int aj = 0; aj < cu; aj++)
+                                LaplMatrix[ai][aj] = (b[ai] * b[aj] + c[ai] * c[aj]) * S[elem];
+                        // Вычисление ЛПЧ
+                        for (int j = 0; j < cu; j++)
+                            LocalRight[j] = mQ * S[elem] / 3;
+                    }
+                    else
+                    {
+                        
+                        double R_elem = R_midle + (X[i0] + X[i1] + X[i2]) / 3;
+                        // Вычисление ЛЖМ
+                        for (int ai = 0; ai < cu; ai++)
+                            for (int aj = 0; aj < cu; aj++)
+                            {
+                                //LaplMatrix[ai][aj] = (b[ai] * b[aj] + c[ai] * c[aj] + b[aj]/(3 * R_elem)) * S[elem];
+                                LaplMatrix[ai][aj] = (b[ai] * b[aj] + c[ai] * c[aj]) * S[elem];
+                            }
+                                
+                        // Вычисление ЛПЧ
+                        for (int j = 0; j < cu; j++)
+                            LocalRight[j] = R_elem * mQ * S[elem] / 3;
+                    }
+                    // добавление вновь сформированной ЛЖМ в ГМЖ
+                    algebra.AddToMatrix(LaplMatrix, knots);
+                    // добавление вновь сформированной ЛПЧ в ГПЧ
+                    algebra.AddToRight(LocalRight, knots);
+                }
+                MEM.Alloc(U.Length, ref tmp);
+                algebra.GetRight(ref tmp);
+                //Удовлетворение ГУ
+                algebra.BoundConditions(bv, bc);
+
+                algebra.Solve(ref U);
+                foreach (var ee in U)
+                    if (double.IsNaN(ee) == true)
+                        throw new Exception("FEPoissonTask >> algebra");
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Exception(ex);
+                Logger.Instance.Info("Элементов всего :" + mesh.CountKnots.ToString());
+                Logger.Instance.Info("Элементов обработано :" + elemEx.ToString());
+            }
+        }
+
 
         /// <summary>
         /// Нахождение поля скоростей из решения задачи Пуассона МКЭ с постоянной правой частью

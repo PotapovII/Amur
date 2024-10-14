@@ -2,7 +2,6 @@
 {
     using System;
     using CommonLib;
-    using GeometryLib.Vector;
     using MemLogLib;
     /// <summary>
     /// ОО: RectFDMesh - базистная разностная сетка в четырех гранной области 
@@ -11,14 +10,8 @@
     public class ChannelRectangleMesh : ARectangleMesh
     {
         #region Поля
-        //public double[] X0 = null;
+        
         #endregion
-        //public RectangleMesh(double Lx, double Ly, int Nx, int Ny, int[] Mark, 
-        //        TypeBoundCond[] BCType, double Xmin = 0, double Ymin = 0) 
-        //        : base(Lx, Ly, Nx, Ny, Xmin, Ymin)
-        //{
-        //    CreateMesh(Mark, BCType);
-        //}
         public ChannelRectangleMesh(int Nx, int Ny, double Lx,
             double Ly, double Xmin = 0, double Ymin = 0)
                 : base(Nx, Ny, Lx, Ly, Xmin, Ymin)

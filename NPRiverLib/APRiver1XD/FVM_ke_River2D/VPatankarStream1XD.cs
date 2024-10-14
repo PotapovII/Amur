@@ -97,21 +97,24 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                     }
                     else
                     {
-                        bx = x[i][j];
-                        if (Params.Wen1 >= bx)
+                        if (Params.streamInsBoundary == true || j == 0)
                         {
-                            v[i][j] = Params.V1_inlet;   // основная скорость
-                            t[i][j] = Params.t1;   // основная температура потока
-                        }
-                        if (Params.Wen2 + Params.Wen1 > bx && Params.Wen1 <= bx)
-                        {
-                            v[i][j] = Params.V2_inlet;    // скорость набегания
-                            t[i][j] = Params.t2;    // температура потока набегания
-                        }
-                        if (Params.Wen3 + Params.Wen2 + Params.Wen1 > bx && Params.Wen2 + Params.Wen1 <= bx)
-                        {
-                            v[i][j] = Params.V3_inlet;    // скорость набегания
-                            t[i][j] = Params.t3;    // температура потока набегания
+                            bx = x[i][j];
+                            if (Params.Wen1 >= bx)
+                            {
+                                v[i][j] = Params.V1_inlet;   // основная скорость
+                                t[i][j] = Params.t1;   // основная температура потока
+                            }
+                            if (Params.Wen2 + Params.Wen1 > bx && Params.Wen1 <= bx)
+                            {
+                                v[i][j] = Params.V2_inlet;    // скорость набегания
+                                t[i][j] = Params.t2;    // температура потока набегания
+                            }
+                            if (Params.Wen3 + Params.Wen2 + Params.Wen1 > bx && Params.Wen2 + Params.Wen1 <= bx)
+                            {
+                                v[i][j] = Params.V3_inlet;    // скорость набегания
+                                t[i][j] = Params.t3;    // температура потока набегания
+                            }
                         }
                         //  v[i][j] = GetU(bx);
                     }

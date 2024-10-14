@@ -92,32 +92,35 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                     }
                     else
                     {
-                        bx = x[i][j];
-                        if (Params.Wen1 >= bx)
+                        if (Params.streamInsBoundary == true || j < 2)
                         {
-                            v[i][j] = Params.V1_inlet;   // основная скорость
-                            if (Params.TemperOrConcentration == true)
+                            bx = x[i][j];
+                            if (Params.Wen1 >= bx)
+                            {
+                                v[i][j] = Params.V1_inlet;   // основная скорость
+                                if (Params.TemperOrConcentration == true)
                                     t[i][j] = 0;
-                            else
-                                t[i][j] = Params.t1;   // основная температура потока
+                                else
+                                    t[i][j] = Params.t1;   // основная температура потока
+                            }
+                            if (Params.Wen2 + Params.Wen1 > bx && Params.Wen1 <= bx)
+                            {
+                                v[i][j] = Params.V2_inlet;    // скорость набегания
+                                if (Params.TemperOrConcentration == true)
+                                    t[i][j] = 0;
+                                else
+                                    t[i][j] = Params.t2;    // температура потока набегания
+                            }
+                            if (Params.Wen3 + Params.Wen2 + Params.Wen1 > bx && Params.Wen2 + Params.Wen1 <= bx)
+                            {
+                                v[i][j] = Params.V3_inlet;    // скорость набегания
+                                if (Params.TemperOrConcentration == true)
+                                    t[i][j] = 0;
+                                else
+                                    t[i][j] = Params.t3;    // температура потока набегания
+                            }
+                            //  v[i][j] = GetU(bx);
                         }
-                        if (Params.Wen2 + Params.Wen1 > bx && Params.Wen1 <= bx)
-                        {
-                            v[i][j] = Params.V2_inlet;    // скорость набегания
-                            if (Params.TemperOrConcentration == true)
-                                t[i][j] = 0;
-                            else
-                                t[i][j] = Params.t2;    // температура потока набегания
-                        }
-                        if (Params.Wen3 + Params.Wen2 + Params.Wen1 > bx && Params.Wen2 + Params.Wen1 <= bx)
-                        {
-                            v[i][j] = Params.V3_inlet;    // скорость набегания
-                            if (Params.TemperOrConcentration == true)
-                                t[i][j] = 0;
-                            else
-                                t[i][j] = Params.t3;    // температура потока набегания
-                        }
-                        //  v[i][j] = GetU(bx);
                     }
                     pc[i][j] = 0;
                     p[i][j] = 0;

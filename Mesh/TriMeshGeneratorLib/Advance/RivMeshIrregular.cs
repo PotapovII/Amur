@@ -654,13 +654,13 @@ namespace TriMeshGeneratorLib.Advance
 //            // безразмерный шаг для интерполяции вдоль сегмента
 //            double ds = 0.01;
 //            // создает новый узел в позиции pos = ds вдоль сегмента и интерполирует
-//            segment.LocateNodeAadInterpolation(ds, node);
+//            segment.LocateNodeAndInterpolation(ds, node);
 //            // поиск треугольника для нового узла
 //            RivTriangle triangle = WhichTriangle(node);
 //            while (triangle.Contains(segment.GetNode(0)) != triangle)
 //            {
 //                ds *= 0.1;
-//                segment.LocateNodeAadInterpolation(ds, node);
+//                segment.LocateNodeAndInterpolation(ds, node);
 //                triangle = WhichTriangle(node);
 //                //if (triangle == null)
 //                //    return null;
@@ -780,7 +780,7 @@ namespace TriMeshGeneratorLib.Advance
 //        public RivEdge ThreadFeature(RivEdge bedge, RVList segmentsListist)
 //        {
 //            RivNode n = new RivNode(1);
-//            bedge.LocateNodeAadInterpolation(0.001, n);
+//            bedge.LocateNodeAndInterpolation(0.001, n);
 //            RivTriangle triangle;
 //            if ((triangle = WhichTriangle(n)) == null)
 //            {
@@ -827,7 +827,7 @@ namespace TriMeshGeneratorLib.Advance
 //            double dz = 0.0;
 //            if ((tinTri = WhichTriangle(tCNode)) != null)
 //            {
-//                tinTri.LocateNodeAadInterpolation(tCNode.X, tCNode.Y, tinNode);
+//                tinTri.LocateNodeAndInterpolation(tCNode.X, tCNode.Y, tinNode);
 //                dz = tCNode.Z - tinNode.Z;
 //            }
 //            return dz;
@@ -1029,7 +1029,7 @@ namespace TriMeshGeneratorLib.Advance
 //                 || (segP.GetNode(0).Fixed == RVFixedNodeFlag.slidingNode))
 //                nodeP.Fixed = RVFixedNodeFlag.slidingNode;
 //            nodesList.Add(nodeP);
-//            segP.LocateNodeAadInterpolation(Distance, nodeP);
+//            segP.LocateNodeAndInterpolation(Distance, nodeP);
 //            nSegP = physics.CreateNewSegment(segmentsList.Count + 1,
 //                    nodeP, segP.GetNode(1), segP);
 //            segP.SetNode(1, nodeP);
@@ -1064,7 +1064,7 @@ namespace TriMeshGeneratorLib.Advance
 //                {
 //                    if (tBP.Status == StatusFlag.Activate)
 //                    {
-//                        triangle.LocateNodeAadInterpolation(x, y, node);
+//                        triangle.LocateNodeAndInterpolation(x, y, node);
 //                        nGoodNodes += 1;
 //                        nodeNum += 1;
 //                        tmpNodesList.Add(node);
@@ -1270,7 +1270,7 @@ namespace TriMeshGeneratorLib.Advance
 //                                yN = breakLine.GetNode(0).Y + d * ly;
 //                                node.Init(xN, yN, 100.0);
 //                                if ((triangleB = bedMesh.WhichTriangle(node)) != null)
-//                                    triangleB.LocateNodeAadInterpolation(xN, yN, node);
+//                                    triangleB.LocateNodeAndInterpolation(xN, yN, node);
 //                            }
 //                        }
 //                    }
@@ -1326,7 +1326,7 @@ namespace TriMeshGeneratorLib.Advance
 //                        node.Init(xN, yN, 100.0);
 //                        triangleB = bedMesh.WhichTriangle(node);
 //                        if (triangleB != null)
-//                            triangleB.LocateNodeAadInterpolation(xN, yN, node);
+//                            triangleB.LocateNodeAndInterpolation(xN, yN, node);
 //                    }
 //                    boundarySegment = NextBoundarySegment;
 //                }
@@ -1339,7 +1339,7 @@ namespace TriMeshGeneratorLib.Advance
 //                    {
 //                        node.Init(xNew[iin], yNew[iin], 100.0);
 //                        if ((triangleB = bedMesh.WhichTriangle(node)) != null)
-//                            triangleB.LocateNodeAadInterpolation(xNew[iin], yNew[iin], node);
+//                            triangleB.LocateNodeAndInterpolation(xNew[iin], yNew[iin], node);
 //                    }
 //                    node = NextNode;
 //                    iin += 1;
@@ -1737,7 +1737,7 @@ namespace TriMeshGeneratorLib.Advance
 //                                {
 //                                    if (tBP.Status == StatusFlag.Activate)
 //                                    {
-//                                        triangle.LocateNodeAadInterpolation(x, y, node);
+//                                        triangle.LocateNodeAndInterpolation(x, y, node);
 //                                        nGoodNodes += 1;
 //                                        nodeNum += 1;
 //                                        tmpNodesList.Add(node);
@@ -1817,7 +1817,7 @@ namespace TriMeshGeneratorLib.Advance
 //                        {
 //                            if (tBP.Status == StatusFlag.Activate)
 //                            {
-//                                triangle.LocateNodeAadInterpolation(x, y, node);
+//                                triangle.LocateNodeAndInterpolation(x, y, node);
 //                                nGoodNodes += 1;
 //                                nodeNum += 1;
 //                                tmpNodesList.Add(node);
@@ -1863,7 +1863,7 @@ namespace TriMeshGeneratorLib.Advance
 //                        {
 //                            if (tBP.Status == StatusFlag.Activate)
 //                            {
-//                                triangle.LocateNodeAadInterpolation(node);
+//                                triangle.LocateNodeAndInterpolation(node);
 //                                nGoodNodes += 1;
 //                                nodeNum += 1;
 //                                tmpNodesList.Add(node);
@@ -1925,7 +1925,7 @@ namespace TriMeshGeneratorLib.Advance
 //                        {
 //                            if (tBP.Status == StatusFlag.Activate)
 //                            {
-//                                triangle.LocateNodeAadInterpolation(node);
+//                                triangle.LocateNodeAndInterpolation(node);
 //                                nGoodNodes += 1;
 //                                nodeNum += 1;
 //                                tmpNodesList.Add(node);
@@ -1975,10 +1975,10 @@ namespace TriMeshGeneratorLib.Advance
 //                startNodeP = nodeP1;
 //                nodeP1.Fixed = RVFixedNodeFlag.fixedNode;
 //                tmpNodesList.Add(nodeP1);
-//                bSegment.LocateNodeAadInterpolation(0.0, nodeP1);
+//                bSegment.LocateNodeAndInterpolation(0.0, nodeP1);
 //                triangle = bedMesh.WhichTriangle(nodeP1);
 //                if (triangle != null)
-//                    triangle.LocateNodeAadInterpolation(nodeP1);
+//                    triangle.LocateNodeAndInterpolation(nodeP1);
 //                while (bSegment != null)
 //                {
 //                    nNewSegs = 1 + (int)(bSegment.length() / spacing);
@@ -1987,10 +1987,10 @@ namespace TriMeshGeneratorLib.Advance
 //                        nodeP2 = physics.CreateNewNode(GetNextNumber());
 //                        nodeP2.Fixed = RVFixedNodeFlag.slidingNode;
 //                        tmpNodesList.Add(nodeP2);
-//                        bSegment.LocateNodeAadInterpolation((1.0 * i / nNewSegs), nodeP2);
+//                        bSegment.LocateNodeAndInterpolation((1.0 * i / nNewSegs), nodeP2);
 //                        triangle = bedMesh.WhichTriangle(nodeP2);
 //                        if (triangle != null)
-//                            triangle.LocateNodeAadInterpolation(nodeP2);
+//                            triangle.LocateNodeAndInterpolation(nodeP2);
 //                        nSegP = physics.CreateNewSegment(tmpBoundarySegmentsList.Count + 1, nodeP1, nodeP2, bSegment);
 //                        tmpBoundarySegmentsList.Add(nSegP);
 //                        nodeP1 = nodeP2;
@@ -2040,10 +2040,10 @@ namespace TriMeshGeneratorLib.Advance
 //                startNodeP = nodeP1;
 //                nodeP1.Fixed = RVFixedNodeFlag.fixedNode;
 //                tmpNodesList.Add(nodeP1);
-//                bSegment.LocateNodeAadInterpolation(0.0, nodeP1);
+//                bSegment.LocateNodeAndInterpolation(0.0, nodeP1);
 //                triangle = bedMesh.WhichTriangle(nodeP1);
 //                if (triangle != null)
-//                    triangle.LocateNodeAadInterpolation(nodeP1);
+//                    triangle.LocateNodeAndInterpolation(nodeP1);
 //                while (bSegment != null)
 //                {
 //                    nNewSegs = 1 + (int)(bSegment.length() / spacing);
@@ -2052,10 +2052,10 @@ namespace TriMeshGeneratorLib.Advance
 //                        nodeP2 = physics.CreateNewNode(GetNextNumber());
 //                        nodeP2.Fixed = RVFixedNodeFlag.slidingNode;
 //                        tmpNodesList.Add(nodeP2);
-//                        bSegment.LocateNodeAadInterpolation((1.0 * i / nNewSegs), nodeP2);
+//                        bSegment.LocateNodeAndInterpolation((1.0 * i / nNewSegs), nodeP2);
 //                        triangle = bedMesh.WhichTriangle(nodeP2);
 //                        if (triangle != null)
-//                            triangle.LocateNodeAadInterpolation(nodeP2);
+//                            triangle.LocateNodeAndInterpolation(nodeP2);
 //                        nSegP = physics.CreateNewSegment(tmpBoundarySegmentsList.Count + 1, nodeP1, nodeP2, bSegment);
 //                        tmpBoundarySegmentsList.Add(nSegP);
 //                        nodeP1 = nodeP2;
@@ -2284,7 +2284,7 @@ namespace TriMeshGeneratorLib.Advance
 //            while (node != null)
 //            {
 //                if ((dtP = bedMesh.WhichTriangle(node)) != null)
-//                    dtP.LocateNodeAadInterpolation(node.X, node.Y, node);
+//                    dtP.LocateNodeAndInterpolation(node.X, node.Y, node);
 //                else
 //                {
 //                    err = -1;
@@ -2368,7 +2368,7 @@ namespace TriMeshGeneratorLib.Advance
 //            nodeP.BoundNodeFlag = BoundaryNodeFlag.boundaryNode;
 //            nodeP.Fixed = RVFixedNodeFlag.fixedNode;
 //            nodesList.Add(nodeP);
-//            segP.LocateNodeAadInterpolation(Distance, nodeP);
+//            segP.LocateNodeAndInterpolation(Distance, nodeP);
 //            nSegP = physics.CreateNewSegment(boundarySegmentsList.Count + 1,
 //                    nodeP, segP.GetNode(1), segP);
 //            segP.SetNode(1, nodeP);

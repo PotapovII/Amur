@@ -231,8 +231,15 @@ namespace RiverDB.ConvertorOut
             }
             if (cb_MarkerNods.Checked == true)
             {
-                int knot_marker = (int)dr["knot_marker"];
-                if (knot_marker == 0) return false; 
+                try
+                {
+                    int knot_marker = (int)dr["knot_marker"];
+                    if (knot_marker == 0) return false;
+                }
+                catch
+                {
+                    return false;
+                }
             }
             double x = (double)dr["knot_longitude"];
             double y = (double)dr["knot_latitude"];
@@ -303,6 +310,7 @@ namespace RiverDB.ConvertorOut
         {
             int ID = 0;
             List<CloudKnot> points = new List<CloudKnot>(pointsTable.Rows.Count);
+            MMM:
             if (cbTreckVelocity.Checked == false)
             {
                 CloudKnot ck = null;
@@ -325,7 +333,13 @@ namespace RiverDB.ConvertorOut
                 points.Sort((x, y) => x.time.CompareTo(y.time));
                 // 
                 double timeBreck = (double)nud_TimeBrack.Value;
-                
+                if(points.Count==0)
+                {
+                    cbTreckVelocity.Checked = false;
+                    cbFilterVelocity.Checked = false;
+                    cb_MarkerNods.Checked = false;
+                    goto MMM;
+                } 
                 points[0].timeGroupID = ID;
                 Console.Clear();
                 HPoint velOld = null;
@@ -519,7 +533,7 @@ namespace RiverDB.ConvertorOut
             MeshAdapter.ConvertFrontRenumberationAndCutting(ref bmesh, ref values, meshRiver, Direction.toRight);
             if (bmesh != null)
             {
-                SavePoint data = new SavePoint();
+                SavePoint data = new SavePoint("Триангуляция в контуре по точкам наблюдения");
                 data.SetSavePoint(0, bmesh);
                 double[] x = bmesh.GetCoords(0);
                 double[] y = bmesh.GetCoords(1);

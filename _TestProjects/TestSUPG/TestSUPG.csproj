@@ -49,12 +49,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="FDitrich.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FDitrich.Designer.cs">
       <DependentUpon>FDitrich.cs</DependentUpon>
     </Compile>
+=======
+    <Compile Include="Class1.cs" />
+    <Compile Include="PhiVortex.cs" />
+>>>>>>> bbbbf678e590e725cc293ddb1e5cb43af4912d05
     <Compile Include="FMain.cs">
       <SubType>Form</SubType>
     </Compile>

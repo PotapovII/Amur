@@ -99,7 +99,7 @@
             this.panel2.Location = new System.Drawing.Point(13, 13);
             this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(263, 646);
+            this.panel2.Size = new System.Drawing.Size(263, 654);
             this.panel2.TabIndex = 52;
             // 
             // cb_Revers
@@ -108,7 +108,7 @@
             this.cb_Revers.Checked = true;
             this.cb_Revers.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cb_Revers.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cb_Revers.Location = new System.Drawing.Point(15, 215);
+            this.cb_Revers.Location = new System.Drawing.Point(9, 215);
             this.cb_Revers.Name = "cb_Revers";
             this.cb_Revers.Size = new System.Drawing.Size(167, 24);
             this.cb_Revers.TabIndex = 156;
@@ -199,13 +199,13 @@
             this.tb_w.Name = "tb_w";
             this.tb_w.Size = new System.Drawing.Size(81, 23);
             this.tb_w.TabIndex = 139;
-            this.tb_w.Text = "0.3";
+            this.tb_w.Text = "0.1";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(18, 242);
+            this.label4.Location = new System.Drawing.Point(12, 242);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(148, 20);
@@ -221,7 +221,7 @@
             "Инкрементный",
             "Карта треугольный",
             "Карта комплекс"});
-            this.lb_MeshGen.Location = new System.Drawing.Point(15, 266);
+            this.lb_MeshGen.Location = new System.Drawing.Point(9, 266);
             this.lb_MeshGen.Margin = new System.Windows.Forms.Padding(4);
             this.lb_MeshGen.Name = "lb_MeshGen";
             this.lb_MeshGen.Size = new System.Drawing.Size(233, 64);
@@ -231,7 +231,7 @@
             // 
             this.label40.AutoSize = true;
             this.label40.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label40.Location = new System.Drawing.Point(18, 419);
+            this.label40.Location = new System.Drawing.Point(12, 419);
             this.label40.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label40.Name = "label40";
             this.label40.Size = new System.Drawing.Size(123, 20);
@@ -246,7 +246,7 @@
             this.lb_Algebra.Items.AddRange(new object[] {
             "Ленточный Гаусс",
             "Би сопряженные градиенты"});
-            this.lb_Algebra.Location = new System.Drawing.Point(18, 440);
+            this.lb_Algebra.Location = new System.Drawing.Point(12, 440);
             this.lb_Algebra.Margin = new System.Windows.Forms.Padding(4);
             this.lb_Algebra.Name = "lb_Algebra";
             this.lb_Algebra.Size = new System.Drawing.Size(233, 44);
@@ -256,7 +256,7 @@
             // 
             this.checkBoxView.AutoSize = true;
             this.checkBoxView.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.checkBoxView.Location = new System.Drawing.Point(18, 388);
+            this.checkBoxView.Location = new System.Drawing.Point(12, 388);
             this.checkBoxView.Name = "checkBoxView";
             this.checkBoxView.Size = new System.Drawing.Size(208, 24);
             this.checkBoxView.TabIndex = 85;
@@ -289,7 +289,7 @@
             // 
             this.label35.AutoSize = true;
             this.label35.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label35.Location = new System.Drawing.Point(19, 494);
+            this.label35.Location = new System.Drawing.Point(13, 494);
             this.label35.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(103, 20);
@@ -304,7 +304,7 @@
             this.textBoxDiam.Name = "textBoxDiam";
             this.textBoxDiam.Size = new System.Drawing.Size(81, 23);
             this.textBoxDiam.TabIndex = 52;
-            this.textBoxDiam.Text = "2";
+            this.textBoxDiam.Text = "5";
             // 
             // lb_Ring
             // 
@@ -314,7 +314,7 @@
             this.lb_Ring.Items.AddRange(new object[] {
             "плоский",
             "поворот"});
-            this.lb_Ring.Location = new System.Drawing.Point(22, 517);
+            this.lb_Ring.Location = new System.Drawing.Point(16, 517);
             this.lb_Ring.Margin = new System.Windows.Forms.Padding(4);
             this.lb_Ring.Name = "lb_Ring";
             this.lb_Ring.Size = new System.Drawing.Size(227, 44);
@@ -324,7 +324,7 @@
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button3.Location = new System.Drawing.Point(18, 352);
+            this.button3.Location = new System.Drawing.Point(12, 352);
             this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(179, 29);
@@ -364,7 +364,7 @@
             this.tb_J.Name = "tb_J";
             this.tb_J.Size = new System.Drawing.Size(83, 23);
             this.tb_J.TabIndex = 63;
-            this.tb_J.Text = "0.001";
+            this.tb_J.Text = "0.0000274";
             // 
             // panel3
             // 
@@ -384,7 +384,7 @@
             this.panel3.Controls.Add(this.button2);
             this.panel3.Location = new System.Drawing.Point(287, 12);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(457, 648);
+            this.panel3.Size = new System.Drawing.Size(457, 656);
             this.panel3.TabIndex = 62;
             // 
             // listBoxAMu2
@@ -405,7 +405,7 @@
             "Модель LES",
             "Модель Дерек Г. и К.",
             "Модель Потапова И.И."});
-            this.listBoxAMu2.Location = new System.Drawing.Point(235, 332);
+            this.listBoxAMu2.Location = new System.Drawing.Point(235, 336);
             this.listBoxAMu2.Margin = new System.Windows.Forms.Padding(4);
             this.listBoxAMu2.Name = "listBoxAMu2";
             this.listBoxAMu2.Size = new System.Drawing.Size(211, 220);
@@ -415,7 +415,7 @@
             // 
             this.cb_Mu_YZ.AutoSize = true;
             this.cb_Mu_YZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cb_Mu_YZ.Location = new System.Drawing.Point(318, 301);
+            this.cb_Mu_YZ.Location = new System.Drawing.Point(318, 304);
             this.cb_Mu_YZ.Name = "cb_Mu_YZ";
             this.cb_Mu_YZ.Size = new System.Drawing.Size(128, 24);
             this.cb_Mu_YZ.TabIndex = 154;
@@ -427,7 +427,7 @@
             // 
             this.balel_Us.AutoSize = true;
             this.balel_Us.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.balel_Us.Location = new System.Drawing.Point(13, 555);
+            this.balel_Us.Location = new System.Drawing.Point(13, 561);
             this.balel_Us.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.balel_Us.Name = "balel_Us";
             this.balel_Us.Size = new System.Drawing.Size(278, 20);
@@ -443,7 +443,7 @@
             "HJ По улону и глубине канала ",
             "GS По гидростатике канала ",
             "LU По придонной скорости"});
-            this.ls_Type__U_star.Location = new System.Drawing.Point(16, 578);
+            this.ls_Type__U_star.Location = new System.Drawing.Point(16, 584);
             this.ls_Type__U_star.Margin = new System.Windows.Forms.Padding(4);
             this.ls_Type__U_star.Name = "ls_Type__U_star";
             this.ls_Type__U_star.Size = new System.Drawing.Size(430, 64);
@@ -464,7 +464,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(13, 309);
+            this.label1.Location = new System.Drawing.Point(13, 313);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(280, 20);
@@ -489,7 +489,7 @@
             "Модель LES",
             "Модель Дерек Г. и К.",
             "Модель Потапова И.И."});
-            this.listBoxAMu.Location = new System.Drawing.Point(16, 332);
+            this.listBoxAMu.Location = new System.Drawing.Point(16, 336);
             this.listBoxAMu.Margin = new System.Windows.Forms.Padding(4);
             this.listBoxAMu.Name = "listBoxAMu";
             this.listBoxAMu.Size = new System.Drawing.Size(211, 220);
@@ -500,7 +500,7 @@
             // 
             this.label41.AutoSize = true;
             this.label41.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label41.Location = new System.Drawing.Point(13, 159);
+            this.label41.Location = new System.Drawing.Point(13, 162);
             this.label41.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label41.Name = "label41";
             this.label41.Size = new System.Drawing.Size(73, 20);
@@ -533,7 +533,7 @@
             "Створ 4",
             "Створ 5",
             "Тест"});
-            this.lb_CrossNamber.Location = new System.Drawing.Point(16, 183);
+            this.lb_CrossNamber.Location = new System.Drawing.Point(16, 185);
             this.lb_CrossNamber.Margin = new System.Windows.Forms.Padding(4);
             this.lb_CrossNamber.Name = "lb_CrossNamber";
             this.lb_CrossNamber.Size = new System.Drawing.Size(211, 124);
@@ -569,7 +569,7 @@
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.Location = new System.Drawing.Point(235, 206);
+            this.button2.Location = new System.Drawing.Point(235, 209);
             this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(211, 29);
@@ -582,7 +582,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(749, 672);
+            this.ClientSize = new System.Drawing.Size(749, 680);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Name = "FDesna";

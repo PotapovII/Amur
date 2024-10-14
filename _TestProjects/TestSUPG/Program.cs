@@ -22,8 +22,14 @@
             Console.WriteLine("2. Канал Вим ван Бален");
             Console.WriteLine("3. Канал трапецивидный");
             Console.WriteLine("4. Река Десна");
+<<<<<<< HEAD
             Console.WriteLine("5. Река Muddy Creek");
             Console.WriteLine("6. Старые тесты");
+=======
+            Console.WriteLine("5. Старые тесты");
+            Console.WriteLine("6. Тест 2D");
+            Console.WriteLine("7. Тест 1D");
+>>>>>>> bbbbf678e590e725cc293ddb1e5cb43af4912d05
             Console.WriteLine("Esc: выход");
             try
             {
@@ -42,6 +48,17 @@
                     Application.Run(new FDitrich());
                 if (consoleKeyInfo.Key == ConsoleKey.D6)
                     Application.Run(new FMain());
+                if (consoleKeyInfo.Key == ConsoleKey.D6)
+                {
+                    PhiVortex task = new PhiVortex();
+                    task.Solver();
+                }
+                if (consoleKeyInfo.Key == ConsoleKey.D7)
+                {
+                    Test0 t = new Test0();
+                    t.Do();
+                    t.DoR();
+                }
                 Console.Clear();
                 goto M;
             }

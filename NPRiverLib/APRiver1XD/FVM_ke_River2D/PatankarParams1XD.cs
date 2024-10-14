@@ -320,7 +320,22 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         [Description("Деформаяй дна только от положительных напряжений (Да) с учетом зон рецеркуляции (Нет)")]
         [Category("Алгоритм")]
         public bool bedLoadTauPlus { get; set; }
-
+        /// <summary>
+        /// Расчет температуры true == да
+        /// </summary>
+        [TypeConverter(typeof(BooleanTypeConverterYN))]
+        [DisplayName("Начальыне условия по струе")]
+        [Description("Струя сформирована в области (Да) только на входе (Нет)")]
+        [Category("Алгоритм")]
+        public bool streamInsBoundary { get; set; }
+        /// <summary>
+        /// Расчет температуры true == да
+        /// </summary>
+        [TypeConverter(typeof(BooleanTypeConverterYN))]
+        [DisplayName("Подсос на границе втекания")]
+        [Description("Подсос на границе втекания (Да) только через сопла (Нет)")]
+        [Category("Алгоритм")]
+        public bool velocityInsBoundary { get; set; }
         /// <summary>
         /// Движение узлов сетки по горизонтальным границам
         /// </summary>
@@ -511,7 +526,8 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             InitTestCase();
             bedLoadStart_X0 = false;
             bedLoadTauPlus = true;
-
+            streamInsBoundary = false;
+            velocityInsBoundary = false;
             //---------------------------
             t1 = 0;
             t2 = 0;
@@ -584,6 +600,8 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             if (TemperOrConcentration == true)
                 flatTermoTask = false;
 
+            streamInsBoundary = ps.streamInsBoundary;
+            velocityInsBoundary = ps.velocityInsBoundary;
             InitTestCase();
         }
         /// <summary>
@@ -626,6 +644,8 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             AllBedForce = LOG.GetBool(file.ReadLine());
             bedLoadStart_X0 = LOG.GetBool(file.ReadLine());
             bedLoadTauPlus = LOG.GetBool(file.ReadLine());
+            streamInsBoundary = LOG.GetBool(file.ReadLine());
+            velocityInsBoundary = LOG.GetBool(file.ReadLine());
         }
         public virtual void Save(StreamReader file)
         {

@@ -151,7 +151,7 @@ namespace TriMeshGeneratorLib
         /// </summary>
         /// <param name="pos"></param>
         /// <param name="nP"></param>
-        public void LocateNodeAadInterpolation(double pos, RVNode nP)
+        public void LocateNodeAndInterpolation(double pos, RVNode nP)
         {
             double[] weights = new double[2];
 

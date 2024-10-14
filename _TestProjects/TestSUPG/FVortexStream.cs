@@ -354,11 +354,11 @@
             bool flagLes = cb_Mu_YZ.Checked;
             double[] eddyViscosityUx = null;
             int idxMu2 = listBoxAMu2.SelectedIndex;
-
+            double[] RR = null;
             task.CalkVortexStream(
                 // Искомые поля
                 ref mPhi, ref mVortex, ref mVx, ref mVy, ref mVz, ref eddyViscosityUx, ref meddyViscosity,
-                ref tauXY, ref tauXZ, ref tauYY, ref tauYZ, ref tauZZ,
+                ref tauXY, ref tauXZ, ref tauYY, ref tauYZ, ref tauZZ, ref RR,
                 // Граничные условия для потоковой скорости и боковой скорости на свободной поверхности
                 mbU, mAdressU, mbV, mQ, flagIndexUy, flagUx, VortexBC_G2, typeEddyViscosity, flagLes, idxMu2);
 

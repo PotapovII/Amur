@@ -46,6 +46,9 @@ namespace TriMeshGeneratorLib
         /// Дуга на основе вершин треугольника
         /// </summary>
         public RVTriangle BaseArc { get => baseArc; set => baseArc = value; }
+        /// <summary>
+        /// 
+        /// </summary>
         protected RVTriangle baseArc;
         /// <summary>
         /// рут треугольников
@@ -71,8 +74,26 @@ namespace TriMeshGeneratorLib
             firstTriangle = lastTriangle = null;
             baseArc = null;
             boundBox = limits;
+         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x1"></param>
+        /// <param name="y1"></param>
+        /// <param name="x2"></param>
+        /// <param name="y2"></param>
+        public RVQuadrantGenerator(double x1, double y1, double x2, double y2)
+        {
+            subQuadrant[0] = null;
+            subQuadrant[1] = null;
+            subQuadrant[2] = null;
+            subQuadrant[3] = null;
+            CountNodes = CountTriangles = 0;
+            firstNode = LastNode = null;
+            firstTriangle = lastTriangle = null;
+            baseArc = null;
+            boundBox = new RVBox( x1,  y1,  x2,  y2);
         }
-
         /// <summary>
         /// рут узлов
         /// </summary>
@@ -151,41 +172,52 @@ namespace TriMeshGeneratorLib
         {
             if (CountNodes == 0)
                 baseArc = null;  // Делаем дугу так, чтобы она никуда не указывала
+
+            if (CountNodes == 1)
+            {
+                // Создаем дугу, указывающую на узел
+                RVNode np1 = firstNode;
+                RVTriangle arc1 = new RVTriangle(1, np1, np1, null);
+                arc1.SetOwner(0, arc1);
+                arc1.SetOwner(1, arc1);
+                baseArc = arc1;
+                // RVCdgIOut.put_elm(firstTriangle, true, CountNodes);
+            }
+            if (CountNodes == 2)
+            {
+                RVNode np1 = firstNode;
+                RVNode np2 = (RVNode)np1.Next;
+
+                /*		double minDist = 0.0001;		// Check for duplicate CountNodes
+						if(np1.Distance(np2) < minDist) {
+							delete np2;
+							np2 = null;
+							np1.setNextOne(null);
+							LastNode = np1;
+							CountNodes--;
+						}
+						if(CountNodes == 2){
+				*/                                    // Make a double arc between 2 CountNodes
+                RVTriangle arc1 = new RVTriangle(1, np1, np2, null);
+                RVTriangle arc2 = new RVTriangle(1, np2, np1, null);
+                arc1.SetOwner(0, arc2);
+                arc1.SetOwner(1, arc2);
+                arc1.SetOwner(2, arc2);
+
+                arc2.SetOwner(0, arc1);
+                arc2.SetOwner(1, arc1);
+                arc2.SetOwner(2, arc1);
+                baseArc = arc1;
+                //		}
+                // RVCdgIOut.put_elm(firstTriangle, true, CountNodes);
+            }
+
             if (CountNodes == 3)
             {
                 RVNode np1 = firstNode;
                 RVNode np2 = (RVNode)np1.Next;
                 RVNode np3 = (RVNode)np2.Next;
-
-                //double minDist = 0.0001;        // Check for duplicate CountNodes
-                //if (np1.Distance(np2) < minDist)
-                //{
-                //    np2 = null;
-                //    np1.setNextOne(np3);
-                //    CountNodes--;
-                //}
-                //if (np1.Distance(np3) < minDist)
-                //{
-                //    np3 = null;
-                //    np2.setNextOne(null);
-                //    LastNode = np2;
-                //    CountNodes--;
-                //}
-                //if ((np2 != null) && (np1 != null))
-                //{
-                //    if (np2.Distance(np3) < minDist)
-                //    {
-                //        np3 = null;
-                //        np2.setNextOne(null);
-                //        LastNode = np2;
-                //        CountNodes--;
-                //    }
-                //}
-                //if (CountNodes == 3)
-                //{
-
                 // Создаем треугольник, окруженный дугами
-                // Make a triangle surrounded by arcs
                 RVTriangle tp = new RVTriangle(1, np1, np2, np3);
                 firstTriangle = lastTriangle = tp;
                 tp.NextTriangle = tp.prevTriangle = null;
@@ -218,74 +250,17 @@ namespace TriMeshGeneratorLib
                 arc2.SetOwner(1, arc1);
                 arc2.SetOwner(2, tp);
                 baseArc = arc1;
-                ///		}
-                // RVCdgIOut.put_elm(firstTriangle,true, CountNodes);
-            }
-
-            if (CountNodes == 2)
-            {
-                RVNode np1 = firstNode;
-                RVNode np2 = (RVNode)np1.Next;
-
-                /*		double minDist = 0.0001;		// Check for duplicate CountNodes
-						if(np1.Distance(np2) < minDist) {
-							delete np2;
-							np2 = null;
-							np1.setNextOne(null);
-							LastNode = np1;
-							CountNodes--;
-						}
-						if(CountNodes == 2){
-				*/                                    // Make a double arc between 2 CountNodes
-                RVTriangle arc1 = new RVTriangle(1, np1, np2, null);
-                RVTriangle arc2 = new RVTriangle(1, np2, np1, null);
-                arc1.SetOwner(0, arc2);
-                arc1.SetOwner(1, arc2);
-                arc1.SetOwner(2, arc2);
-
-                arc2.SetOwner(0, arc1);
-                arc2.SetOwner(1, arc1);
-                arc2.SetOwner(2, arc1);
-                baseArc = arc1;
-                //		}
-                // RVCdgIOut.put_elm(firstTriangle, true, CountNodes);
-            }
-
-            if (CountNodes == 1)
-            {                           // Make an arc to point to node
-                RVNode np1 = firstNode;
-                RVTriangle arc1 = new RVTriangle(1, np1, np1, null);
-                arc1.SetOwner(0, arc1);
-                arc1.SetOwner(1, arc1);
-                baseArc = arc1;
-                // RVCdgIOut.put_elm(firstTriangle, true, CountNodes);
             }
             if (CountNodes > 3)
             {
+                #region Создание суб областей - ректанглов и добавление в них узлов
                 // Подразделить
                 double ym = (boundBox.y1 + boundBox.y2) / 2.0;
                 double xm = (boundBox.x1 + boundBox.x2) / 2.0;
-                RVBox qBox;
-                // NE subquadrant  // прямоугоьник - подобласть СВ
-                qBox = new RVBox(xm, ym, boundBox.x2, boundBox.y2);
-                //qBox.x1 = xm; qBox.x2 = boundBox.x2;
-                //qBox.y1 = ym; qBox.y2 = boundBox.y2;
-                subQuadrant[0] = new RVQuadrantGenerator(qBox);
-                // NW subquadrant // прямоугоьник - подобласть  СЗ
-                //qBox.x1 = boundBox.x1; qBox.x2 = xm;
-                //qBox.y1 = ym; qBox.y2 = boundBox.y2;
-                qBox = new RVBox(boundBox.x1, ym, xm, boundBox.y2);
-                subQuadrant[1] = new RVQuadrantGenerator(qBox);
-                // SW subquadrant // прямоугоьник - подобласть  ЮЗ
-                //qBox.x1 = boundBox.x1; qBox.x2 = xm;
-                //qBox.y1 = boundBox.y1; qBox.y2 = ym;
-                qBox = new RVBox(boundBox.x1, boundBox.y1, xm, ym);
-                subQuadrant[2] = new RVQuadrantGenerator(qBox);
-                // SE subquadrant  // прямоугоьник - подобласть ЮВ
-                //qBox.x1 = xm; qBox.x2 = boundBox.x2;
-                //qBox.y1 = boundBox.y1; qBox.y2 = ym;
-                qBox = new RVBox(xm, boundBox.y1, boundBox.x2, ym);
-                subQuadrant[3] = new RVQuadrantGenerator(qBox);
+                subQuadrant[0] = new RVQuadrantGenerator(xm, ym, boundBox.x2, boundBox.y2);
+                subQuadrant[1] = new RVQuadrantGenerator(boundBox.x1, ym, xm, boundBox.y2);
+                subQuadrant[2] = new RVQuadrantGenerator(boundBox.x1, boundBox.y1, xm, ym);
+                subQuadrant[3] = new RVQuadrantGenerator(xm, boundBox.y1, boundBox.x2, ym);
                 // Распределение узлов в подобласти (процесс рекурсивный)
                 // цикл по узлам
                 RVNode node = firstNode;
@@ -309,6 +284,7 @@ namespace TriMeshGeneratorLib
                     }
                     node = NextNode;
                 }
+                #endregion
                 CountNodes = 0;
                 firstNode = LastNode = null;
                 // Рекурсивная триангуляция для подобластей
@@ -316,14 +292,16 @@ namespace TriMeshGeneratorLib
                 {
                     subQuadrant[i].TriangulateNodes();
                 }
-
+                #region  добавления узлов и треугольников из списка i - го субквадранта в список квадранта
+                // добавления узлов и треугольников из списка 0 - го субквадранта в список квадранта
                 int NNE = RecoverSubQuadInfo(0);
                 RVTriangle bArcE = subQuadrant[0].BaseArc;
+                // добавления узлов и треугольников из списка 1 - го субквадранта в список квадранта
                 int NNW = RecoverSubQuadInfo(1);
                 RVTriangle bArcW = subQuadrant[1].BaseArc;
+                
                 RVTriangle bArcN;
                 int NNN = NNE + NNW;
-
                 if (NNE == 0)
                     bArcN = bArcW;
                 else if (NNW == 0)
@@ -335,9 +313,9 @@ namespace TriMeshGeneratorLib
                 bArcW = subQuadrant[2].BaseArc;
                 NNE = RecoverSubQuadInfo(3);
                 bArcE = subQuadrant[3].BaseArc;
+               
                 RVTriangle bArcS;
                 int NNS = NNE + NNW;
-
                 if (NNE == 0)
                     bArcS = bArcW;
                 else if (NNW == 0)
@@ -352,8 +330,7 @@ namespace TriMeshGeneratorLib
                     baseArc = bArcN;
                 else
                     baseArc = StitchLR(bArcN, bArcS);
-
-                // RVCdgIOut.put_elm(firstTriangle, true, CountNodes);
+                #endregion
             }
             for (int i = 0; i < 4; i++)
             {
@@ -390,7 +367,12 @@ namespace TriMeshGeneratorLib
             // количество узлов в субквадранте 
             return subQuadrant[i].CountNodes;
         }
-
+        /// <summary>
+        /// Склейка двух трангуляций
+        /// </summary>
+        /// <param name="bArcL">трангуляция А</param>
+        /// <param name="bArcR">трангуляция Б</param>
+        /// <returns></returns>
         RVTriangle StitchLR(RVTriangle bArcL, RVTriangle bArcR)
         {
             RVTriangle topArcL = bArcL;
@@ -445,6 +427,7 @@ namespace TriMeshGeneratorLib
             topArc.SetNode(2, null);
             topArc.SetOwner(0, topArcL.tP0);
             topArc.SetOwner(1, topArcR.tP1);
+
             topArcL.tP0.SetOwner(1, topArc);
             topArcR.tP1.SetOwner(0, topArc);
             RVTriangle botArc = new RVTriangle(1, topArcL.node1, topArcR.node0, null);

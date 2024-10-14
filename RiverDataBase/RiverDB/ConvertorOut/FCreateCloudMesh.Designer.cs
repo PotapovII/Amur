@@ -1322,7 +1322,7 @@
             this.Controls.Add(this.gdI_EditControlClouds1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FCreateCloudMesh";
-            this.Text = "Form1";
+            this.Text = "Информационная система «Амур»";
             this.panel1.ResumeLayout(false);
             this.tabControlState.ResumeLayout(false);
             this.tpDB.ResumeLayout(false);

@@ -9,12 +9,26 @@
 //---------------------------------------------------------------------------
 namespace TriMeshGeneratorLib
 {
-
+    /// <summary>
+    /// Ограничивающий ректангл
+    /// </summary>
     public struct RVBox
     {
+        /// <summary>
+        /// минимум х
+        /// </summary>
         public double x1;
+        /// <summary>
+        /// минимум у
+        /// </summary>
         public double y1;
+        /// <summary>
+        /// максимум х
+        /// </summary>
         public double x2;
+        /// <summary>
+        /// максимум у
+        /// </summary>
         public double y2;
         
         public RVBox(double x1, double y1, double x2, double y2)
