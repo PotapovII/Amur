@@ -22,7 +22,8 @@
             Console.WriteLine("2. Канал Вим ван Бален");
             Console.WriteLine("3. Канал трапецивидный");
             Console.WriteLine("4. Река Десна");
-            Console.WriteLine("5. Старые тесты");
+            Console.WriteLine("5. Река Muddy Creek");
+            Console.WriteLine("6. Старые тесты");
             Console.WriteLine("Esc: выход");
             try
             {
@@ -38,6 +39,8 @@
                 if (consoleKeyInfo.Key == ConsoleKey.D4)
                     Application.Run(new FDesna());
                 if (consoleKeyInfo.Key == ConsoleKey.D5)
+                    Application.Run(new FDitrich());
+                if (consoleKeyInfo.Key == ConsoleKey.D6)
                     Application.Run(new FMain());
                 Console.Clear();
                 goto M;
