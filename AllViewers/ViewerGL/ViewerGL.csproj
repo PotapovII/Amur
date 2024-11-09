@@ -119,6 +119,10 @@
       <Project>{4d84c29a-57f3-44d0-9520-0294dc35763e}</Project>
       <Name>MemLogLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Mesh\MeshAdapterLib\MeshAdapterLib.csproj">
+      <Project>{2e2053d5-a41d-487f-8b7b-12f8673edf65}</Project>
+      <Name>MeshAdapterLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Mesh\MeshLib\MeshLib.csproj">
       <Project>{b8062e08-76ac-4ec2-a7aa-2d7a4c601351}</Project>
       <Name>MeshLib</Name>

@@ -73,7 +73,13 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         [Description("Взвешенная струя - ровное дно 2h")]
         OffsetStreamJet0_2h,
         [Description("Взвешенная струя - ровное дно 2.5h")]
-        OffsetStreamJet0_2_5h
+        OffsetStreamJet0_2_5h,
+        [Description("Взвешенная струя - ровное дно 4.0h")]
+        OffsetStreamJet0_4h,
+        [Description("Взвешенная струя - ровное дно 8.0h")]
+        OffsetStreamJet0_8h,
+        [Description("Взвешенная струя - ровное дно 16.5h")]
+        OffsetStreamJet0_16_5h
     }
 
     /// <summary>
@@ -465,7 +471,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             else if (typeStreamTask == TypeStreamTask.OffsetStreamJet0_2_5h)
                 db = 2.5;
             double U0 = 0.6;
-            double H = 0.163;
+            double H = 0.93;
             double b = 0.015;
             Wen1 = db * b;
             Wen2 = b;
@@ -473,7 +479,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             // длины волн
             //FV_X = 60;
             //FV_Y = 600;
-            FV_X = 90;
+            FV_X = 300;
             FV_Y = 900;
             Len1 = b;
             Len2 = 3 - Len1;
@@ -484,11 +490,170 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             V3_inlet = 0.0;
         }
 
+        /////// <summary>
+        /////// Взвешенная струя - волнистое дно
+        /////// </summary>
+        //protected void TestCaseOffsetStreamJet02()
+        //{
+        //    double U0 = 0.6;
+        //    double H = 0.163;
+        //    double b = 0.015;
+        //    // Расстояние от дна в калибрах сопла
+        //    double db = 0.5;
+        //    if (typeStreamTask == TypeStreamTask.OffsetStreamJet0_1h)
+        //        db = 1;
+        //    else if (typeStreamTask == TypeStreamTask.OffsetStreamJet0_1_5h)
+        //        db = 1.5;
+        //    else if (typeStreamTask == TypeStreamTask.OffsetStreamJet0_2h)
+        //        db = 2;
+        //    else if (typeStreamTask == TypeStreamTask.OffsetStreamJet0_2_5h)
+        //        db = 2.5;
+        //    //double[] DB = { 1, 1.5, 2, 2.5 };
+        //    //double db = DB[(int)typeStreamTask];
+        //    Wen1 = db * b;
+        //    Wen2 = b;
+        //    Wen3 = H - Wen1 - Wen2;
+        //    // средняя крутизна донной волны
+        //    double q = 0.03;
+        //    // длины тестовой волн
+        //    double[] LL = { 0, 0.3, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4 };
+        //    Len1 = b;
+        //    if (TaskIndex > -1 && TaskIndex < LL.Length)
+        //    {
+        //        Len2 = LL[TaskIndex];
+        //        bottomWaveAmplitude = -LL[TaskIndex] * q;
+        //    }
+        //    if (bottomWaveAmplitude != 0)
+        //        typeBedForm = TypeBedForm.L1_L2sin_L3;
+        //    else
+        //        typeBedForm = TypeBedForm.PlaneForm;
+        //    Len3 = 3 - Len1 - Len2;
+        //    FV_X = 90;
+        //    FV_Y = 900;
+        //    V1_inlet = 0;
+        //    V2_inlet = U0;
+        //    V3_inlet = 0.0;
+        //}
+
         /// <summary>
-        /// конструктор
+        /// Взвешенная струя - волнистое дно
+        /// K. H. M. ALI Proc. Instn Ciu. Engrs, Part 2, 1991, 91, Mar., 1-18 
         /// </summary>
-        /// <param name="ps"></param>
-        public PatankarParams1XD(PatankarParams1XD ps)
+        protected void TestCaseOffsetStreamJet01()
+        {
+            double U0 = 0.61;
+            double b = 0.025;
+            double H = 90;
+            double L = 3;
+            FV_X = 90;
+
+            FV_Y = 900;
+            // Расстояние от дна в калибрах сопла
+            double db = 0.5;
+            if (typeStreamTask == TypeStreamTask.OffsetStreamJet0_1h)
+            {
+                FV_X = 60;
+                //db = 1;
+                //U0 = 0.61;
+                //b = 0.025;
+                //H = 8*b;
+                b = 0.0118;
+                db = (0.0515 - b / 2) / b;
+                U0 = 0.65;
+                H = 20 * b;
+            }
+            else if (typeStreamTask == TypeStreamTask.OffsetStreamJet0_1_5h)
+                db = 1.5;
+            else if (typeStreamTask == TypeStreamTask.OffsetStreamJet0_2h)
+                db = 2;
+            else if (typeStreamTask == TypeStreamTask.OffsetStreamJet0_2_5h)
+                db = 2.5;
+            else if (typeStreamTask == TypeStreamTask.OffsetStreamJet0_4h)
+            {
+                //db = 3.901;
+                //U0 = 0.61;
+                //b = 0.0117;
+                //H = 0.90;
+                // Ali
+                b = 0.0118;
+                db = (0.0515 - b / 2) / b;
+                U0 = 0.65;
+                H = 20 * b;
+            }
+            else if (typeStreamTask == TypeStreamTask.OffsetStreamJet0_8h)
+            {
+                db = 8.101;
+                U0 = 0.642;
+                b = 0.01015;
+                H = 0.90;
+            }
+            else if (typeStreamTask == TypeStreamTask.OffsetStreamJet0_16_5h)
+            {
+                db = 16.57627;
+                U0 = 0.69;
+                b = 0.0118;
+                H = 0.100;
+            }
+            V1_inlet = 0;
+            V2_inlet = U0;
+            V3_inlet = 0.0;
+            //double[] DB = { 1, 1.5, 2, 2.5 };
+            //double db = DB[(int)typeStreamTask];
+            Wen1 = db * b;
+            Wen2 = b;
+            Wen3 = H - Wen1 - Wen2;
+            Len1 = 0;
+            Len2 = L;
+            Len3 = 0;
+            bottomWaveAmplitude = 0;
+            V1_inlet = 0;
+            V2_inlet = U0;
+            V3_inlet = 0.0;
+            typeBedForm = TypeBedForm.PlaneForm;
+            // средняя крутизна донной волны
+            //double q = 0.03;
+            //// длины тестовой волн
+            //double[] LL = { 0, 0.3, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4 };
+            //Len1 = b;
+            //if (TaskIndex > -1 && TaskIndex < LL.Length)
+            //{
+            //    Len2 = LL[TaskIndex];
+            //    bottomWaveAmplitude = -LL[TaskIndex] * q;
+            //}
+            //if (bottomWaveAmplitude != 0)
+            //    typeBedForm = TypeBedForm.L1_L2sin_L3;
+            //else
+            //    typeBedForm = TypeBedForm.PlaneForm;
+            //Len3 = L - Len1 - Len2;
+            //if (Len3 < 2*L / (FV_Y - 1))
+            //    Len3 = 0;
+
+            if (TaskIndex != 0)
+            {
+                // длины тестовой волн
+                double[] LL = { 0, 0.4, 0.448, 0.51, 0.6545 };
+                double[] Am = { 0, 0.0266, 0.044, 0.0622, 0.0844 };
+                if (TaskIndex > -1 && TaskIndex < LL.Length)
+                {
+                    Len2 = LL[TaskIndex];
+                    //bottomWaveAmplitude = -LL[TaskIndex] * q;
+                    bottomWaveAmplitude = Am[TaskIndex];
+                }
+                if (bottomWaveAmplitude != 0)
+                {
+                    Len1 = 0.0625;
+                    typeBedForm = TypeBedForm.L1_L2sin_L3;
+                }
+                else
+                    typeBedForm = TypeBedForm.PlaneForm;
+                Len3 = L - Len1 - Len2;
+            }
+        }
+            /// <summary>
+            /// конструктор
+            /// </summary>
+            /// <param name="ps"></param>
+            public PatankarParams1XD(PatankarParams1XD ps)
         {
             Set(ps);
         }
@@ -507,7 +672,11 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                 case TypeStreamTask.OffsetStreamJet0_1_5h:
                 case TypeStreamTask.OffsetStreamJet0_2h:
                 case TypeStreamTask.OffsetStreamJet0_2_5h:
-                    TestCaseOffsetStreamJet0();
+                case TypeStreamTask.OffsetStreamJet0_4h:
+                case TypeStreamTask.OffsetStreamJet0_8h:
+                case TypeStreamTask.OffsetStreamJet0_16_5h:
+                    //TestCaseOffsetStreamJet0();
+                    TestCaseOffsetStreamJet01();
                     break;
             }
         }
@@ -519,7 +688,13 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             TaskIndex = 0;
             //typeBedForm = TypeBedForm.PlaneForm;
             typeBedForm = TypeBedForm.PlaneForm;
+            //typeStreamTask = TypeStreamTask.OffsetStreamJet0_1h;
+            //typeStreamTask = TypeStreamTask.OffsetStreamJet0_2h;
+
+            // R. Karki 2007
+            //typeStreamTask = TypeStreamTask.OffsetStreamJet0_2h;
             typeStreamTask = TypeStreamTask.OffsetStreamJet0_1h;
+
             CountBoundaryMove = 5;
             wavePeriod = 1;
 

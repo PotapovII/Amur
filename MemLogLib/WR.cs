@@ -196,5 +196,59 @@ namespace MemLogLib
                 m[i] = (int)mas[i];
             return m;
         }
+        #region Преобразование с обработкой ошибок
+        public static bool Parse(string Text,ref int Count)
+        {
+            try
+            {
+                Count = int.Parse(Text);
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Logger.Instance.Exception(ex);
+                return false;
+            }
+        }
+        public static bool Parse(string Text, ref double Count)
+        {
+            try
+            {
+                Count = double.Parse(Text);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Exception(ex);
+                return false;
+            }
+        }
+        public static bool Parse(string Text, ref float Count)
+        {
+            try
+            {
+                Count = float.Parse(Text);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Exception(ex);
+                return false;
+            }
+        }
+        public static bool Parse(string Text, ref bool Count)
+        {
+            try
+            {
+                Count = bool.Parse(Text);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Exception(ex);
+                return false;
+            }
+        }
+        #endregion
     }
 }

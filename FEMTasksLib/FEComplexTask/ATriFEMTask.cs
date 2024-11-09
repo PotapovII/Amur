@@ -264,7 +264,7 @@ namespace FEMTasksLib.FESimpleTask
         {
             try
             {
-                IMeshWrapperСhannelSectionCFG wm = (IMeshWrapperСhannelSectionCFG)wMesh;
+                IMWCrossSection wm = (IMWCrossSection)wMesh;
                 double R_midle = wm.GetR_midle();
                 int Ring = wm.GetRing();
                 int NE = 5 + Ring;

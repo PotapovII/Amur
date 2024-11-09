@@ -167,7 +167,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         /// <summary>
         /// объект для расчета координт сетки в четырехугольной расчетной области
         /// </summary>
-        public QMesh qmesh = null;
+        public ReverseQMesh qmesh = null;
         /// <summary>
         /// FlagStartMesh - первая генерация сетки true
         /// </summary>
@@ -305,6 +305,19 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         /// <param name="testTaskID">номер задачи по умолчанию</param>
         public override void DefaultCalculationDomain(uint testTaskID = 0)
         {
+            //          1 (W) вток    
+            //i=0,j=0|-------------|--> j y  jmax
+            //       |             |
+            //       |             |
+            //   S   | 0    _    0 |   N (верх)
+            // Дно   |    _| |_    |     
+            //       |    \   /    |     
+            //       |     \ /     |
+            //  imax |------V------| 
+            //       | x    1  исток
+            //       V i    E          
+
+
             imax = Params.FV_X + 1;
             jmax = Params.FV_Y + 1;
             Nx = imax + 1;
@@ -398,7 +411,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             relax[5] = 0.4f; // dissipation of turb kin energy
             relax[6] = 0.5f; // gamma
 
-            qmesh = new QMesh(Nx - 1, Ny - 1);
+            qmesh = new ReverseQMesh(Nx - 1, Ny - 1);
             qmesh.InitQMesh(Params.Ly, Params.Lx, Q, P, Params.topBottom, Params.leftRight);
             if (Params.typeBedForm == TypeBedForm.PlaneForm)
             {
@@ -419,129 +432,6 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             eTaskReady = ETaskStatus.TaskReady;
         }
         #endregion
-
-
-        /// <summary>
-        /// Установка параметров
-        /// </summary>
-        /// <param name="ps">параметры</param>
-        /// 
-        //public void DefaultCalculationDomain()
-        //{
-        //    imax = Params.FV_X + 1;
-        //    jmax = Params.FV_Y + 1;
-        //    Nx = imax + 1;
-        //    Ny = jmax + 1;
-
-        //    MEM.Alloc2D<double>(Nx, Ny, ref x);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref xu);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref Dx);
-
-        //    MEM.Alloc2D<double>(imax, Ny, ref Hx);
-
-        //    MEM.Alloc<double>(jmax, ref theta);
-        //    MEM.Alloc<double>(jmax, ref Cb_zeta);
-
-        //    MEM.Alloc2D<double>(Nx, Ny, ref y);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref yv);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref Dy);
-        //    MEM.Alloc2D<double>(Nx, jmax, ref Hy);
-
-        //    MEM.Alloc2D<double>(Nx, Ny, ref Ae);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref Aw);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref An);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref As);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref Ap);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref Ap0);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref sc);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref sp);
-
-        //    MEM.Alloc2D<double>(Nx, Ny, ref du);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref dv);
-
-        //    MEM.Alloc2D<double>(Nx, Ny, ref uu);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref vv);
-
-        //    MEM.Alloc<double>(Ny, ref xplus);
-        //    xplus = new double[Ny];
-
-        //    bcU = new BCond(Nx, Ny);
-        //    bcV = new BCond(Nx, Ny);
-        //    bcP = new BCond(Nx, Ny);
-        //    bcT = new BCond(Nx, Ny);
-        //    bcK = new BCond(Nx, Ny);
-        //    bcE = new BCond(Nx, Ny);
-        //    bcPhi = new BCond(Nx, Ny);
-
-        //    bcF = new BCond[7] { bcU, bcV, bcP, bcT, bcK, bcE, bcPhi };
-
-        //    MEM.Alloc2D<double>(Nx, Ny, ref u);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref v);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref p);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref pc);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref t);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref rho);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref mut);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref phi);
-
-
-        //    MEM.Alloc2D<double>(Nx, Ny, ref tke);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref dis);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref gam);
-        //    MEM.Alloc2D<double>(Nx, Ny, ref gen);
-
-        //    // Индексация полей задачи
-        //    F = new double[7][][];
-        //    F[0] = u;
-        //    F[1] = v;
-        //    F[2] = pc;
-        //    F[3] = t;
-        //    F[4] = tke;
-        //    F[5] = dis;
-        //    F[6] = phi;
-
-        //    unknowns.Add(new Unknown2D("Осредненная скорость х", u, TypeFunForm.Form_2D_Triangle_L1));
-        //    unknowns.Add(new Unknown2D("Осредненная скорость у", v, TypeFunForm.Form_2D_Triangle_L1));
-        //    unknowns.Add(new CalkPapams2D("Модуль скорости", u, v, TypeFunForm.Form_2D_Rectangle_L1));
-        //    unknowns.Add(new Unknown2D("Давление", p, TypeFunForm.Form_2D_Triangle_L1));
-        //    unknowns.Add(new Unknown2D("Поправка давления", pc, TypeFunForm.Form_2D_Rectangle_L1));
-        //    unknowns.Add(new Unknown2D("Кинетичесая энергия турбулентности", tke, TypeFunForm.Form_2D_Rectangle_L1));
-        //    unknowns.Add(new Unknown2D("Диссипация кинетической энергии турбулентности", dis, TypeFunForm.Form_2D_Rectangle_L1));
-        //    unknowns.Add(new CalkPapams2D("Вихревая вязкость", mut, TypeFunForm.Form_2D_Rectangle_L1));
-        //    unknowns.Add(new Unknown2D("Температура потока", t, TypeFunForm.Form_2D_Rectangle_L1));
-        //    unknowns.Add(new Unknown2D("Концентрация в потоке", t, TypeFunForm.Form_2D_Rectangle_L1));
-        //    unknowns.Add(new CalkPapams2D("Функция тока", phi, TypeFunForm.Form_2D_Rectangle_L1));
-
-        //    // Коэффициенты реласксации модели
-        //    relax[0] = 0.5f; // u-velocity
-        //    relax[1] = 0.5f; // v-velocity
-        //    relax[2] = 0.8f; // p_correction
-        //    relax[3] = 1.0f; // temperature
-        //    relax[4] = 0.4f; // turb kin energy
-        //    relax[5] = 0.4f; // dissipation of turb kin energy
-        //    relax[6] = 0.5f; // gamma
-
-        //    qmesh = new QMesh(Nx - 1, Ny - 1);
-        //    qmesh.InitQMesh(Params.Ly, Params.Lx, Q, P, Params.topBottom, Params.leftRight);
-        //    if (Params.typeBedForm == TypeBedForm.PlaneForm)
-        //    {
-        //        // прямоугольник с плоским дном
-        //        OnGridCalculationRectangle();
-        //    }
-        //    else
-        //    {
-        //        // прямоугольник с профильным дном
-        //        qmesh.CalkXYI(100 * imax * jmax);
-        //        ConvertMeshToMesh();
-        //    }
-        //    eTaskReady = ETaskStatus.CreateMesh;
-        //    // граничные условия
-        //    OnInitialData();
-        //    // выделение решателей
-        //    InitTask();
-        //    eTaskReady = ETaskStatus.TaskReady;
-        //}
-
         /// <summary>
         /// Чтение параметров задачи
         /// </summary>
@@ -619,6 +509,9 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
 
             //if (u == null)
             //    DefaultCalculationDomain();
+            for (int i = 0; i < 6; i++)
+                if (zeta[i] > 0.001)
+                    zeta[i] = 0.001;
 
             if (zeta != null )
             {
@@ -636,7 +529,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                     }
                     else
                         qmesh.CreateNewQMesh(zeta, null, Params.MaxCoordIters);
-                    // конвертация QMesh в сетку задачи
+                    // конвертация ReverseQMesh в сетку задачи
                     ConvertMeshToMesh();
                     MEM.MemCopy(ref Zeta0, zeta);
                 }
@@ -670,8 +563,8 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             {
                 case TypeBedForm.PlaneForm:
                     {
-                        ZetaFuntion0 = new BedSinLen2(Params.Len1, Params.Len2, Params.Len3,
-                                0, Params.wavePeriod);
+                        //ZetaFuntion0 = new BedSinLen2(Params.Len1, Params.Len2, Params.Len3,
+                        //        0, Params.wavePeriod);
                         for (int j = 0; j < count; j++)
                             zeta[j] = 0;
                         break;

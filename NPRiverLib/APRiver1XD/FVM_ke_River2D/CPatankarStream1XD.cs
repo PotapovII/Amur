@@ -25,7 +25,6 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
     using AlgebraLib;
 
     using System;
-    using System.IO;
 
     /// <summary>
     /// ОО: Реализация решателя для задачи о расчете профильного турбулентного потока 

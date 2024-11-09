@@ -199,7 +199,7 @@
             this.tb_w.Name = "tb_w";
             this.tb_w.Size = new System.Drawing.Size(81, 23);
             this.tb_w.TabIndex = 139;
-            this.tb_w.Text = "0.1";
+            this.tb_w.Text = "0.3";
             // 
             // label4
             // 

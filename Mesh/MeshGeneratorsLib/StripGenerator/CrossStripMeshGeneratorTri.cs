@@ -26,7 +26,7 @@ namespace MeshGeneratorsLib.StripGenerator
     [Serializable]
     public class CrossStripMeshGeneratorTri: ACrossStripMeshGenerator
     {
-        СhannelSectionForms channelSectionForms;
+        SСhannelForms channelSectionForms;
         /// <summary>
         /// Создаваемая сетка
         /// </summary>
@@ -36,7 +36,7 @@ namespace MeshGeneratorsLib.StripGenerator
         /// </summary>
         /// <param name="MAXElem">максимальное количество КЭ сетки</param>
         /// <param name="MAXKnot">максимальное количество узлов сетки</param>
-        public CrossStripMeshGeneratorTri(СhannelSectionForms channelSectionForms = СhannelSectionForms.porabolicСhannelSection)
+        public CrossStripMeshGeneratorTri(SСhannelForms channelSectionForms = SСhannelForms.porabolicСhannelSection)
         {
             this.channelSectionForms = channelSectionForms;
         }
@@ -255,7 +255,7 @@ namespace MeshGeneratorsLib.StripGenerator
                 uint CountKnots = Map.CountKnots;
                 uint CountElements = CalkCountElements();
                 int CountBoundKnots = 2 * Count - 2;
-                if (channelSectionForms == СhannelSectionForms.boxСhannelCrossTrapezoidSection)
+                if (channelSectionForms == SСhannelForms.boxСhannelCrossTrapezoidSection)
                 {
                     CountBoundKnots = CountBoundKnots + (int)map1D[0] + (int)map1D[Count - 1];
                 }
@@ -401,7 +401,7 @@ namespace MeshGeneratorsLib.StripGenerator
                     mesh.BoundKnotsMark[CountKnots] = 2;
                     CountKnots++;
                 }
-                if (channelSectionForms == СhannelSectionForms.boxСhannelCrossTrapezoidSection)
+                if (channelSectionForms == SСhannelForms.boxСhannelCrossTrapezoidSection)
                 {
                     // левая сторона
                     for (int i = 0; i < map1D[0]; i++)
@@ -435,7 +435,7 @@ namespace MeshGeneratorsLib.StripGenerator
                     mesh.BoundElementsMark[belem] = 2;
                     belem++;
                 }
-                if (channelSectionForms == СhannelSectionForms.boxСhannelCrossTrapezoidSection)
+                if (channelSectionForms == SСhannelForms.boxСhannelCrossTrapezoidSection)
                 {
                     // левая сторона
                     for (int i = 0; i < map1D[0]-1; i++)

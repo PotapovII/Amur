@@ -50,7 +50,7 @@
                                 double[] x = null, y = null;
                                 if (ext == extString[1]) //".fun"
                                 {
-                                    Name = GetLines(file, 2)[1];
+                                    string Name1 = GetLines(file, 2)[1];
                                     Count = GetInt(file);
                                 }
                                 if (ext == extString[0] || ext == extString[1]) //".fun"
@@ -99,7 +99,7 @@
                 if (ext == extString[1]) //".fun"
                 {
                     file.WriteLine("Name " + curve.Name);
-                    file.WriteLine("Count " + curve.Count);
+                    file.WriteLine("Count = " + curve.Count);
                 }
                 if (ext == extString[0] || ext == extString[1]) //".fun"
                 {

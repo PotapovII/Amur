@@ -78,7 +78,7 @@ namespace NPRiverLib.APRiver1YD
         /// <summary>
         /// Обертка для работы с КЭ сеткой и вычисления алгебраической турбулентной вязкости
         /// </summary>
-        protected IMeshWrapperCrossCFG wMesh = null;
+        protected IMWCross wMesh = null;
 
         #endregion
         public APRiverFEM1YD(RSCrossParams p) : base(p) { }

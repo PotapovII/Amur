@@ -48,7 +48,7 @@ namespace CommonLib.Geometry
     /// </summary>
     [Serializable]
     [DebuggerDisplay("ID {ID} [{X}, {Y}]")]
-    public class HPoint : IHPoint, IComparable, IEquatable<HPoint>
+    public class HPoint : IHPoint, IEquatable<HPoint>
     {
         /// <summary>
         /// Координата по х
@@ -145,7 +145,16 @@ namespace CommonLib.Geometry
             return hash;
         }
         #endregion
-
+        /// <summary>
+        /// Сравнение вещественных чисел
+        /// </summary>
+        public static bool Equals(IHPoint a, IHPoint b)
+        {
+            if (Math.Abs(a.X - b.X) < MEM.Error7 && Math.Abs(a.Y - b.Y) < MEM.Error7)
+                return true;
+            else
+                return false;
+        }
         /// <summary>
         /// Сравнение вещественных чисел
         /// </summary>

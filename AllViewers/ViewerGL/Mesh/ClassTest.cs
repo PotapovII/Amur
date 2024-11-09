@@ -20,7 +20,7 @@ namespace ViewerGL.Mesh
         protected RenderMesh2D renderMesh2D = null;
         public ClassTest(int N=10, double L =1)
         {
-            TriMeshCreate.GetTetrangleMesh(ref triMesh, N, L, Flag);
+            CreateTriMesh.GetTetrangleMesh(ref triMesh, N, L, Flag);
             mesh = new RenderMeshGL(triMesh);
             renderMesh2DArray = new RenderMesh2DArray(mesh);
             renderMesh2D = new RenderMesh2D(mesh);

@@ -45,9 +45,19 @@ namespace ChannelProcessLib
         /// <summary>
         /// шаг по времени
         /// </summary>
-        [DisplayName("шаг по времени [c]")]
+        [DisplayName("шаг по времени BL [c]")]
         [Category("Дискретизация задачи")]
         public double dtime { get; set; }
+        /// <summary>
+        /// Расчетное время в секундах
+        /// </summary>
+        [DisplayName("шаг по времени River[c]")]
+        [Category("Дискретизация задачи")]
+        public double dtimeRiver { get; set; }
+        /// <summary>
+        /// счетчик периодов сохранения задачи
+        /// </summary>
+        public double countRiver;
         /// <summary>
         /// Период сохранения данных
         /// </summary>
@@ -98,14 +108,17 @@ namespace ChannelProcessLib
         public CProcParams()
         {
             this.count = 1;
+            this.countRiver =1;
             this.time = 0;
             this.timeMax = 3600;
             this.dtime = 0.1;
+            this.dtimeRiver = dtime;
             this.timeSavePeriod = 5;
             this.flagSave = true;
             this.flagSP = true;
             this.bedErosion = EBedErosion.NoBedErosion;
             this.saveFileNeme = "Задача";
+
         }
         public CProcParams(CProcParams p)
         {
@@ -114,9 +127,11 @@ namespace ChannelProcessLib
         public virtual void SetParams(CProcParams p)
         {
             this.count = p.count;
+            this.countRiver = p.countRiver;
             this.time = p.time;
             this.timeMax = p.timeMax;
             this.dtime = p.dtime;
+            this.dtimeRiver = p.dtimeRiver;
             this.timeSavePeriod = p.timeSavePeriod;
             this.saveFileNeme = p.saveFileNeme;
             this.flagSave = p.flagSave;
@@ -143,9 +158,11 @@ namespace ChannelProcessLib
         public void Load(StreamReader file)
         {
             this.count = 1;
+            this.countRiver = 1;
             time = LOG.GetDouble(file.ReadLine());
             timeMax = LOG.GetDouble(file.ReadLine());
             dtime = LOG.GetDouble(file.ReadLine());
+            dtimeRiver = LOG.GetDouble(file.ReadLine());
             timeSavePeriod = LOG.GetDouble(file.ReadLine());
             saveFileNeme = LOG.GetString(file.ReadLine());
             flagSave = LOG.GetBool(file.ReadLine());

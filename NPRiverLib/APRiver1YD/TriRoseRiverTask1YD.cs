@@ -36,7 +36,7 @@ namespace NPRiverLib.APRiver1YD
     using System;
     using System.Linq;
 
-    using MeshLib.CArea;
+    using MeshLib.Wrappers;
     using NPRiverLib.ATask;
     using FEMTasksLib.FESimpleTask;
     using NPRiverLib.APRiver1YD.Params;
@@ -400,8 +400,8 @@ namespace NPRiverLib.APRiver1YD
 
             double R_midle = Params.midleRadius - YRose2[YRose2.Length - 1] / 2;
             int cst = (int)Params.crossSectionType;
-            wMesh = new MeshWrapperСhannelSectionCFGTri(mesh, R_midle, cst, 
-                        false, СhannelSectionForms.porabolicСhannelSection);
+            wMesh = new MWCrossSectionTri(mesh, R_midle, cst, 
+                        false, SСhannelForms.porabolicСhannelSection);
 
             // TO DO подумать о реклонировании algebra если размер матрицы не поменялся 
             if (Params.сrossAlgebra ==  CrossAlgebra.TapeGauss)

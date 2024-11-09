@@ -120,6 +120,20 @@ namespace GeometryLib
                           ks.ToString(format);
             return node;
         }
+        public int CompareTo(object obj)
+        {
+            BedRiverNode a = obj as BedRiverNode;
+            if (a != null)
+            {
+                if (zeta < a.zeta)
+                    return -1;
+                if (zeta > a.zeta)
+                    return 1;
+                return 0;
+            }
+            else
+                throw new Exception("ошибка приведения типа");
+        }
         /// <summary>
         /// Создает копию объекта
         /// </summary>

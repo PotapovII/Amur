@@ -326,6 +326,9 @@
         /// <param name="e"></param>
         private void tsb_VelocityMark_Click(object sender, EventArgs e)
         {
+            string filter = openFileDialog1.Filter;
+            openFileDialog1.Filter = "файл наблюдения Excel (*.xls)|*.xls|" +
+                                     "All files (*.*)|*.*";
             lbExp.Items.Clear();
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
@@ -358,6 +361,7 @@
                         list = new List<IStandartSQLCommand>();
                 }
             }
+            openFileDialog1.Filter = filter;
         }
     }
 }

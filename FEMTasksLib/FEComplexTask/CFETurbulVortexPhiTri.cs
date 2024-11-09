@@ -126,7 +126,10 @@ namespace FEMTasksLib.FESimpleTask
         /// функции скорости ^
         /// </summary>
         public double[] Vz;
-
+        /// <summary>
+        /// Скорости на КЭ
+        /// </summary>
+        public double[] eVy, eVz, bVortex;
 
         #region Массивы для определения функции вихря на дне потока
         /// <summary>
@@ -166,9 +169,6 @@ namespace FEMTasksLib.FESimpleTask
         /// Массив значений в узлах для задачи функции тока
         /// </summary>
         protected double[] bcPhiValue = null;
-        //public uint[] bc_Phi;
-        //public double[] bv_Phi;
-
         /// <summary>
         /// Массив значений в узлах для задачи функции тока
         /// </summary>
@@ -185,7 +185,7 @@ namespace FEMTasksLib.FESimpleTask
         /// </summary>
         /// <param name="mesh">сетка</param>
         /// <param name="algebra">линейный решатель</param>
-        public CFETurbulVortexPhiTri(IMeshWrapperСhannelCFG wMesh, IAlgebra algebra, TypeTask typeTask, double w = 0.3) : base(wMesh, algebra, typeTask)
+        public CFETurbulVortexPhiTri(IMWDistance wMesh, IAlgebra algebra, TypeTask typeTask, double w = 0.3) : base(wMesh, algebra, typeTask)
         {
             
             taskPhi = new CFEPoissonTaskTri(wMesh, algebra, typeTask);
@@ -206,6 +206,9 @@ namespace FEMTasksLib.FESimpleTask
             MEM.Alloc(CountKnots, ref Vy);
             MEM.Alloc(CountKnots, ref Vy_old);
             MEM.Alloc(CountKnots, ref Vz);
+            MEM.Alloc(CountKnots, ref bVortex);
+            MEM.Alloc(mesh.CountElements, ref eVy);
+            MEM.Alloc(mesh.CountElements, ref eVz);
             MEM.Alloc(CountKnots, ref eVQ);
             MEM.Alloc(mesh.CountKnots, ref PhiMu, 1);
             CalkBCArray();
@@ -215,8 +218,8 @@ namespace FEMTasksLib.FESimpleTask
         /// </summary>
         /// <param name="mesh">сетка</param>
         /// <param name="algebra">линейный решатель</param>
-        public CFETurbulVortexPhiTri(IMeshWrapperCrossCFG wMesh, IAlgebra algebra, TypeTask typeTask, double w = 0.3) 
-            : this((IMeshWrapperСhannelCFG)wMesh, algebra, typeTask) { }
+        public CFETurbulVortexPhiTri(IMWCross wMesh, IAlgebra algebra, TypeTask typeTask, double w = 0.3) 
+            : this((IMWDistance)wMesh, algebra, typeTask) { }
         /// <summary>
         /// Расчет хеша для граничных условий 
         /// </summary>
@@ -367,7 +370,7 @@ namespace FEMTasksLib.FESimpleTask
                 }
                 // расчет поля вязкости
                 //taskViscosity.TransportEquationsTaskSUPG(ref eddyViscosity, eddyViscosity_old, Vy, Vz, bc_Phi, bv_Phi, eVQ);
-                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMeshWrapperCrossCFG)wMesh, typeEddyViscosity, Vx, J);
+                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWCrossSection)wMesh, typeEddyViscosity, Vx, J);
                 // релаксация функции вязкости
                 for (int i = 0; i < CountKnots; i++)
                     eddyViscosity[i] = (1 - w) * eddyViscosity_old[i] + w * eddyViscosity[i];
@@ -421,9 +424,11 @@ namespace FEMTasksLib.FESimpleTask
             taskUx.CalkTauInterpolation(ref tauY, ref tauZ, mVx, eddyViscosity);
         }
 
+        #region Тесты 1
         /// <summary>
         /// Задача с продольном потоке с крыкой скольжения, на входе котороо заданна функция тока 
         /// TypeTask.streamX1D
+        /// Тест 1
         /// </summary>
         public virtual void CalkVortexPhi_StreamBCPhi(ref double[] Phi, ref double[] Vortex,  
                               ref double[] Vx, ref double[] Vy,  ref double[] eddyViscosity, 
@@ -439,7 +444,7 @@ namespace FEMTasksLib.FESimpleTask
             MEM.Alloc(mesh.CountKnots, ref Phi);
             MEM.Alloc(mesh.CountKnots, ref Vortex);
             // цикл по нелинейности
-            for (n = 0; n < 100 && residual > 1e-5; n++)
+            for (n = 0; n < 1000 && residual > 1e-5; n++)
             {
                 MEM.MemCopy(ref Phi_old, Phi);
                 MEM.MemCopy(ref Vortex_old, Vortex);
@@ -450,16 +455,20 @@ namespace FEMTasksLib.FESimpleTask
                 Console.WriteLine("Phi:");
                 taskPhi.PoissonTask(ref Phi, PhiMu, bcPhiAdress, bcPhiValue, Vortex);
                 // релаксация функции тока
-                for (int i = 0; i < CountKnots; i++)
-                    Phi[i] = (1 - w) * Phi_old[i] + w * Phi[i];
+                if(n== 0)
+                    for (int i = 0; i < CountKnots; i++)
+                        Phi_old[i] = Phi[i];
+                else
+                    for (int i = 0; i < CountKnots; i++)
+                        Phi[i] = (1 - w) * Phi_old[i] + w * Phi[i];
 
                 // расчет поля скорости
                 Console.WriteLine("Vy ~ Vz:");
                 taskPhi.CalcVelosity(Phi, ref Vx, ref Vy);
                 // расчет поля вязкости
-                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMeshWrapperСhannelCFG)wMesh, typeEddyViscosity, Vx);
-                for (int i = 0; i < CountKnots; i++)
-                    eddyViscosity[i] = eddyViscosity[i]/ SPhysics.rho_w;
+                // SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWCrossSection)wMesh, typeEddyViscosity, Vx);
+                //for (int i = 0; i < CountKnots; i++)
+                //    eddyViscosity[i] = eddyViscosity[i]/ SPhysics.rho_w;
                 // релаксация функции вязкости
                 //for (int i = 0; i < CountKnots; i++)
                 //    eddyViscosity[i] = (1 - w) * eddyViscosity_old[i] + w * eddyViscosity[i];
@@ -494,6 +503,260 @@ namespace FEMTasksLib.FESimpleTask
         }
 
         /// <summary>
+        /// Задача с продольном потоке с крыкой скольжения, на входе котороо заданна функция тока 
+        /// алгоритм из книги Маза А.
+        /// TypeTask.streamX1D
+        /// Тест 2
+        /// </summary>
+        public virtual void CalkVortexPhi_Mazo(ref double[] Phi, ref double[] Vortex,
+                              ref double[] Vx, ref double[] Vy, ref double[] eddyViscosity,
+                              uint[] bcPhiAdress, double[] bcPhiValue, uint[] bcAdress_WL, uint[] bcAdress_WaLL,
+                              uint[] bcAdress_IN, uint[] bcAdress_OUT,  double dt)
+        {
+            n = 0;
+            this.bcPhiAdress = bcPhiAdress;
+            this.bcPhiValue = bcPhiValue;
+
+            residual = double.MaxValue;
+            MEM.Alloc(mesh.CountKnots, ref Vx);
+            MEM.Alloc(mesh.CountKnots, ref Vy);
+            MEM.Alloc(mesh.CountKnots, ref Phi);
+            MEM.Alloc(mesh.CountKnots, ref Vortex);
+            // цикл по нелинейности
+            for (n = 0; n < 100 && residual > 1e-5; n++)
+            {
+                MEM.MemCopy(ref Vortex_old, Vortex);
+                // расчет функции тока
+                Console.WriteLine("Phi:");
+                taskPhi.PoissonTask(ref Phi, PhiMu, bcPhiAdress, bcPhiValue, Vortex);
+                // расчет поля скорости на КЭ
+                Console.WriteLine("Vy ~ Vz:");
+                taskPhi.CalcVelosity(ref eVy, ref eVz, Phi);
+                // Расчет функции вихря в узлах области
+                taskPhi.CalcBoudaryVortex(ref bVortex, Phi);
+                // расчет граничных условий для вихря
+                MEM.Alloc(bcPhiAdress.Length, ref bcVortexValue);
+                // расчет граничных условий на дне для вихря
+                for (int i = 0; i < bcAdress_WL.Length; i++)
+                    bVortex[bcAdress_WL[i]] = 0;
+                for (int i = 0; i < bcAdress_IN.Length; i++)
+                {
+                    uint idxIN = bcAdress_IN[i];
+                    double z = Y[idxIN];
+                    double omega = -2 + 2 * z;
+                    bVortex[idxIN] = omega;
+                }
+                for (int i = 0; i < bcAdress_OUT.Length; i++)
+                {
+                    uint idxOUT = bcAdress_OUT[i];
+                    double z = Y[idxOUT];
+                    double omega = -2 + 2 * z;
+                    bVortex[idxOUT] = omega;
+                }
+
+                for (int k = 0, i = 0; i < bcPhiAdress.Length; i++)
+                    bcVortexValue[k++] = bVortex[bcPhiAdress[i]];
+                // расчет вихря
+                Console.WriteLine("Vortex:");
+                taskPhi.CalcVortex(ref Vortex, Vortex_old, eddyViscosity, eVy, eVz, bcPhiAdress, bcVortexValue, dt);
+
+                //taskVortex.TransportEquationsTaskSUPG(ref Vortex, eddyViscosity, Vy, Vz, bcPhiAdress, bcVortexValue, VortexQ);
+                // релаксация вихря
+                //for (int i = 0; i < CountKnots; i++)
+                //    Vortex[i] = (1 - w) * Vortex_old[i] + w * Vortex[i];
+                //************************************************************************************************************************
+                // Считаем невязку
+                //************************************************************************************************************************
+                epsVortex = 0.0;
+                normVortex = 0.0;
+                for (int i = 0; i < CountKnots; i++)
+                {
+                    normVortex += Vortex[i] * Vortex[i];
+                    epsVortex += (Vortex[i] - Vortex_old[i]) * (Vortex[i] - Vortex_old[i]);
+                }
+                residual =  Math.Sqrt(epsVortex / (normVortex + MEM.Error12));
+                Console.WriteLine("Шаг {0} точность {1}", n, residual);
+            }
+            taskPhi.CalcVelosity(Phi, ref Vx, ref Vy);
+        }
+
+        /// <summary>
+        /// Задача о течении в каверне с подвижной крыкой
+        /// TypeTask.streamY1D
+        /// Тест 3
+        /// </summary>
+        public virtual void CalkVortexPhiCavern(ref double[] Phi, ref double[] Vortex,
+                              ref double[] Vx, ref double[] Vy, ref double[] eddyViscosity, double[] velosityUy,
+                              uint[] bcPhiAdress, double[] bcPhiValue, uint[] bcAdress_WL, uint[] bcAdress_WaLL,
+                              uint[] bcAdress_IN, uint[] bcAdress_OUT, double dt, bool velLocal, bool stoks, int BCIndex = 2)
+        {
+            n = 0;
+            int Ring = 0;
+            double R_midle = 0;
+            this.bcPhiAdress = bcPhiAdress;
+            this.bcPhiValue = bcPhiValue;
+            uint[] boundaryAdress = ((IMWCrossSection)wMesh).GetBoundaryAdress();
+            residual = double.MaxValue;
+            MEM.Alloc(mesh.CountKnots, ref Vx);
+            MEM.Alloc(mesh.CountKnots, ref Vy);
+            MEM.Alloc(mesh.CountKnots, ref Phi);
+            MEM.Alloc(mesh.CountKnots, ref Vortex);
+
+            for (int i = 0; i < bcPhiValue.Length; i++)
+                bcPhiValue[i] = 0;
+
+            IMWCrossSection wm = (IMWCrossSection)wMesh;
+            // цикл по нелинейности
+            for (n = 0; n < 1000 && residual > 1e-5; n++)
+            {
+                MEM.MemCopy(ref Phi_old, Phi);
+                MEM.MemCopy(ref Vortex_old, Vortex);
+                MEM.MemCopy(ref eddyViscosity_old, eddyViscosity);
+                MEM.MemCopy(ref Vx_old, Vx);
+                MEM.MemCopy(ref Vy_old, Vy);
+                // расчет граничных условий на дне для вихря
+                wm.CalkBoundaryVortex(Phi, Vortex, velosityUy, w, ref bcVortexValue, BCIndex);
+                // расчет вихря
+
+                Console.WriteLine("Vortex:");
+                if(stoks == true) // только уравнение пуассона для расчета вихря
+                    taskPhi.PoissonTask(ref Vortex, PhiMu, boundaryAdress, bcVortexValue, VortexQ);
+                else
+                    taskVortex.TransportEquationsTaskSUPG(ref Vortex, eddyViscosity, Vy, Vz,
+                                            boundaryAdress, bcVortexValue, VortexQ);
+                // релаксация вихря
+                for (int i = 0; i < CountKnots; i++)
+                    Vortex[i] = (1 - w) * Vortex_old[i] + w * Vortex[i];
+
+                // расчет функции тока
+                Console.WriteLine("Phi:");
+                taskPhi.PoissonTask(ref Phi, PhiMu, bcPhiAdress, bcPhiValue, Vortex);
+                // релаксация функции тока
+                //if (n == 0)
+                //    for (int i = 0; i < CountKnots; i++)
+                //        Phi_old[i] = Phi[i];
+                //else
+                for (int i = 0; i < CountKnots; i++)
+                     Phi[i] = (1 - w) * Phi_old[i] + w * Phi[i];
+
+                // расчет поля скорости
+                Console.WriteLine("Vy ~ Vz:");
+                taskPhi.CalcVelosity(Phi, ref Vx, ref Vy, R_midle, Ring, velLocal);
+                //************************************************************************************************************************
+                // Считаем невязку
+                //************************************************************************************************************************
+                epsVortex = 0.0;
+                normVortex = 0.0;
+                for (int i = 0; i < CountKnots; i++)
+                {
+                    normVortex += Vortex[i] * Vortex[i];
+                    epsVortex += (Vortex[i] - Vortex_old[i]) * (Vortex[i] - Vortex_old[i]);
+                }
+                residual = Math.Sqrt(epsVortex / (normVortex + MEM.Error12));
+                Console.WriteLine("Шаг {0} точность {1}", n, residual);
+            }
+        }
+
+
+        /// <summary>
+        /// Задача о течении в каверне с подвижной крыкой
+        /// TypeTask.streamY1D
+        /// Тест 3
+        /// </summary>
+        public virtual void CalkVortexPhiCavern_Mazo(ref double[] Phi, ref double[] Vortex,
+                              ref double[] Vx, ref double[] Vy, ref double[] eddyViscosity, double[] velosityUy,
+                              uint[] bcPhiAdress, double[] bcPhiValue, uint[] bcAdress_WL, uint[] bcAdress_WaLL,
+                              uint[] bcAdress_IN, uint[] bcAdress_OUT, double dt, int BCIndex = 0)
+        {
+            n = 0;
+            this.bcPhiAdress = bcPhiAdress;
+            this.bcPhiValue = bcPhiValue;
+
+            residual = double.MaxValue;
+            MEM.Alloc(mesh.CountKnots, ref Vx);
+            MEM.Alloc(mesh.CountKnots, ref Vy);
+            MEM.Alloc(mesh.CountKnots, ref Phi);
+            MEM.Alloc(mesh.CountKnots, ref Vortex);
+
+            for (int i = 0; i < bcPhiValue.Length; i++)
+                bcPhiValue[i] = 0;
+
+            IMWCrossSection wm = (IMWCrossSection)wMesh;
+            // цикл по нелинейности
+            for (n = 0; n < 1000 && residual > 1e-5; n++)
+            {
+                MEM.MemCopy(ref Phi_old, Phi);
+                MEM.MemCopy(ref Vortex_old, Vortex);
+                MEM.MemCopy(ref eddyViscosity_old, eddyViscosity);
+                MEM.MemCopy(ref Vx_old, Vx);
+                MEM.MemCopy(ref Vy_old, Vy);
+
+
+                // расчет граничных условий на дне для вихря
+                wm.CalkBoundaryVortex(Phi, Vortex, velosityUy, w, ref bcVortexValue, BCIndex);
+
+                // расчет граничных условий на дне для вихря
+                // расчет граничных условий на дне для вихря
+                //wm.CalkBoundaryVortex(Phi, Vortex, velosityUy, w, ref boundaryVortexValue, VortexBC_G2);
+                CalkBCVortex(Phi, Vortex, w);
+                // расчет нелинейной части для вихря
+                //taskVortex.Calk_Q_forVortex(eddyViscosity, Vortex, ref VortexQ);
+                for (int k = 0, i = 0; i < bcPhiAdress.Length; i++)
+                    bcVortexValue[k++] = bVortex[bcPhiAdress[i]];
+                // расчет вихря
+                Console.WriteLine("Vortex:");
+
+                taskVortex.TransportEquationsTaskSUPG(ref Vortex, eddyViscosity, Vy, Vz,
+                    bcVortexAdress, bcVortexValue, VortexQ);
+
+                // релаксация вихря
+                for (int i = 0; i < CountKnots; i++)
+                    Vortex[i] = (1 - w) * Vortex_old[i] + w * Vortex[i];
+
+                // расчет функции тока
+                Console.WriteLine("Phi:");
+                taskPhi.PoissonTask(ref Phi, PhiMu, bcPhiAdress, bcPhiValue, Vortex);
+                // релаксация функции тока
+                if (n == 0)
+                    for (int i = 0; i < CountKnots; i++)
+                        Phi_old[i] = Phi[i];
+                else
+                    for (int i = 0; i < CountKnots; i++)
+                        Phi[i] = (1 - w) * Phi_old[i] + w * Phi[i];
+
+                // расчет поля скорости
+                Console.WriteLine("Vy ~ Vz:");
+                taskPhi.CalcVelosity(Phi, ref Vx, ref Vy);
+                // расчет поля вязкости
+                // SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWCrossSection)wMesh, typeEddyViscosity, Vx);
+                //for (int i = 0; i < CountKnots; i++)
+                //    eddyViscosity[i] = eddyViscosity[i]/ SPhysics.rho_w;
+                // релаксация функции вязкости
+                //for (int i = 0; i < CountKnots; i++)
+                //    eddyViscosity[i] = (1 - w) * eddyViscosity_old[i] + w * eddyViscosity[i];
+
+                //************************************************************************************************************************
+                // Считаем невязку
+                //************************************************************************************************************************
+                epsPhi = 0.0;
+                normPhi = 0.0;
+                epsVortex = 0.0;
+                normVortex = 0.0;
+                for (int i = 0; i < CountKnots; i++)
+                {
+                    normPhi += Phi[i] * Phi[i];
+                    normVortex += Vortex[i] * Vortex[i];
+                    epsPhi += (Phi[i] - Phi_old[i]) * (Phi[i] - Phi_old[i]);
+                    epsVortex += (Vortex[i] - Vortex_old[i]) * (Vortex[i] - Vortex_old[i]);
+                }
+                residual = Math.Max(Math.Sqrt(epsPhi / (normPhi + MEM.Error12)), Math.Sqrt(epsVortex / (normVortex + MEM.Error12)));
+                Console.WriteLine("Шаг {0} точность {1}", n, residual);
+            }
+        }
+
+
+        #endregion 
+        /// <summary>
         /// Задача с вынужденной конвекцией, на верхней крышке области заданна скорость
         /// </summary>
         public virtual void CalkVortexPhi_BCVelocity(ref double[] Phi, ref double[] Vortex,
@@ -519,7 +782,7 @@ namespace FEMTasksLib.FESimpleTask
                     Vx[i] = (1 - w) * Vx_old[i] + w * Vx[i];
                 // расчет поля вязкости
                 //taskViscosity.TransportEquationsTaskSUPG(ref eddyViscosity, eddyViscosity_old, Vy, Vz, bc_Phi, bv_Phi, eVQ);
-                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMeshWrapperCrossCFG)wMesh, typeEddyViscosity, Vx, J);
+                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWCrossSection)wMesh, typeEddyViscosity, Vx, J);
                 // релаксация функции вязкости
                 for (int i = 0; i < CountKnots; i++)
                     eddyViscosity[i] = (1 - w) * eddyViscosity_old[i] + w * eddyViscosity[i];

@@ -43,7 +43,7 @@ namespace GeometryLib
             this.h = h;
             this.s = s;
         }
-        public new int CompareTo(object obj)
+        public override int CompareTo(object obj)
         {
             TargetLinePoint a = obj as TargetLinePoint;
             if (a != null)

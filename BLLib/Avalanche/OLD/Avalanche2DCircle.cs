@@ -12,6 +12,7 @@ namespace BLLib
 {
     using CommonLib;
     using MeshLib;
+    using MeshLib.Locators;
     using System;
     /// <summary>
     /// ОО: Реализация класса Avalanche2DQuad вычисляющего осыпание 2D склона из 
@@ -26,7 +27,7 @@ namespace BLLib
         /// Аппроксимация данных с треугольной не регулярной сетки
         /// на прямоугольную регулярную
         /// </summary>
-        QuadMesh qmesh;
+        TriToQuadMesh qmesh;
         /// <summary>
         /// Сетка для донора данных
         /// </summary>
@@ -72,7 +73,7 @@ namespace BLLib
             x = new double[9];
             y = new double[9];
             z = new double[9];
-            qmesh = new QuadMesh(mesh);
+            qmesh = new TriToQuadMesh(mesh);
         }
 
         /// <summary>

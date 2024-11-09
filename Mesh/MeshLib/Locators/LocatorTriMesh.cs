@@ -10,7 +10,7 @@
 //                          19.07.24
 //                  добавлен поск по ребрам
 //---------------------------------------------------------------------------
-namespace MeshLib
+namespace MeshLib.Locators
 {
     using System;
     using System.Collections.Generic;

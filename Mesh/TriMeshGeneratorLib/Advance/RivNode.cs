@@ -79,6 +79,20 @@ namespace TriMeshGeneratorLib.Advance
             Xo= p.Xo;
             Yo= p.Yo;
         }
+        public int CompareTo(object obj)
+        {
+            RivNode a = obj as RivNode;
+            if (a != null)
+            {
+                if (X < a.X)
+                    return -1;
+                if (X > a.X)
+                    return 1;
+                return 0;
+            }
+            else
+                throw new Exception("ошибка приведения типа");
+        }
         public IHPoint IClone() { return new RivNode(this); }
 
         public virtual int CountPapams() { return 0; }

@@ -5,7 +5,7 @@
     using CommonLib.Mesh;
 
     using MeshLib;
-    using MeshLib.CArea;
+    using MeshLib.Wrappers;
     using MeshGeneratorsLib.StripGenerator;
 
     using RenderLib;
@@ -70,7 +70,7 @@
                         double[] xx = { 0, L };
                         double[] yy = { WL - HL, WL - HR };
                         int Ny = (int)(L / diametrFE) + 1;
-                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(СhannelSectionForms.boxСhannelCrossTrapezoidSection);
+                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(SСhannelForms.boxСhannelCrossTrapezoidSection);
                         mesh = sg.CreateMesh(ref WetBed, WaterLevel, xx, yy, Ny);
                     }
                     break;
@@ -79,7 +79,7 @@
                         double[] xx = { 0, L / 3, 2 * L / 3, L };
                         double[] yy = { WL - HL, WL - 0.6 * HL, WL - 1.2 * HL, WL - HR };
                         int Ny = (int)(L / diametrFE) + 1;
-                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(СhannelSectionForms.boxСhannelCrossTrapezoidSection);
+                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(SСhannelForms.boxСhannelCrossTrapezoidSection);
                         mesh = sg.CreateMesh(ref WetBed, WaterLevel, xx, yy, Ny);
                     }
                     break;
@@ -88,7 +88,7 @@
                         double[] xx = { 0, L / 3, 2 * L / 3, L };
                         double[] yy = { WL - HL, WL -  1.5*HL, WL - 0.6 * HR, WL - HR };
                         int Ny = (int)(L / diametrFE) + 1;
-                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(СhannelSectionForms.boxСhannelCrossTrapezoidSection);
+                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(SСhannelForms.boxСhannelCrossTrapezoidSection);
                         mesh = sg.CreateMesh(ref WetBed, WaterLevel, xx, yy, Ny);
                     }
                     break;
@@ -100,7 +100,7 @@
         {
             if (mesh != null && checkBoxView.Checked == true)
             {
-                IMeshWrapperCrossCFG wMesh = new MeshWrapperCrossCFGTri(mesh, СhannelSectionForms.boxСhannelCrossTrapezoidSection, 2);
+                IMWCross wMesh = new MWCrossTri(mesh, SСhannelForms.boxСhannelCrossTrapezoidSection, 2);
                 SavePoint data = new SavePoint();
                 data.SetSavePoint(0, mesh);
                 double[] xx = mesh.GetCoords(0);
@@ -291,8 +291,8 @@
                     mbV[k++] = mBC_V[i];
             }
             
-            IMeshWrapperСhannelSectionCFG wMesh = new MeshWrapperСhannelSectionCFGTri(mesh, R_min, Ring,
-                                                      false, СhannelSectionForms.boxСhannelCrossTrapezoidSection);
+            IMWCrossSection wMesh = new MWCrossSectionTri(mesh, R_min, Ring,
+                                                      false, SСhannelForms.boxСhannelCrossTrapezoidSection);
             // Определение наальной вязкости
             SPhysics.PHYS.turbViscType = (ETurbViscType)listBoxAMu.SelectedIndex;
 

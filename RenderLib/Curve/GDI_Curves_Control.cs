@@ -15,6 +15,8 @@ namespace RenderLib
     using System.Windows.Forms;
     using MeshLib;
     using CommonLib.IO;
+    using GeometryLib;
+    using System.IO;
 
     public partial class GDI_Curves_Control : UserControl
     {
@@ -326,8 +328,8 @@ namespace RenderLib
             {
                 this.isp = isp;
 
-                if(checkedListBoxGroup.Items.Count==0)
-                    GNames = isp.graphicsData.GraphicGroupNames();
+                //if(checkedListBoxGroup.Items.Count>0)
+                GNames = isp.graphicsData.GraphicGroupNames();
 
                 GraphicsData gd = isp.graphicsData.GetSubIGraphicsData(tGraphicsCurve, GNames) as GraphicsData;
                 if (gd != null)
@@ -575,29 +577,122 @@ namespace RenderLib
             openFileDialog1.Filter = loader.FilterLD;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                loader.Read(saveFileDialog1.FileName, ref curve);
-                if(isp==null)
-                    isp = new SavePoint();
-                isp.AddCurve(curve);
-                Refrech(isp);
+                string PathFileName = openFileDialog1.FileName;
+                string ext = Path.GetExtension(PathFileName);
+                if (ext == ".cvs")
+                {
+                    loader.Read(openFileDialog1.FileName, ref curve);
+                    if (isp == null)
+                        isp = new SavePoint();
+                    isp.AddCurve(curve);
+                    Refrech(isp);
+                }
+                else
+                {
+                    // Получаем папку, в которой находится файл
+                    string PathFile = Path.GetDirectoryName(PathFileName);
+                    // Получаем список файлов с заданным расширением
+                    string[] files = Directory.GetFiles(PathFile, "*.fun");
+                    //Console.WriteLine("Всего файлов {0}.", files.Length);
+                    foreach (string pFileName in files)
+                    {
+                        loader.Read(pFileName, ref curve);
+                        if (isp == null)
+                            isp = new SavePoint();
+                        isp.AddCurve(curve);
+                    }
+                    Logger.Instance.Info("Всего файлов загружено " + (files.Length).ToString());
+                    Refrech(isp);
+                }
             }
         }
 
         private void btSave_Click(object sender, EventArgs e)
         {
-            int indexPole = checkedListBoxCurve.SelectedIndex;
-            if (indexPole > -1)
+            try
             {
-                IGraphicsCurve curve = graphicsData.curves[indexPole];
+                int indexPole = checkedListBoxCurve.SelectedIndex;
+                if (indexPole == -1) return;
+                GraphicsCurve curve = graphicsData.curves[indexPole];
                 string Name = ((GraphicsCurve)curve).Name;
                 IOFormater<IGraphicsCurve> wraiter = curve.GetFormater();
                 saveFileDialog1.Filter = wraiter.FilterSD;
                 saveFileDialog1.FileName = Name;
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
-                    wraiter.Write(curve, saveFileDialog1.FileName);
+                    for (int i = 0; i < checkedListBoxCurve.Items.Count; i++)
+                    {
+                        if (checkedListBoxCurve.GetItemCheckState(i) == CheckState.Unchecked)
+                            graphicsData.curves[i].Check = false;
+                        else
+                            graphicsData.curves[i].Check = true;
+                    }
+                    for (int ci = 0; ci < graphicsData.curves.Count; ci++)
+                    {
+                        if (graphicsData.curves[ci].Check == true)
+                        {
+                            curve = graphicsData.curves[ci];
+                            int Count = 0;
+                            if (cbCompress.Checked == true && 
+                                WR.Parse(btN.Text, ref Count) == true)
+                            {
+                                double[] x = null, y = null;
+                                MEM.Alloc(curve.Count, ref x);
+                                MEM.Alloc(curve.Count, ref y);
+                                for (int i = 0; i < curve.Count; i++)
+                                {
+                                    x[i] = curve[i].x;
+                                    y[i] = curve[i].y;
+                                }
+                                DigFunction fun = new DigFunction(x, y);
+                                double[] xx = null, yy = null;
+                                fun.GetFunctionData(ref xx, ref yy, Count);
+                                GraphicsCurve tcurve = new GraphicsCurve(curve.Name, xx, yy);
+                                curve = tcurve;
+                            }
+                            int T = (int)isp.time;
+                            string ext = Path.GetExtension(saveFileDialog1.FileName);
+                            //string filename = saveFileDialog1.FileName + "_" + curve.Name;
+                            string filename = T.ToString() + "#" + curve.Name + ext;
+                            wraiter.Write(curve, filename);
+                        }
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                Logger.Instance.Info(ex.Message);
+            }
+            //int indexPole = checkedListBoxCurve.SelectedIndex;
+            //if (indexPole > -1)
+            //{
+            //    GraphicsCurve curve = graphicsData.curves[indexPole];
+            //    if(cbCompress.Checked == true)
+            //    {
+            //        int Count = int.Parse(btN.Text);
+            //        double[] x = null, y = null;
+            //        MEM.Alloc(curve.Count, ref x);
+            //        MEM.Alloc(curve.Count, ref y);
+            //        for (int i = 0; i < curve.Count; i++)
+            //        {
+            //            x[i] = curve[i].x;
+            //            y[i] = curve[i].y;
+            //        }
+            //        DigFunction fun = new DigFunction(x, y);
+            //        double[] xx = null, yy = null;
+            //        fun.GetFunctionData(ref xx, ref yy, Count);
+            //        GraphicsCurve tcurve = new GraphicsCurve(curve.Name, xx, yy);
+            //        curve = tcurve;
+            //    }
+            //    string Name = ((GraphicsCurve)curve).Name;
+            //    IOFormater<IGraphicsCurve> wraiter = curve.GetFormater();
+            //    saveFileDialog1.Filter = wraiter.FilterSD;
+            //    saveFileDialog1.FileName = Name;
+            //    if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            //    {
+            //        wraiter.Write(curve, saveFileDialog1.FileName);
+            //    }
+            //}
         }
         /// <summary>
         /// среднее арифметическое выборки

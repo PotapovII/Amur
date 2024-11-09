@@ -14,6 +14,9 @@ namespace MeshLib
 
     using CommonLib;
     using GeometryLib;
+    using CommonLib.Geometry;
+    using GeometryLib.Locators;
+
     /// <summary>
     /// ОО: Точка сохранения задачи для визуализации ее полей
     /// </summary>

@@ -33,11 +33,12 @@ namespace NPRiverLib.APRiver1YD
     using FEMTasksLib.FESimpleTask;
     using NPRiverLib.APRiver1YD.Params;
     using MeshGeneratorsLib.StripGenerator;
-    using MeshLib.CArea;
+    using MeshLib.Wrappers;
     using NPRiverLib.ATask;
     using CommonLib.ChannelProcess;
     using CommonLib.Physics;
     using System.Collections.Generic;
+    using CommonLib.Mesh;
 
     /// <summary>
     ///  ОО: Определение класса TriSroSecRiverTask1YD - расчет полей скорости, вязкости 
@@ -84,7 +85,7 @@ namespace NPRiverLib.APRiver1YD
                     flagErr++;
                     // расчет гидрадинамики  (скоростей потока)
                     SPhysics.PHYS.turbViscType = ETurbViscType.Leo_C_van_Rijn1984;
-                    SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, wMesh, Params.typeEddyViscosity, Ux, Params.J);
+                    SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWCrossSection)wMesh, Params.typeEddyViscosity, Ux, Params.J);
                     uint[] bc = mesh.GetBoundKnotsByMarker(0);
                     // вычисление скорости
                     taskPoisson.FEPoissonTask(ref Ux, eddyViscosity, bc, null, Q);
@@ -144,7 +145,7 @@ namespace NPRiverLib.APRiver1YD
             else
                 taskPoisson.SetTask(mesh, algebra);
 
-            wMesh = new MeshWrapperCrossCFGTri(mesh);
+            wMesh = new MWCrossTri(mesh);
         }
         /// <summary>
         /// Создает экземпляр класса

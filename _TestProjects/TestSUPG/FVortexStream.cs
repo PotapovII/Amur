@@ -11,7 +11,7 @@
     using CommonLib.Function;
 
     using MeshLib;
-    using MeshLib.CArea;
+    using MeshLib.Wrappers;
 
     using RenderLib;
     using MemLogLib;
@@ -132,7 +132,7 @@
         {
             if (mesh != null && checkBoxView.Checked == true)
             {
-                IMeshWrapperCrossCFG wMesh = new MeshWrapperCrossCFGTri(mesh, СhannelSectionForms.porabolicСhannelSection, 2);
+                IMWDistance wMesh = new MWCrossTri(mesh, SСhannelForms.porabolicСhannelSection, 2);
                 SavePoint data = new SavePoint();
                 data.SetSavePoint(0, mesh);
                 double[] xx = mesh.GetCoords(0);
@@ -331,7 +331,7 @@
                 if (bKnotsV[i] == 1)
                     mbV[k++] = mBC_V[i];
             }
-            IMeshWrapperСhannelSectionCFG wMesh = new MeshWrapperСhannelSectionCFGTri(mesh, R_midle, Ring, false);
+            IMWCrossSection wMesh = new MWCrossSectionTri(mesh, R_midle, Ring, false);
             // Определение вязкости
             SPhysics.PHYS.turbViscType = (ETurbViscType)listBoxAMu.SelectedIndex;
 
@@ -346,7 +346,7 @@
 
             ECalkDynamicSpeed typeEddyViscosity = (ECalkDynamicSpeed)ls_Type__U_star.SelectedIndex;
 
-            RiverCrossVortexPhiTri task = new RiverCrossVortexPhiTri(wMesh, algebra, TypeTask.streamY1D, w);
+            RiverCrossVortexPhiTri task = new RiverCrossVortexPhiTri((IMWDistance)wMesh, algebra, TypeTask.streamY1D, w);
             
             int flagIndexUy = lb_VortexBC_G2.SelectedIndex;
             int VortexBC_G2 = lb_VortexBC_G2.SelectedIndex;

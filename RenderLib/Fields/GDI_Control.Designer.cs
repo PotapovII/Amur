@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GDI_Control));
             RenderLib.RenderOptionsFields renderOptionsFields1 = new RenderLib.RenderOptionsFields();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btCrossSection = new System.Windows.Forms.Button();
             this.btCurve = new System.Windows.Forms.Button();
             this.btShow = new System.Windows.Forms.Button();
             this.tbc_Task = new System.Windows.Forms.TabControl();
@@ -56,6 +57,7 @@
             this.cb_opVectorValues = new System.Windows.Forms.CheckBox();
             this.cb_opFillValues = new System.Windows.Forms.CheckBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.cbTauNormals = new System.Windows.Forms.CheckBox();
             this.sb_Load = new System.Windows.Forms.CheckBox();
             this.cb_Save = new System.Windows.Forms.CheckBox();
             this.bt_DelAll = new System.Windows.Forms.Button();
@@ -160,7 +162,6 @@
             this.button6 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.renderControl1 = new RenderLib.CPRenderControlFields();
             this.panel3 = new System.Windows.Forms.Panel();
             this.cb_showBoudaryElems = new System.Windows.Forms.CheckBox();
             this.cb_showBoudaryKnots = new System.Windows.Forms.CheckBox();
@@ -195,6 +196,9 @@
             this.toolStripStatusLabel10 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tss_TaskName = new System.Windows.Forms.ToolStripStatusLabel();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.btEvalGraph = new System.Windows.Forms.Button();
+            this.btGraph = new System.Windows.Forms.Button();
+            this.renderControl1 = new RenderLib.CPRenderControlFields();
             this.panel2.SuspendLayout();
             this.tbc_Task.SuspendLayout();
             this.tabPage6.SuspendLayout();
@@ -235,6 +239,7 @@
             // 
             this.panel2.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel2.Controls.Add(this.btCrossSection);
             this.panel2.Controls.Add(this.btCurve);
             this.panel2.Controls.Add(this.btShow);
             this.panel2.Controls.Add(this.tbc_Task);
@@ -251,10 +256,20 @@
             this.panel2.Size = new System.Drawing.Size(290, 887);
             this.panel2.TabIndex = 11;
             // 
+            // btCrossSection
+            // 
+            this.btCrossSection.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btCrossSection.Location = new System.Drawing.Point(126, 477);
+            this.btCrossSection.Name = "btCrossSection";
+            this.btCrossSection.Size = new System.Drawing.Size(113, 27);
+            this.btCrossSection.TabIndex = 93;
+            this.btCrossSection.Text = "Профиль";
+            this.btCrossSection.UseVisualStyleBackColor = true;
+            // 
             // btCurve
             // 
             this.btCurve.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btCurve.Location = new System.Drawing.Point(14, 449);
+            this.btCurve.Location = new System.Drawing.Point(16, 477);
             this.btCurve.Name = "btCurve";
             this.btCurve.Size = new System.Drawing.Size(105, 27);
             this.btCurve.TabIndex = 89;
@@ -532,6 +547,7 @@
             // tabPage5
             // 
             this.tabPage5.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage5.Controls.Add(this.cbTauNormals);
             this.tabPage5.Controls.Add(this.sb_Load);
             this.tabPage5.Controls.Add(this.cb_Save);
             this.tabPage5.Controls.Add(this.bt_DelAll);
@@ -560,6 +576,20 @@
             this.tabPage5.Size = new System.Drawing.Size(268, 211);
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "Створ";
+            // 
+            // cbTauNormals
+            // 
+            this.cbTauNormals.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbTauNormals.AutoSize = true;
+            this.cbTauNormals.Checked = true;
+            this.cbTauNormals.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbTauNormals.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbTauNormals.Location = new System.Drawing.Point(223, 178);
+            this.cbTauNormals.Name = "cbTauNormals";
+            this.cbTauNormals.Size = new System.Drawing.Size(39, 24);
+            this.cbTauNormals.TabIndex = 111;
+            this.cbTauNormals.Text = "N";
+            this.cbTauNormals.UseVisualStyleBackColor = true;
             // 
             // sb_Load
             // 
@@ -637,7 +667,7 @@
             // 
             this.btShowTargetLine.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btShowTargetLine.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btShowTargetLine.Location = new System.Drawing.Point(156, 87);
+            this.btShowTargetLine.Location = new System.Drawing.Point(156, 85);
             this.btShowTargetLine.Name = "btShowTargetLine";
             this.btShowTargetLine.Size = new System.Drawing.Size(104, 27);
             this.btShowTargetLine.TabIndex = 104;
@@ -995,7 +1025,7 @@
             // btCurves
             // 
             this.btCurves.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btCurves.Location = new System.Drawing.Point(16, 476);
+            this.btCurves.Location = new System.Drawing.Point(15, 450);
             this.btCurves.Name = "btCurves";
             this.btCurves.Size = new System.Drawing.Size(104, 27);
             this.btCurves.TabIndex = 90;
@@ -1063,9 +1093,9 @@
             // checkedListBoxCurve
             // 
             this.checkedListBoxCurve.FormattingEnabled = true;
-            this.checkedListBoxCurve.Location = new System.Drawing.Point(8, 41);
+            this.checkedListBoxCurve.Location = new System.Drawing.Point(7, 69);
             this.checkedListBoxCurve.Name = "checkedListBoxCurve";
-            this.checkedListBoxCurve.Size = new System.Drawing.Size(224, 238);
+            this.checkedListBoxCurve.Size = new System.Drawing.Size(249, 238);
             this.checkedListBoxCurve.TabIndex = 9;
             this.checkedListBoxCurve.SelectedIndexChanged += new System.EventHandler(this.checkedListBoxCurve_SelectedIndexChanged);
             // 
@@ -1073,19 +1103,21 @@
             // 
             this.panel9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel9.BackColor = System.Drawing.Color.White;
+            this.panel9.Controls.Add(this.btGraph);
+            this.panel9.Controls.Add(this.btEvalGraph);
             this.panel9.Controls.Add(this.buttonCurves);
             this.panel9.Controls.Add(this.cb_opGraphicCurve);
             this.panel9.Location = new System.Drawing.Point(8, 5);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(223, 32);
+            this.panel9.Size = new System.Drawing.Size(249, 58);
             this.panel9.TabIndex = 11;
             // 
             // buttonCurves
             // 
             this.buttonCurves.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonCurves.Location = new System.Drawing.Point(118, 2);
+            this.buttonCurves.Location = new System.Drawing.Point(11, 30);
             this.buttonCurves.Name = "buttonCurves";
-            this.buttonCurves.Size = new System.Drawing.Size(101, 25);
+            this.buttonCurves.Size = new System.Drawing.Size(104, 25);
             this.buttonCurves.TabIndex = 82;
             this.buttonCurves.Text = "Графики";
             this.buttonCurves.UseVisualStyleBackColor = true;
@@ -1803,27 +1835,6 @@
             this.label9.TabIndex = 93;
             this.label9.Text = "Кисти для заливок";
             // 
-            // renderControl1
-            // 
-            this.renderControl1.BackColor = System.Drawing.Color.White;
-            colorSchemeFields1.Background = System.Drawing.Color.White;
-            colorSchemeFields1.FontKnot = new System.Drawing.Font("Arial", 8F);
-            colorSchemeFields1.FontReper = new System.Drawing.Font("Arial", 8F);
-            colorSchemeFields1.FontValue = null;
-            colorSchemeFields1.formatTextReper = ((uint)(2u));
-            this.renderControl1.colorScheme = colorSchemeFields1;
-            this.renderControl1.IndexTask = 0;
-            this.renderControl1.Location = new System.Drawing.Point(209, 3);
-            this.renderControl1.Name = "renderControl1";
-            this.renderControl1.Points = new System.Drawing.PointF[] {
-        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points"))),
-        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points1")))};
-            this.renderControl1.renderOptions = renderOptionsFields1;
-            this.renderControl1.Size = new System.Drawing.Size(32, 22);
-            this.renderControl1.TabIndex = 0;
-            this.renderControl1.Text = "renderControl1";
-            this.renderControl1.Visible = false;
-            // 
             // panel3
             // 
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -2080,6 +2091,49 @@
             this.tss_TaskName.Size = new System.Drawing.Size(17, 21);
             this.tss_TaskName.Text = "_";
             // 
+            // btEvalGraph
+            // 
+            this.btEvalGraph.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btEvalGraph.Location = new System.Drawing.Point(122, 4);
+            this.btEvalGraph.Name = "btEvalGraph";
+            this.btEvalGraph.Size = new System.Drawing.Size(104, 25);
+            this.btEvalGraph.TabIndex = 91;
+            this.btEvalGraph.Text = "Эволюция";
+            this.btEvalGraph.UseVisualStyleBackColor = true;
+            this.btEvalGraph.Click += new System.EventHandler(this.btEvalGraph_Click);
+            // 
+            // btGraph
+            // 
+            this.btGraph.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btGraph.Location = new System.Drawing.Point(121, 30);
+            this.btGraph.Name = "btGraph";
+            this.btGraph.Size = new System.Drawing.Size(105, 25);
+            this.btGraph.TabIndex = 94;
+            this.btGraph.Text = "Графики";
+            this.btGraph.UseVisualStyleBackColor = true;
+            this.btGraph.Click += new System.EventHandler(this.btGraph_Click);
+            // 
+            // renderControl1
+            // 
+            this.renderControl1.BackColor = System.Drawing.Color.White;
+            colorSchemeFields1.Background = System.Drawing.Color.White;
+            colorSchemeFields1.FontKnot = new System.Drawing.Font("Arial", 8F);
+            colorSchemeFields1.FontReper = new System.Drawing.Font("Arial", 8F);
+            colorSchemeFields1.FontValue = null;
+            colorSchemeFields1.formatTextReper = ((uint)(2u));
+            this.renderControl1.colorScheme = colorSchemeFields1;
+            this.renderControl1.IndexTask = 0;
+            this.renderControl1.Location = new System.Drawing.Point(209, 3);
+            this.renderControl1.Name = "renderControl1";
+            this.renderControl1.Points = new System.Drawing.PointF[] {
+        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points"))),
+        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points1")))};
+            this.renderControl1.renderOptions = renderOptionsFields1;
+            this.renderControl1.Size = new System.Drawing.Size(32, 22);
+            this.renderControl1.TabIndex = 0;
+            this.renderControl1.Text = "renderControl1";
+            this.renderControl1.Visible = false;
+            // 
             // GDI_Control
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2314,5 +2368,9 @@
         private System.Windows.Forms.CheckBox cb_GradScaleLimit;
         private System.Windows.Forms.TextBox tbMax;
         private System.Windows.Forms.TextBox tbMin;
+        private System.Windows.Forms.Button btCrossSection;
+        private System.Windows.Forms.CheckBox cbTauNormals;
+        private System.Windows.Forms.Button btGraph;
+        private System.Windows.Forms.Button btEvalGraph;
     }
 }

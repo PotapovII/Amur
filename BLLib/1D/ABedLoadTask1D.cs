@@ -207,10 +207,22 @@ namespace BLLib
             //{
             //    // линейная знаковая модель
             //    case ECritTauType.LineCritTayType:
-                    for (int i = 0; i < N; i++)
-                    {
-                        tau0Elem[i] = CosGamma[i] * Math.Max(0.05 * tau0, tau0 * (1 + dZeta[i] / tanphi));
-                    }
+            // tau0Elem[0] = CosGamma[i] * Math.Max(0.5 * tau0, tau0 * (1 + dZeta[0] / tanphi));
+            bool ft = false;
+            if (ft == true)
+                for (int i = 0; i < N; i++)
+                {
+                    //tau0Elem[i] = CosGamma[i] * Math.Max(0.05 * tau0, tau0 * (1 + dZeta[i] / tanphi));
+                    tau0Elem[i] = CosGamma[i] * Math.Max(tau0, tau0 * (1 + dZeta[i] / tanphi));
+                }
+            else
+            {
+                for (int i = 0; i < N; i++)
+                {
+                    //tau0Elem[i] = CosGamma[i] * Math.Max(0.05 * tau0, tau0 * (1 + dZeta[i] / tanphi));
+                    tau0Elem[i] = CosGamma[i] * tau0;
+                }
+            }
             //        break;
             //    // линейная беззнаковая модель
             //    case ECritTauType.LineABSCritTayType:

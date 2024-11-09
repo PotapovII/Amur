@@ -12,32 +12,65 @@ namespace GeometryLib.Vector
     using System.Globalization;
     using System.Runtime.CompilerServices;
     using CommonLib.Geometry;
+    using System.Linq;
 
     /// <summary>
     /// Представляет двухмерный вещественный вектор с полями двойной точности.
     /// </summary>
     [Serializable]
-    public struct Vector2 : IEquatable<Vector2>, IFormattable
+    public struct Vector2 : IEquatable<Vector2>, IFormattable, IHPoint
     {
         /// <summary>
         /// Координата X вектора.
         /// </summary>
-        public double X;
+        public double X { get; set; }
         /// <summary>
         ///  Координата Y вектора.
         /// </summary>
-        public double Y;
+        public double Y { get; set; }
+        /// <summary>
+        /// Создает копию объекта
+        /// </summary>
+        /// <returns></returns>
+        public IHPoint IClone() { return new Vector2(X, Y); }
+
+        public int CompareTo(object obj)
+        { 
+            return ((Vector2)obj).X.CompareTo(X); 
+        }
+
+        public static double[] GetArrayX(Vector2[] a)
+        {
+            return (a.Select(x => x.X)).ToArray();
+        }
+        public static double[] GetArrayY(Vector2[] a)
+        {
+            return (a.Select(x => x.Y)).ToArray();
+        }
+
+        public static double[][] GetArrayX(Vector2[][] a)
+        {
+            double[][] res = new double[a.Length][];
+            for (int i = 0; i < a.Length; i++)
+                res[i] = (a[i].Select(x => x.X)).ToArray();
+            return res;
+        }
+        public static double[][] GetArrayY(Vector2[][] a)
+        {
+            double[][] res = new double[a.Length][];
+            for (int i = 0; i < a.Length; i++)
+                res[i] = (a[i].Select(x => x.Y)).ToArray();
+            return res;
+        }
+
         public Vector2(IHPoint p)
         {
             X = p.X;
             Y = p.Y;
         }
-        //
-        // Сводка:
-        //     Возвращает вектор, два элемента которого равны нулю.
-        //
-        // Возврат:
-        //     Вектор, два элемента которого равны нулю (то есть он возвращает вектор (0,0).
+        /// <summary>
+        /// Возвращает вектор, два элемента которого равны нулю.
+        /// </summary>
         public static Vector2 Zero
         {
             get
@@ -45,12 +78,9 @@ namespace GeometryLib.Vector
                 return default(Vector2);
             }
         }
-        //
-        // Сводка:
-        //     Получает вектор, два элемента которого равны единице.
-        //
-        // Возврат:
-        //     Вектор, два элемента которого равны единице (то есть он возвращает вектор (1,1).
+        /// <summary>
+        /// Получает вектор, два элемента которого равны единице.
+        /// </summary>
         public static Vector2 One
         {
             get
@@ -58,12 +88,9 @@ namespace GeometryLib.Vector
                 return new Vector2(1f, 1f);
             }
         }
-        //
-        // Сводка:
-        //     Получает вектор (1,0).
-        //
-        // Возврат:
-        //     Вектор (1,0).
+        /// <summary>
+        /// Получает вектор (1,0).
+        /// </summary>
         public static Vector2 UnitX
         {
             get
@@ -71,12 +98,9 @@ namespace GeometryLib.Vector
                 return new Vector2(1f, 0f);
             }
         }
-        //
-        // Сводка:
-        //     Получает вектор (0,1).
-        //
-        // Возврат:
-        //     Вектор (0,1).
+        /// <summary>
+        /// Получает вектор (0,1).
+        /// </summary>
         public static Vector2 UnitY
         {
             get
@@ -84,35 +108,23 @@ namespace GeometryLib.Vector
                 return new Vector2(0f, 1f);
             }
         }
-        //
-        // Сводка:
-        //     Возвращает хэш-код данного экземпляра.
-        //
-        // Возврат:
-        //     Хэш-код.
+        /// <summary>
+        /// Возвращает хэш-код данного экземпляра.
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode()
         {
             return (X.GetHashCode() ^ Y.GetHashCode()).GetHashCode();
         }
-        //
-        // Сводка:
-        //     Возвращает значение, указывающее, равен ли данный экземпляр указанному объекту.
-        //
-        // Параметры:
-        //   obj:
-        //     Объект для сравнения с текущим экземпляром.
-        //
-        // Возврат:
-        //     Значение true, если объект obj равен текущему экземпляру; в противном случае
-        //     — значение false. Если значением параметра obj является null, метод возвращает
-        //     false.
+        /// <summary>
+        /// Возвращает значение, указывающее, равен ли данный экземпляр указанному объекту.
+        /// </summary>
         public override bool Equals(object obj)
         {
             if (!(obj is Vector2))
             {
                 return false;
             }
-
             return Equals((Vector2)obj);
         }
         //
@@ -281,6 +293,36 @@ namespace GeometryLib.Vector
         }
         //
         // Сводка:
+        //     Возвращает правый ортогональный вектор 
+        //
+        // Возврат:
+        //     Ортогональный вектор.
+        /// <summary>
+        /// Получить правый ортогональный вектор 
+        /// </summary>
+        /// <returns>Ортогональный вектор</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Vector2 GetOrtogonalRight()
+        {
+            return new Vector2(Y, -X);
+        }
+        //
+        // Сводка:
+        //     Возвращает левый ортогональный вектор 
+        //
+        // Возврат:
+        //     Ортогональный вектор.
+        /// <summary>
+        /// Получить левый ортогональный вектор 
+        /// </summary>
+        /// <returns>Ортогональный вектор</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Vector2 GetOrtogonalLeft()
+        {
+            return new Vector2(-Y, X);
+        }
+        //
+        // Сводка:
         //     Возвращает отражение вектора от поверхности, которая имеет заданную нормаль.
         //
         // Параметры:
@@ -353,104 +395,6 @@ namespace GeometryLib.Vector
             return new Vector2(value1.X + (value2.X - value1.X) * amount, 
                                value1.Y + (value2.Y - value1.Y) * amount);
         }
-        //
-        // Сводка:
-        //     Преобразует вектор посредством заданной матрицы 3x2.
-        //
-        // Параметры:
-        //   position:
-        //     Преобразуемый вектор.
-        //
-        //   matrix:
-        //     Матрица преобразования.
-        //
-        // Возврат:
-        //     Преобразованный вектор.
-        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static Vector2 Transform(Vector2 position, Matrix3x2 matrix)
-        //{
-        //    return new Vector2(position.X * matrix.M11 + position.Y * matrix.M21 + matrix.M31, position.X * matrix.M12 + position.Y * matrix.M22 + matrix.M32);
-        //}
-        ////
-        //// Сводка:
-        ////     Преобразует вектор посредством заданной матрицы 4x4.
-        ////
-        //// Параметры:
-        ////   position:
-        ////     Преобразуемый вектор.
-        ////
-        ////   matrix:
-        ////     Матрица преобразования.
-        ////
-        //// Возврат:
-        ////     Преобразованный вектор.
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static Vector2 Transform(Vector2 position, Matrix4x4 matrix)
-        //{
-        //    return new Vector2(position.X * matrix.M11 + position.Y * matrix.M21 + matrix.M41, position.X * matrix.M12 + position.Y * matrix.M22 + matrix.M42);
-        //}
-        ////
-        //// Сводка:
-        ////     Преобразует нормаль вектора посредством заданной матрицы 3x2.
-        ////
-        //// Параметры:
-        ////   normal:
-        ////     Исходный вектор.
-        ////
-        ////   matrix:
-        ////     Матрица.
-        ////
-        //// Возврат:
-        ////     Преобразованный вектор.
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static Vector2 TransformNormal(Vector2 normal, Matrix3x2 matrix)
-        //{
-        //    return new Vector2(normal.X * matrix.M11 + normal.Y * matrix.M21, normal.X * matrix.M12 + normal.Y * matrix.M22);
-        //}
-        ////
-        //// Сводка:
-        ////     Преобразует нормаль вектора посредством заданной матрицы 4x4.
-        ////
-        //// Параметры:
-        ////   normal:
-        ////     Исходный вектор.
-        ////
-        ////   matrix:
-        ////     Матрица.
-        ////
-        //// Возврат:
-        ////     Преобразованный вектор.
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static Vector2 TransformNormal(Vector2 normal, Matrix4x4 matrix)
-        //{
-        //    return new Vector2(normal.X * matrix.M11 + normal.Y * matrix.M21, normal.X * matrix.M12 + normal.Y * matrix.M22);
-        //}
-        ////
-        //// Сводка:
-        ////     Преобразует вектор посредством заданного значения поворота кватерниона.
-        ////
-        //// Параметры:
-        ////   value:
-        ////     Поворачиваемый вектор.
-        ////
-        ////   rotation:
-        ////     Применяемый поворот.
-        ////
-        //// Возврат:
-        ////     Преобразованный вектор.
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static Vector2 Transform(Vector2 value, Quaternion rotation)
-        //{
-        //    double num = rotation.X + rotation.X;
-        //    double num2 = rotation.Y + rotation.Y;
-        //    double num3 = rotation.Z + rotation.Z;
-        //    double num4 = rotation.W * num3;
-        //    double num5 = rotation.X * num;
-        //    double num6 = rotation.X * num2;
-        //    double num7 = rotation.Y * num2;
-        //    double num8 = rotation.Z * num3;
-        //    return new Vector2(value.X * (1f - num7 - num8) + value.Y * (num6 - num4), value.X * (num6 + num4) + value.Y * (1f - num5 - num8));
-        //}
         //
         // Сводка:
         //     Складывает два вектора.

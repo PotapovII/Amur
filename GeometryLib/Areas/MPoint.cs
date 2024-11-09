@@ -13,6 +13,7 @@ namespace GeometryLib.Areas
     using CommonLib.Geometry;
     using GeometryLib;
     using MemLogLib;
+    using System;
     using System.Collections.Generic;
     /// <summary>
     /// Узел фигуры
@@ -28,7 +29,7 @@ namespace GeometryLib.Areas
         /// </summary>
         public double Y { get => Point.Y; set => Point.Y = value; }
         /// <summary>
-        /// Наоменование точек
+        /// Наименование точек
         /// </summary>
         public string Name { get; set; }
         /// <summary>
@@ -83,6 +84,21 @@ namespace GeometryLib.Areas
         /// </summary>
         /// <returns></returns>
         public IHPoint IClone() => new MPoint(this);
+
+        public int CompareTo(object obj)
+        {
+            MPoint a = obj as MPoint;
+            if (a != null)
+            {
+                if (X < a.X)
+                    return -1;
+                if (X > a.X)
+                    return 1;
+                return 0;
+            }
+            else
+                throw new Exception("ошибка приведения типа");
+        }
 
         //public string ToString(string Filter = "F15")
         //{

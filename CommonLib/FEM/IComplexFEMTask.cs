@@ -51,6 +51,5 @@ namespace CommonLib
         /// <param name="mesh">сетки задачи</param>
         /// <param name="algebra">решатель СЛУ</param>
         void SetTask(IMeshWrapper wMesh, IAlgebra algebra, TypeTask typeTask);
-
     }
 }

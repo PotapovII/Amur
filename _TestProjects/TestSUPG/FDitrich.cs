@@ -11,7 +11,7 @@
     using CommonLib.Function;
 
     using MeshLib;
-    using MeshLib.CArea;
+    using MeshLib.Wrappers;
 
     using RenderLib;
     using MemLogLib;
@@ -42,7 +42,7 @@
             listBoxAMu.SelectedIndex = 11;
             lb_VortexBC_G2.SelectedIndex = 2;
             SelectedIndexSave = lb_VortexBC_G2.SelectedIndex;
-            lb_CrossNamber.SelectedIndex = 5;
+            lb_CrossNamber.SelectedIndex = 0;
             lb_Algebra.SelectedIndex = 0;
             lb_MeshGen.SelectedIndex = 0;
             ls_Type__U_star.SelectedIndex = 0;
@@ -125,7 +125,7 @@
         {
             if (mesh != null && checkBoxView.Checked == true)
             {
-                IMeshWrapperCrossCFG wMesh = new MeshWrapperCrossCFGTri(mesh, СhannelSectionForms.porabolicСhannelSection, 2);
+                IMWCross wMesh = new MWCrossTri(mesh, SСhannelForms.porabolicСhannelSection, 2);
                 SavePoint data = new SavePoint();
                 data.SetSavePoint(0, mesh);
                 double[] xx = mesh.GetCoords(0);
@@ -301,7 +301,7 @@
                 if (bKnotsV[i] == 1)
                     mbV[k++] = mBC_V[i];
             }
-            IMeshWrapperСhannelSectionCFG wMesh = new MeshWrapperСhannelSectionCFGTri(mesh, R_midle, Ring, false);
+            IMWCrossSection wMesh = new MWCrossSectionTri(mesh, R_midle, Ring, false);
             // Определение вязкости
             SPhysics.PHYS.turbViscType = (ETurbViscType)listBoxAMu.SelectedIndex;
 
@@ -324,13 +324,15 @@
             bool flagLes = cb_Mu_YZ.Checked;
             double[] eddyViscosityUx = null;
             int idxMu2 = listBoxAMu2.SelectedIndex;
-
+            double[] RR = null;
+          
             task.CalkVortexStream(
                 // Искомые поля
                 ref mPhi, ref mVortex, ref mVx, ref mVy, ref mVz, ref eddyViscosityUx, ref meddyViscosity,
-                ref tauXY, ref tauXZ, ref tauYY, ref tauYZ, ref tauZZ,
+                ref tauXY, ref tauXZ, ref tauYY, ref tauYZ, ref tauZZ, ref RR,
                 // Граничные условия для потоковой скорости и боковой скорости на свободной поверхности
                 mbU, mAdressU, mbV, mQ, flagIndexUy, flagUx, VortexBC_G2, typeEddyViscosity, flagLes, idxMu2);
+
 
             double[] mDistance = wMesh.GetDistance();
             double[] Hp = wMesh.GetHp();
@@ -366,7 +368,7 @@
             sp.Add("tauYY", tauYY);
             sp.Add("tauYZ", tauYZ);
             sp.Add("tauZZ", tauZZ);
-
+            sp.Add("Radius", RR);
             if (mDistance != null)
                 sp.Add("mDistance", mDistance);
             if (mDistance != null)

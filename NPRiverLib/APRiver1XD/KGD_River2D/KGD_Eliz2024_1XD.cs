@@ -13,7 +13,6 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
     using System;
     using System.IO;
     using System.Linq;
-    using System.ComponentModel;
     using System.Threading.Tasks;
     using System.Collections.Concurrent;
 
@@ -27,7 +26,6 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
     using AlgebraLib;
     using GeometryLib;
     using MeshGeneratorsLib;
-    using CommonLib.EConverter;
     using CommonLib.ChannelProcess;
     using CommonLib.Physics;
     using CommonLib.Geometry;

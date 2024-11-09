@@ -35,7 +35,7 @@ using System;
 
 namespace CommonLib.Geometry
 {
-    public interface IHPoint 
+    public interface IHPoint : IComparable
     {
         /// <summary>
         /// Координата по х

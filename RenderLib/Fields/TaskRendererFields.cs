@@ -594,7 +594,7 @@ namespace RenderLib
             PointF ps = new PointF(max,max);
             zoom.WorldToScreen(ref ps);
             float maxPS = ((FPoint)ps).Length();
-            int line = 100;
+            int line = 50;
             int PixelVel = 100;
             float scale = PixelVel / maxPS;
 

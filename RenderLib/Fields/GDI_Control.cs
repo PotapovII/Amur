@@ -21,6 +21,7 @@ namespace RenderLib
     using System.Collections.Generic;
     using System.Runtime.Serialization.Formatters.Binary;
     using CommonLib.Geometry;
+    using MeshLib.Locators;
 
     /// <summary>
     ///ОО: Компонент визуализации данных (сетки, и сеточных полей, кривых (устарело) ) 
@@ -556,15 +557,18 @@ namespace RenderLib
                 SendOption();
                 // отрисовка в статус бар
                 tSSL_Time.Text = sp.time.ToString("F4");
-                tSSL_Nods.Text = sp.mesh.CountKnots.ToString();
-                tss_TaskName.Text = sp.Name;
-                if(owner!=null) owner.Text = sp.Name;
-                IRenderMesh tsp = sp.mesh as IRenderMesh;
-                if (tsp != null)
+                if (sp.mesh != null)
                 {
-                    tSSL_Elems.Text = tsp.CountElements.ToString();
+                    tSSL_Nods.Text = sp.mesh.CountKnots.ToString();
+                    tss_TaskName.Text = sp.Name;
+                    if (owner != null) owner.Text = sp.Name;
+                    IRenderMesh tsp = sp.mesh as IRenderMesh;
+                    if (tsp != null)
+                    {
+                        tSSL_Elems.Text = tsp.CountElements.ToString();
+                    }
+                    tLine = new LocatorTriMeshFacet(sp.mesh);
                 }
-                tLine = new LocatorTriMeshFacet(sp.mesh);
             }
         }
 
@@ -731,67 +735,6 @@ namespace RenderLib
             {
                 Logger.Instance.Info("Буффер файл створа - отсутствует : " + ex.Message);
             }
-        }
-        private void btShowTargetLine_Click(object sender, EventArgs e)
-        {
-            ISavePoint spLine = new SavePoint(sp.Name);
-            IRenderMesh mesh = sp.mesh;
-            string CName = "";
-            IHPoint[] Points;
-            int Count = ListCross.Count == 0 ? 1 : ListCross.Count;
-            for (int idx = 0; idx < Count; idx++)
-            {
-                if (ListCross.Count == 0)
-                {
-                    PointF[] P = proxyRendererControl.Points;
-                    IHPoint[] tPoints = { new HPoint(P[0].X, P[0].Y), new HPoint(P[1].X, P[1].Y) };
-                    Points = tPoints;
-                }
-                else
-                {
-                    CrossLine current = ListCross[idx];
-                    IHPoint[] tPoints = { new HPoint((float)current.xa, (float)current.ya),
-                                          new HPoint((float)current.xb, (float)current.yb) };
-                    Points = tPoints;
-                    CName = "Ств" + idx.ToString() + ": ";
-                }
-                //LocatorTriMesh tLine = new LocatorTriMesh(mesh, Points);
-                tLine.SetCrossLine(Points);
-
-                List<string> Names = spData.PoleNames();
-                for (uint indexPole = 0; indexPole < Names.Count; indexPole++)
-                {
-                    if (cb_AllFields.Checked == false)
-                        if (listBoxPoles.SelectedIndex != indexPole)
-                            continue;
-
-                    IField pole = spData.GetPole(indexPole);
-                    double[] H = null;
-                    if (pole.Dimention == 1)
-                        H = ((Field1D)pole).Values;
-                    else
-                    {
-                        Vector2[] val = ((Field2D)pole).Values;
-                        MEM.Alloc(val.Length, ref H);
-                        for (int i = 0; i < val.Length; i++)
-                            H[i] = val[i].Length();
-                    }
-                    double[] x = null;
-                    double[] y = null;
-                    tLine.GetCurve(H, ref x, ref y);
-                    if (x != null && y != null)
-                    {
-                        spLine.AddCurve(CName+Names[(int)indexPole], x, y);
-                    }
-                    else
-                    {
-                        Logger.Instance.Error("Створ не определен", "btShowTargetLine_Click");
-                    }
-                }
-
-            }
-            FVCurves form = new FVCurves(spLine);
-            form.Show();
         }
 
         private void listBoxPoles_SelectedIndexChanged(object sender, EventArgs e) 
@@ -1011,6 +954,133 @@ namespace RenderLib
                 tbMax.Enabled = false;
                 trackBarMin.Enabled = true;
                 trackBarMax.Enabled = true;
+            }
+        }
+
+        private void btShowTargetLine_Click(object sender, EventArgs e)
+        {
+            ISavePoint spLine = new SavePoint(sp.Name);
+            IRenderMesh mesh = sp.mesh;
+            string CName = "";
+            IHPoint[] Points;
+            int Count = ListCross.Count == 0 ? 1 : ListCross.Count;
+            for (int idx = 0; idx < Count; idx++)
+            {
+                if (ListCross.Count == 0)
+                {
+                    PointF[] P = proxyRendererControl.Points;
+                    IHPoint[] tPoints = { new HPoint(P[0].X, P[0].Y), new HPoint(P[1].X, P[1].Y) };
+                    Points = tPoints;
+                }
+                else
+                {
+                    CrossLine current = ListCross[idx];
+                    IHPoint[] tPoints = { new HPoint((float)current.xa, (float)current.ya),
+                                          new HPoint((float)current.xb, (float)current.yb) };
+                    Points = tPoints;
+                    CName = "Ств" + idx.ToString() + ": ";
+                }
+                //LocatorTriMesh tLine = new LocatorTriMesh(mesh, Points);
+                tLine.SetCrossLine(Points);
+                //cbTauNormals
+                List<string> Names = spData.PoleNames();
+
+                for (uint indexPole = 0; indexPole < Names.Count; indexPole++)
+                {
+                    if (cb_AllFields.Checked == false)
+                        if (listBoxPoles.SelectedIndex != indexPole)
+                            continue;
+                    IField pole = spData.GetPole(indexPole);
+                    if (pole.Dimention == 1)
+                    {
+                        double[] s = null;
+                        double[] V = null;
+                        double[] mVx = ((Field1D)pole).Values;
+                        tLine.GetCurve(mVx, ref s, ref V);
+                        if (s != null && V != null)
+                        {
+                            spLine.AddCurve(CName + Names[(int)indexPole], s, V);
+                            Console.WriteLine(CName + Names[(int)indexPole]);
+                        }
+                        else
+                            Logger.Instance.Error("Створ не определен", "btShowTargetLine_Click");
+                    }
+                    else
+                    {
+                        double[] s = null;
+                        double[] V = null;
+                        double[] Vx = null;
+                        double[] Vy = null;
+                        double[] Vn = null;
+                        double[] Vt = null;
+                        double[] mVx = null, mVy = null;
+                        Vector2[] val = ((Field2D)pole).Values;
+                        MEM.Alloc(val.Length, ref mVx);
+                        MEM.Alloc(val.Length, ref mVy);
+                        for (int i = 0; i < val.Length; i++)
+                        {
+                            mVx[i] = val[i].X;
+                            mVy[i] = val[i].Y;
+                        }
+                        tLine.GetCurve(mVx, mVy, ref s, ref Vx, ref Vy, ref Vn, ref Vt);
+                        MEM.Alloc(s.Length, ref V);
+                        for (int i = 0; i < V.Length; i++)
+                            V[i] = Math.Sqrt(Vx[i] * Vx[i] + Vy[i] * Vy[i]);
+                        if (s != null && Vx != null)
+                            spLine.AddCurve(CName + Names[(int)indexPole], s, V);
+                        if (s != null && Vn != null)
+                            spLine.AddCurve(CName + Names[(int)indexPole] + "_n", s, Vn);
+                        if (s != null && Vt != null)
+                            spLine.AddCurve(CName + Names[(int)indexPole] + "_t", s, Vt);
+
+                    }
+                }
+            }
+            FVCurves form = new FVCurves(spLine);
+            form.Show();
+        }
+        private void btGraph_Click(object sender, EventArgs e)
+        {
+            if (sp != null)
+            {
+                ISavePoint spv = new SavePoint();
+                GraphicsData gdata =(GraphicsData)sp.graphicsData;
+                for (int i = 0; i < spData.graphicsData.curves.Count; i++)
+                {
+                    if (checkedListBoxCurve.GetItemCheckState(i) == CheckState.Checked)
+                    {
+                        GraphicsCurve c = gdata.GetCurve((uint)i);
+                        spv.AddCurve(c);
+                    }
+                }
+                FVCurves form = new FVCurves(spv);
+                form.Show();
+            }
+        }
+        private void btEvalGraph_Click(object sender, EventArgs e)
+        {
+            //if (sps != null)
+            //{
+            //    FVCurves form = new FVCurves(sps);
+            //    form.Show();
+            //}
+            if (sps != null)
+            {
+                ISavePoint spv = new SavePoint();
+                GraphicsData gdata = (GraphicsData)sps.graphicsData;
+                for (int idx = 0; idx < gdata.Count; idx++)
+                {
+                    int i = idx % checkedListBoxCurve.Items.Count;
+                    {
+                        if (checkedListBoxCurve.GetItemCheckState(i) == CheckState.Checked)
+                        {
+                            GraphicsCurve c = gdata.GetCurve((uint)idx);
+                            spv.AddCurve(c);
+                        }
+                    }
+                }
+                FVCurves form = new FVCurves(spv);
+                form.Show();
             }
         }
     }

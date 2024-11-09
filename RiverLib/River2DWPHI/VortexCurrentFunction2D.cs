@@ -217,7 +217,7 @@
 //                {
 //                    // Получение новой границы области и формирование сетки
 //                    //qmesh.CreateNewQMesh(zeta);
-//                    //// конвертация QMesh в сетку задачи
+//                    //// конвертация ReverseQMesh в сетку задачи
 //                    //ConvertMeshToMesh();
 //                    FlagStartMesh = true;
 //                }

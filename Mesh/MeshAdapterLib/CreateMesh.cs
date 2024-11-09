@@ -24,7 +24,7 @@ namespace MeshAdapterLib
     /// </summary>
     public static class CreateMesh
     {
-        [ObsoleteAttribute("Метод возможно будет не совместим в дальнейшем", false)]
+        [Obsolete("Метод возможно будет не совместим в дальнейшем", false)]
         public static IFEMesh GetMesh(double diametrFE, double L, double H, 
             TypeMesh typeMesh = TypeMesh.Triangle,
             TypeRangeMesh typeRangeMesh = TypeRangeMesh.mRange1,
@@ -80,7 +80,7 @@ namespace MeshAdapterLib
             return feMesh;
         }
 
-        [ObsoleteAttribute("Метод возможно будет не совместим в дальнейшем", false)]
+        [Obsolete("Метод возможно будет не совместим в дальнейшем", false)]
         public static IFEMesh GetMesh(int Nx,int Ny, double L, double H,
            TypeMesh typeMesh = TypeMesh.Triangle,
            TypeRangeMesh typeRangeMesh = TypeRangeMesh.mRange1,
@@ -252,5 +252,8 @@ namespace MeshAdapterLib
                 mesh.BoundKnots[k++] = (int)map[i, 0];
             }
         }
+
+
+
     }
 }

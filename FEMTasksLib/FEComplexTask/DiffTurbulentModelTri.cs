@@ -78,7 +78,7 @@ namespace FEMTasksLib.FESimpleTask
         protected double[] f_w;
 
         #endregion
-        IMeshWrapperСhannelSectionCFG wwMesh;
+        IMWCrossSection wwMesh;
         /// <summary>
         /// Список узлов для КЭ
         /// </summary>
@@ -96,7 +96,7 @@ namespace FEMTasksLib.FESimpleTask
         /// Задача для расчета вязкости
         /// </summary>
         protected CTransportEquationsTri taskNu = null;
-        public DiffTurbulentModelTri(IMeshWrapperСhannelSectionCFG wMesh, 
+        public DiffTurbulentModelTri(IMWCrossSection wMesh, 
                 IAlgebra algebra, TypeTask typeTask = TypeTask.streamY1D) :
             base(wMesh, algebra, typeTask)
         {

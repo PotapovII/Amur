@@ -390,7 +390,7 @@ namespace FEMTasksLib.FESimpleTask
             #endregion
             try
             {
-                IMeshWrapperCrossCFG wm = (IMeshWrapperCrossCFG)wMesh;
+                IMWCross wm = (IMWCross)wMesh;
                 if (wm == null)
                     throw new Exception("Не совпадение моделей врапера сетки в методе " +
                         " CTransportEquationsTri.TransportEquationsTaskSUPG_SpalartAllmaras");

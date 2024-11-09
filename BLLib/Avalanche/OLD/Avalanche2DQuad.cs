@@ -6,9 +6,10 @@
 //---------------------------------------------------------------------------
 namespace BLLib
 {
+    using System;
     using CommonLib;
     using MeshLib;
-    using System;
+    using MeshLib.Locators;
     /// <summary>
     /// ОО: Реализация класса Avalanche2DQuad вычисляющего осыпание 2D склона из 
     /// несвязного материала. Осыпание склона происходит при превышении 
@@ -22,7 +23,7 @@ namespace BLLib
         /// Аппроксимация данных с треугольной не регулярной сетки
         /// на прямоугольную регулярную
         /// </summary>
-        QuadMesh qmesh;
+        TriToQuadMesh qmesh;
         /// <summary>
         /// Сетка для донора данных
         /// </summary>
@@ -61,7 +62,7 @@ namespace BLLib
             this.CountAvalanche = CountAvalanche;
             this.tanPhi = tanPhi;
             this.Relax = Relax;
-            qmesh = new QuadMesh((TriMesh)mesh);
+            qmesh = new TriToQuadMesh((TriMesh)mesh);
         }
 
         /// <summary>

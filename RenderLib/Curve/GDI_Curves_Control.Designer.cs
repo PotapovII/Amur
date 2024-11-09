@@ -29,8 +29,8 @@ namespace RenderLib
         /// </summary>
         private void InitializeComponent()
         {
-            RenderLib.ColorScheme colorScheme3 = new RenderLib.ColorScheme();
-            RenderLib.RenderOptionsCurves renderOptionsCurves3 = new RenderLib.RenderOptionsCurves();
+            RenderLib.ColorScheme colorScheme1 = new RenderLib.ColorScheme();
+            RenderLib.RenderOptionsCurves renderOptionsCurves1 = new RenderLib.RenderOptionsCurves();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -39,6 +39,9 @@ namespace RenderLib
             this.label10 = new System.Windows.Forms.Label();
             this.cbAutoScaleX = new System.Windows.Forms.CheckBox();
             this.panel10 = new System.Windows.Forms.Panel();
+            this.cbCompress = new System.Windows.Forms.CheckBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.btN = new System.Windows.Forms.TextBox();
             this.nud_Y = new System.Windows.Forms.NumericUpDown();
             this.nud_X = new System.Windows.Forms.NumericUpDown();
             this.radioButton03 = new System.Windows.Forms.RadioButton();
@@ -272,6 +275,9 @@ namespace RenderLib
             this.panel10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel10.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.panel10.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel10.Controls.Add(this.cbCompress);
+            this.panel10.Controls.Add(this.label30);
+            this.panel10.Controls.Add(this.btN);
             this.panel10.Controls.Add(this.nud_Y);
             this.panel10.Controls.Add(this.nud_X);
             this.panel10.Controls.Add(this.radioButton03);
@@ -284,8 +290,40 @@ namespace RenderLib
             this.panel10.Controls.Add(this.label5);
             this.panel10.Location = new System.Drawing.Point(7, 41);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(266, 104);
+            this.panel10.Size = new System.Drawing.Size(268, 112);
             this.panel10.TabIndex = 85;
+            // 
+            // cbCompress
+            // 
+            this.cbCompress.AutoSize = true;
+            this.cbCompress.Checked = true;
+            this.cbCompress.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbCompress.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbCompress.Location = new System.Drawing.Point(183, 52);
+            this.cbCompress.Name = "cbCompress";
+            this.cbCompress.Size = new System.Drawing.Size(77, 24);
+            this.cbCompress.TabIndex = 91;
+            this.cbCompress.Text = "Сжать";
+            this.cbCompress.UseVisualStyleBackColor = true;
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label30.Location = new System.Drawing.Point(179, 79);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(20, 20);
+            this.label30.TabIndex = 96;
+            this.label30.Text = "N";
+            // 
+            // btN
+            // 
+            this.btN.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btN.Location = new System.Drawing.Point(205, 79);
+            this.btN.Name = "btN";
+            this.btN.Size = new System.Drawing.Size(55, 26);
+            this.btN.TabIndex = 95;
+            this.btN.Text = "10";
             // 
             // nud_Y
             // 
@@ -612,7 +650,7 @@ namespace RenderLib
             // btSave
             // 
             this.btSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btSave.Location = new System.Drawing.Point(206, 292);
+            this.btSave.Location = new System.Drawing.Point(202, 292);
             this.btSave.Name = "btSave";
             this.btSave.Size = new System.Drawing.Size(98, 29);
             this.btSave.TabIndex = 93;
@@ -1318,7 +1356,7 @@ namespace RenderLib
             // btLoad
             // 
             this.btLoad.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btLoad.Location = new System.Drawing.Point(108, 292);
+            this.btLoad.Location = new System.Drawing.Point(104, 292);
             this.btLoad.Name = "btLoad";
             this.btLoad.Size = new System.Drawing.Size(95, 29);
             this.btLoad.TabIndex = 81;
@@ -1340,14 +1378,14 @@ namespace RenderLib
             // renderControl1
             // 
             this.renderControl1.BackColor = System.Drawing.Color.White;
-            colorScheme3.Background = System.Drawing.Color.White;
-            colorScheme3.FontReper = new System.Drawing.Font("Arial", 8F);
-            colorScheme3.FontValue = null;
-            colorScheme3.formatTextReper = ((uint)(2u));
-            this.renderControl1.colorScheme = colorScheme3;
+            colorScheme1.Background = System.Drawing.Color.White;
+            colorScheme1.FontReper = new System.Drawing.Font("Arial", 8F);
+            colorScheme1.FontValue = null;
+            colorScheme1.formatTextReper = ((uint)(2u));
+            this.renderControl1.colorScheme = colorScheme1;
             this.renderControl1.Location = new System.Drawing.Point(228, 3);
             this.renderControl1.Name = "renderControl1";
-            this.renderControl1.renderOptions = renderOptionsCurves3;
+            this.renderControl1.renderOptions = renderOptionsCurves1;
             this.renderControl1.Size = new System.Drawing.Size(25, 23);
             this.renderControl1.TabIndex = 0;
             this.renderControl1.Text = "renderControl1";
@@ -1642,5 +1680,8 @@ namespace RenderLib
         private System.Windows.Forms.TextBox tb_Xc;
         private System.Windows.Forms.NumericUpDown nud_Y;
         private System.Windows.Forms.NumericUpDown nud_X;
+        private System.Windows.Forms.CheckBox cbCompress;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.TextBox btN;
     }
 }

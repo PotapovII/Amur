@@ -60,6 +60,8 @@
     <Compile Include="DrvGraphics\GradientFillMode.cs" />
     <Compile Include="DrvGraphics\IDrvGraphic.cs" />
     <Compile Include="DrvGraphics\TriVertex.cs" />
+    <Compile Include="FDM\IQuadMesh.cs" />
+    <Compile Include="FDM\IRectangleMesh.cs" />
     <Compile Include="FEM\IComplexFEMTask.cs" />
     <Compile Include="FEM\IFEPoissonTask.cs" />
     <Compile Include="FEM\IBaseFEMTask.cs" />
@@ -74,9 +76,9 @@
     <Compile Include="Geometry\IHFigure.cs" />
     <Compile Include="IO\IBaseFormater.cs" />
     <Compile Include="Mesh\FVM\ISFacet.cs" />
-    <Compile Include="Mesh\MWrapper\IMeshWrapperСhannelSectionCFG.cs" />
-    <Compile Include="Mesh\MWrapper\IMeshWrapperСhannelCFG.cs" />
-    <Compile Include="Mesh\MWrapper\IMeshWrapperCrossCFG.cs" />
+    <Compile Include="Mesh\MWrapper\IMWCrossSection.cs" />
+    <Compile Include="Mesh\MWrapper\IMWDistance.cs" />
+    <Compile Include="Mesh\MWrapper\IMWCross.cs" />
     <Compile Include="Mesh\MWrapper\IMeshWrapper.cs" />
     <Compile Include="Mesh\IRiverMesh.cs" />
     <Compile Include="Mesh\Renumberators\IFERenumberator.cs" />

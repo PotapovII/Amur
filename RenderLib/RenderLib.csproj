@@ -64,6 +64,12 @@
     <Compile Include="Fields\MeshEdit\TaskRendererEdit.cs" />
     <Compile Include="Fields\SolidColorBrush.cs" />
     <Compile Include="EditRenderOptions.cs" />
+    <Compile Include="GDI\ConvertCurve.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GDI\ConvertCurve.Designer.cs">
+      <DependentUpon>ConvertCurve.cs</DependentUpon>
+    </Compile>
     <Compile Include="UControl\FTaskCross.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -194,6 +200,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Fields\MeshEdit\GDI_ControlEdit.resx">
       <DependentUpon>GDI_ControlEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GDI\ConvertCurve.resx">
+      <DependentUpon>ConvertCurve.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UControl\FTaskCross.resx">
       <DependentUpon>FTaskCross.cs</DependentUpon>

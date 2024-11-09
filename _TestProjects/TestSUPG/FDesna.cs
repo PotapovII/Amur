@@ -11,7 +11,7 @@
     using CommonLib.Function;
 
     using MeshLib;
-    using MeshLib.CArea;
+    using MeshLib.Wrappers;
 
     using RenderLib;
     using MemLogLib;
@@ -19,6 +19,7 @@
     using GeometryLib;
     using FEMTasksLib.FESimpleTask;
     using MeshGeneratorsLib.StripGenerator;
+    using GeometryLib.Vector;
 
     public partial class FDesna : Form
     {
@@ -31,6 +32,13 @@
         /// </summary>
         double[] YDesna1 = { -1, 0,  4.0, 10.5, 19.0, 27.0, 34.5, 42.5, 53.5, 60.5, 65,  70.5, 80.5, 89.5, 98.5, 109.5, 122,  135.5, 147,  148.5, 157.5, 158.5 };
         double[] HDesna1 = { -1, 0, 1.55,  3.3, 3.3,  3.6,  3.65,  3.7, 3.75, 3.4,  3.3, 3.4,  3.45, 3,    3,    2.95,  2.55, 2.8,   2.05, 1.4,       0,  -1   };
+
+
+        double[] YAmur1 = { 8.07850757125003, 155.39594753188, 302.71338749251, 450.03082745314, 597.34826741377, 744.6657073744, 891.98314733503, 1039.30058729566, 1186.61802725629, 1333.93546721692 };
+        double[] HAmur1 = { -0.00597974425919433, 0.0402060537833953, 0.0260593290249211, 0.04007607290018, 0.101653114708262, 0.202543622249814, 0.339754922566874, 0.495670267215276, 0.921772719589645, -0.23748311347325 };
+
+        double[] YAmur2 = { 8.07850757125003, 155.39594753188, 302.71338749251, 450.03082745314, 597.34826741377, 744.6657073744, 891.98314733503, 1039.30058729566, 1186.61802725629, 1333.93546721692 };
+        double[] HAmur2 = { -0.00597974425919433, 0.0402060537833953, 0.0260593290249211, 0.04007607290018, 0.101653114708262, 0.202543622249814, 0.339754922566874, 0.495670267215276, 0.921772719589645, -0.23748311347325 };
         /// <summary>
         /// Створ 3
         /// </summary>
@@ -60,7 +68,7 @@
             listBoxAMu.SelectedIndex = 11;
             lb_VortexBC_G2.SelectedIndex = 2;
             SelectedIndexSave = lb_VortexBC_G2.SelectedIndex; 
-            lb_CrossNamber.SelectedIndex = 2;
+            lb_CrossNamber.SelectedIndex = 1;
             lb_Algebra.SelectedIndex = 0;
             lb_MeshGen.SelectedIndex = 0;
             ls_Type__U_star.SelectedIndex = 0;
@@ -112,6 +120,11 @@
                     Geometry = Create(YDesna1, HDesna1);
                     break;
                 case 1:
+                    GEM.NormMas(ref YAmur1,10);
+                    double ww = GEM.NormMaxMas(ref HAmur1);
+                    WL = ww;
+                    Geometry = Create(YAmur1, HAmur1);
+                    break;
                 case 2:
                     Geometry = Create(YDesna3, HDesna3);
                     break;
@@ -148,7 +161,7 @@
         {
             if (mesh != null && checkBoxView.Checked == true)
             {
-                IMeshWrapperCrossCFG wMesh = new MeshWrapperCrossCFGTri(mesh, СhannelSectionForms.porabolicСhannelSection, 2);
+                IMWCross wMesh = new MWCrossTri(mesh, SСhannelForms.porabolicСhannelSection, 2);
                 SavePoint data = new SavePoint();
                 data.SetSavePoint(0, mesh);
                 double[] xx = mesh.GetCoords(0);
@@ -208,8 +221,6 @@
             IDigFunction VelosityUx = null;
             IDigFunction VelosityUy = null;
             #region Река Десна (Розовский)
-
-  
             // выбор граничных условий створа
             switch (lb_CrossNamber.SelectedIndex)
             {
@@ -223,16 +234,28 @@
                         R_midle = Rr - YDesna1S[YDesna1S.Length - 1] / 2;
                     }
                     break;
-                case 1: // Створ 2 Десна
+                case 1: // Створ Амура o. Б.У.-o.Kaб.
                     {
+                        Rr = 1000;
+                        double[] YAmurS = { 14.9612858994447, 160.141012734915, 305.320739570386, 450.500466405857, 595.680193241328, 740.859920076798, 886.039646912269, 1031.21937374774, 1176.39910058321, 1319.0, 1321.57882741868 };
+                        double[] YAmurU = { 0.270986989473428, 0.391481823084925, 0.504930159975303, 0.614403229678924, 0.764885412362173, 0.772160811366355, 0.772286288792793, 0.822947815893047, 0.932657482572942, 0.8, 0 };
+                        double[] YAmurV = { 0.435043291868031, 0.599031560976853, 0.746860855492965, 0.851404132892535, 0.988678259569121, 0.838052424893014, 0.750298893937259, 0.670376134562141, 0.503998658845548, 0.300 };
+                        double LR = GEM.NormMas(ref YAmurS,10);
+
+                        VelosityUx = new DigFunction(YAmurS, YAmurU, "Створ");
+                        VelosityUy = new DigFunction(YAmurS, YAmurV, "Створ");
+                        R_midle = Rr/LR - (YAmurS[YAmurS.Length - 1] - YAmurS[0]) / 2;
                     }
                     break;
                 case 2: // Створ 3 Десна
                     {
-                        double[] YDesna3S = { 0, 50.0, 72.0, 90.0, 109, 127.5, 145, 159.5 };
-                        double[] YDesna3U = { 0, 0.27, 0.47, 0.52, 0.55, 0.55, 0.55, 0 };
+                        double[] YDesna3 = { -26.5, 27.5, 28.5, 33, 34, 38.0, 41.5, 45.0, 50.0, 53.5, 58, 64.5, 68.0, 72.0, 77.0, 83.0, 88.0, 90.0, 99, 103.0, 109, 118.5, 124.5, 127.5, 131.0, 141.5, 145, 151, 157, 159.5, 160.5 };
+                        double[] HDesna3 = { -1,    0,    0.30, 0.6, 0.8, 1.2, 1.6, 1.8, 1.9, 1.8, 2, 2.4, 2.6, 2.8, 3.4, 3.4, 4.0, 3.8, 5.0, 5.2, 5.2, 6.1, 7.6, 6.0, 6.0, 4.8, 5.25, 3.2, 2.2, 0, -1 };
+
+                        double[] YDesna3S = { 0, 28.5, 50.0, 72.0, 90.0, 109, 127.5, 145, 157.5, 159.5 };
+                        double[] YDesna3U = { 0, 0.35, 0.41, 0.47, 0.52, 0.55, 0.55, 0.55, 0.45, 0 };
                         //double[] YDesna3V = { 0, 0.02, 0.06, 0.06, 0.7, 0.08, 0.04, 0 };
-                        double[] YDesna3V = { 0, 0.02, 0.03, 0.06, 0.7, 0.08, 0.04, 0 };
+                        double[] YDesna3V = { 0, 0.016, 0.02, 0.03, 0.06, 0.7, 0.08, 0.04, 0.03, 0 };
                         VelosityUx = new DigFunction(YDesna3S, YDesna3U, "Створ");
                         VelosityUy = new DigFunction(YDesna3S, YDesna3V, "Створ");
                         R_midle = Rr - (YDesna3S[YDesna3S.Length - 1] - YDesna3S[0]) / 2;
@@ -326,7 +349,7 @@
                 if (bKnotsV[i] == 1)
                     mbV[k++] = mBC_V[i];
             }
-            IMeshWrapperСhannelSectionCFG wMesh = new MeshWrapperСhannelSectionCFGTri(mesh, R_midle, Ring, false);
+            IMWCrossSection wMesh = new MWCrossSectionTri(mesh, R_midle, Ring, false);
             // Определение вязкости
             SPhysics.PHYS.turbViscType = (ETurbViscType)listBoxAMu.SelectedIndex;
 

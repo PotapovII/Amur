@@ -67,7 +67,7 @@ namespace FEMTasksLib.FESimpleTask
         /// </summary>
         /// <param name="mesh">сетка</param>
         /// <param name="algebra">линейный решатель</param>
-        public RiverSedimentTri_1Y(IMeshWrapperСhannelSectionCFG wMesh, IAlgebra algebra, TypeTask typeTask) : base(wMesh, algebra, typeTask)
+        public RiverSedimentTri_1Y(IMWCrossSection wMesh, IAlgebra algebra, TypeTask typeTask) : base(wMesh, algebra, typeTask)
         {
             taskSediment = new CTransportEquationsTri(wMesh, algebra, typeTask);
             this.wMesh = wMesh;
@@ -81,8 +81,8 @@ namespace FEMTasksLib.FESimpleTask
         /// </summary>
         /// <param name="mesh">сетка</param>
         /// <param name="algebra">линейный решатель</param>
-        public RiverSedimentTri_1Y(IMeshWrapperCrossCFG wMesh, IAlgebra algebra, TypeTask typeTask) 
-            : this((IMeshWrapperСhannelSectionCFG)wMesh, algebra, typeTask) { }
+        public RiverSedimentTri_1Y(IMWCross wMesh, IAlgebra algebra, TypeTask typeTask) 
+            : this((IMWCrossSection)wMesh, algebra, typeTask) { }
         
         /// <summary>
         /// Задача с вынужденной конвекцией, на верхней крышке области заданна скорость
@@ -90,7 +90,7 @@ namespace FEMTasksLib.FESimpleTask
         public void CalkСonSediment(ref double[] СonSediment, 
             double[] Ux, double[] Uy, double[] Uz, double[] eddyViscosity, double[] tau)
         {
-            IMeshWrapperСhannelSectionCFG wm = (IMeshWrapperСhannelSectionCFG)wMesh;
+            IMWCrossSection wm = (IMWCrossSection)wMesh;
             MEM.Alloc(mesh.CountKnots, ref СonSediment, 0);
             // расчет потоковой скорости в створе
             Console.WriteLine("Concentration sediment:");

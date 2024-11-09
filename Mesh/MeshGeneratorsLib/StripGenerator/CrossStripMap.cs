@@ -107,9 +107,19 @@ namespace MeshGeneratorsLib.StripGenerator
                 {
                     // находим количество узлов на вертикали
                     uint n = (uint)Math.Abs(h / dy) + 1;
+                    uint nOld = map1D[i-1];
+                    if( n == nOld || n == nOld-1 || n == nOld+1 )
+                    {
+                        map1D[i] = n;
+                    }
+                    else
+                    {
+                        if(n > nOld) n = nOld + 1;
+                        if (n < nOld) n = nOld - 1;
+                    }
                     if (n < 3)
                     {
-                        if(i == 1 || i == Count-2)
+                        if (i == 1 || i == Count - 2)
                             n = 2;
                         else
                             n = 3;

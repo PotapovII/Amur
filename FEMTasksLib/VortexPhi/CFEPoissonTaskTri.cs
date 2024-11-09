@@ -694,7 +694,7 @@ namespace FEMTasksLib.FESimpleTask
         }
 
         /// <summary>
-        /// Интерполяция поля МКЭ
+        /// Интерполяция поля МКЭ из поэлементных величин в узловые
         /// </summary>
         public virtual void Interpolation(ref double[] TauZ, double[] tmpTauZ)
         {
@@ -845,9 +845,150 @@ namespace FEMTasksLib.FESimpleTask
                 Logger.Instance.Exception(ex);
             }
         }
+        /// <summary>
+        /// Расчкт функции вихря по функции тока методом Гплеркина для Tri элементов
+        /// </summary>
+        /// <param name="bVortex"></param>
+        /// <param name="Phi"></param>
+        public void CalcBoudaryVortex(ref double[] bVortex, double[] Phi)
+        {
+            MEM.Alloc((uint)mesh.CountKnots, ref bVortex, "bVortex");
+            algebra.Clear();
+            //Parallel.For(0, mesh.CountElements, (elem, state) =>
+            for (uint elem = 0; elem < mesh.CountElements; elem++)
+            {
+                // локальная матрица часть СЛАУ
+                double[][] LaplMatrix = new double[3][]
+                {
+                       new double[3]{ 0,0,0 },
+                       new double[3]{ 0,0,0 },
+                       new double[3]{ 0,0,0 }
+                };
+                // локальная правая часть СЛАУ
+                double[] LocalRight = { 0, 0, 0 };
+                uint[] knots = {
+                    eKnots[elem].Vertex1, eKnots[elem].Vertex2, eKnots[elem].Vertex3
+                };
+                //подготовка ЛЖМ
+                for (int ai = 0; ai < cu; ai++)
+                    for (int aj = 0; aj < cu; aj++)
+                    {
+                        if (ai == aj)
+                            LaplMatrix[ai][aj] = 2.0 * S[elem] / 12.0;
+                        else
+                            LaplMatrix[ai][aj] = S[elem] / 12.0;
+                    }
+                //добавление вновь сформированной ЛЖМ в ГМЖ
+                algebra.AddToMatrix(LaplMatrix, knots);
+                //подготовка ЛПЧ
+                double[] b = dNdx[elem];
+                double[] c = dNdy[elem];
+                uint i0 = eKnots[elem].Vertex1;
+                uint i1 = eKnots[elem].Vertex2;
+                uint i2 = eKnots[elem].Vertex3;
+                
+                double dNy_Phi = (Phi[i0] * b[0] + Phi[i1] * b[1] + Phi[i2] * b[2]);
+                double dNz_Phi = (Phi[i0] * c[0] + Phi[i1] * c[1] + Phi[i2] * c[2]);
+
+                for (int i = 0; i < cu; i++)
+                    LocalRight[i] = ( b[i] * dNy_Phi + c[i] * dNz_Phi) * S[elem];
+                    
+                //добавление вновь сформированной ЛПЧ в ГПЧ
+                algebra.AddToRight(LocalRight, knots);
+            }// });
+            algebra.Solve(ref bVortex);
+        }
 
         /// <summary>
-        /// Расчет компонент поля скорости по функции тока
+        /// Расчкт функции вихря для Tri элементов
+        /// </summary>
+        /// <param name="Vortex"></param>
+        /// <param name="Vortex_old"></param>
+        /// <param name="eMu"></param>
+        /// <param name="Phi"></param>
+        /// <param name="eVy"></param>
+        /// <param name="eVz"></param>
+        /// <param name="bcPhiAdress"></param>
+        /// <param name="bcVortexValue"></param>
+        public void CalcVortex(ref double[] Vortex, double[] Vortex_old, double[] eMu, 
+            double[] eVy, double[] eVz, uint[] bcAdress, double[] bcVortexValue, double dt)
+        {
+            MEM.Alloc((uint)mesh.CountKnots, ref Vortex, "Vortex");
+            algebra.Clear();
+            //Parallel.For(0, mesh.CountElements, (elem, state) =>
+            for (uint elem = 0; elem < mesh.CountElements; elem++)
+            {
+                double[] b = dNdx[elem];
+                double[] c = dNdy[elem];
+                uint i0 = eKnots[elem].Vertex1;
+                uint i1 = eKnots[elem].Vertex2;
+                uint i2 = eKnots[elem].Vertex3;
+                uint[] knots = { i0, i1, i2 };
+                // локальная матрица часть СЛАУ
+                double[][] LMatrix = new double[3][]
+                {
+                       new double[3]{ 0,0,0 },
+                       new double[3]{ 0,0,0 },
+                       new double[3]{ 0,0,0 }
+                };
+                double[][] LaplMatrix = new double[3][]
+                {
+                       new double[3]{ 0,0,0 },
+                       new double[3]{ 0,0,0 },
+                       new double[3]{ 0,0,0 }
+                };
+                // локальная матрица часть СЛАУ
+                double[][] massMatrix = new double[3][]
+                {
+                       new double[3]{ 0,0,0 },
+                       new double[3]{ 0,0,0 },
+                       new double[3]{ 0,0,0 }
+                };
+
+                // локальная правая часть СЛАУ
+                double[] LocalRight = { 0, 0, 0 };
+                // вычисление ЛЖМ
+                double eddyViscosityConst = (eMu[i0] + eMu[i1] + eMu[i2]) / 3;
+                for (int ai = 0; ai < cu; ai++)
+                    for (int aj = 0; aj < cu; aj++)
+                        LaplMatrix[ai][aj] = eddyViscosityConst * (b[ai] * b[aj] + c[ai] * c[aj]) * S[elem];
+
+                // подготовка матрицы масс
+                for (int ai = 0; ai < cu; ai++)
+                    for (int aj = 0; aj < cu; aj++)
+                    {
+                        if (ai == aj)
+                            massMatrix[ai][aj] = 2.0 * S[elem] / 12.0;
+                        else
+                            massMatrix[ai][aj] = S[elem] / 12.0;
+                    }
+                for (int ai = 0; ai < cu; ai++)
+                    for (int aj = 0; aj < cu; aj++)
+                        LMatrix[ai][aj] = massMatrix[ai][aj] + dt * LaplMatrix[ai][aj];
+                    
+                //добавление вновь сформированной ЛЖМ в ГМЖ
+                algebra.AddToMatrix(LMatrix, knots);
+                //подготовка ЛПЧ
+                double mVortex_old = (Vortex_old[i0] + Vortex_old[i1] + Vortex_old[i2]) / 3;
+                for (int i = 0; i < cu; i++)
+                {
+                    LocalRight[i] =
+                        massMatrix[i][0] * Vortex_old[i0] + 
+                        massMatrix[i][0] * Vortex_old[i1] + 
+                        massMatrix[i][0] * Vortex_old[i2] +
+                        dt * (eVy[elem] * b[i] + eVz[elem] * c[i]) * mVortex_old * S[elem];
+                }
+                //добавление вновь сформированной ЛПЧ в ГПЧ
+                algebra.AddToRight(LocalRight, knots);
+            }// });
+            algebra.BoundConditions(bcVortexValue, bcAdress);
+            algebra.Solve(ref Vortex);
+            //foreach (var ee in Vortex)
+            //    if (double.IsNaN(ee) == true)
+            //        throw new Exception("FEPoissonTask >> algebra");
+        }
+        /// <summary>
+        /// Расчет компонент поля скорости в узлах сетки по функции тока
         /// </summary>
         /// <param name="result">результат решения</param>
         public void CalcVelosity_Plane(double[] Phi, ref double[] Vx, ref double[] Vy)
@@ -878,8 +1019,9 @@ namespace FEMTasksLib.FESimpleTask
                 Logger.Instance.Exception(ex);
             }
         }
+
         /// <summary>
-        /// Расчет компонент поля скорости по функции тока
+        ///Расчет компонент поля скорости в узлах сетки по функции тока
         /// </summary>
         /// <param name="result">результат решения</param>
         public void CalcVelosity(double[] Phi, ref double[] Vx, ref double[] Vy, double R_midle = 0, int Ring = 0, bool Local = true)
@@ -929,7 +1071,36 @@ namespace FEMTasksLib.FESimpleTask
             }
         }
 
-
+        /// <summary>
+        /// Расчет компонент поля скорости на КЭ по функции тока
+        /// </summary>
+        /// <param name="Vx"></param>
+        /// <param name="Vy"></param>
+        /// <param name="Phi"></param>
+        public void CalcVelosity(ref double[] Vx, ref double[] Vy, double[] Phi)
+        {
+            try
+            {
+                MEM.Alloc((uint)mesh.CountElements, ref Vx, "eVx");
+                MEM.Alloc((uint)mesh.CountElements, ref Vy, "eVy");
+                for (uint elem = 0; elem < mesh.CountElements; elem++)
+                {
+                    double[] b = dNdx[elem];
+                    double[] c = dNdy[elem];
+                    uint i0 = eKnots[elem].Vertex1;
+                    uint i1 = eKnots[elem].Vertex2;
+                    uint i2 = eKnots[elem].Vertex3;
+                    double dPhidx = Phi[i0] * b[0] + Phi[i1] * b[1] + Phi[i2] * b[2];
+                    double dPhidy = Phi[i0] * c[0] + Phi[i1] * c[1] + Phi[i2] * c[2];
+                    Vx[elem] = dPhidy;
+                    Vy[elem] = -dPhidx;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Exception(ex);
+            }
+        }
         /// <summary>
         /// Нахождение полей напряжений и их сглаживание по методу Галеркина
         /// </summary>

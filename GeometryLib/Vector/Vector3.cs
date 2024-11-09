@@ -17,20 +17,29 @@ namespace GeometryLib.Vector
     /// Представляет трехмерный вещественный вектор с полями двойной точности.
     /// </summary>
     [Serializable]
-    public struct Vector3 : IEquatable<Vector3>, IFormattable
+    public struct Vector3 : IEquatable<Vector3>, IFormattable, IDPoint
     {
         /// <summary>
         /// Координата X вектора.
         /// </summary>
-        public double X;
+        public double X { get; set; }
         /// <summary>
         /// Координата Y вектора.
         /// </summary>
-        public double Y;
+        public double Y { get; set; }
         /// <summary>
         /// Координата Z вектора.
         /// </summary>
-        public double Z;
+        public double Z { get; set; }
+        /// <summary>
+        /// Создает копию объекта
+        /// </summary>
+        /// <returns></returns>
+        public IHPoint IClone() { return new Vector3(X, Y, Z); }
+        public int CompareTo(object obj)
+        {
+            return ((Vector3)obj).X.CompareTo(X);
+        }
         /// <summary>
         /// Значение, присваиваемое всем трем элементам.
         /// </summary>

@@ -160,7 +160,7 @@ namespace FEMTasksLib.FESimpleTask
         /// </summary>
         /// <param name="mesh">сетка</param>
         /// <param name="algebra">линейный решатель</param>
-        public RiverCrossVortexPhiTri(IMeshWrapperСhannelSectionCFG wMesh, IAlgebra algebra, TypeTask typeTask,
+        public RiverCrossVortexPhiTri(IMWDistance wMesh, IAlgebra algebra, TypeTask typeTask,
             double w = 0.3) :
             base(wMesh, algebra, typeTask)
         {
@@ -190,8 +190,8 @@ namespace FEMTasksLib.FESimpleTask
             MEM.Alloc(mesh.CountKnots, ref PhiMu, 1);
 
             /// адреса узлов на свободной поверхности потока и дне
-            boundaryAdress = ((IMeshWrapperСhannelSectionCFG)wMesh).GetBoundaryAdress();
-            boundaryBedAdress = ((IMeshWrapperСhannelSectionCFG)wMesh).GetBoundaryBedAdress();
+            boundaryAdress = ((IMWCrossSection)wMesh).GetBoundaryAdress();
+            boundaryBedAdress = ((IMWCrossSection)wMesh).GetBoundaryBedAdress();
             MEM.Alloc(boundaryBedAdress.Length, ref bcVx, 0);
             MEM.Alloc(boundaryAdress.Length, ref boundaryPhiValue, 0);
             MEM.Alloc(boundaryAdress.Length, ref boundaryVortexValue, 0);
@@ -203,8 +203,8 @@ namespace FEMTasksLib.FESimpleTask
         /// </summary>
         /// <param name="mesh">сетка</param>
         /// <param name="algebra">линейный решатель</param>
-        public RiverCrossVortexPhiTri(IMeshWrapperCrossCFG wMesh, IAlgebra algebra, TypeTask typeTask, double w = 0.05)
-            : this((IMeshWrapperСhannelSectionCFG)wMesh, algebra, typeTask, w) { }
+        public RiverCrossVortexPhiTri(IMWCross wMesh, IAlgebra algebra, TypeTask typeTask, double w = 0.05)
+            : this((IMWDistance)wMesh, algebra, typeTask, w) { }
 
         /// <summary>
         /// Задача с вынужденной конвекцией, на верхней крышке области заданна скорость
@@ -241,7 +241,7 @@ namespace FEMTasksLib.FESimpleTask
             tauYZ = TauYZ;
             tauZZ = TauZZ;
             n = 0;
-            IMeshWrapperСhannelSectionCFG wm = (IMeshWrapperСhannelSectionCFG)wMesh;
+            IMWCrossSection wm = (IMWCrossSection)wMesh;
             double R_midle = wm.GetR_midle();
             int Ring = wm.GetRing();
 
@@ -278,7 +278,7 @@ namespace FEMTasksLib.FESimpleTask
                 //LOG.Print("bcVx", bcVx);
                 //LOG.Print("bAdress", bAdress);
 
-                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMeshWrapperCrossCFG)wMesh, typeEddyViscosity, Ux, J);
+                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWCrossSection)wMesh, typeEddyViscosity, Ux, J);
                 // релаксация функции вязкости
                 for (int i = 0; i < CountKnots; i++)
                     eddyViscosity[i] = (1 - w) * eddyViscosity_old[i] + w * eddyViscosity[i];
@@ -383,7 +383,7 @@ namespace FEMTasksLib.FESimpleTask
             tauYZ = TauYZ;
             tauZZ = TauZZ;
             n = 0;
-            IMeshWrapperСhannelSectionCFG wm = (IMeshWrapperСhannelSectionCFG)wMesh;
+            IMWCrossSection wm = (IMWCrossSection)wMesh;
             double R_midle = wm.GetR_midle();
             int Ring = wm.GetRing();
             residual = double.MaxValue;
@@ -577,7 +577,7 @@ namespace FEMTasksLib.FESimpleTask
             tauYZ = TauYZ;
             tauZZ = TauZZ;
             n = 0;
-            IMeshWrapperСhannelSectionCFG wm = (IMeshWrapperСhannelSectionCFG)wMesh;
+            IMWCrossSection wm = (IMWCrossSection)wMesh;
             double R_midle = wm.GetR_midle();
             int Ring = wm.GetRing();
             residual = double.MaxValue;
@@ -607,7 +607,7 @@ namespace FEMTasksLib.FESimpleTask
                 //    Console.Write(" {0} : {1:f4} ", bAdress[i],bcVx[i]);
                 //Console.WriteLine();
                 //J = 0.001;
-                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMeshWrapperCrossCFG)wMesh, typeEddyViscosity, Ux, J);
+                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWCrossSection)wMesh, typeEddyViscosity, Ux, J);
                 taskMu.TransportEquationsTaskSUPG_R(ref eddyViscosity, eddyViscosity, R_midle, Ring, Uy, Uz, bAdress, bcVx, Q);
                 // релаксация функции вязкости
                 for (int i = 0; i < CountKnots; i++)
@@ -704,7 +704,7 @@ namespace FEMTasksLib.FESimpleTask
             tauZZ = TauZZ;
 
             n = 0;
-            IMeshWrapperСhannelSectionCFG wm = (IMeshWrapperСhannelSectionCFG)wMesh;
+            IMWCrossSection wm = (IMWCrossSection)wMesh;
             residual = double.MaxValue;
             MEM.Alloc(mesh.CountKnots, ref Vx, 0);
 
@@ -717,7 +717,7 @@ namespace FEMTasksLib.FESimpleTask
                 Console.WriteLine("Vx:");
                 // расчет потоковой скорости в створе
                 taskUx.TransportEquationsTaskSUPG(ref Ux, eddyViscosity, Uy, Uz, boundaryBedAdress, J);
-                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMeshWrapperCrossCFG)wMesh, typeEddyViscosity, Ux, J);
+                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWCrossSection)wMesh, typeEddyViscosity, Ux, J);
                 // расчет турбулентных напряжений для вихря
                 if (VetrexTurbTask == 0)
                     Calk_TauYY_TauZZ_TauYZ();
@@ -767,4 +767,5 @@ namespace FEMTasksLib.FESimpleTask
             Calk_TauXY_TauXZ();
         }
     }
+
 }

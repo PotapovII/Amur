@@ -103,7 +103,7 @@ namespace MeshLib
             }
         }
         /// <summary>
-        /// Количество выжеленных линий
+        /// Количество выделенных линий
         /// </summary>
         /// <returns></returns>
         public int SelectCount()

@@ -628,24 +628,24 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                         
                         ERR.INF_NAN("def gam / River2DFV_rho_var.CalkCoef()", gam);
                         
-                        // Сдвиг четки для текущей задачи - отсутсвует
+                        // Сдвиг cетки для текущей задачи - отсутсвует
                         ist = 1;
                         jst = 1;
                         // Релаксация для текущей задачи
                         rel = 1 - relax[IndexTask];
                         // Расчет вертикальных коэффициентов As[i][j], An[i][j]
-                        //             1       imax  
-                        //i=0,j=0|-------------|--> i x
+                        //             1 (W) вток    
+                        //i=0,j=0|-------------|--> j y  jmax
                         //       |             |
                         //       |             |
-                        //       | 0         0 |
-                        //       |             |     Ae[i][j] = Aw[i+1][j] - flow
-                        //       |             |     An[i][j] = As[i][j+1] - flow
-                        //       |             |
-                        //       |-------------|
-                        //       | y    1  
-                        //       V j          
-                        //             
+                        //   S   | 0    _    0 |   N (верх)
+                        // Дно   |    _| |_    |     Ae[i][j] = Aw[i+1][j] - flow
+                        //       |    \   /    |     An[i][j] = As[i][j+1] - flow
+                        //       |     \ /     |
+                        //  imax |------V------| 
+                        //       | x    1  исток
+                        //       V i    E          
+
                         for (i = ist; i < imax; i++)
                         {
                             // граница сверху
@@ -659,8 +659,6 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                             {
                                 if (j < jmax - 1)
                                 {
-                            
-
                                     fy = Hy[i][j] / Dy[i][j] / 2;
                                     // Средняя плотность
                                     arho = rho[i][j] * fy + rho[i][j + 1] * (1 - fy);

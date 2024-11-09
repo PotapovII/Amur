@@ -11,25 +11,17 @@
         [STAThread]
         static void Main()
         {
-            //Test0 t = new Test0();
-            //t.Do();
-            //t.DoR();
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-        M:
+            M:
             Console.WriteLine("Выор панели задач:");
             Console.WriteLine("1. Канал Розовского");
             Console.WriteLine("2. Канал Вим ван Бален");
             Console.WriteLine("3. Канал трапецивидный");
             Console.WriteLine("4. Река Десна");
-<<<<<<< HEAD
-            Console.WriteLine("5. Река Muddy Creek");
+            Console.WriteLine("5. Река ... FDitrich");
             Console.WriteLine("6. Старые тесты");
-=======
-            Console.WriteLine("5. Старые тесты");
-            Console.WriteLine("6. Тест 2D");
-            Console.WriteLine("7. Тест 1D");
->>>>>>> bbbbf678e590e725cc293ddb1e5cb43af4912d05
+            Console.WriteLine("7. Новые тесты Quad");
+            Console.WriteLine("8. Тест 2D");
+            Console.WriteLine("9. Тест 1D");
             Console.WriteLine("Esc: выход");
             try
             {
@@ -48,12 +40,14 @@
                     Application.Run(new FDitrich());
                 if (consoleKeyInfo.Key == ConsoleKey.D6)
                     Application.Run(new FMain());
-                if (consoleKeyInfo.Key == ConsoleKey.D6)
-                {
-                    PhiVortex task = new PhiVortex();
-                    task.Solver();
-                }
                 if (consoleKeyInfo.Key == ConsoleKey.D7)
+                    Application.Run(new Tests());
+                if (consoleKeyInfo.Key == ConsoleKey.D8)
+                {
+                    TestPhiVortex task = new TestPhiVortex(21, 21, 1, 1, 0.5);
+                    task.ShowMesh();
+                }
+                if (consoleKeyInfo.Key == ConsoleKey.D9)
                 {
                     Test0 t = new Test0();
                     t.Do();

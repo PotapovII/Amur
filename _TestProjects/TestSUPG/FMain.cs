@@ -16,7 +16,7 @@
     using System.Collections.Generic;
     using MeshGeneratorsLib.StripGenerator;
     using FEMTasksLib.FESimpleTask;
-    using MeshLib.CArea;
+    using MeshLib.Wrappers;
     using CommonLib.Physics;
     using System.Linq;
     using MeshLib.FEMTools.FunForm;
@@ -138,7 +138,7 @@
         {
             if (mesh != null && checkBoxView.Checked == true)
             {
-            //    IMeshWrapperCrossCFG wMesh = new MeshWrapperCrossCFGTri(mesh, СhannelSectionForms.boxСhannelCrossSection, 2);
+            //    IMWCross wMesh = new MWCrossTri(mesh, SСhannelForms.boxCrossSection, 2);
                 SavePoint data = new SavePoint();
                 data.SetSavePoint(0, mesh);
                 double[] xx = mesh.GetCoords(0);
@@ -542,16 +542,16 @@
             }
             int Ring = (int)lb_Ring.SelectedIndex;
             //IMeshWrapper wMesh = new MeshWrapperTri(mesh);
-            // IMeshWrapperCrossCFG wMesh = new MeshWrapperCrossCFGTri(mesh, 2);
-            IMeshWrapperСhannelSectionCFG wMesh = null;
+            // IMWCross wMesh = new MWCrossTri(mesh, 2);
+            IMWCrossSection wMesh = null;
             if (listBoxArea.SelectedIndex == 0)
                 return;
             if (listBoxArea.SelectedIndex == 1 || 
                 listBoxArea.SelectedIndex == 3 ||
                 listBoxArea.SelectedIndex == 4)
-                wMesh = new MeshWrapperСhannelSectionCFGTri(mesh, R_midle, Ring, false);
+                wMesh = new MWCrossSectionTri(mesh, R_midle, Ring, false);
             if (listBoxArea.SelectedIndex == 2)
-                wMesh = new MeshWrapperСhannelSectionCFGTri(mesh, R_midle, Ring, true);
+                wMesh = new MWCrossSectionTri(mesh, R_midle, Ring, true);
             
             //algebra = new SparseAlgebraBeCG((uint)mesh.CountKnots, true);
             //algebra = new AlgebraGauss((uint)mesh.CountKnots);
@@ -978,7 +978,7 @@
                     break;
                 case 5:
                     {
-                        IMeshWrapperСhannelCFG wM = new MeshWrapperСhannelCFGTri(wMesh);
+                        IMWDistance wM = new MWDistanceTri(wMesh);
                         double[] mVortex = null;
                         double[] mPhi = null;
                         CFETurbulVortexPhiTri task = new CFETurbulVortexPhiTri(wM, algebra, TypeTask.streamX1D );

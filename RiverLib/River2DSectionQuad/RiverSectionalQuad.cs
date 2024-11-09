@@ -23,6 +23,7 @@ namespace RiverLib
     using GeometryLib;
     using GeometryLib.Vector;
     using MeshLib.Mesh.RecMesh;
+    using CommonLib.Geometry;
 
     /// <summary>
     ///  ОО: Определение класса RiverSectionalQuad - для расчета поля скорости

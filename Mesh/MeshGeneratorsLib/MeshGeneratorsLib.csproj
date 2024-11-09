@@ -66,6 +66,7 @@
     <Compile Include="HProject\GenMesh\HSubAreaMap.cs" />
     <Compile Include="HProject\HMeshParams.cs" />
     <Compile Include="HProject\Geometry\IHTaskMap.cs" />
+    <Compile Include="LineStretch.cs" />
     <Compile Include="Renumberation\ARenumberator.cs" />
     <Compile Include="Renumberation\FERenumberatorHesh.cs" />
     <Compile Include="Renumberation\FERenumberator.cs" />

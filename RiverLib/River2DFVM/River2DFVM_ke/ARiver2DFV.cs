@@ -313,7 +313,7 @@ namespace RiverLib.Patankar
         /// <summary>
         /// объект для расчета координт сетки в четырехугольной расчетной области
         /// </summary>
-        public QMesh qmesh = null;
+        public ReverseQMesh qmesh = null;
         /// <summary>
         /// FlagStartMesh - первая генерация сетки true
         /// </summary>
@@ -611,7 +611,7 @@ namespace RiverLib.Patankar
                     }
                     else
                         qmesh.CreateNewQMesh(zeta, null, Params.MaxCoordIters);
-                    // конвертация QMesh в сетку задачи
+                    // конвертация ReverseQMesh в сетку задачи
                     ConvertMeshToMesh();
                     MEM.MemCopy(ref Zeta0, zeta);
                 }
@@ -1129,7 +1129,7 @@ namespace RiverLib.Patankar
         public void OnGridCalculation(bool meshGeom = false)
         {
             if (qmesh == null)
-                qmesh = new QMesh(Nx - 1, Ny - 1);
+                qmesh = new ReverseQMesh(Nx - 1, Ny - 1);
             qmesh.InitQMesh(Params.Ly, Params.Lx, Q, P, Params.topBottom, Params.leftRight);
             if (meshGeom == false)
                 OnGridCalculationRectangle();

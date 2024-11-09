@@ -52,6 +52,11 @@
     <Compile Include="FEComplexTask\DiffTurbulentModelTri.cs" />
     <Compile Include="FEComplexTask\RiverSedimentTri_1Y.cs" />
     <Compile Include="VortexPhi\CFEPoissonTaskTri.cs" />
+    <Compile Include="VortexPhi\Mazo\RiverCrossVortexPhi.cs" />
+    <Compile Include="FEMTasks\NonStationarylTask.cs" />
+    <Compile Include="VortexPhi\Mazo\VortexBoundaryTask.cs" />
+    <Compile Include="VortexPhi\Mazo\VortexTask.cs" />
+    <Compile Include="VortexPhi\Mazo\PhiTriTask.cs" />
     <Compile Include="VortexPhi\RiverCrossVortexPhiTri.cs" />
     <Compile Include="FEComplexTask\RiverSectionVortexPhiTri.cs" />
     <Compile Include="FEComplexTask\CFETurbulVortexPhiTri.cs" />

@@ -17,6 +17,7 @@ namespace BLLib
     using CommonLib;
     using MemLogLib;
     using MeshLib;
+    using MeshLib.Locators;
 
     /// <summary>
     /// ОО: Класс для решения плановой задачи о 
@@ -96,7 +97,7 @@ namespace BLLib
             Locator.CreateMesh();
 
             Locator.GetValue_2DQfrom2DT(ref zeta0, Zeta0);
-            mesh2D = Locator.QMesh;
+            mesh2D = Locator.ReverseQMesh;
             // инициализация 2D задачи
             bltask2D = new BedLoadTask2DFV(this);
             bltask2D.SetDTime(time);
