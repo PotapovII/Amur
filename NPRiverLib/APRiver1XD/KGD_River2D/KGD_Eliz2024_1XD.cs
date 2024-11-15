@@ -76,6 +76,8 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         /// КЭ сетка для задачи
         /// </summary>
         protected KsiMesh mesh = new KsiMesh();
+        //
+        protected KsiWrapper wrapper = null;
         // k-e
         protected IUnknown[] unknownsKE = {   new Unknown("Осредненная скорость х", null, TypeFunForm.Form_2D_Triangle_L1),
                                               new Unknown("Осредненная скорость у", null, TypeFunForm.Form_2D_Triangle_L1),
@@ -254,7 +256,12 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
-        public KGD_Eliz2024_1XD() : this(new RGDParameters1XD()) {}
+        public KGD_Eliz2024_1XD() : this(new RGDParameters1XD()) 
+        { 
+            //wrapper= new KsiWrapper(mesh);
+            //wrapper.TriangleGeometryCalculation(true);
+            //wrapper.MakeWallFuncStructure(true);
+        }
         /// <summary>
         /// Конструктор c заданными параметрами
         /// </summary>
@@ -383,6 +390,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
             if (bedErosion != EBedErosion.NoBedErosion)
             {
                 mesh = GetKsiMesh();
+                wrapper = GetKsiWrapper(mesh);
             }
         }
         /// <summary>
@@ -410,6 +418,15 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
             ComplecsMesh fm = (ComplecsMesh)cmesh;
             mesh = new KsiMesh(fm);
             return mesh;
+        }
+        //
+        protected KsiWrapper GetKsiWrapper(KsiMesh mesh)
+        {
+           wrapper = new KsiWrapper(mesh);
+           wrapper.TriangleGeometryCalculation();
+           wrapper.MakeWallFuncStructure(Params.surf_flag);
+           return wrapper;
+
         }
         #region методы предстартовой подготовки задачи
         /// <summary>
@@ -441,6 +458,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
             // генерация сетки в области пока заглушка !!!!!!!!!!!!!!!!!!!
             mesh = GetKsiMesh();
             Set(mesh, null);
+            wrapper = GetKsiWrapper(mesh);
         }
         /// <summary>
         /// Конфигурация задачи по умолчанию (тестовые задачи)
@@ -449,6 +467,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         public override void DefaultCalculationDomain(uint testTaskID = 0)
         {
             mesh = GetKsiMesh();
+            wrapper = GetKsiWrapper(mesh);
             SinJ = Math.Sin(Params.J);
             CosJ = Math.Cos(Params.J);
             //// инициализация задачи
@@ -485,15 +504,15 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
             MEM.Alloc(CountKnots, ref dudy, "dudy InitMassives");
             MEM.Alloc(CountKnots, ref TTauC, "TTauC InitMassives");
             MEM.Alloc(CountKnots, ref TTau, "TTau InitMassives");
-            MEM.Alloc(mesh.CV_WallKnots.Length, ref CV_WallTau, "CV_WallTau InitMassives");
+            MEM.Alloc(wrapper.CV_WallKnots.Length, ref CV_WallTau, "CV_WallTau InitMassives");
             MEM.Alloc(CountKnots, ref Tau, "Tau InitMassives");
 
             // активация разделителей
             OrdPartCountKnots = Partitioner.Create(0, mesh.CountKnots);
             OrdPartCountElems = Partitioner.Create(0, mesh.CountElements);
-            OrdPart_CV = Partitioner.Create(0, mesh.CVolumes.Length);
-            OrdPart_CV2 = Partitioner.Create(0, mesh.CV2.Length);
-            OrdPart_CV_Wall = Partitioner.Create(0, mesh.CV_WallKnots.Length);
+            OrdPart_CV = Partitioner.Create(0, wrapper.CVolumes.Length);
+            OrdPart_CV2 = Partitioner.Create(0, wrapper.CV2.Length);
+            OrdPart_CV_Wall = Partitioner.Create(0, wrapper.CV_WallKnots.Length);
 
             // определение граничных условий
             InitialStartConditions();
@@ -590,8 +609,8 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
             //!!!-- 1 ый порядок точности, для Tau в целых и полуцелых узлах надо использовать через сплайн!
             {
                 //
-                double[] tau_mid = new double[mesh.BTriangles.Length];
-                OrderablePartitioner<Tuple<int, int>> OrdPartitioner_Tau = Partitioner.Create(0, mesh.BTriangles.Length);
+                double[] tau_mid = new double[wrapper.BTriangles.Length];
+                OrderablePartitioner<Tuple<int, int>> OrdPartitioner_Tau = Partitioner.Create(0, wrapper.BTriangles.Length);
                 Parallel.ForEach(OrdPartitioner_Tau, (range, loopState) =>
                 {
                     for (int i = range.Item1; i < range.Item2; i++)
@@ -601,7 +620,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         double[] xL = new double[3];
                         double[] yL = new double[3];
                                //
-                        int LcurV = mesh.BTriangles[i];
+                        uint LcurV = wrapper.BTriangles[i];
                         uint[] Knots = mesh.AreaElems[LcurV];
                                //
                         uint Lnum1 = Knots[0];
@@ -611,7 +630,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         xL[0] = X[Lnum1]; xL[1] = X[Lnum2]; xL[2] = X[Lnum3];
                         yL[0] = Y[Lnum1]; yL[1] = Y[Lnum2]; yL[2] = Y[Lnum3];
                                // нахождение площади треугольника
-                        double LS = mesh.Sk[LcurV];
+                        double LS = wrapper.Sk[LcurV];
                                // скорости в вершинах треугольника
                         double LU1 = U[Lnum1];
                         double LU2 = U[Lnum2];
@@ -621,8 +640,8 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         double LV2 = V[Lnum2];
                         double LV3 = V[Lnum3];
                                // касательный вектор (обход против часовой стрелки)
-                        double Lsx = mesh.Sx[i];
-                        double Lsy = mesh.Sy[i];
+                        double Lsx = wrapper.Sx[i];
+                        double Lsy = wrapper.Sy[i];
                                // нормаль (направлена во внутрь КО)
                         double Lnx = -Lsy;
                         double Lny = Lsx;
@@ -648,7 +667,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 });
 
                 // Вычисление tau в узлах сетки по сглаженной методике вычисления 
-                double[] Tau_all = Aproximate(tau_mid, mesh.CBottom, mesh.BTriangles);
+                double[] Tau_all = Aproximate(tau_mid, wrapper.CBottom, wrapper.BTriangles);
                 //
                 //подготовка приграничных значений tau между граничными точками и координат для сплайна
                 int count = mesh.BottomKnots.Length;
@@ -659,9 +678,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 for (int i = 0; i < mesh.BottomKnots.Length; i++)
                 {
                     cKnot = mesh.BottomKnots[i];
-                    for (int j = 0; j < mesh.CBottom.Length; j++)
+                    for (int j = 0; j < wrapper.CBottom.Length; j++)
                     {
-                        if (cKnot == mesh.CBottom[j])
+                        if (cKnot == wrapper.CBottom[j])
                         {
 
                             BTau[i] = Tau_all[j];
@@ -750,7 +769,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                         //
                                 int Triangle = mesh.GetTriangle(PointsNorm[j].x, PointsNorm[j].y);
                                         //
-                                double s05 = 1.0f / 2.0f / mesh.Sk[Triangle];
+                                double s05 = 1.0f / 2.0f / wrapper.Sk[Triangle];
                                 uint[] Knots = mesh.AreaElems[Triangle];
                                 double x1 = X[Knots[0]]; double x2 = X[Knots[1]]; double x3 = X[Knots[2]];
                                 double y1 = Y[Knots[0]]; double y2 = Y[Knots[1]]; double y3 = Y[Knots[2]];
@@ -783,7 +802,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                     break;
                                 }
                                         //
-                                double s05 = 1.0f / 2.0f / mesh.Sk[Triangle];
+                                double s05 = 1.0f / 2.0f / wrapper.Sk[Triangle];
                                 uint[] Knots = mesh.AreaElems[Triangle];
                                 double x1 = X[Knots[0]]; double x2 = X[Knots[1]]; double x3 = X[Knots[2]];
                                 double y1 = Y[Knots[0]]; double y2 = Y[Knots[1]]; double y3 = Y[Knots[2]];
@@ -824,13 +843,13 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
             // через ленту тензор TT
             {
                 //компоненты тензора напряжений
-                double[] Tx1 = new double[mesh.BTriangles.Length];
-                double[] Tx2 = new double[mesh.BTriangles.Length];
-                double[] Ty1 = new double[mesh.BTriangles.Length];
-                double[] Ty2 = new double[mesh.BTriangles.Length];
-                double[] tau_mid = new double[mesh.BTriangles.Length];
+                double[] Tx1 = new double[wrapper.BTriangles.Length];
+                double[] Tx2 = new double[wrapper.BTriangles.Length];
+                double[] Ty1 = new double[wrapper.BTriangles.Length];
+                double[] Ty2 = new double[wrapper.BTriangles.Length];
+                double[] tau_mid = new double[wrapper.BTriangles.Length];
 
-                OrderablePartitioner<Tuple<int, int>> OrdPartitioner_Tau = Partitioner.Create(0, mesh.BTriangles.Length);
+                OrderablePartitioner<Tuple<int, int>> OrdPartitioner_Tau = Partitioner.Create(0, wrapper.BTriangles.Length);
                 Parallel.ForEach(OrdPartitioner_Tau, (range, loopState) =>
                 {
                     for (int i = range.Item1; i < range.Item2; i++)
@@ -838,7 +857,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
 
                         double[] xL = new double[3];
                         double[] yL = new double[3];
-                        int LcurV = mesh.BTriangles[i];
+                        uint LcurV = wrapper.BTriangles[i];
                         uint[] Knots = mesh.AreaElems[LcurV];
                         uint Lnum1 = Knots[0];
                         uint Lnum2 = Knots[1];
@@ -847,7 +866,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         xL[0] = X[Lnum1]; xL[1] = X[Lnum2]; xL[2] = X[Lnum3];
                         yL[0] = Y[Lnum1]; yL[1] = Y[Lnum2]; yL[2] = Y[Lnum3];
                         // нахождение площади треугольника
-                        double LS = mesh.Sk[LcurV];
+                        double LS = wrapper.Sk[LcurV];
                         // скорости в вершинах треугольника
                         double LU1 = U[Lnum1];
                         double LU2 = U[Lnum2];
@@ -873,10 +892,10 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 // Вычисление tau в узлах сетки по сглаженной методике вычисления 
                 //double[] Tau_all = Aproximate(tau_mid, mesh.CBottom, mesh.BTriangles);
                 //вычисление тензора напряжений по сглаженной методике
-                double[] Tx1_all = Aproximate(Tx1, mesh.CBottom, mesh.BTriangles);
-                double[] Tx2_all = Aproximate(Tx2, mesh.CBottom, mesh.BTriangles);
-                double[] Ty1_all = Aproximate(Ty1, mesh.CBottom, mesh.BTriangles);
-                double[] Ty2_all = Aproximate(Ty2, mesh.CBottom, mesh.BTriangles);
+                double[] Tx1_all = Aproximate(Tx1, wrapper.CBottom, wrapper.BTriangles);
+                double[] Tx2_all = Aproximate(Tx2, wrapper.CBottom, wrapper.BTriangles);
+                double[] Ty1_all = Aproximate(Ty1, wrapper.CBottom, wrapper.BTriangles);
+                double[] Ty2_all = Aproximate(Ty2, wrapper.CBottom, wrapper.BTriangles);
                 //подготовка приграничных значений tau между граничными точками и координат для сплайна
                 int count = mesh.BottomKnots.Length;
                 BTau = new double[count];
@@ -888,9 +907,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 for (int i = 0; i < mesh.BottomKnots.Length; i++)
                 {
                     cKnot = mesh.BottomKnots[i];
-                    for (int j = 0; j < mesh.CBottom.Length; j++)
+                    for (int j = 0; j < wrapper.CBottom.Length; j++)
                     {
-                        if (cKnot == mesh.CBottom[j])
+                        if (cKnot == wrapper.CBottom[j])
                         {
                             if (i != 0)
                             {
@@ -941,15 +960,15 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 }
                 BTau[count - 1] = BTau[count - 2];
                 /////
-                Tx1 = new double[mesh.TTriangles.Length];
-                Tx2 = new double[mesh.TTriangles.Length];
-                Ty1 = new double[mesh.TTriangles.Length];
-                Ty2 = new double[mesh.TTriangles.Length];
+                Tx1 = new double[wrapper.TTriangles.Length];
+                Tx2 = new double[wrapper.TTriangles.Length];
+                Ty1 = new double[wrapper.TTriangles.Length];
+                Ty2 = new double[wrapper.TTriangles.Length];
                 //
-                tau_mid = new double[mesh.TTriangles.Length];
+                tau_mid = new double[wrapper.TTriangles.Length];
                 //double e1x = 1, e1y = 0, e2x = 0, e2y = 1;//проекции
                 //
-                OrdPartitioner_Tau = Partitioner.Create(0, mesh.TTriangles.Length);
+                OrdPartitioner_Tau = Partitioner.Create(0, wrapper.TTriangles.Length);
                 Parallel.ForEach(OrdPartitioner_Tau,
                        (range, loopState) =>
                        {
@@ -960,7 +979,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                double[] xL = new double[3];
                                double[] yL = new double[3];
                                            //
-                               int LcurV = mesh.TTriangles[i];
+                               uint LcurV = wrapper.TTriangles[i];
                                uint[] Knots = mesh.AreaElems[LcurV];
                                            //
                                uint Lnum1 = Knots[0];
@@ -970,7 +989,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                xL[0] = X[Lnum1]; xL[1] = X[Lnum2]; xL[2] = X[Lnum3];
                                yL[0] = Y[Lnum1]; yL[1] = Y[Lnum2]; yL[2] = Y[Lnum3];
                                            // нахождение площади треугольника
-                               double LS = mesh.Sk[LcurV];
+                               double LS = wrapper.Sk[LcurV];
                                            // скорости в вершинах треугольника
                                double LU1 = U[Lnum1];
                                double LU2 = U[Lnum2];
@@ -998,10 +1017,10 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 //double[] Tau_all = Aproximate(tau_mid, mesh.CBottom, mesh.BTriangles);
 
                 //вычисление тензора напряжений по сглаженной методике
-                Tx1_all = Aproximate(Tx1, mesh.CTop, mesh.TTriangles);
-                Tx2_all = Aproximate(Tx2, mesh.CTop, mesh.TTriangles);
-                Ty1_all = Aproximate(Ty1, mesh.CTop, mesh.TTriangles);
-                Ty2_all = Aproximate(Ty2, mesh.CTop, mesh.TTriangles);
+                Tx1_all = Aproximate(Tx1, wrapper.CTop, wrapper.TTriangles);
+                Tx2_all = Aproximate(Tx2, wrapper.CTop, wrapper.TTriangles);
+                Ty1_all = Aproximate(Ty1, wrapper.CTop, wrapper.TTriangles);
+                Ty2_all = Aproximate(Ty2, wrapper.CTop, wrapper.TTriangles);
                 //подготовка приграничных значений tau между граничными точками и координат для сплайна
                 count = mesh.TopKnots.Length;
                 TTau = new double[count];
@@ -1013,9 +1032,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 for (int i = 0; i < mesh.TopKnots.Length; i++)
                 {
                     cKnot = mesh.TopKnots[i];
-                    for (int j = 0; j < mesh.CTop.Length; j++)
+                    for (int j = 0; j < wrapper.CTop.Length; j++)
                     {
-                        if (cKnot == mesh.CTop[j])
+                        if (cKnot == wrapper.CTop[j])
                         {
                             if (i != 0)
                             {
@@ -1074,11 +1093,11 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         /// <summary>
         /// Аппроксимация галеркина на подмножестве КЭ
         /// </summary>
-        /// <param name="MiddleFunction"></param>
+        /// <param name="MiddleFunction">Среднее значение заданной функции на треугольнике</param>
         /// <param name="GLKnots"></param>
-        /// <param name="GTriangs"></param>
+        /// <param name="GTriangs">номера граничных треугольников</param>
         /// <returns></returns>
-        protected double[] Aproximate(double[] MiddleFunction, int[] GLKnots, int[] GTriangs)
+        protected double[] Aproximate(double[] MiddleFunction, uint[] GLKnots, uint[] GTriangs)
         {
             int Count = GLKnots.Length;
             //
@@ -1094,13 +1113,13 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 //SBand AlgB = new SBand();
                 //AlgB.SetSystem(Count, BWidth);
                 // Вычисляем локальные матрицы жесткости и производим сборку глобальной матрицы жесткости
-                int tr = 0;
+                uint tr = 0;
                 uint[] GKnots, LKnots = new uint[3];
                 double S = 0; ;
                 for (int k = 0; k < GTriangs.Length; k++)
                 {
                     tr = GTriangs[k];
-                    S = mesh.Sk[tr];
+                    S = wrapper.Sk[tr];
                     //S = mesh.GetSquare(tr);
                     //переходим к локальной нумерации для СЛАУ
                     GKnots = mesh.AreaElems[tr];
@@ -1266,14 +1285,14 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                               //и номера его вершин
                                           uint[] LKnots = mesh.AreaElems[fe];
                                               // нахождение площади треугольника
-                                          double LSk = mesh.Sk[fe];
+                                          double LSk = wrapper.Sk[fe];
                                               // расчитываем геометрию элемента 
-                                          double Lb1 = mesh.b1[fe];
-                                          double Lb2 = mesh.b2[fe];
-                                          double Lb3 = mesh.b3[fe];
-                                          double Lc1 = mesh.c1[fe];
-                                          double Lc2 = mesh.c2[fe];
-                                          double Lc3 = mesh.c3[fe];
+                                          double Lb1 = wrapper.b1[fe];
+                                          double Lb2 = wrapper.b2[fe];
+                                          double Lb3 = wrapper.b3[fe];
+                                          double Lc1 = wrapper.c1[fe];
+                                          double Lc2 = wrapper.c2[fe];
+                                          double Lc3 = wrapper.c3[fe];
                                               // расчет локальной матрицы жесткости для диффузионного члена
                                           M[0][0] = -LSk * (Lb1 * Lb1 + Lc1 * Lc1);
                                           M[0][1] = -LSk * (Lb1 * Lb2 + Lc1 * Lc2);
@@ -1320,14 +1339,14 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                       uint Lm2 = LKnots[1];
                                       uint Lm3 = LKnots[2];
                                           // нахождение площади треугольника
-                                      double LSk = mesh.Sk[fe];
+                                      double LSk = wrapper.Sk[fe];
                                           // расчитываем геометрию элемента 
-                                      double Lb1 = mesh.b1[fe];
-                                      double Lb2 = mesh.b2[fe];
-                                      double Lb3 = mesh.b3[fe];
-                                      double Lc1 = mesh.c1[fe];
-                                      double Lc2 = mesh.c2[fe];
-                                      double Lc3 = mesh.c3[fe];
+                                      double Lb1 = wrapper.b1[fe];
+                                      double Lb2 = wrapper.b2[fe];
+                                      double Lb3 = wrapper.b3[fe];
+                                      double Lc1 = wrapper.c1[fe];
+                                      double Lc2 = wrapper.c2[fe];
+                                      double Lc3 = wrapper.c3[fe];
                                           //
                                       double LU1 = U[Lm1]; double LU2 = U[Lm2]; double LU3 = U[Lm3];
                                       double LV1 = V[Lm1]; double LV2 = V[Lm2]; double LV3 = V[Lm3];
@@ -1416,14 +1435,14 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                           //и номера его вершин
                                       uint[] LKnots = mesh.AreaElems[fe];
                                           // нахождение площади треугольника
-                                      double LSk = mesh.Sk[fe];
+                                      double LSk = wrapper.Sk[fe];
                                           // расчитываем геометрию элемента 
-                                      double Lb1 = mesh.b1[fe];
-                                      double Lb2 = mesh.b2[fe];
-                                      double Lb3 = mesh.b3[fe];
-                                      double Lc1 = mesh.c1[fe];
-                                      double Lc2 = mesh.c2[fe];
-                                      double Lc3 = mesh.c3[fe];
+                                      double Lb1 = wrapper.b1[fe];
+                                      double Lb2 = wrapper.b2[fe];
+                                      double Lb3 = wrapper.b3[fe];
+                                      double Lc1 = wrapper.c1[fe];
+                                      double Lc2 = wrapper.c2[fe];
+                                      double Lc3 = wrapper.c3[fe];
                                           // расчет локальной матрицы жесткости для диффузионного члена
                                       M[0][0] = -LSk * (Lb1 * Lb1 + Lc1 * Lc1);
                                       M[0][1] = -LSk * (Lb1 * Lb2 + Lc1 * Lc2);
@@ -1459,14 +1478,14 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                         uint Lm2 = LKnots[1];
                                         uint Lm3 = LKnots[2];
                                             // нахождение площади треугольника
-                                        double LSk = mesh.Sk[fe];
+                                        double LSk = wrapper.Sk[fe];
                                             // расчитываем геометрию элемента 
-                                        double Lb1 = mesh.b1[fe];
-                                        double Lb2 = mesh.b2[fe];
-                                        double Lb3 = mesh.b3[fe];
-                                        double Lc1 = mesh.c1[fe];
-                                        double Lc2 = mesh.c2[fe];
-                                        double Lc3 = mesh.c3[fe];
+                                        double Lb1 = wrapper.b1[fe];
+                                        double Lb2 = wrapper.b2[fe];
+                                        double Lb3 = wrapper.b3[fe];
+                                        double Lc1 = wrapper.c1[fe];
+                                        double Lc2 = wrapper.c2[fe];
+                                        double Lc3 = wrapper.c3[fe];
                                             //
                                         double LU1 = U[Lm1]; double LU2 = U[Lm2]; double LU3 = U[Lm3];
                                         double LV1 = V[Lm1]; double LV2 = V[Lm2]; double LV3 = V[Lm3];
@@ -1845,7 +1864,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         y = (Y[knot] - Y[0]);
                         K[knot] = 1.5 * (I * U[knot]) * (I * U[knot]);
                         if (i == mesh.CountLeft - 2)
-                            W[knot] = Math.Sqrt(6.0 * K[knot] / beta) / mesh.BWallDistance[0];
+                            W[knot] = Math.Sqrt(6.0 * K[knot] / beta) / wrapper.BWallDistance[0];
                         //W[knot] = 6.0 * nu_mol / beta / mesh.BWallDistance[0] / mesh.BWallDistance[0];
                         else
                             W[knot] = Math.Sqrt(K[knot]) / 0.1 / Hn;
@@ -1931,7 +1950,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         K[knot] = 1.5 * (I * U[knot]) * (I * U[knot]);
                         if ((i == 1) || (i == mesh.CountLeft - 2))
                         {
-                            W[knot] = Math.Sqrt(6.0 * K[knot] / beta) / mesh.BWallDistance[0];
+                            W[knot] = Math.Sqrt(6.0 * K[knot] / beta) / wrapper.BWallDistance[0];
                             //W[knot] = 6.0 * nu_mol / beta / mesh.BWallDistance[0] / mesh.BWallDistance[0];
                         }
                         else
@@ -2130,21 +2149,21 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                         //
                     double ldudx = 0, ldudy = 0, ldvdx = 0, ldvdy = 0;
                             //
-                    int p0 = mesh.CV2[i][0];
+                    int p0 = wrapper.CV2[i][0];
                             // убираем из расчета узлы, в которых устанавливается WallFunc
 
-                    int jj = mesh.CV2[i].Length - 1;//количество КО, связанных с данным узлом
+                    int jj = wrapper.CV2[i].Length - 1;//количество КО, связанных с данным узлом
                     for (int j = 0; j < jj; j++)
                     {
-                        double _lx10 = mesh.Lx10[p0][j]; double _lx32 = mesh.Lx32[p0][j];
-                        double _ly01 = mesh.Ly01[p0][j]; double _ly23 = mesh.Ly23[p0][j];
+                        double _lx10 = wrapper.Lx10[p0][j]; double _lx32 = wrapper.Lx32[p0][j];
+                        double _ly01 = wrapper.Ly01[p0][j]; double _ly23 = wrapper.Ly23[p0][j];
                                 //площадь
-                        double LS = mesh.S[p0][j];
+                        double LS = wrapper.S[p0][j];
                                 //сосоедние элементы
-                        int Lv1 = mesh.CV2[i][(j + 1) % jj + 1];
-                        int Lv2 = mesh.CV2[i][j + 1];
+                        int Lv1 = wrapper.CV2[i][(j + 1) % jj + 1];
+                        int Lv2 = wrapper.CV2[i][j + 1];
                                 //вторая точка общей грани
-                        int Lp1 = mesh.P1[p0][j];
+                        int Lp1 = wrapper.P1[p0][j];
                                 //находим значения функций в центрах масс 1ого и 2ого треугольника как средние значения по элементу
                         uint[] Knots1 = mesh.AreaElems[Lv1];
                         uint Lt1 = Knots1[0]; uint Lt2 = Knots1[1]; uint Lt3 = Knots1[2];
@@ -2174,16 +2193,16 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         double Ldedx = ((LEc1 - LEc2) * _ly01 + (E[Lp1] - E[p0]) * _ly23) / Ls2;
                         double Ldedy = ((LEc1 - LEc2) * _lx10 + (E[Lp1] - E[p0]) * _lx32) / Ls2;
                                 //внешняя нормаль к грани КО (контуру КО)
-                        double Lnx = mesh.Nx[p0][j]; double Lny = mesh.Ny[p0][j];
+                        double Lnx = wrapper.Nx[p0][j]; double Lny = wrapper.Ny[p0][j];
                                 ////значение функций в точке пересечения грани КО и основной грани
-                        double Lalpha = mesh.Alpha[p0][j];
+                        double Lalpha = wrapper.Alpha[p0][j];
                         double LUcr = Lalpha * U[p0] + (1 - Lalpha) * U[Lp1];
                         double LVcr = Lalpha * V[p0] + (1 - Lalpha) * V[Lp1];
                         double LKcr = Lalpha * K[p0] + (1 - Lalpha) * K[Lp1];
                         double LEcr = Lalpha * E[p0] + (1 - Lalpha) * E[Lp1];
                         double LNucrT = Lalpha * nuT[p0] + (1 - Lalpha) * nuT[Lp1];
                                 //длина текущего фрагмента внешнего контура КО
-                        double LLk = mesh.Lk[p0][j];
+                        double LLk = wrapper.Lk[p0][j];
                                 //расчет потоков
                         double wx = Params.tau * (LUcr * Ldudx + LVcr * Ldudy + 1.0 / rho_w * Ldpdx + 2.0 / 3.0 * Ldkdx);
                         double wy = Params.tau * (LUcr * Ldvdx + LVcr * Ldvdy + 1.0 / rho_w * Ldpdy + 2.0 / 3.0 * Ldkdy);
@@ -2218,18 +2237,18 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                 //RegE[p0] += LregE * LLk;
                     }
                             //
-                    ldudx /= mesh.S0[p0];
-                    ldudy /= mesh.S0[p0];
-                    ldvdx /= mesh.S0[p0];
-                    ldvdy /= mesh.S0[p0];
+                    ldudx /= wrapper.S0[p0];
+                    ldudy /= wrapper.S0[p0];
+                    ldvdx /= wrapper.S0[p0];
+                    ldvdy /= wrapper.S0[p0];
                             //double tPk = 1.4142135623730950488016887242097 * nuT[p0] * (ldudx * ldudx + (ldvdx + ldudy) * (ldvdx + ldudy) + ldvdy * ldvdy); //- 2.0 / 3.0 * K[p0];
                     double tPk = nuT[p0] * (2 * ldudx * ldudx + (ldvdx + ldudy) * (ldvdx + ldudy) + 2 * ldvdy * ldvdy);
                     Pk[p0] = tPk;//Math.Min(tPk, 10 * E[p0]);
                     LLrightK = (Pk[p0] - E[p0]);
                     LLrightE = E[p0] / K[p0] * (C_e1 * Pk[p0] - C_e2 * E[p0]);
                             //
-                    K[p0] = K[p0] + dt / mesh.S0[p0] * LsummK + dt * LLrightK;
-                    E[p0] = E[p0] + dt / mesh.S0[p0] * LsummE + dt * LLrightE;
+                    K[p0] = K[p0] + dt / wrapper.S0[p0] * LsummK + dt * LLrightK;
+                    E[p0] = E[p0] + dt / wrapper.S0[p0] * LsummE + dt * LLrightE;
                             ////
                             //ConvK[p0] /= mesh.S0[p0];
                             //ConvE[p0] /= mesh.S0[p0];
@@ -2264,21 +2283,21 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                     double LsummK = 0;//потоки k 
                     double LLrightK = 0;//потоки k  
                                         //
-                    int p0 = mesh.CV_WallKnots[i][0];
-                    int jj = mesh.CV_WallKnots[i].Length - 1;//количество КО, связанных с данным узлом
+                    int p0 = wrapper.CV_WallKnots[i][0];
+                    int jj = wrapper.CV_WallKnots[i].Length - 1;//количество КО, связанных с данным узлом
                                                              //
 
                     for (int j = 0; j < jj; j++)
                     {
-                        double _lx10 = mesh.Lx10[p0][j]; double _lx32 = mesh.Lx32[p0][j];
-                        double _ly01 = mesh.Ly01[p0][j]; double _ly23 = mesh.Ly23[p0][j];
+                        double _lx10 = wrapper.Lx10[p0][j]; double _lx32 = wrapper.Lx32[p0][j];
+                        double _ly01 = wrapper.Ly01[p0][j]; double _ly23 = wrapper.Ly23[p0][j];
                         //площадь
-                        double LS = mesh.S[p0][j];
+                        double LS = wrapper.S[p0][j];
                         //сосоедние элементы
-                        int Lv1 = mesh.CV_WallKnots[i][(j + 1) % jj + 1];
-                        int Lv2 = mesh.CV_WallKnots[i][j + 1];
+                        int Lv1 = wrapper.CV_WallKnots[i][(j + 1) % jj + 1];
+                        int Lv2 = wrapper.CV_WallKnots[i][j + 1];
                         //вторая точка общей грани
-                        int Lp1 = mesh.P1[p0][j];
+                        int Lp1 = wrapper.P1[p0][j];
                         //находим значения функций в центрах масс 1ого и 2ого треугольника как средние значения по элементу
                         uint[] Knots1 = mesh.AreaElems[Lv1];
                         uint Lt1 = Knots1[0]; uint Lt2 = Knots1[1]; uint Lt3 = Knots1[2];
@@ -2306,16 +2325,16 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         double Ldkdx = ((LKc1 - LKc2) * _ly01 + (K[Lp1] - K[p0]) * _ly23) / Ls2;
                         double Ldkdy = ((LKc1 - LKc2) * _lx10 + (K[Lp1] - K[p0]) * _lx32) / Ls2;
                         //внешняя нормаль к грани КО (контуру КО)
-                        double Lnx = mesh.Nx[p0][j]; double Lny = mesh.Ny[p0][j];
+                        double Lnx = wrapper.Nx[p0][j]; double Lny = wrapper.Ny[p0][j];
                         ////значение функций в точке пересечения грани КО и основной грани
-                        double Lalpha = mesh.Alpha[p0][j];
+                        double Lalpha = wrapper.Alpha[p0][j];
                         double LUcr = Lalpha * U[p0] + (1 - Lalpha) * U[Lp1];
                         double LVcr = Lalpha * V[p0] + (1 - Lalpha) * V[Lp1];
                         double LKcr = Lalpha * K[p0] + (1 - Lalpha) * K[Lp1];
                         double LEcr = Lalpha * E[p0] + (1 - Lalpha) * E[Lp1];
                         double LNucrT = Lalpha * nuT[p0] + (1 - Lalpha) * nuT[Lp1];
                         //длина текущего фрагмента внешнего контура КО
-                        double LLk = mesh.Lk[p0][j];
+                        double LLk = wrapper.Lk[p0][j];
                         //расчет потоков
                         double wx = Params.tau * (LUcr * Ldudx + LVcr * Ldudy + 1.0 / rho_w * Ldpdx + 2.0 / 3.0 * Ldkdx);
                         double wy = Params.tau * (LUcr * Ldvdx + LVcr * Ldvdy + 1.0 / rho_w * Ldpdy + 2.0 / 3.0 * Ldkdy);
@@ -2334,19 +2353,19 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         //RegK[p0] += LregK * LLk;
                     }
                     //
-                    double y_p_plus = cm14 * Math.Sqrt(K[p0]) * mesh.CV_WallKnotsDistance[i] / nu_mol;
+                    double y_p_plus = cm14 * Math.Sqrt(K[p0]) * wrapper.CV_WallKnotsDistance[i] / nu_mol;
                     Pk[p0] = 0;
                     if (y_p_plus > y_p_0)
                     {
-                        E[p0] = cm14 * cm14 * cm14 * Math.Pow(K[p0], 1.5) / kappa / mesh.CV_WallKnotsDistance[i];
+                        E[p0] = cm14 * cm14 * cm14 * Math.Pow(K[p0], 1.5) / kappa / wrapper.CV_WallKnotsDistance[i];
                         Pk[p0] = E[p0];
                     }
                     else
-                        E[p0] = 2.0 * K[p0] / mesh.CV_WallKnotsDistance[i] / mesh.CV_WallKnotsDistance[i] * nu_mol;
+                        E[p0] = 2.0 * K[p0] / wrapper.CV_WallKnotsDistance[i] / wrapper.CV_WallKnotsDistance[i] * nu_mol;
                     //
                     LLrightK = (Pk[p0] - E[p0]);
                     //
-                    K[p0] = K[p0] + dt / mesh.S0[p0] * LsummK + dt * LLrightK;
+                    K[p0] = K[p0] + dt / wrapper.S0[p0] * LsummK + dt * LLrightK;
                     //
                     //ConvK[p0] /= mesh.S0[p0];
                     //ConvE[p0] /= mesh.S0[p0];
@@ -2390,13 +2409,13 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 }
             }
             // вычисление напряжения по пристеночной функции
-            for (int i = 0; i < mesh.CV_WallKnots.Length; i++)
+            for (int i = 0; i < wrapper.CV_WallKnots.Length; i++)
             {
-                int knot = mesh.CV_WallKnots[i][0];
+                int knot = wrapper.CV_WallKnots[i][0];
                 //CV_WallTau[i] = WallFuncSharpPlus(knot, mesh.CV_WallKnotsDistance[i]);//шероховатая стенка по Луцкому, установка по Снегиреву
                 //CV_WallTau[i] = WallFuncSnegirev(knot, mesh.CV_WallKnotsDistance[i]);// гладкая стенка по Снегиреву
                 //CV_WallTau[i] = WallFuncPlus(knot, mesh.CV_WallKnotsDistance[i]);// гладкая стенка по Луцкому
-                CV_WallTau[i] = WallFunc(knot, mesh.CV_WallKnotsDistance[i]);// гладкая стенка по Волкову упрощ
+                CV_WallTau[i] = WallFunc(knot, wrapper.CV_WallKnotsDistance[i]);// гладкая стенка по Волкову упрощ
                 //CV_WallTau[i] = WallFuncNewton(knot, mesh.CV_WallKnotsDistance[i]);// гладкая стенка по Волкову Ньютон
             }
             // вычисление напряжения по пристеночной функции для отрисовки
@@ -2407,7 +2426,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 //BTauC[i] = WallFuncSharpPlus(knot, mesh.BWallDistance[i]);//шероховатая стенка по Луцкому, установка по Снегиреву
                 //BTauC[i] = WallFuncSnegirev(knot, mesh.BWallDistance[i]);// гладкая стенка по Снегиреву
                 //BTauC[i] = WallFuncPlus(knot, mesh.BWallDistance[i]);// гладкая стенка по Луцкому
-                BTauC[i] = WallFunc(knot, mesh.BWallDistance[i]);// гладкая стенка по Волкову упрощ
+                BTauC[i] = WallFunc(knot, wrapper.BWallDistance[i]);// гладкая стенка по Волкову упрощ
                 //BTauC[i] = WallFuncNewton(knot, mesh.BWallDistance[i]);// гладкая стенка по Волкову Ньютон
             }
             for (int i = 0; i < mesh.CountBottom - 1; i++)
@@ -2424,7 +2443,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                     int knot = mesh.TopKnots[i] - 1;
                     //
                     //TTauC[i] = WallFuncSnegirev(knot, mesh.TWallDistance[i]);
-                    TTauC[i] = WallFunc(knot, mesh.TWallDistance[i]);// гладкая стенка по Волкову упрощ
+                    TTauC[i] = WallFunc(knot, wrapper.TWallDistance[i]);// гладкая стенка по Волкову упрощ
                     //TTauC[i] = WallFuncSharpPlus(knot, mesh.TWallDistance[i]);//шероховатая стенка по Луцкому, установка по Снегиреву
                 }
                 for (int i = 0; i < mesh.CountTop - 1; i++)
@@ -2608,21 +2627,21 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                             //
                             double ldudx = 0, ldudy = 0, ldvdx = 0, ldvdy = 0;
                             //
-                            int p0 = mesh.CV2[i][0];
+                            int p0 = wrapper.CV2[i][0];
                             // убираем из расчета узлы, в которых устанавливается WallFunc
 
-                            int jj = mesh.CV2[i].Length - 1;//количество КО, связанных с данным узлом
+                            int jj = wrapper.CV2[i].Length - 1;//количество КО, связанных с данным узлом
                             for (int j = 0; j < jj; j++)
                             {
-                                double _lx10 = mesh.Lx10[p0][j]; double _lx32 = mesh.Lx32[p0][j];
-                                double _ly01 = mesh.Ly01[p0][j]; double _ly23 = mesh.Ly23[p0][j];
+                                double _lx10 = wrapper.Lx10[p0][j]; double _lx32 = wrapper.Lx32[p0][j];
+                                double _ly01 = wrapper.Ly01[p0][j]; double _ly23 = wrapper.Ly23[p0][j];
                                 //площадь
-                                double LS = mesh.S[p0][j];
+                                double LS = wrapper.S[p0][j];
                                 //сосоедние элементы
-                                int Lv1 = mesh.CV2[i][(j + 1) % jj + 1];
-                                int Lv2 = mesh.CV2[i][j + 1];
+                                int Lv1 = wrapper.CV2[i][(j + 1) % jj + 1];
+                                int Lv2 = wrapper.CV2[i][j + 1];
                                 //вторая точка общей грани
-                                int Lp1 = mesh.P1[p0][j];
+                                int Lp1 = wrapper.P1[p0][j];
                                 //находим значения функций в центрах масс 1ого и 2ого треугольника как средние значения по элементу
                                 uint[] Knots1 = mesh.AreaElems[Lv1];
                                 uint Lt1 = Knots1[0]; uint Lt2 = Knots1[1]; uint Lt3 = Knots1[2];
@@ -2652,16 +2671,16 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                 double Ldedx = ((LEc1 - LEc2) * _ly01 + (E[Lp1] - E[p0]) * _ly23) / Ls2;
                                 double Ldedy = ((LEc1 - LEc2) * _lx10 + (E[Lp1] - E[p0]) * _lx32) / Ls2;
                                 //внешняя нормаль к грани КО (контуру КО)
-                                double Lnx = mesh.Nx[p0][j]; double Lny = mesh.Ny[p0][j];
+                                double Lnx = wrapper.Nx[p0][j]; double Lny = wrapper.Ny[p0][j];
                                 ////значение функций в точке пересечения грани КО и основной грани
-                                double Lalpha = mesh.Alpha[p0][j];
+                                double Lalpha = wrapper.Alpha[p0][j];
                                 double LUcr = Lalpha * U[p0] + (1 - Lalpha) * U[Lp1];
                                 double LVcr = Lalpha * V[p0] + (1 - Lalpha) * V[Lp1];
                                 double LKcr = Lalpha * K[p0] + (1 - Lalpha) * K[Lp1];
                                 double LEcr = Lalpha * E[p0] + (1 - Lalpha) * E[Lp1];
                                 double LNucrT = Lalpha * nuT[p0] + (1 - Lalpha) * nuT[Lp1];
                                 //длина текущего фрагмента внешнего контура КО
-                                double LLk = mesh.Lk[p0][j];
+                                double LLk = wrapper.Lk[p0][j];
                                 //расчет потоков
                                 double wx = Params.tau * (LUcr * Ldudx + LVcr * Ldudy + 1.0 / rho_w * Ldpdx);
                                 double wy = Params.tau * (LUcr * Ldvdx + LVcr * Ldvdy + 1.0 / rho_w * Ldpdy);
@@ -2696,18 +2715,18 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                 //RegE[p0] += LregE * LLk;
                             }
                             //
-                            ldudx /= mesh.S0[p0];
-                            ldudy /= mesh.S0[p0];
-                            ldvdx /= mesh.S0[p0];
-                            ldvdy /= mesh.S0[p0];
+                            ldudx /= wrapper.S0[p0];
+                            ldudy /= wrapper.S0[p0];
+                            ldvdx /= wrapper.S0[p0];
+                            ldvdy /= wrapper.S0[p0];
                             //double tPk = 1.4142135623730950488016887242097 * nuT[p0] * (ldudx * ldudx + (ldvdx + ldudy) * (ldvdx + ldudy) + ldvdy * ldvdy); //- 2.0 / 3.0 * K[p0];
                             double tPk = nuT[p0] * (2 * ldudx * ldudx + (ldvdx + ldudy) * (ldvdx + ldudy) + 2 * ldvdy * ldvdy);
                             double Pk = tPk;//Math.Min(tPk, 10 * E[p0]);
                             LLrightK = (Pk - E[p0]);
                             LLrightE = E[p0] / K[p0] * (C_e1 * Pk - C_e2 * E[p0]);
                             //
-                            K[p0] = K[p0] + dt / mesh.S0[p0] * LsummK + dt * LLrightK;
-                            E[p0] = E[p0] + dt / mesh.S0[p0] * LsummE + dt * LLrightE;
+                            K[p0] = K[p0] + dt / wrapper.S0[p0] * LsummK + dt * LLrightK;
+                            E[p0] = E[p0] + dt / wrapper.S0[p0] * LsummE + dt * LLrightE;
                             ////
                             //ConvK[p0] /= mesh.S0[p0];
                             //ConvE[p0] /= mesh.S0[p0];
@@ -2785,7 +2804,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
 
             if (Params.calculationType == CheckMultiThreading.singleThreaded)
             {
-                for (int i = 0; i < mesh.CV2.Length; i++)
+                for (int i = 0; i < wrapper.CV2.Length; i++)
                 {
                     int p0 = CalkVelosity(i);
                     if (double.IsNaN(U[p0]))
@@ -2885,7 +2904,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
 
             if (Params.calculationType == CheckMultiThreading.singleThreaded)
             {
-                for (int i = 0; i < mesh.CV2.Length; i++)
+                for (int i = 0; i < wrapper.CV2.Length; i++)
                 {
                     int p0 = CalkKW(i);
                     if (double.IsNaN(K[p0]) || double.IsInfinity(K[p0]))
@@ -2928,16 +2947,16 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
             #region расчет и установка граничных условий
 
             // вычисление напряжения по пристеночной функции + вычисление придонной равновесной концентрации по Эйнштейну по u* (Lin, Namin)
-            for (int i = 0; i < mesh.CV_WallKnots.Length; i++)
+            for (int i = 0; i < wrapper.CV_WallKnots.Length; i++)
             {
-                int knot = mesh.CV_WallKnots[i][0];
-                CV_WallTau[i] = WFunc(knot, mesh.CV_WallKnotsDistance[i]);
+                int knot = wrapper.CV_WallKnots[i][0];
+                CV_WallTau[i] = WFunc(knot, wrapper.CV_WallKnotsDistance[i]);
             }
             // вычисление напряжения по пристеночной функции для отрисовки
             for (int i = 0; i < mesh.CountBottom; i++)
             {
                 int knot = mesh.BottomKnots[i] + 1;
-                BTauC[i] = WFunc(knot, mesh.BWallDistance[i]);
+                BTauC[i] = WFunc(knot, wrapper.BWallDistance[i]);
             }
             for (int i = 0; i < mesh.CountBottom - 1; i++)
             {
@@ -2954,7 +2973,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 for (int i = 0; i < mesh.CountTop; i++)
                 {
                     int knot = mesh.TopKnots[i] - 1;
-                    TTauC[i] = WFunc(knot, mesh.TWallDistance[i]);
+                    TTauC[i] = WFunc(knot, wrapper.TWallDistance[i]);
                 }
                 for (int i = 0; i < mesh.CountTop - 1; i++)
                 {
@@ -3024,21 +3043,21 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
             double LsummV = 0;//потоки V скорости
             double LsummS = 0;//потоки s концентрации
                               //
-            int p0 = mesh.CVolumes[i][0];
-            int jj = mesh.CVolumes[i].Length - 1;//количество КО, связанных с данным узлом
+            int p0 = wrapper.CVolumes[i][0];
+            int jj = wrapper.CVolumes[i].Length - 1;//количество КО, связанных с данным узлом
             for (int j = 0; j < jj; j++)
             {
-                double _lx10 = mesh.Lx10[p0][j];
-                double _lx32 = mesh.Lx32[p0][j];
-                double _ly01 = mesh.Ly01[p0][j];
-                double _ly23 = mesh.Ly23[p0][j];
+                double _lx10 = wrapper.Lx10[p0][j];
+                double _lx32 = wrapper.Lx32[p0][j];
+                double _ly01 = wrapper.Ly01[p0][j];
+                double _ly23 = wrapper.Ly23[p0][j];
                 //площадь
-                double LS = mesh.S[p0][j];
+                double LS = wrapper.S[p0][j];
                 //сосоедние элементы
-                int Lv1 = mesh.CVolumes[i][(j + 1) % jj + 1];
-                int Lv2 = mesh.CVolumes[i][j + 1];
+                int Lv1 = wrapper.CVolumes[i][(j + 1) % jj + 1];
+                int Lv2 = wrapper.CVolumes[i][j + 1];
                 //вторая точка общей грани
-                int Lp1 = mesh.P1[p0][j];
+                int Lp1 = wrapper.P1[p0][j];
                 //находим значения функций в центрах масс 1ого и 2ого треугольника как средние значения по элементу
                 uint[] Knots1 = mesh.AreaElems[Lv1];
                 uint Lt1 = Knots1[0]; uint Lt2 = Knots1[1]; uint Lt3 = Knots1[2];
@@ -3064,9 +3083,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 double Ldsdy = ((LSc1 - LSc2) * _lx10 + (S[Lp1] - S[p0]) * _lx32) / Ls2;
 
                 //внешняя нормаль к грани КО (контуру КО)
-                double Lnx = mesh.Nx[p0][j]; double Lny = mesh.Ny[p0][j];
+                double Lnx = wrapper.Nx[p0][j]; double Lny = wrapper.Ny[p0][j];
                 ////значение функций в точке пересечения грани КО и основной грани
-                double Lalpha = mesh.Alpha[p0][j];
+                double Lalpha = wrapper.Alpha[p0][j];
                 double LUcr = Lalpha * U[p0] + (1 - Lalpha) * U[Lp1];
                 double LVcr = Lalpha * V[p0] + (1 - Lalpha) * V[Lp1];
                 double LPcr = Lalpha * P[p0] + (1 - Lalpha) * P[Lp1];
@@ -3075,7 +3094,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 double LKcr = Lalpha * K[p0] + (1 - Lalpha) * K[Lp1];
                 double LWcr = Lalpha * W[p0] + (1 - Lalpha) * W[Lp1];
                 //длина текущего фрагмента внешнего контура КО
-                double LLk = mesh.Lk[p0][j];
+                double LLk = wrapper.Lk[p0][j];
                 //
                 //
                 double LKc1 = (K[Lt1] + K[Lt2] + K[Lt3]) / 3.0;
@@ -3124,9 +3143,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 }
             }
             //
-            U[p0] = U[p0] + dt / mesh.S0[p0] * LsummU;
-            V[p0] = V[p0] + dt / mesh.S0[p0] * LsummV;
-            S[p0] = S[p0] + dt / mesh.S0[p0] * LsummS;
+            U[p0] = U[p0] + dt / wrapper.S0[p0] * LsummU;
+            V[p0] = V[p0] + dt / wrapper.S0[p0] * LsummV;
+            S[p0] = S[p0] + dt / wrapper.S0[p0] * LsummS;
             if (S[p0] < 0)
                 S[p0] = 0;
 
@@ -3158,30 +3177,32 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                 //
             double ldudx = 0, ldudy = 0, ldvdx = 0, ldvdy = 0, ldkdx = 0, ldkdy = 0, ldwdx = 0, ldwdy = 0;
             //
-            int p0 = mesh.CVolumes[i][0];
+            int p0 = wrapper.CVolumes[i][0];
             // убираем из расчета узлы, в которых устанавливается WallFunc
 
-            int jj = mesh.CVolumes[i].Length - 1;//количество КО, связанных с данным узлом
+            int jj = wrapper.CVolumes[i].Length - 1;//количество КО, связанных с данным узлом
             for (int j = 0; j < jj; j++)
             {
-                double _lx10 = mesh.Lx10[p0][j]; double _lx32 = mesh.Lx32[p0][j];
-                double _ly01 = mesh.Ly01[p0][j]; double _ly23 = mesh.Ly23[p0][j];
+                double _lx10 = wrapper.Lx10[p0][j]; double _lx32 = wrapper.Lx32[p0][j];
+                double _ly01 = wrapper.Ly01[p0][j]; double _ly23 = wrapper.Ly23[p0][j];
                 //площадь
-                double LS = mesh.S[p0][j];
+                double LS = wrapper.S[p0][j];
                 //сосоедние элементы
-                int Lv1 = mesh.CVolumes[i][(j + 1) % jj + 1];
-                int Lv2 = mesh.CVolumes[i][j + 1];
+                int Lv1 = wrapper.CVolumes[i][(j + 1) % jj + 1];
+                int Lv2 = wrapper.CVolumes[i][j + 1];
                 //вторая точка общей грани
-                int Lp1 = mesh.P1[p0][j];
+                int Lp1 = wrapper.P1[p0][j];
                 //находим значения функций в центрах масс 1ого и 2ого треугольника как средние значения по элементу
-                uint[] Knots1 = mesh.AreaElems[Lv1];
+                uint[] Knots1 = new uint[3];
+                mesh.ElementKnots((uint)Lv1, ref Knots1);
                 uint Lt1 = Knots1[0]; uint Lt2 = Knots1[1]; uint Lt3 = Knots1[2];
                 double LUc1 = (U[Lt1] + U[Lt2] + U[Lt3]) / 3.0;
                 double LVc1 = (V[Lt1] + V[Lt2] + V[Lt3]) / 3.0;
                 double LPc1 = (P[Lt1] + P[Lt2] + P[Lt3]) / 3.0;
                 double LKc1 = (K[Lt1] + K[Lt2] + K[Lt3]) / 3.0;
                 double LWc1 = (W[Lt1] + W[Lt2] + W[Lt3]) / 3.0;
-                uint[] Knots2 = mesh.AreaElems[Lv2];
+                uint[] Knots2 = new uint[3];
+                mesh.ElementKnots((uint)Lv2, ref Knots2);
                 uint Lz1 = Knots2[0]; uint Lz2 = Knots2[1]; uint Lz3 = Knots2[2];
                 double LUc2 = (U[Lz1] + U[Lz2] + U[Lz3]) / 3.0;
                 double LVc2 = (V[Lz1] + V[Lz2] + V[Lz3]) / 3.0;
@@ -3202,16 +3223,16 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 double Ldwdx = ((LWc1 - LWc2) * _ly01 + (W[Lp1] - W[p0]) * _ly23) / Ls2;
                 double Ldwdy = ((LWc1 - LWc2) * _lx10 + (W[Lp1] - W[p0]) * _lx32) / Ls2;
                 //внешняя нормаль к грани КО (контуру КО)
-                double Lnx = mesh.Nx[p0][j]; double Lny = mesh.Ny[p0][j];
+                double Lnx = wrapper.Nx[p0][j]; double Lny = wrapper.Ny[p0][j];
                 ////значение функций в точке пересечения грани КО и основной грани
-                double Lalpha = mesh.Alpha[p0][j];
+                double Lalpha = wrapper.Alpha[p0][j];
                 double LUcr = Lalpha * U[p0] + (1 - Lalpha) * U[Lp1];
                 double LVcr = Lalpha * V[p0] + (1 - Lalpha) * V[Lp1];
                 double LKcr = Lalpha * K[p0] + (1 - Lalpha) * K[Lp1];
                 double LWcr = Lalpha * W[p0] + (1 - Lalpha) * W[Lp1];
                 double LNucrT = Lalpha * nuT[p0] + (1 - Lalpha) * nuT[Lp1];
                 //длина текущего фрагмента внешнего контура КО
-                double LLk = mesh.Lk[p0][j];
+                double LLk = wrapper.Lk[p0][j];
                 //расчет потоков
                 double wx = Params.tau * (LUcr * Ldudx + LVcr * Ldudy + 1.0 / rho_w * Ldpdx + 2.0 / 3.0 * Ldkdx);
                 double wy = Params.tau * (LUcr * Ldvdx + LVcr * Ldvdy + 1.0 / rho_w * Ldpdy + 2.0 / 3.0 * Ldkdy);
@@ -3255,10 +3276,10 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 //RegE[p0] += LregE * LLk;
             }
             //
-            ldudx /= mesh.S0[p0];
-            ldudy /= mesh.S0[p0];
-            ldvdx /= mesh.S0[p0];
-            ldvdy /= mesh.S0[p0];
+            ldudx /= wrapper.S0[p0];
+            ldudy /= wrapper.S0[p0];
+            ldvdx /= wrapper.S0[p0];
+            ldvdy /= wrapper.S0[p0];
             //double tPk = 1.4142135623730950488016887242097 * nuT[p0] * (ldudx * ldudx + (ldvdx + ldudy) * (ldvdx + ldudy) + ldvdy * ldvdy); //- 2.0 / 3.0 * K[p0];
             double tPk = nuT[p0] * (2 * ldudx * ldudx + (ldvdx + ldudy) * (ldvdx + ldudy) + 2 * ldvdy * ldvdy);
             Pk[p0] = tPk;//Math.Min(tPk, 10 * E[p0]);
@@ -3269,8 +3290,8 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
             LLrightK = (Pk[p0] - beta_z * K[p0] * W[p0]);
             LLrightW = alpha * W[p0] / K[p0] * Pk[p0] - beta * W[p0] * W[p0] + rsigma_d / W[p0] * rkwkw;
             //
-            K[p0] = K[p0] + dt / mesh.S0[p0] * LsummK + dt * LLrightK;
-            W[p0] = W[p0] + dt / mesh.S0[p0] * LsummW + dt * LLrightW;
+            K[p0] = K[p0] + dt / wrapper.S0[p0] * LsummK + dt * LLrightK;
+            W[p0] = W[p0] + dt / wrapper.S0[p0] * LsummW + dt * LLrightW;
             double W0 = 7.0 / 8.0 * Math.Sqrt((2 * (ldudx - 1.0 / 3.0 * (ldudx + ldvdy)) * (ldudx - 1.0 / 3.0 * (ldudx + ldvdy)) + (ldvdx + ldudy) * (ldvdx + ldudy) + 2 * (ldvdx - 1.0 / 3.0 * (ldudx + ldvdy)) * (ldvdx - 1.0 / 3.0 * (ldudx + ldvdy))) / beta);
             double W_lim = Math.Max(W[p0], W0);
             nuT[p0] = K[p0] / W_lim;
@@ -3483,14 +3504,14 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                     //и номера его вершин
                     uint[] LKnots = mesh.AreaElems[fe];
                     // нахождение площади треугольника
-                    double LSk = mesh.Sk[fe];
+                    double LSk = wrapper.Sk[fe];
                     // расчитываем геометрию элемента 
-                    double Lb1 = mesh.b1[fe];
-                    double Lb2 = mesh.b2[fe];
-                    double Lb3 = mesh.b3[fe];
-                    double Lc1 = mesh.c1[fe];
-                    double Lc2 = mesh.c2[fe];
-                    double Lc3 = mesh.c3[fe];
+                    double Lb1 = wrapper.b1[fe];
+                    double Lb2 = wrapper.b2[fe];
+                    double Lb3 = wrapper.b3[fe];
+                    double Lc1 = wrapper.c1[fe];
+                    double Lc2 = wrapper.c2[fe];
+                    double Lc3 = wrapper.c3[fe];
                     // расчет локальной матрицы жесткости для диффузионного члена
                     M[0][0] = -LSk * (Lb1 * Lb1 + Lc1 * Lc1);
                     M[0][1] = -LSk * (Lb1 * Lb2 + Lc1 * Lc2);
@@ -3527,14 +3548,14 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                               uint Lm2 = LKnots[1];
                               uint Lm3 = LKnots[2];
                               // нахождение площади треугольника
-                              double LSk = mesh.Sk[fe];
+                              double LSk = wrapper.Sk[fe];
                               // расчитываем геометрию элемента 
-                              double Lb1 = mesh.b1[fe];
-                              double Lb2 = mesh.b2[fe];
-                              double Lb3 = mesh.b3[fe];
-                              double Lc1 = mesh.c1[fe];
-                              double Lc2 = mesh.c2[fe];
-                              double Lc3 = mesh.c3[fe];
+                              double Lb1 = wrapper.b1[fe];
+                              double Lb2 = wrapper.b2[fe];
+                              double Lb3 = wrapper.b3[fe];
+                              double Lc1 = wrapper.c1[fe];
+                              double Lc2 = wrapper.c2[fe];
+                              double Lc3 = wrapper.c3[fe];
                               //
                               double LU1 = U[Lm1]; double LU2 = U[Lm2]; double LU3 = U[Lm3];
                               double LV1 = V[Lm1]; double LV2 = V[Lm2]; double LV3 = V[Lm3];
@@ -3599,10 +3620,10 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         {
             if (CV_WallTau[0] == 0)
             {
-                for (int i = 0; i < mesh.CV_WallKnots.Length; i++)
+                for (int i = 0; i < wrapper.CV_WallKnots.Length; i++)
                 {
-                    int knot = mesh.CV_WallKnots[i][0];
-                    CV_WallTau[i] = WallFunc(knot, mesh.CV_WallKnotsDistance[i]);
+                    int knot = wrapper.CV_WallKnots[i][0];
+                    CV_WallTau[i] = WallFunc(knot, wrapper.CV_WallKnotsDistance[i]);
                 }
             }
             #region Расчет u, v во внутренних узлах без узлов WallKnot
@@ -3615,19 +3636,19 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                     double LsummV = 0;//потоки V скорости
                     double LsummS = 0;//потоки s концентрации
                                       //
-                    int p0 = mesh.CV2[i][0];
-                    int jj = mesh.CV2[i].Length - 1;//количество КО, связанных с данным узлом
+                    int p0 = wrapper.CV2[i][0];
+                    int jj = wrapper.CV2[i].Length - 1;//количество КО, связанных с данным узлом
                     for (int j = 0; j < jj; j++)
                     {
-                        double _lx10 = mesh.Lx10[p0][j]; double _lx32 = mesh.Lx32[p0][j];
-                        double _ly01 = mesh.Ly01[p0][j]; double _ly23 = mesh.Ly23[p0][j];
+                        double _lx10 = wrapper.Lx10[p0][j]; double _lx32 = wrapper.Lx32[p0][j];
+                        double _ly01 = wrapper.Ly01[p0][j]; double _ly23 = wrapper.Ly23[p0][j];
                         //площадь
-                        double LS = mesh.S[p0][j];
+                        double LS = wrapper.S[p0][j];
                         //сосоедние элементы
-                        int Lv1 = mesh.CV2[i][(j + 1) % jj + 1];
-                        int Lv2 = mesh.CV2[i][j + 1];
+                        int Lv1 = wrapper.CV2[i][(j + 1) % jj + 1];
+                        int Lv2 = wrapper.CV2[i][j + 1];
                         //вторая точка общей грани
-                        int Lp1 = mesh.P1[p0][j];
+                        int Lp1 = wrapper.P1[p0][j];
                         //находим значения функций в центрах масс 1ого и 2ого треугольника как средние значения по элементу
                         uint[] Knots1 = mesh.AreaElems[Lv1];
                         uint Lt1 = Knots1[0]; uint Lt2 = Knots1[1]; uint Lt3 = Knots1[2];
@@ -3653,9 +3674,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         double Ldsdy = ((LSc1 - LSc2) * _lx10 + (S[Lp1] - S[p0]) * _lx32) / Ls2;
 
                         //внешняя нормаль к грани КО (контуру КО)
-                        double Lnx = mesh.Nx[p0][j]; double Lny = mesh.Ny[p0][j];
+                        double Lnx = wrapper.Nx[p0][j]; double Lny = wrapper.Ny[p0][j];
                         ////значение функций в точке пересечения грани КО и основной грани
-                        double Lalpha = mesh.Alpha[p0][j];
+                        double Lalpha = wrapper.Alpha[p0][j];
                         double LUcr = Lalpha * U[p0] + (1 - Lalpha) * U[Lp1];
                         double LVcr = Lalpha * V[p0] + (1 - Lalpha) * V[Lp1];
                         double LPcr = Lalpha * P[p0] + (1 - Lalpha) * P[Lp1];
@@ -3664,7 +3685,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         double LKcr = Lalpha * K[p0] + (1 - Lalpha) * K[Lp1];
                         double LEcr = Lalpha * E[p0] + (1 - Lalpha) * E[Lp1];
                         //длина текущего фрагмента внешнего контура КО
-                        double LLk = mesh.Lk[p0][j];
+                        double LLk = wrapper.Lk[p0][j];
                         //
                         //
                         double LKc1 = (K[Lt1] + K[Lt2] + K[Lt3]) / 3.0;
@@ -3699,9 +3720,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         LsummS += (LconvS + LdiffS + LregS) * LLk;
                     }
                     //
-                    U[p0] = U[p0] + dt / mesh.S0[p0] * LsummU;
-                    V[p0] = V[p0] + dt / mesh.S0[p0] * LsummV;
-                    S[p0] = S[p0] + dt / mesh.S0[p0] * LsummS;
+                    U[p0] = U[p0] + dt / wrapper.S0[p0] * LsummU;
+                    V[p0] = V[p0] + dt / wrapper.S0[p0] * LsummV;
+                    S[p0] = S[p0] + dt / wrapper.S0[p0] * LsummS;
                     //
                     if (double.IsNaN(U[p0]))
                     {
@@ -3722,19 +3743,19 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                     double LsummV = 0;//потоки V скорости
                     double LsummS = 0;//потоки s концентрации
                                       //
-                    int p0 = mesh.CV_WallKnots[i][0];
-                    int jj = mesh.CV_WallKnots[i].Length - 1; // количество КО, связанных с данным узлом
+                    int p0 = wrapper.CV_WallKnots[i][0];
+                    int jj = wrapper.CV_WallKnots[i].Length - 1; // количество КО, связанных с данным узлом
                     for (int j = 0; j < jj; j++)
                     {
-                        double _lx10 = mesh.Lx10[p0][j]; double _lx32 = mesh.Lx32[p0][j];
-                        double _ly01 = mesh.Ly01[p0][j]; double _ly23 = mesh.Ly23[p0][j];
+                        double _lx10 = wrapper.Lx10[p0][j]; double _lx32 = wrapper.Lx32[p0][j];
+                        double _ly01 = wrapper.Ly01[p0][j]; double _ly23 = wrapper.Ly23[p0][j];
                         //площадь
-                        double LS = mesh.S[p0][j];
+                        double LS = wrapper.S[p0][j];
                         //сосоедние элементы
-                        int Lv1 = mesh.CV_WallKnots[i][(j + 1) % jj + 1];
-                        int Lv2 = mesh.CV_WallKnots[i][j + 1];
+                        int Lv1 = wrapper.CV_WallKnots[i][(j + 1) % jj + 1];
+                        int Lv2 = wrapper.CV_WallKnots[i][j + 1];
                         //вторая точка общей грани
-                        int Lp1 = mesh.P1[p0][j];
+                        int Lp1 = wrapper.P1[p0][j];
                         //находим значения функций в центрах масс 1ого и 2ого треугольника как средние значения по элементу
                         uint[] Knots1 = mesh.AreaElems[Lv1];
                         uint Lt1 = Knots1[0]; uint Lt2 = Knots1[1]; uint Lt3 = Knots1[2];
@@ -3759,9 +3780,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         double Ldsdx = ((LSc1 - LSc2) * _ly01 + (S[Lp1] - S[p0]) * _ly23) / Ls2;
                         double Ldsdy = ((LSc1 - LSc2) * _lx10 + (S[Lp1] - S[p0]) * _lx32) / Ls2;
                         //внешняя нормаль к грани КО (контуру КО)
-                        double Lnx = mesh.Nx[p0][j]; double Lny = mesh.Ny[p0][j];
+                        double Lnx = wrapper.Nx[p0][j]; double Lny = wrapper.Ny[p0][j];
                         ////значение функций в точке пересечения грани КО и основной грани
-                        double Lalpha = mesh.Alpha[p0][j];
+                        double Lalpha = wrapper.Alpha[p0][j];
                         double LUcr = Lalpha * U[p0] + (1 - Lalpha) * U[Lp1];
                         double LVcr = Lalpha * V[p0] + (1 - Lalpha) * V[Lp1];
                         double LPcr = Lalpha * P[p0] + (1 - Lalpha) * P[Lp1];
@@ -3777,7 +3798,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         //
                         //
                         //длина текущего фрагмента внешнего контура КО
-                        double LLk = mesh.Lk[p0][j];
+                        double LLk = wrapper.Lk[p0][j];
                         //расчет потоков
                         double LpressU = -1.0 / rho_w * LPcr * Lnx;
                         double LconvU = -LUcr * LUcr * Lnx - (LUcr * LVcr) * Lny;
@@ -3817,9 +3838,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         LsummS += (LconvS + LdiffS + LregS) * LLk;
                     }
                     //
-                    U[p0] = U[p0] + dt / mesh.S0[p0] * LsummU;
-                    V[p0] = V[p0] + dt / mesh.S0[p0] * LsummV;
-                    S[p0] = S[p0] + dt / mesh.S0[p0] * LsummS;
+                    U[p0] = U[p0] + dt / wrapper.S0[p0] * LsummU;
+                    V[p0] = V[p0] + dt / wrapper.S0[p0] * LsummV;
+                    S[p0] = S[p0] + dt / wrapper.S0[p0] * LsummS;
                     //
                     if (double.IsNaN(U[p0]))
                     {
@@ -3885,21 +3906,21 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         {
             int knot = 0;
             double u_tau = 0;
-            for (int i = 0; i < mesh.CV_WallKnots.Length; i++)
+            for (int i = 0; i < wrapper.CV_WallKnots.Length; i++)
             {
-                knot = mesh.CV_WallKnots[i][0];
+                knot = wrapper.CV_WallKnots[i][0];
                 u_tau = Math.Sqrt(Math.Abs(CV_WallTau[i] / rho_w));
-                W[knot] = u_tau / (cm14 * cm14 * kappa * mesh.CV_WallKnotsDistance[i]);
+                W[knot] = u_tau / (cm14 * cm14 * kappa * wrapper.CV_WallKnotsDistance[i]);
                 K[knot] = u_tau * u_tau / cm14 / cm14;
             }
         }
         void Wilcox1988Boundary()
         {
             int knot = 0;
-            for (int i = 0; i < mesh.CV_WallKnots.Length; i++)
+            for (int i = 0; i < wrapper.CV_WallKnots.Length; i++)
             {
-                knot = mesh.CV_WallKnots[i][0];
-                W[knot] = 6.0 * nuT[knot] / beta / mesh.CV_WallKnotsDistance[i] / mesh.CV_WallKnotsDistance[i];
+                knot = wrapper.CV_WallKnots[i][0];
+                W[knot] = 6.0 * nuT[knot] / beta / wrapper.CV_WallKnotsDistance[i] / wrapper.CV_WallKnotsDistance[i];
             }
         }
         double ks = 0.68 * 0.00016;
@@ -3907,11 +3928,11 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         {
             int p = -1;
             //
-            for (int i = 0; i < mesh.CV_WallKnots.Length; i++)
+            for (int i = 0; i < wrapper.CV_WallKnots.Length; i++)
             {
-                int knot_p = mesh.CV_WallKnots[i][0];
+                int knot_p = wrapper.CV_WallKnots[i][0];
                 double kp = K[knot_p];
-                double Dy = mesh.CV_WallKnotsDistance[i];
+                double Dy = wrapper.CV_WallKnotsDistance[i];
                 double Du = U[knot_p];
                 // По Волкову
                 double Re = rho_w * cm14 * Math.Sqrt(Math.Abs(kp)) * Dy / mu;
@@ -4136,7 +4157,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         {
             double[] tau = new double[CountKnots];
             if (OrdPart_CV == null)
-                OrdPart_CV = Partitioner.Create(0, mesh.CVolumes.Length);
+                OrdPart_CV = Partitioner.Create(0, wrapper.CVolumes.Length);
             //
             #region Расчет Tau во всех узлах по КО
             // По МКО находим касательное напряжение во внутренних узлах
@@ -4150,27 +4171,27 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         {
                             double LsummTau = 0;//потоки касательного напряжения
                             //
-                            int p0 = mesh.CVolumes[i][0];
-                            int jj = mesh.CVolumes[i].Length - 1;//количество КО, связанных с данным узлом
+                            int p0 = wrapper.CVolumes[i][0];
+                            int jj = wrapper.CVolumes[i].Length - 1;//количество КО, связанных с данным узлом
                             for (int j = 0; j < jj; j++)
                             {
                                 //вторая точка общей грани
-                                int Lp1 = mesh.P1[p0][j];
+                                int Lp1 = wrapper.P1[p0][j];
                                 //внешняя нормаль к грани КО (контуру КО)
-                                double Lnx = mesh.Nx[p0][j]; double Lny = mesh.Ny[p0][j];
+                                double Lnx = wrapper.Nx[p0][j]; double Lny = wrapper.Ny[p0][j];
                                 ////значение функций в точке пересечения грани КО и основной грани
-                                double Lalpha = mesh.Alpha[p0][j];
+                                double Lalpha = wrapper.Alpha[p0][j];
                                 double LUcr = Lalpha * U[p0] + (1 - Lalpha) * U[Lp1];
                                 double LVcr = Lalpha * V[p0] + (1 - Lalpha) * V[Lp1];
                                 //длина текущего фрагмента внешнего контура КО
-                                double LLk = mesh.Lk[p0][j];
+                                double LLk = wrapper.Lk[p0][j];
                                 //расчет потоков
                                 double LTau = LUcr * Lny + LVcr * Lnx;
                                 //
                                 LsummTau += LTau * LLk;
                             }
                             //
-                            tau[p0] = nuT[p0] * rho_w / mesh.S0[p0] * LsummTau; // * 2
+                            tau[p0] = nuT[p0] * rho_w / wrapper.S0[p0] * LsummTau; // * 2
                             //
                             if (double.IsNaN(tau[p0]))
                             {
@@ -4245,15 +4266,15 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 if (IndexMethod == 2)
                 {
                     //компоненты тензора напряжений
-                    double[] Tx1 = new double[mesh.BTriangles.Length];
-                    double[] Tx2 = new double[mesh.BTriangles.Length];
-                    double[] Ty1 = new double[mesh.BTriangles.Length];
-                    double[] Ty2 = new double[mesh.BTriangles.Length];
+                    double[] Tx1 = new double[wrapper.BTriangles.Length];
+                    double[] Tx2 = new double[wrapper.BTriangles.Length];
+                    double[] Ty1 = new double[wrapper.BTriangles.Length];
+                    double[] Ty2 = new double[wrapper.BTriangles.Length];
                     //
-                    double[] tau_mid = new double[mesh.BTriangles.Length];
+                    double[] tau_mid = new double[wrapper.BTriangles.Length];
                     //double e1x = 1, e1y = 0, e2x = 0, e2y = 1;//проекции
                     //
-                    OrderablePartitioner<Tuple<int, int>> OrdPartitioner_Tau = Partitioner.Create(0, mesh.BTriangles.Length);
+                    OrderablePartitioner<Tuple<int, int>> OrdPartitioner_Tau = Partitioner.Create(0, wrapper.BTriangles.Length);
                     Parallel.ForEach(OrdPartitioner_Tau,
                            (range, loopState) =>
                            {
@@ -4264,7 +4285,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                    double[] xL = new double[3];
                                    double[] yL = new double[3];
                                    //
-                                   int LcurV = mesh.BTriangles[i];
+                                   uint LcurV = wrapper.BTriangles[i];
                                    uint[] Knots = mesh.AreaElems[LcurV];
                                    //
                                    uint Lnum1 = Knots[0];
@@ -4274,7 +4295,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                    xL[0] = X[Lnum1]; xL[1] = X[Lnum2]; xL[2] = X[Lnum3];
                                    yL[0] = Y[Lnum1]; yL[1] = Y[Lnum2]; yL[2] = Y[Lnum3];
                                    // нахождение площади треугольника
-                                   double LS = mesh.Sk[LcurV];
+                                   double LS = wrapper.Sk[LcurV];
                                    // скорости в вершинах треугольника
                                    double LU1 = U[Lnum1];
                                    double LU2 = U[Lnum2];
@@ -4302,10 +4323,10 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                     //double[] Tau_all = Aproximate(tau_mid, mesh.CBottom, mesh.BTriangles);
 
                     //вычисление тензора напряжений по сглаженной методике
-                    double[] Tx1_all = Aproximate(Tx1, mesh.CBottom, mesh.BTriangles);
-                    double[] Tx2_all = Aproximate(Tx2, mesh.CBottom, mesh.BTriangles);
-                    double[] Ty1_all = Aproximate(Ty1, mesh.CBottom, mesh.BTriangles);
-                    double[] Ty2_all = Aproximate(Ty2, mesh.CBottom, mesh.BTriangles);
+                    double[] Tx1_all = Aproximate(Tx1, wrapper.CBottom, wrapper.BTriangles);
+                    double[] Tx2_all = Aproximate(Tx2, wrapper.CBottom, wrapper.BTriangles);
+                    double[] Ty1_all = Aproximate(Ty1, wrapper.CBottom, wrapper.BTriangles);
+                    double[] Ty2_all = Aproximate(Ty2, wrapper.CBottom, wrapper.BTriangles);
                     //подготовка приграничных значений tau между граничными точками и координат для сплайна
                     int count = mesh.BottomKnots.Length;
                     BTau = new double[count];
@@ -4317,9 +4338,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                     for (int i = 0; i < mesh.BottomKnots.Length; i++)
                     {
                         cKnot = mesh.BottomKnots[i];
-                        for (int j = 0; j < mesh.CBottom.Length; j++)
+                        for (int j = 0; j < wrapper.CBottom.Length; j++)
                         {
-                            if (cKnot == mesh.CBottom[j])
+                            if (cKnot == wrapper.CBottom[j])
                             {
                                 if (i != 0)
                                 {
@@ -4373,15 +4394,15 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                     }
                     BTau[count - 1] = BTau[count - 2];
                     /////
-                    Tx1 = new double[mesh.TTriangles.Length];
-                    Tx2 = new double[mesh.TTriangles.Length];
-                    Ty1 = new double[mesh.TTriangles.Length];
-                    Ty2 = new double[mesh.TTriangles.Length];
+                    Tx1 = new double[wrapper.TTrianglesKnots.Length];
+                    Tx2 = new double[wrapper.TTrianglesKnots.Length];
+                    Ty1 = new double[wrapper.TTrianglesKnots.Length];
+                    Ty2 = new double[wrapper.TTrianglesKnots.Length];
                     //
-                    tau_mid = new double[mesh.TTriangles.Length];
+                    tau_mid = new double[wrapper.TTrianglesKnots.Length];
                     //double e1x = 1, e1y = 0, e2x = 0, e2y = 1;//проекции
                     //
-                    OrdPartitioner_Tau = Partitioner.Create(0, mesh.TTriangles.Length);
+                    OrdPartitioner_Tau = Partitioner.Create(0, wrapper.TTrianglesKnots.Length);
                     Parallel.ForEach(OrdPartitioner_Tau,
                            (range, loopState) =>
                            {
@@ -4392,7 +4413,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                    double[] xL = new double[3];
                                    double[] yL = new double[3];
                                    //
-                                   int LcurV = mesh.TTriangles[i];
+                                   uint LcurV = wrapper.TTriangles[i];
                                    uint[] Knots = mesh.AreaElems[LcurV];
                                    //
                                    uint Lnum1 = Knots[0];
@@ -4402,7 +4423,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                    xL[0] = X[Lnum1]; xL[1] = X[Lnum2]; xL[2] = X[Lnum3];
                                    yL[0] = Y[Lnum1]; yL[1] = Y[Lnum2]; yL[2] = Y[Lnum3];
                                    // нахождение площади треугольника
-                                   double LS = mesh.Sk[LcurV];
+                                   double LS = wrapper.Sk[LcurV];
                                    // скорости в вершинах треугольника
                                    double LU1 = U[Lnum1];
                                    double LU2 = U[Lnum2];
@@ -4430,10 +4451,10 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                     //double[] Tau_all = Aproximate(tau_mid, mesh.CBottom, mesh.BTriangles);
 
                     //вычисление тензора напряжений по сглаженной методике
-                    Tx1_all = Aproximate(Tx1, mesh.CTop, mesh.TTriangles);
-                    Tx2_all = Aproximate(Tx2, mesh.CTop, mesh.TTriangles);
-                    Ty1_all = Aproximate(Ty1, mesh.CTop, mesh.TTriangles);
-                    Ty2_all = Aproximate(Ty2, mesh.CTop, mesh.TTriangles);
+                    Tx1_all = Aproximate(Tx1, wrapper.CTop, wrapper.TTriangles);
+                    Tx2_all = Aproximate(Tx2, wrapper.CTop, wrapper.TTriangles);
+                    Ty1_all = Aproximate(Ty1, wrapper.CTop, wrapper.TTriangles);
+                    Ty2_all = Aproximate(Ty2, wrapper.CTop, wrapper.TTriangles);
                     //подготовка приграничных значений tau между граничными точками и координат для сплайна
                     count = mesh.TopKnots.Length;
                     TTau = new double[count];
@@ -4445,9 +4466,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                     for (int i = 0; i < mesh.TopKnots.Length; i++)
                     {
                         cKnot = mesh.TopKnots[i];
-                        for (int j = 0; j < mesh.CTop.Length; j++)
+                        for (int j = 0; j < wrapper.CTop.Length; j++)
                         {
-                            if (cKnot == mesh.CTop[j])
+                            if (cKnot == wrapper.CTop[j])
                             {
                                 if (i != 0)
                                 {
@@ -4503,9 +4524,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 if (IndexMethod == 0) //!!!-- 1 ый порядок точности, для Tau в целых и полуцелых узлах надо использовать через сплайн!
                 {
                     //
-                    double[] tau_mid = new double[mesh.BTriangles.Length];
+                    double[] tau_mid = new double[wrapper.BTriangles.Length];
                     //
-                    OrderablePartitioner<Tuple<int, int>> OrdPartitioner_Tau = Partitioner.Create(0, mesh.BTriangles.Length);
+                    OrderablePartitioner<Tuple<int, int>> OrdPartitioner_Tau = Partitioner.Create(0, wrapper.BTriangles.Length);
                     Parallel.ForEach(OrdPartitioner_Tau,
                            (range, loopState) =>
                            {
@@ -4516,7 +4537,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                    double[] xL = new double[3];
                                    double[] yL = new double[3];
                                    //
-                                   int LcurV = mesh.BTriangles[i];
+                                   uint LcurV = wrapper.BTriangles[i];
                                    uint[] Knots = mesh.AreaElems[LcurV];
                                    //
                                    uint Lnum1 = Knots[0];
@@ -4526,7 +4547,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                    xL[0] = X[Lnum1]; xL[1] = X[Lnum2]; xL[2] = X[Lnum3];
                                    yL[0] = Y[Lnum1]; yL[1] = Y[Lnum2]; yL[2] = Y[Lnum3];
                                    // нахождение площади треугольника
-                                   double LS = mesh.Sk[LcurV];
+                                   double LS = wrapper.Sk[LcurV];
                                    // скорости в вершинах треугольника
                                    double LU1 = U[Lnum1];
                                    double LU2 = U[Lnum2];
@@ -4536,8 +4557,8 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                    double LV2 = V[Lnum2];
                                    double LV3 = V[Lnum3];
                                    // касательный вектор (обход против часовой стрелки)
-                                   double Lsx = mesh.Sx[i];
-                                   double Lsy = mesh.Sy[i];
+                                   double Lsx = wrapper.Sx[i];
+                                   double Lsy = wrapper.Sy[i];
                                    // нормаль (направлена во внутрь КО)
                                    double Lnx = -Lsy;
                                    double Lny = Lsx;
@@ -4563,7 +4584,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                            });
 
                     // Вычисление tau в узлах сетки по сглаженной методике вычисления 
-                    double[] Tau_all = Aproximate(tau_mid, mesh.CBottom, mesh.BTriangles);
+                    double[] Tau_all = Aproximate(tau_mid, wrapper.CBottom, wrapper.BTriangles);
                     //
                     //подготовка приграничных значений tau между граничными точками и координат для сплайна
                     int count = mesh.BottomKnots.Length;
@@ -4574,9 +4595,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                     for (int i = 0; i < mesh.BottomKnots.Length; i++)
                     {
                         cKnot = mesh.BottomKnots[i];
-                        for (int j = 0; j < mesh.CBottom.Length; j++)
+                        for (int j = 0; j < wrapper.CBottom.Length; j++)
                         {
-                            if (cKnot == mesh.CBottom[j])
+                            if (cKnot == wrapper.CBottom[j])
                             {
 
                                 BTau[i] = Tau_all[j];
@@ -4662,7 +4683,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                            //
                                            int Triangle = mesh.GetTriangle(PointsNorm[j].x, PointsNorm[j].y);
                                            //
-                                           double s05 = 1.0f / 2.0f / mesh.Sk[Triangle];
+                                           double s05 = 1.0f / 2.0f / wrapper.Sk[Triangle];
                                            uint[] Knots = mesh.AreaElems[Triangle];
                                            double x1 = X[Knots[0]]; double x2 = X[Knots[1]]; double x3 = X[Knots[2]];
                                            double y1 = Y[Knots[0]]; double y2 = Y[Knots[1]]; double y3 = Y[Knots[2]];
@@ -4695,7 +4716,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                                break;
                                            }
                                            //
-                                           double s05 = 1.0f / 2.0f / mesh.Sk[Triangle];
+                                           double s05 = 1.0f / 2.0f / wrapper.Sk[Triangle];
                                            uint[] Knots = mesh.AreaElems[Triangle];
                                            double x1 = X[Knots[0]]; double x2 = X[Knots[1]]; double x3 = X[Knots[2]];
                                            double y1 = Y[Knots[0]]; double y2 = Y[Knots[1]]; double y3 = Y[Knots[2]];
@@ -4750,15 +4771,15 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
             {
                 int count = mesh.BottomKnots.Length;
                 //
-                double[] Tx1 = new double[mesh.BTriangles.Length];
-                double[] Tx2 = new double[mesh.BTriangles.Length];
-                double[] Ty1 = new double[mesh.BTriangles.Length];
-                double[] Ty2 = new double[mesh.BTriangles.Length];
+                double[] Tx1 = new double[wrapper.BTriangles.Length];
+                double[] Tx2 = new double[wrapper.BTriangles.Length];
+                double[] Ty1 = new double[wrapper.BTriangles.Length];
+                double[] Ty2 = new double[wrapper.BTriangles.Length];
                 //
-                double[] tau_mid = new double[mesh.BTriangles.Length];
+                double[] tau_mid = new double[wrapper.BTriangles.Length];
                 //double e1x = 1, e1y = 0, e2x = 0, e2y = 1;//проекции
                 //
-                OrderablePartitioner<Tuple<int, int>> OrdPartitioner_Tau = Partitioner.Create(0, mesh.BTriangles.Length);
+                OrderablePartitioner<Tuple<int, int>> OrdPartitioner_Tau = Partitioner.Create(0, wrapper.BTriangles.Length);
                 Parallel.ForEach(OrdPartitioner_Tau,
                         (range, loopState) =>
                         {
@@ -4769,7 +4790,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                 double[] xL = new double[3];
                                 double[] yL = new double[3];
                                 //
-                                int LcurV = mesh.BTriangles[i];
+                                uint LcurV = wrapper.BTriangles[i];
                                 uint[] Knots = mesh.AreaElems[LcurV];
                                 //
                                 uint Lnum1 = Knots[0];
@@ -4779,7 +4800,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                 xL[0] = X[Lnum1]; xL[1] = X[Lnum2]; xL[2] = X[Lnum3];
                                 yL[0] = Y[Lnum1]; yL[1] = Y[Lnum2]; yL[2] = Y[Lnum3];
                                 // нахождение площади треугольника
-                                double LS = mesh.Sk[LcurV];
+                                double LS = wrapper.Sk[LcurV];
                                 // скорости в вершинах треугольника
                                 double LU1 = U[Lnum1];
                                 double LU2 = U[Lnum2];
@@ -4807,10 +4828,10 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 //double[] Tau_all = Aproximate(tau_mid, mesh.CBottom, mesh.BTriangles);
 
                 //вычисление тензора напряжений по сглаженной методике
-                double[] Tx1_all = Aproximate(Tx1, mesh.CBottom, mesh.BTriangles);
-                double[] Tx2_all = Aproximate(Tx2, mesh.CBottom, mesh.BTriangles);
-                double[] Ty1_all = Aproximate(Ty1, mesh.CBottom, mesh.BTriangles);
-                double[] Ty2_all = Aproximate(Ty2, mesh.CBottom, mesh.BTriangles);
+                double[] Tx1_all = Aproximate(Tx1, wrapper.CBottom, wrapper.BTriangles);
+                double[] Tx2_all = Aproximate(Tx2, wrapper.CBottom, wrapper.BTriangles);
+                double[] Ty1_all = Aproximate(Ty1, wrapper.CBottom, wrapper.BTriangles);
+                double[] Ty2_all = Aproximate(Ty2, wrapper.CBottom, wrapper.BTriangles);
                 //подготовка приграничных значений tau между граничными точками и координат для сплайна
 
                 int cKnot = mesh.BottomKnots[0];
@@ -4819,9 +4840,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 for (int i = 0; i < mesh.BottomKnots.Length; i++)
                 {
                     cKnot = mesh.BottomKnots[i];
-                    for (int j = 0; j < mesh.CBottom.Length; j++)
+                    for (int j = 0; j < wrapper.CBottom.Length; j++)
                     {
-                        if (cKnot == mesh.CBottom[j])
+                        if (cKnot == wrapper.CBottom[j])
                         {
                             if (i != 0)
                             {
@@ -5036,19 +5057,19 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 //
                 int width = 4;
                 //
-                int CVLength = mesh.CV2.Length + mesh.CV_WallKnots.Length;
+                int CVLength = wrapper.CV2.Length + wrapper.CV_WallKnots.Length;
                 int[] Num = new int[CVLength + 1]; // хранит как плотной упаковке номера узлов КО и его соседних узлов
                 int ch = 0;
-                for (int i = 0; i < mesh.CV2.Length; i++)
+                for (int i = 0; i < wrapper.CV2.Length; i++)
                 {
                     Num[i] = ch;
-                    ch += mesh.CV2[i].Length;
+                    ch += wrapper.CV2[i].Length;
                 }
                 //
-                for (int i = 0; i < mesh.CV_WallKnots.Length; i++)
+                for (int i = 0; i < wrapper.CV_WallKnots.Length; i++)
                 {
-                    Num[mesh.CV2.Length + i] = ch;
-                    ch += mesh.CV_WallKnots[i].Length;
+                    Num[wrapper.CV2.Length + i] = ch;
+                    ch += wrapper.CV_WallKnots[i].Length;
                 }
                 Num[CVLength] = ch;
                 // перевод массивов во float и в одномерный вид
@@ -5066,58 +5087,58 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 float[] OS0 = new float[CountKnots];
                 //
                 ch = 0;
-                for (int i = 0; i < mesh.CV2.Length; i++)
+                for (int i = 0; i < wrapper.CV2.Length; i++)
                 {
-                    int jj = mesh.CV2[i].Length;
-                    int p0 = mesh.CV2[i][0];
+                    int jj = wrapper.CV2[i].Length;
+                    int p0 = wrapper.CV2[i][0];
                     //
                     for (int j = 0; j < jj; j++)
                     {
-                        OCV[ch] = mesh.CV2[i][j];
-                        OP1[ch] = mesh.P1[p0][j];
-                        OSS[ch] = (float)mesh.S[p0][j];
-                        OLx10[ch] = (float)mesh.Lx10[p0][j];
-                        OLx32[ch] = (float)mesh.Lx32[p0][j];
-                        OLy01[ch] = (float)mesh.Ly01[p0][j];
-                        OLy23[ch] = (float)mesh.Ly23[p0][j];
-                        ONx[ch] = (float)mesh.Nx[p0][j];
-                        ONy[ch] = (float)mesh.Ny[p0][j];
-                        OAlpha[ch] = (float)mesh.Alpha[p0][j];
-                        OLk[ch] = (float)mesh.Lk[p0][j];
+                        OCV[ch] = wrapper.CV2[i][j];
+                        OP1[ch] = wrapper.P1[p0][j];
+                        OSS[ch] = (float)wrapper.S[p0][j];
+                        OLx10[ch] = (float)wrapper.Lx10[p0][j];
+                        OLx32[ch] = (float)wrapper.Lx32[p0][j];
+                        OLy01[ch] = (float)wrapper.Ly01[p0][j];
+                        OLy23[ch] = (float)wrapper.Ly23[p0][j];
+                        ONx[ch] = (float)wrapper.Nx[p0][j];
+                        ONy[ch] = (float)wrapper.Ny[p0][j];
+                        OAlpha[ch] = (float)wrapper.Alpha[p0][j];
+                        OLk[ch] = (float)wrapper.Lk[p0][j];
                         ch++;
                     }
                     //
-                    OS0[p0] = (float)mesh.S0[p0];
+                    OS0[p0] = (float)wrapper.S0[p0];
                 }
                 //
-                float[] OCV_Tau = new float[mesh.CV_WallKnots.Length];
-                float[] OCV_WallKnotsDistance = new float[mesh.CV_WallKnots.Length];
+                float[] OCV_Tau = new float[wrapper.CV_WallKnots.Length];
+                float[] OCV_WallKnotsDistance = new float[wrapper.CV_WallKnots.Length];
                 //
-                for (int i = 0; i < mesh.CV_WallKnots.Length; i++)
+                for (int i = 0; i < wrapper.CV_WallKnots.Length; i++)
                 {
-                    int jj = mesh.CV_WallKnots[i].Length;
-                    int p0 = mesh.CV_WallKnots[i][0];
+                    int jj = wrapper.CV_WallKnots[i].Length;
+                    int p0 = wrapper.CV_WallKnots[i][0];
                     //
                     for (int j = 0; j < jj; j++)
                     {
-                        OCV[ch] = mesh.CV_WallKnots[i][j];
-                        OP1[ch] = mesh.P1[p0][j];
-                        OSS[ch] = (float)mesh.S[p0][j];
-                        OLx10[ch] = (float)mesh.Lx10[p0][j];
-                        OLx32[ch] = (float)mesh.Lx32[p0][j];
-                        OLy01[ch] = (float)mesh.Ly01[p0][j];
-                        OLy23[ch] = (float)mesh.Ly23[p0][j];
-                        ONx[ch] = (float)mesh.Nx[p0][j];
-                        ONy[ch] = (float)mesh.Ny[p0][j];
-                        OAlpha[ch] = (float)mesh.Alpha[p0][j];
-                        OLk[ch] = (float)mesh.Lk[p0][j];
+                        OCV[ch] = wrapper.CV_WallKnots[i][j];
+                        OP1[ch] = wrapper.P1[p0][j];
+                        OSS[ch] = (float)wrapper.S[p0][j];
+                        OLx10[ch] = (float)wrapper.Lx10[p0][j];
+                        OLx32[ch] = (float)wrapper.Lx32[p0][j];
+                        OLy01[ch] = (float)wrapper.Ly01[p0][j];
+                        OLy23[ch] = (float)wrapper.Ly23[p0][j];
+                        ONx[ch] = (float)wrapper.Nx[p0][j];
+                        ONy[ch] = (float)wrapper.Ny[p0][j];
+                        OAlpha[ch] = (float)wrapper.Alpha[p0][j];
+                        OLk[ch] = (float)wrapper.Lk[p0][j];
                         ch++;
                     }
                     //
-                    OS0[p0] = (float)mesh.S0[p0];
+                    OS0[p0] = (float)wrapper.S0[p0];
                     //
                     OCV_Tau[i] = (float)CV_WallTau[i];
-                    OCV_WallKnotsDistance[i] = (float)mesh.CV_WallKnotsDistance[i];
+                    OCV_WallKnotsDistance[i] = (float)wrapper.CV_WallKnotsDistance[i];
                 }
                 //
                 ch = 0;
@@ -5158,7 +5179,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                       });
                 //
                 #region Расчет на OpenCL
-                if (mesh.CVolumes.Length / width > 2147483647)
+                if (wrapper.CVolumes.Length / width > 2147483647)
                     width *= 2;
                 //
                 //д.б. < 3 999 ГБайта
@@ -5221,8 +5242,8 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 ComputeBuffer<float> Os = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.CopyHostPointer, OS);
                 ComputeBuffer<float> Opk = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.CopyHostPointer, OPk);
                 // установка буферов в kernel
-                kernelUV.SetValueArgument<int>(0, mesh.CV2.Length);
-                kernelUV.SetValueArgument<int>(1, mesh.CV_WallKnots.Length);
+                kernelUV.SetValueArgument<int>(0, wrapper.CV2.Length);
+                kernelUV.SetValueArgument<int>(1, wrapper.CV_WallKnots.Length);
                 kernelUV.SetValueArgument<int>(2, width);
                 kernelUV.SetValueArgument<float>(3, Convert.ToSingle(dt));
                 kernelUV.SetValueArgument<float>(4, Convert.ToSingle(rho_w));
@@ -5253,8 +5274,8 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 kernelUV.SetMemoryArgument(29, Ov);
                 kernelUV.SetMemoryArgument(30, Os);
                 //
-                kernelKE.SetValueArgument<int>(0, mesh.CV2.Length);
-                kernelKE.SetValueArgument<int>(1, mesh.CV_WallKnots.Length);
+                kernelKE.SetValueArgument<int>(0, wrapper.CV2.Length);
+                kernelKE.SetValueArgument<int>(1, wrapper.CV_WallKnots.Length);
                 kernelKE.SetValueArgument<int>(2, width);
                 kernelKE.SetValueArgument<float>(3, Convert.ToSingle(dt));
                 kernelKE.SetValueArgument<float>(4, Convert.ToSingle(rho_w));
@@ -5292,9 +5313,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 //
                 //массив, определяющий размерность расчета (количество потоков в определенном измерении)
                 long[] globalSize = new long[1];
-                if (mesh.CVolumes.Length / width * width != mesh.CVolumes.Length)
+                if (wrapper.CVolumes.Length / width * width != wrapper.CVolumes.Length)
                     width = 2;
-                globalSize[0] = (long)Math.Round((double)(mesh.CV2.Length / width), MidpointRounding.AwayFromZero);// тк в Diff.cl width=4
+                globalSize[0] = (long)Math.Round((double)(wrapper.CV2.Length / width), MidpointRounding.AwayFromZero);// тк в Diff.cl width=4
                 //
                 for (iteration = beginIter; iteration < Params.iter; iteration++)
                 {
@@ -5314,13 +5335,13 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                     }
                     //
                     // вычисление напряжения по пристеночной функции
-                    for (int i = 0; i < mesh.CV_WallKnots.Length; i++)
+                    for (int i = 0; i < wrapper.CV_WallKnots.Length; i++)
                     {
-                        knot = mesh.CV_WallKnots[i][0];
+                        knot = wrapper.CV_WallKnots[i][0];
                         //CV_WallTau[i] = WallFuncSharpPlus(knot, mesh.CV_WallKnotsDistance[i]);//шероховатая стенка по Луцкому, установка по Снегиреву
                         //CV_WallTau[i] = WallFuncSnegirev(knot, mesh.CV_WallKnotsDistance[i]);// гладкая стенка по Снегиреву
                         //CV_WallTau[i] = WallFuncPlus(knot, mesh.CV_WallKnotsDistance[i]);// гладкая стенка по Луцкому
-                        OCV_Tau[i] = (float)WallFunc(knot, mesh.CV_WallKnotsDistance[i]);// гладкая стенка по Волкову упрощ
+                        OCV_Tau[i] = (float)WallFunc(knot, wrapper.CV_WallKnotsDistance[i]);// гладкая стенка по Волкову упрощ
                         //CV_WallTau[i] = WallFuncNewton(knot, mesh.CV_WallKnotsDistance[i]);// гладкая стенка по Волкову Ньютон
                     }
 
@@ -5331,8 +5352,8 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                     if (false)
                     {
                         #region Код ядра на CPU
-                        int CV2Length = mesh.CV2.Length;
-                        int CVWLength = mesh.CV_WallKnots.Length;
+                        int CV2Length = wrapper.CV2.Length;
+                        int CVWLength = wrapper.CV_WallKnots.Length;
                         int p0, jj, Lv1, Lv2, Lp1, Lt1, Lt2, Lt3, Lz1, Lz2, Lz3;
                         float lx10, lx32, ly01, ly23, LS, LUc1, LVc1, LPc1, LSc1, LKc1, LUc2, LVc2, LPc2, LSc2, LKc2, Ls2, Ldudx, Ldudy, Ldvdx, Ldvdy, Ldpdx, Ldpdy, Ldsdx, Ldsdy, Ldkdx, Ldkdy, Lnx, Lny, Lalpha,
                             LUcr, LVcr, LPcr, LScr, LLk, LNucr, LKcr, LEcr, LpressU, LconvU, LdiffU, LregU1, LregU2, LregU, LpressV, LconvV, LdiffV, LregV1, LregV2, LregV, LconvS, LdiffS, LregS, wx, wy, wk;
@@ -5532,13 +5553,13 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         }
                         //
                         //ГУ справа - снос
-                        for (int i = 0; i < mesh.CountRight - 2; i++)
+                        for (int i = 0; i < mesh.CountRight; i++)
                         {
-                            knot = mesh.CPRight[i][0];
+                            knot = mesh.RightKnots[i];
                             //
-                            OU[knot] = OU[knot - mesh.CountLeft];
-                            OV[knot] = OV[knot - mesh.CountLeft];
-                            OS[knot] = OS[knot - mesh.CountLeft];
+                            OU[knot] = OU[knot - mesh.CountRight];
+                            OV[knot] = OV[knot - mesh.CountRight];
+                            OS[knot] = OS[knot - mesh.CountRight];
                         }
                         //если задача со свободной поверхностью
                         if (Params.surf_flag == true)
@@ -5732,15 +5753,15 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                                         LsummK += (LconvK + LdiffK + LregK) * LLk;
                                     }
                                     //
-                                    y_p_plus = (float)(cm14 * Math.Sqrt(OK[p0]) * mesh.CV_WallKnotsDistance[k] / nu_mol);
+                                    y_p_plus = (float)(cm14 * Math.Sqrt(OK[p0]) * wrapper.CV_WallKnotsDistance[k] / nu_mol);
                                     OPk[p0] = 0;
                                     if (y_p_plus > y_p_0)
                                     {
-                                        OE[p0] = (float)(cm14 * cm14 * cm14 * OK[p0] * Math.Sqrt(OK[p0]) / kappa / mesh.CV_WallKnotsDistance[k]);
+                                        OE[p0] = (float)(cm14 * cm14 * cm14 * OK[p0] * Math.Sqrt(OK[p0]) / kappa / wrapper.CV_WallKnotsDistance[k]);
                                         OPk[p0] = OE[p0];
                                     }
                                     else
-                                        OE[p0] = (float)(2.0 * OK[p0] / mesh.CV_WallKnotsDistance[k] / mesh.CV_WallKnotsDistance[k] * nu_mol);
+                                        OE[p0] = (float)(2.0 * OK[p0] / wrapper.CV_WallKnotsDistance[k] / wrapper.CV_WallKnotsDistance[k] * nu_mol);
                                     //
                                     LrightK = (OPk[p0] - OE[p0]);
                                     //
