@@ -42,7 +42,7 @@ namespace NPRiverLib.APRiver1XD.BEM_River2D
         /// </summary>
         public RiverBEMCircle1XD(RiverBEMParams1XD p) : base(p)
         {
-            name = "поток идеальной жидкости под трубой (МГЭ) 2XD";
+            name = "Поток идеальной жидкости под трубой (МГЭ) 2XD";
             Version = "RiverBEMCircle1XD 24.07.2024";
         }
         /// <summary>

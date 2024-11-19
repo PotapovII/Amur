@@ -133,7 +133,7 @@ namespace NPRiverLib.APRiver_1XD.River1DSW
         // ---------------------------------------------------------------------------------
         public RiverSWE_KGD1XD(RiverSWEParams1XD p) : base(p)
         {
-            name = "задача мелкой воды 1D,(КГД от Елизаровой Т.Г.)";
+            name = "Задача мелкой воды 1D,(КГД от Елизаровой Т.Г.)";
             Version = "RiverSWE_KGD1XD 20.07.2024";
         }
 

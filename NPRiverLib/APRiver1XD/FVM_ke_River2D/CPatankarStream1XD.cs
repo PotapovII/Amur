@@ -45,7 +45,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         /// <param name="ps"></param>
         public CPatankarStream1XD(PatankarParams1XD ps) : base(ps)
         {
-            name = "турбулентнй поток 2D (k-e) rho_w = const";
+            name = "Турбулентнй поток 2D (k-e) rho_w = const";
             Version = "River2D FVM ke 16.02.2024";
         }
         /// <summary>
@@ -68,6 +68,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         /// </summary>
         public override void OnInitialData()
         {
+            if (Nx == 0 || Ny == 0) return;
             // Коэффициенты реласксации модели
             relax[0] = 0.5f; // u-velocity
             relax[1] = 0.5f; // v-velocity
@@ -78,6 +79,13 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             relax[6] = 0.5f; // gamma
             double bx;
             // Инициализация данных
+            for (int jj = 0; jj < Ny; jj++)
+                if (y[0][jj] > Params.LV)
+                {
+                    jdxTube = jj; break;
+                }
+            topTube = 0;
+            bottomTube = 0;
             for (int i = 0; i < Nx; i++)
             {
                 for (int j = 0; j < Ny; j++)
@@ -104,6 +112,9 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                             }
                             if (Params.Wen2 + Params.Wen1 > bx && Params.Wen1 <= bx)
                             {
+                                if (bottomTube == 0)
+                                    bottomTube = i - 1;
+
                                 v[i][j] = Params.V2_inlet;    // скорость набегания
                                 if (Params.TemperOrConcentration == true)
                                     t[i][j] = 0;
@@ -112,6 +123,8 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                             }
                             if (Params.Wen3 + Params.Wen2 + Params.Wen1 > bx && Params.Wen2 + Params.Wen1 <= bx)
                             {
+                                if (topTube == 0)
+                                    topTube = i;
                                 v[i][j] = Params.V3_inlet;    // скорость набегания
                                 if (Params.TemperOrConcentration == true)
                                     t[i][j] = 0;
@@ -133,6 +146,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                     mut[i][j] = nu0 + nu;
                 }
             }
+            //LOG.Print("V", v);
             // ---------------------------------------------------------
             // граничные условия для функции тока
             // вся область и дно
@@ -177,6 +191,18 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             for (int i = 1; i < imax; i++)
                 flowin += rho_w * v[i][1] * Hx[i][0];
         }
+
+        protected void BCV(int i, int j, double V)
+        {
+            Ae[i][j] = 0;
+            Aw[i][j] = 0;
+            As[i][j] = 0;
+            An[i][j] = 0;
+            Ap[i][j] = 1;
+            sc[i][j] = V;
+        }
+
+
         /// <summary>
         /// Расчет дискретных аналогов и их коэффициентов
         /// </summary>
@@ -190,6 +216,29 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             double fx, fy;
             double rel;
             double vol;
+            if (Params.shiftV == true && Params.LV > 0 && jdxTube == 0)
+            {
+                for (int jj = 0; jj < y[0].Length; jj++)
+                if (y[0][jj] > Params.LV)
+                {
+                    jdxTube = jj; break;
+                }
+                for (i = 0; i < Nx; i++)
+                {
+                    double bx = x[i][jdxTube];
+                    if (Params.Wen2 + Params.Wen1 > bx && Params.Wen1 <= bx)
+                    {
+                        if (bottomTube == 0)
+                            bottomTube = i - 1;
+                    }
+                    if ((Params.Wen3 + Params.Wen2 + Params.Wen1 > bx && Params.Wen2 + Params.Wen1 <= bx))
+                    {
+                        if (topTube == 0)
+                            topTube = i;
+                        break;
+                    }
+                }
+            }
             // граничные условия
             // BCGetU0();
             // Вилка по решаемым задачам
@@ -304,7 +353,30 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                                 sc[i][j] += (p[i - 1][j] - p[i][j]) * Hy[i][j];
                             }
                         }
-                        // Решение САУ для получения скорости u
+                        if (Params.shiftV == true && Params.LV > 0)
+                        {
+                            for (i = 0; i < Nx; i++)
+                            {
+                                double bx = x[i][jdxTube];
+                                //if (Params.Wen1 >= bx && Params.V1_inlet > 0)
+                                //    BCV(i, jdxTube, Params.V1_inlet); // основная скорость
+                                if ((Params.Wen2 + Params.Wen1 > bx && Params.Wen1 <= bx) && Params.V2_inlet > 0)
+                                {
+                                    for (int jj = 0; jj <= jdxTube; jj++)
+                                        BCV(i, jj, 0);   // скорость набегания
+                                }
+                                //if ((Params.Wen3 + Params.Wen2 + Params.Wen1 > bx && Params.Wen2 + Params.Wen1 <= bx))
+                                //{
+                                //    if(Params.V3_inlet > 0)
+                                //        BCV(i, jdxTube, Params.V3_inlet); ;    // скорость набегания
+                                //}
+                            }
+                            for (int jj = 0; jj <= jdxTube; jj++)
+                                BCV(bottomTube, jj, 0);   // скорость набегания
+                            for (int jj = 0; jj <= jdxTube; jj++)
+                                BCV(topTube, jj, 0);   // скорость набегания
+                        }
+                        //Решение САУ для получения скорости u
                         bcU.SetBCondition(ist, jst, imax, jmax, ref u);
                         bool result = pSolve.OnTDMASolver(ist, jst, imax, jmax, Ae, Aw, An, As, Ap, sc, bcU, ref u, 1);
                         if (result == false)
@@ -427,10 +499,33 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                         // Решение САУ для получения скорости v
                         bcV.SetBCondition(ist, jst, imax, jmax, ref v);
                         // Console.WriteLine("V ist = {0:F4}, jst = {1:F4}, imax = {2:F4}, jmax = {3:F4},", ist, jst, imax, jmax);
-                        pSolve.OnTDMASolver(ist, jst, imax, jmax, Ae, Aw, An, As, Ap, sc, bcV, ref v, 1);
-
-                        ERR.INF_NAN("v / River2DFV_rho_const.CalkCoef()", v);
                         
+                        if(Params.shiftV == true && Params.LV > 0)
+                        {
+                            for (i = 0; i < Nx; i++)
+                            {
+                                double bx = x[i][jdxTube];
+                                //if (Params.Wen1 >= bx && Params.V1_inlet > 0)
+                                //    BCV(i, jdxTube, Params.V1_inlet); // основная скорость
+                                if ((Params.Wen2 + Params.Wen1 > bx && Params.Wen1 <= bx) && Params.V2_inlet > 0)
+                                {
+                                    for (int jj = 0; jj <= jdxTube; jj++)
+                                        BCV(i, jj, Params.V2_inlet);   // скорость набегания
+                                }
+                                //if ((Params.Wen3 + Params.Wen2 + Params.Wen1 > bx && Params.Wen2 + Params.Wen1 <= bx))
+                                //{
+                                //    if(Params.V3_inlet > 0)
+                                //        BCV(i, jdxTube, Params.V3_inlet); ;    // скорость набегания
+                                //}
+                            }
+                            for (int jj = 0; jj <= jdxTube; jj++)
+                                BCV(bottomTube, jj, 0);   // скорость набегания
+                            for (int jj = 0; jj <= jdxTube; jj++)
+                                BCV(topTube, jj, 0);   // скорость набегания
+                        }
+
+                        pSolve.OnTDMASolver(ist, jst, imax, jmax, Ae, Aw, An, As, Ap, sc, bcV, ref v, 1);
+                        ERR.INF_NAN("v / River2DFV_rho_const.CalkCoef()", v);
                     }
                     #endregion
                     break;
@@ -764,6 +859,42 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                         //    pSolve.OnTDMASolver(ist, jst, imax, jmax, Ae, Aw, An, As, Ap, sc, bcF[IndexTask], ref F[IndexTask], 1);
                         //    ERR.INF_NAN(F[IndexTask]);
                         //}
+
+                        if (IndexTask == 4 || IndexTask == 5)
+                        {
+                            //tke[i][j] = (double)(Coeff_k * v[i][j] * v[i][j]);
+                            //dis[i][j] = (double)(Coeff_e * tke[i][j] * tke[i][j]);
+
+
+                            if (Params.shiftV == true && Params.LV > 0)
+                            {
+                                for (i = 0; i < Nx; i++)
+                                {
+                                    double bx = x[i][jdxTube];
+                                    //if (Params.Wen1 >= bx && Params.V1_inlet > 0)
+                                    //    BCV(i, jdxTube, Params.V1_inlet); // основная скорость
+                                    if ((Params.Wen2 + Params.Wen1 > bx && Params.Wen1 <= bx) && Params.V2_inlet > 0)
+                                    {
+                                        if (IndexTask == 4)
+                                            for (int jj = 0; jj <= jdxTube; jj++)
+                                                BCV(i, jj, Coeff_k * v[i][jj] * v[i][jj]);   
+                                        else
+                                            for (int jj = 0; jj <= jdxTube; jj++)
+                                                BCV(i, jj, Coeff_e * tke[i][jj] * tke[i][jj]);   
+                                    }
+                                    //if ((Params.Wen3 + Params.Wen2 + Params.Wen1 > bx && Params.Wen2 + Params.Wen1 <= bx))
+                                    //{
+                                    //    if(Params.V3_inlet > 0)
+                                    //        BCV(i, jdxTube, Params.V3_inlet); ;    // скорость набегания
+                                    //}
+                                }
+                                //for (int jj = 0; jj <= jdxTube; jj++)
+                                //    BCV(bottomTube, jj, 0);   // скорость набегания
+                                //for (int jj = 0; jj <= jdxTube; jj++)
+                                //    BCV(topTube, jj, 0);   // скорость набегания
+                            }
+                        }
+
                         bcF[IndexTask].SetBCondition(ist, jst, imax, jmax, ref F[IndexTask]);
                         pSolve.OnTDMASolver(ist, jst, imax, jmax, Ae, Aw, An, As, Ap, sc, bcF[IndexTask], ref F[IndexTask], 1);
                         

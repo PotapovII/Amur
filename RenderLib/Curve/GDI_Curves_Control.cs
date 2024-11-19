@@ -652,8 +652,7 @@ namespace RenderLib
                             }
                             int T = (int)isp.time;
                             string ext = Path.GetExtension(saveFileDialog1.FileName);
-                            //string filename = saveFileDialog1.FileName + "_" + curve.Name;
-                            string filename = T.ToString() + "#" + curve.Name + ext;
+                            string filename = ci.ToString() + "#" + curve.Name + ext;
                             wraiter.Write(curve, filename);
                         }
                     }

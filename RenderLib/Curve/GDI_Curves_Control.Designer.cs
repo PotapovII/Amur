@@ -131,7 +131,6 @@ namespace RenderLib
             this.label1 = new System.Windows.Forms.Label();
             this.btLoad = new System.Windows.Forms.Button();
             this.btShow = new System.Windows.Forms.Button();
-            this.renderControl1 = new RenderLib.CPRenderControlCurves();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tSSL_Curves = new System.Windows.Forms.ToolStripStatusLabel();
@@ -152,6 +151,7 @@ namespace RenderLib
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.saveFileDialog2 = new System.Windows.Forms.SaveFileDialog();
+            this.renderControl1 = new RenderLib.CPRenderControlCurves();
             this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -296,8 +296,6 @@ namespace RenderLib
             // cbCompress
             // 
             this.cbCompress.AutoSize = true;
-            this.cbCompress.Checked = true;
-            this.cbCompress.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbCompress.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cbCompress.Location = new System.Drawing.Point(183, 52);
             this.cbCompress.Name = "cbCompress";
@@ -1375,22 +1373,6 @@ namespace RenderLib
             this.btShow.UseVisualStyleBackColor = true;
             this.btShow.Click += new System.EventHandler(this.btShow_Click);
             // 
-            // renderControl1
-            // 
-            this.renderControl1.BackColor = System.Drawing.Color.White;
-            colorScheme1.Background = System.Drawing.Color.White;
-            colorScheme1.FontReper = new System.Drawing.Font("Arial", 8F);
-            colorScheme1.FontValue = null;
-            colorScheme1.formatTextReper = ((uint)(2u));
-            this.renderControl1.colorScheme = colorScheme1;
-            this.renderControl1.Location = new System.Drawing.Point(228, 3);
-            this.renderControl1.Name = "renderControl1";
-            this.renderControl1.renderOptions = renderOptionsCurves1;
-            this.renderControl1.Size = new System.Drawing.Size(25, 23);
-            this.renderControl1.TabIndex = 0;
-            this.renderControl1.Text = "renderControl1";
-            this.renderControl1.Visible = false;
-            // 
             // statusStrip1
             // 
             this.statusStrip1.Font = new System.Drawing.Font("Segoe UI", 12F);
@@ -1502,6 +1484,22 @@ namespace RenderLib
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // renderControl1
+            // 
+            this.renderControl1.BackColor = System.Drawing.Color.White;
+            colorScheme1.Background = System.Drawing.Color.White;
+            colorScheme1.FontReper = new System.Drawing.Font("Arial", 8F);
+            colorScheme1.FontValue = null;
+            colorScheme1.formatTextReper = ((uint)(2u));
+            this.renderControl1.colorScheme = colorScheme1;
+            this.renderControl1.Location = new System.Drawing.Point(228, 3);
+            this.renderControl1.Name = "renderControl1";
+            this.renderControl1.renderOptions = renderOptionsCurves1;
+            this.renderControl1.Size = new System.Drawing.Size(25, 23);
+            this.renderControl1.TabIndex = 0;
+            this.renderControl1.Text = "renderControl1";
+            this.renderControl1.Visible = false;
             // 
             // GDI_Curves_Control
             // 

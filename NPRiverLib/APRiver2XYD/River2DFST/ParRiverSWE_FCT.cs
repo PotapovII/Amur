@@ -26,7 +26,7 @@ namespace NPRiverLib.APRiver2XYD.River2DFST
     {
         public ParRiverSWE_FCT(SWE_FCTParams_2XYD p) : base(p)
         {
-            name = "задача мелкой воды 2XYD FCT Parallel";
+            name = "Задача мелкой воды 2XYD FCT Parallel";
             Version = "ParRiverSWE_FCT 25.07.2024";
         }
         public ParRiverSWE_FCT() : this(new SWE_FCTParams_2XYD ())

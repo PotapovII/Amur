@@ -60,6 +60,8 @@ namespace CPForm
             this.smOpeStepTask = new System.Windows.Forms.ToolStripMenuItem();
             this.smStopTask = new System.Windows.Forms.ToolStripMenuItem();
             this.smOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_ClearSavePoint = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.smDelSaveTask = new System.Windows.Forms.ToolStripMenuItem();
             this.smDelSavePointTask = new System.Windows.Forms.ToolStripMenuItem();
             this.smObaut = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,8 +69,7 @@ namespace CPForm
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             this.gdI_Control1 = new RenderLib.GDI_Control();
-            this.tsm_ClearSavePoint = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.smDelSaveCurve = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.tcParam.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -346,11 +347,24 @@ namespace CPForm
             this.tsm_ClearSavePoint,
             this.toolStripMenuItem3,
             this.smDelSaveTask,
+            this.smDelSaveCurve,
             this.smDelSavePointTask,
             this.smObaut});
             this.smOptions.Name = "smOptions";
             this.smOptions.Size = new System.Drawing.Size(71, 25);
             this.smOptions.Text = "Опции";
+            // 
+            // tsm_ClearSavePoint
+            // 
+            this.tsm_ClearSavePoint.Name = "tsm_ClearSavePoint";
+            this.tsm_ClearSavePoint.Size = new System.Drawing.Size(359, 26);
+            this.tsm_ClearSavePoint.Text = "Очистка истории точек сохранения";
+            this.tsm_ClearSavePoint.Click += new System.EventHandler(this.tsm_ClearSavePoint_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(356, 6);
             // 
             // smDelSaveTask
             // 
@@ -393,17 +407,12 @@ namespace CPForm
             this.gdI_Control1.Size = new System.Drawing.Size(914, 768);
             this.gdI_Control1.TabIndex = 174;
             // 
-            // tsm_ClearSavePoint
+            // smDelSaveCurve
             // 
-            this.tsm_ClearSavePoint.Name = "tsm_ClearSavePoint";
-            this.tsm_ClearSavePoint.Size = new System.Drawing.Size(359, 26);
-            this.tsm_ClearSavePoint.Text = "Очистка истории точек сохранения";
-            this.tsm_ClearSavePoint.Click += new System.EventHandler(this.tsm_ClearSavePoint_Click);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(356, 6);
+            this.smDelSaveCurve.Name = "smDelSaveCurve";
+            this.smDelSaveCurve.Size = new System.Drawing.Size(359, 26);
+            this.smDelSaveCurve.Text = "Удалить файлы по расширению .cvs";
+            this.smDelSaveCurve.Click += new System.EventHandler(this.smDelSaveCurve_Click);
             // 
             // TaskForm
             // 
@@ -475,5 +484,6 @@ namespace CPForm
         protected System.Windows.Forms.PropertyGrid pr_Physics;
         private System.Windows.Forms.ToolStripMenuItem tsm_ClearSavePoint;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem smDelSaveCurve;
     }
 }

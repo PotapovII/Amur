@@ -24,6 +24,23 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
     using CommonLib;
     using CommonLib.EConverter;
     /// <summary>
+    /// Геометрия расчетной области
+    /// </summary>
+    [Serializable]
+    public enum TypeGeometryForm
+    {
+        /// <summary>
+        /// Прямоугольная область
+        /// </summary>
+        [Description("Прямоугольная область")]
+        RectangleForm = 0,
+        /// <summary>
+        /// Прямоугольная область с уступом на входе
+        /// </summary>
+        [Description("Уступ на входе")]
+        RectangleStep
+    }
+    /// <summary>
     /// Типы донной формы
     /// </summary>
     [Serializable]
@@ -172,12 +189,12 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         /// </summary>
         [DisplayName("Длина водотока")]
         [Category("Геометрия области")]
-        public double Ly { get { return Len1 + Len2 + Len3; } }
+        public double Ly { get {  return Len1 + Len2 + Len3; } }
         /// <summary>
         /// Длина водотока на 1 участке (вход потока)
         /// </summary>
         [DisplayName("Длина 1 участка")]
-        [Description("Длина водотока на 1 участке (вход потока)")]
+        [Description("Длина водотока на 1 участке")]
         [Category("Геометрия области")]
         public double Len1 { get; set; }
         /// <summary>
@@ -194,6 +211,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         [Description("Длина водотока на 3 участке (истечение)")]
         [Category("Геометрия области")]
         public double Len3 { get; set; }
+
         /// <summary>
         /// Глубина водотока 1 придонный участок
         /// </summary>
@@ -296,6 +314,22 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         [TypeConverter(typeof(MyEnumConverter))] 
         public TypeMAlgebra typeMAlgebra { get; set; }
         /// <summary>
+        /// Растояние струи от стенки
+        /// </summary>
+        [DisplayName("Смешение струи от стенки")]
+        [Description("Растояние струи от стенки")]
+        [Category("Опции")]
+        public double LV { get; set; }
+        /// <summary>
+        /// Смешение струи от стенки
+        /// </summary>
+        [TypeConverter(typeof(BooleanTypeConverterYN))]
+        [DisplayName("Смешение струи от стенки")]
+        [Description("Смешение струи от стенки")]
+        [Category("Опции")]
+        public bool shiftV { get; set; }
+
+        /// <summary>
         /// Максимальное количество итераций по нелинейности
         /// </summary>
         [DisplayName("Кол-во итер.по нелин.")]
@@ -374,6 +408,11 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         [Description("Расчет напряжений на всем дне или только на размываемом участке")]
         [Category("Опции")]
         public bool AllBedForce { get; set; }
+
+
+
+
+
         /// <summary>
         /// получение ссылки на объект
         /// </summary>
@@ -403,6 +442,8 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             V1_inlet = 1.21;
             V2_inlet = 0.0;
             V3_inlet = 0.0;
+
+
 
             if (indexExp > -1 && indexExp < AA.Length)
             {
@@ -559,7 +600,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                 //H = 8*b;
                 b = 0.0118;
                 db = (0.0515 - b / 2) / b;
-                U0 = 0.65;
+                U0 = 0.61;
                 H = 20 * b;
             }
             else if (typeStreamTask == TypeStreamTask.OffsetStreamJet0_1_5h)
@@ -577,13 +618,13 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                 // Ali
                 b = 0.0118;
                 db = (0.0515 - b / 2) / b;
-                U0 = 0.65;
+                U0 = 0.61;
                 H = 20 * b;
             }
             else if (typeStreamTask == TypeStreamTask.OffsetStreamJet0_8h)
             {
                 db = 8.101;
-                U0 = 0.642;
+                U0 = 0.61;
                 b = 0.01015;
                 H = 0.90;
             }
@@ -653,7 +694,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             /// конструктор
             /// </summary>
             /// <param name="ps"></param>
-            public PatankarParams1XD(PatankarParams1XD ps)
+        public PatankarParams1XD(PatankarParams1XD ps)
         {
             Set(ps);
         }
@@ -685,6 +726,9 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         /// </summary>
         public PatankarParams1XD()
         {
+            LV = 0.2;
+            shiftV = true;
+
             TaskIndex = 0;
             //typeBedForm = TypeBedForm.PlaneForm;
             typeBedForm = TypeBedForm.PlaneForm;
@@ -740,6 +784,9 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             MaxCoordIters = ps.MaxCoordIters;
             typeBedForm = ps.typeBedForm;
             CountBoundaryMove = ps.CountBoundaryMove;
+
+            LV = ps.LV;
+            shiftV = ps.shiftV;
 
             Len1 = ps.Len1;
             Len2 = ps.Len2;
@@ -804,7 +851,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             TemperOrConcentration = LOG.GetBool(file.ReadLine());
             if (TemperOrConcentration == true)
                 flatTermoTask = false;
-
+             
             typeBedForm = (TypeBedForm) LOG.GetInt(file.ReadLine());
             CountBoundaryMove = LOG.GetInt(file.ReadLine());
             bottomWaveAmplitude = LOG.GetDouble(file.ReadLine());
@@ -821,6 +868,8 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             bedLoadTauPlus = LOG.GetBool(file.ReadLine());
             streamInsBoundary = LOG.GetBool(file.ReadLine());
             velocityInsBoundary = LOG.GetBool(file.ReadLine());
+            shiftV = LOG.GetBool(file.ReadLine());
+            LV = LOG.GetDouble(file.ReadLine());
         }
         public virtual void Save(StreamReader file)
         {

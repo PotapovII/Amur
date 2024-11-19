@@ -93,7 +93,7 @@ namespace NPRiverLib.APRiver2XYD.River2DFST
         #endregion
         public RiverSWE_FCT_2XYD(SWE_FCTParams_2XYD p) : base(p)
         {
-            name = "задача мелкой воды 2XYD FCT ";
+            name = "Задача мелкой воды 2XYD FCT ";
             Version = "RiverSWE_FCT_2XYD 25.07.2024";
         }
         public RiverSWE_FCT_2XYD() : this(new SWE_FCTParams_2XYD ())

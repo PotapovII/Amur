@@ -26,7 +26,7 @@
         /// <param name="H"></param>
         /// <param name="Q"></param>
         /// <param name="P"></param>
-        void InitQMesh(bool topBottom, bool leftRight, IDigFunction function = null);
+        void InitQMesh(double L, double H, bool topBottom, bool leftRight, IDigFunction function = null);
         /// <summary>
         /// Определения индексов сетки для центральной области с деформируемым дном
         /// </summary>
@@ -42,7 +42,7 @@
         /// Получение новой границы области и формирование сетки
         /// </summary>
         /// <param name="Zeta"></param>
-        void CreateNewQMesh(double[] Zeta, IFunction1D botton, int NCoord = 100);
+        void CreateNewQMesh(double[] Zeta, int bottomTube, int jdxTube, IFunction1D botton, int NCoord = 100);
         /// <summary>
         /// Вычисление координат узлов сетки методом Зейделя
         /// </summary>
@@ -56,5 +56,36 @@
         /// движение узлов вдоль донной поверхности
         /// </summary>
         double MoveBotton(IFunction1D botton = null);
+        /// <summary>
+        /// Конверсия генерируемой сетки в формат КО сетки
+        /// </summary>
+        /// <param name="xu">координаты узловых точек для скорости u</param>
+        /// <param name="yv">координаты узловых точек для скорости v</param>
+        /// <param name="x">центры ячеек сетки по X</param>
+        /// <param name="y">центры ячеек сетки по Y</param>
+        /// <param name="Hx">расстояние между узловыми точеками для скорости u</param>
+        /// <param name="Hy">расстояние между узловыми точеками для скорости v</param>
+        /// <param name="Dx">расстояние между центрами контрольных объемов по х</param>
+        /// <param name="Dy">расстояние между центрами контрольных объемов по у</param>
+        void ConvertMeshToMesh(ref double[][] xu, ref double[][] yv,
+                                    ref double[][] x, ref double[][] y,
+                                    ref double[][] Hx, ref double[][] Hy,
+                                    ref double[][] Dx, ref double[][] Dy);
+
+        /// <summary>
+        /// Конверсия генерируемой сетки в формат КО сетки
+        /// </summary>
+        /// <param name="xu">координаты узловых точек для скорости u</param>
+        /// <param name="yv">координаты узловых точек для скорости v</param>
+        /// <param name="x">центры ячеек сетки по X</param>
+        /// <param name="y">центры ячеек сетки по Y</param>
+        /// <param name="Hx">расстояние между узловыми точеками для скорости u</param>
+        /// <param name="Hy">расстояние между узловыми точеками для скорости v</param>
+        /// <param name="Dx">расстояние между центрами контрольных объемов по х</param>
+        /// <param name="Dy">расстояние между центрами контрольных объемов по у</param>
+        void StartGeometryMesh(ref double[][] xu, ref double[][] yv,
+                               ref double[][] x, ref double[][] y,
+                               ref double[][] Hx, ref double[][] Hy,
+                                ref double[][] Dx, ref double[][] Dy);
     }
 }

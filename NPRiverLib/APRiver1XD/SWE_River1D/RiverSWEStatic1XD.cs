@@ -34,7 +34,7 @@ namespace NPRiverLib.APRiver_1XD.River1DSW
         }
         public RiverSWEStatic1XD(RiverSWEParams1XD p) :base(p)
         {
-            name = "задача мелкой воды 1D,(обратная прогонка)";
+            name = "Задача мелкой воды 1D,(обратная прогонка)";
             Version = "RiverSWEStatic1XD 20.07.2024";
         }
         /// <summary>

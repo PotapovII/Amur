@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Mesh\FDMesh\RecMesh\QVectorMesh.cs" />
     <Compile Include="Mesh\Mesh Core.cs" />
+    <Compile Include="Wrappers\KsiWrapper.cs" />
     <Compile Include="_OLD\ATable\Elements.cs" />
     <Compile Include="_OLD\ATable\TablKnot.cs" />
     <Compile Include="_OLD\ATable\IAdressTables.cs" />

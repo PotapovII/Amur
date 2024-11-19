@@ -29,6 +29,8 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
     using NPRiverLib.IO;
     using NPRiverLib.ATask;
     using System.Collections.Generic;
+    using MeshLib.RecMesh;
+    using CommonLib.FDM;
 
     [Serializable]
     public abstract class APatankarRiver1XD : APRiver1XD<PatankarParams1XD>, IRiver
@@ -167,7 +169,20 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         /// <summary>
         /// объект для расчета координт сетки в четырехугольной расчетной области
         /// </summary>
-        public ReverseQMesh qmesh = null;
+        public IQuadMesh qmesh = null;
+        /// <summary>
+        /// Нижния граница стенки струи
+        /// </summary>
+        protected int bottomTube = 0;
+        /// <summary>
+        /// Верхняя граница стенки струи
+        /// </summary>
+        protected int topTube = 0;
+        /// <summary>
+        /// Длина струи
+        /// </summary>
+        protected int jdxTube = 0;
+
         /// <summary>
         /// FlagStartMesh - первая генерация сетки true
         /// </summary>
@@ -278,20 +293,6 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
 
         public APatankarRiver1XD(PatankarParams1XD p) : base(p) { }
 
-
-        /// <summary>
-        /// определение расчетной области задачи
-        /// </summary>
-        /// <returns></returns>
-        /// <summary>
-        /// определение расчетной области задачи
-        /// </summary>
-        /// <returns></returns>
-        //public bool DoWorkDomain()
-        //{
-        //    OnInitialData();
-        //    return true;
-        //}
         #region методы предстартовой подготовки задачи
         /// <summary>
         /// Загрузка задачи иp форматного файла
@@ -411,18 +412,36 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             relax[5] = 0.4f; // dissipation of turb kin energy
             relax[6] = 0.5f; // gamma
 
-            qmesh = new ReverseQMesh(Nx - 1, Ny - 1);
-            qmesh.InitQMesh(Params.Ly, Params.Lx, Q, P, Params.topBottom, Params.leftRight);
+            //qmesh = new ReverseQMesh(Nx - 1, Ny - 1);
+            //qmesh.InitQMesh(Params.Ly, Params.Lx, Q, P, Params.topBottom, Params.leftRight);
+
+
+            //if (Params.GeometryForm == TypeGeometryForm.RectangleForm)
+            //{
+                qmesh = new ReverseQMesh(Nx - 1, Ny - 1);
+                ((ReverseQMesh)qmesh).InitQMesh(Params.Ly, Params.Lx, Q, P, Params.topBottom, Params.leftRight);
+            //}
+            //else
+            //{
+            //    double Q = 0;
+            //    double P = 0;
+            //    qmesh = new QVectorMesh(Params.Len1, Params.Len2, Params.Len3,
+            //                Params.Wen1, Params.Wen2, Params.Wen3, Nx - 1, Ny - 1, Q, P);
+            //}
+
             if (Params.typeBedForm == TypeBedForm.PlaneForm)
             {
                 // прямоугольник с плоским дном
-                OnGridCalculationRectangle();
+                qmesh.StartGeometryMesh(ref xu, ref yv, ref x, ref y,
+                 ref Hx, ref Hy, ref Dx, ref Dy);
+                //OnGridCalculationRectangle();
             }
             else
             {
                 // прямоугольник с профильным дном
                 qmesh.CalkXYI(100 * imax * jmax);
                 ConvertMeshToMesh();
+                //qmesh.ConvertMeshToMesh(ref xu, ref yv, ref x, ref y, ref Hx, ref Hy, ref Dx, ref Dy);
             }
             eTaskReady = ETaskStatus.CreateMesh;
             // граничные условия
@@ -431,6 +450,150 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             InitTask();
             eTaskReady = ETaskStatus.TaskReady;
         }
+        /// <summary>
+        /// Конверсися генерируемой сетки в расчетной области в формат КО сетки
+        /// </summary>
+        public void ConvertMeshToMesh()
+        {
+            try
+            {
+                // массивы координат сетки в
+                // вспомогательной системе координат 
+                //  ^ x |
+                //  |   |
+                //  |   V (i)
+                //  |
+                //  *-----------> x (j)
+                // взятой из старого кода 
+                double[][] xx = ((ReverseQMesh)qmesh).xx;
+                double[][] yy = ((ReverseQMesh)qmesh).yy;
+                int NY = ((ReverseQMesh)qmesh).NX;
+                int NX = ((ReverseQMesh)qmesh).NY;
+                // конвертация сетки
+                #region стенка справа
+
+                // координаты узловых точек для скорости u
+                for (int i = 1; i < NY; i++)
+                    for (int j = 1; j < NX; j++)
+                        xu[i][j] = 0.5 * (yy[i][j] + yy[i][j - 1]);
+
+                // координаты узловых точек для скорости v
+                for (int i = 0; i < NY; i++)
+                    for (int j = 1; j < NX; j++)
+                        yv[i][j] = 0.5 * (xx[i][j] + xx[i][j - 1]);
+
+                for (int i = 1; i < NY; i++)
+                    for (int j = 1; j < NX; j++)
+                    {
+                        x[i][j] = 0.25 * (yy[i - 1][j - 1] + yy[i - 1][j] + yy[i][j - 1] + yy[i][j]);
+                        y[i][j] = 0.25 * (xx[i - 1][j - 1] + xx[i - 1][j] + xx[i][j - 1] + xx[i][j]);
+                    }
+
+                y[0][0] = xx[0][0];
+                y[NY][0] = xx[NY - 1][0];
+                y[0][NX] = xx[0][NX - 1];
+                y[NY][NX] = xx[NY - 1][NX - 1];
+
+                x[0][0] = yy[0][0];
+                x[NY][0] = yy[NY - 1][0];
+                x[0][NX] = yy[0][NX - 1];
+                x[NY][NX] = yy[NY - 1][NX - 1];
+
+                for (int i = 1; i < NY; i++)
+                {
+                    y[i][0] = 0.5 * (xx[i][0] + xx[i - 1][0]);
+                    y[i][NX] = 0.5 * (xx[i][NX - 1] + xx[i - 1][NX - 1]);
+
+                    x[i][0] = 0.5 * (yy[i][0] + yy[i - 1][0]);
+                    x[i][NX] = 0.5 * (yy[i][NX - 1] + yy[i - 1][NX - 1]);
+                }
+
+                for (int j = 1; j < NX; j++)
+                {
+                    y[0][j] = 0.5 * (xx[0][j] + xx[0][j - 1]);
+                    y[NY][j] = 0.5 * (xx[NY - 1][j] + xx[NY - 1][j - 1]);
+
+                    x[0][j] = 0.5 * (yy[0][j] + yy[0][j - 1]);
+                    x[NY][j] = 0.5 * (yy[NY - 1][j] + yy[NY - 1][j - 1]);
+                }
+
+                for (int i = 0; i < x.Length / 2; i++)
+                {
+                    double[] buf = x[i];
+                    x[i] = x[x.Length - 1 - i];
+                    x[x.Length - 1 - i] = buf;
+                }
+
+                // Переворот для у
+                MEM.MReverseOrder(y);
+
+                for (int i = 0; i < imax - 1; i++)
+                {
+                    for (int j = 0; j < jmax; j++)
+                    {
+                        // расстояние между узловыми точеками для скорости u
+                        Hx[i + 1][j] = Math.Sqrt(
+                            (xx[i][j] - xx[i + 1][j]) * (xx[i][j] - xx[i + 1][j]) +
+                            (yy[i][j] - yy[i + 1][j]) * (yy[i][j] - yy[i + 1][j]));
+                    }
+                }
+                // Разворот
+                int Length = Hx.Length - 1;
+                for (int i = 1; i < Length / 2; i++)
+                {
+                    double[] buf = Hx[i];
+                    Hx[i] = Hx[Hx.Length - i];
+                    Hx[Hx.Length - i] = buf;
+                }
+
+                for (int i = 0; i < Nx - 1; i++)
+                {
+                    for (int j = 0; j < jmax - 1; j++)
+                    {
+                        // расстояние между узловыми точеками для скорости v
+                        Hy[i][j + 1] = Math.Sqrt(
+                              (xx[i][j] - xx[i][(j + 1)]) * (xx[i][j] - xx[i][(j + 1)]) +
+                              (yy[i][j] - yy[i][(j + 1)]) * (yy[i][j] - yy[i][(j + 1)]));
+                    }
+                }
+                // Разворот
+                Length = Hy.Length - 1;
+                for (int i = 0; i < Length / 2; i++)
+                {
+                    double[] buf = Hy[i];
+                    Hy[i] = Hy[Hx.Length - i - 2];
+                    Hy[Hx.Length - i - 2] = buf;
+                }
+
+                for (int i = 0; i < imax; i++)
+                {
+                    for (int j = 0; j < jmax + 1; j++)
+                    {
+                        // расстояние между центрами контрольных объемов по х
+                        Dx[i + 1][j] = Math.Sqrt(
+                                 (x[i][j] - x[i + 1][j]) * (x[i][j] - x[i + 1][j]) +
+                                 (y[i][j] - y[i + 1][j]) * (y[i][j] - y[i + 1][j]));
+                    }
+                }
+                for (int i = 0; i < Nx; i++)
+                {
+                    for (int j = 0; j < jmax; j++)
+                    {
+                        // расстояние между центрами контрольных объемов по у
+                        Dy[i][j + 1] = Math.Sqrt(
+                                (x[i][j] - x[i][j + 1]) * (x[i][j] - x[i][j + 1]) +
+                                (y[i][j] - y[i][j + 1]) * (y[i][j] - y[i][j + 1]));
+                    }
+                }
+                #endregion
+                //  OnOutputTest("output_Cos.txt");
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Exception(ex);
+            }
+        }
+
         #endregion
         /// <summary>
         /// Чтение параметров задачи
@@ -524,13 +687,17 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                     {
                         CreateStaticBedForms(ref zeta);
                         // Получение новой границы области и формирование сетки
-                        qmesh.CreateNewQMesh(zeta, ZetaFuntion0, Params.MaxCoordIters);
+                        qmesh.CreateNewQMesh(zeta, 0, 0, ZetaFuntion0, Params.MaxCoordIters);
                         FlagStartMesh = false;
                     }
                     else
-                        qmesh.CreateNewQMesh(zeta, null, Params.MaxCoordIters);
+                    {
+                        qmesh.CreateNewQMesh(zeta, bottomTube, jdxTube, null, Params.MaxCoordIters);
+                    }
                     // конвертация ReverseQMesh в сетку задачи
                     ConvertMeshToMesh();
+                    //qmesh.ConvertMeshToMesh(ref xu, ref yv, ref x, ref y, ref Hx, ref Hy,ref Dx, ref Dy);
+
                     MEM.MemCopy(ref Zeta0, zeta);
                 }
             }
@@ -610,7 +777,9 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                 {
                     if (IndexTask != 3 ||
                         (IndexTask == 3 && Params.flatTermoTask == true) ||
-                        (IndexTask == 3 && Params.TemperOrConcentration == true))
+                        ((IndexTask == 3 && Params.TemperOrConcentration == true) &&
+                        (Erosion == EBedErosion.BedLoadAndSedimentErosion ||
+                         Erosion == EBedErosion.SedimentErosion)))
                         CalkCoef(pSolve, pSolveR, time, IndexTask);
                 }
                 // Коррекция вычисляяемых граничных условий
@@ -636,12 +805,12 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             sp.Add("Поправка давления", data);
 
             GetValue1D(u, ref data);
-            sp.Add("Скорость Ux", data);
+            sp.Add("Скорость Vx", data);
 
             GetValue1D(v, ref data1);
-            sp.Add("Скорость V", data1);
+            sp.Add("Скорость Vy", data1);
 
-            sp.Add("Поле скорости", data, data1);
+            sp.Add("Скорость V", data, data1);
 
             GetValue1D(mut, ref data);
             sp.Add("Вязкость турбулентная", data);
@@ -790,7 +959,8 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             if (_AllBedForce == true)
             {
                 start = 0;
-                end = qmesh.NY - 1;
+                end = y[0].Length - 2;
+                //end = qmesh.NY - 1;
                 MEM.Alloc<double>(end, ref tau);
                 MEM.Alloc<double>(end, ref Yplus);
             }
@@ -847,8 +1017,10 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             k = 0;
             if (_AllBedForce == true)
             {
-                MEM.Alloc<double>(qmesh.NY, ref Pb);
-                for (int j = 0; j < qmesh.NY; j++)
+                //MEM.Alloc<double>(qmesh.NY, ref Pb);
+                //for (int j = 0; j < qmesh.NY; j++)
+                MEM.Alloc<double>(p[0].Length-1, ref Pb);
+                for (int j = 0; j < Pb.Length; j++)
                 {
                     // среднее давление в узле
                     Pb[k] = p[0][j];
@@ -883,15 +1055,18 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             double factor = 1;
             double vmin = 0;
             int i, j;
-            // условия установления для скорости на границе выхода
-            // с подавлением обратных потоков 
-            for (i = 1; i < imax; i++)
+            if (Params.shiftV == false)
             {
-                if (v[i][jmax - 1] < 0)
-                    vmin = Math.Max(vmin, -v[i][jmax - 1]);
+                // условия установления для скорости на границе входа
+                // с подавлением обратных потоков 
+                for (i = 1; i < imax; i++)
+                {
+                    if (v[i][jmax - 1] < 0)
+                        vmin = Math.Max(vmin, -v[i][jmax - 1]);
+                }
+                for (i = 1; i < imax; i++)
+                    v[i][jmax] = (v[i][jmax - 1] + vmin) * factor;
             }
-            for (i = 1; i < imax; i++)
-                v[i][jmax] = (v[i][jmax - 1] + vmin) * factor;
             // подсос потока на входной границе
             if (Params.velocityInsBoundary == true)
             {
@@ -921,14 +1096,23 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                             {
                                 v[i][1] = v[i][2] = 0;
                                 v[i][0] = v[i][2] = 0;
+                                
                                 tke[i][0] = tke[i][2] = 0;
                                 dis[i][0] = dis[i][2] = 0;
                                 mut[i][0] = mut[i][2] = 0;
                             }
                             else
                             {
-                                v[i][1] = Math.Max(0, v[i][2]);
-                                v[i][0] = Math.Max(0, v[i][2]);
+                                if (Params.shiftV == false)
+                                {
+                                    v[i][1] = Math.Max(0, v[i][2]);
+                                    v[i][0] = Math.Max(0, v[i][2]);
+                                }
+                                else
+                                {
+                                    v[i][1] = v[i][2] = 0;
+                                    v[i][0] = v[i][2] = 0;
+                                }
                                 tke[i][0] = tke[i][2];
                                 dis[i][0] = dis[i][2];
                                 mut[i][0] = mut[i][2];
@@ -1079,22 +1263,6 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         }
 
         #region Методы сетки
-        /// <summary>
-        /// Конвертер поля из 2-х мерного в 1-й мерный массив
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        //public double[] GetValue1D(double[][] value)
-        //{
-        //    int NL = value.Length * value[0].Length;
-        //    double[] data = null;
-        //    MEM.Alloc<double>(NL, ref data);
-        //    int co = 0;
-        //    for (int i = 0; i < value.Length; i++)
-        //        for (int j = 0; j < value[0].Length; j++)
-        //            data[co++] = value[i][j];
-        //    return data;
-        //}
         public void GetValue1D(double[][] value, ref double[] data)
         {
             int NL = value.Length * value[0].Length;
@@ -1104,59 +1272,6 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                 for (int j = 0; j < value[0].Length; j++)
                     data[co++] = value[i][j];
         }
-
-        /// <summary>
-        /// Расчет координат сетки задачи в прямоугольнике 
-        /// </summary>
-        public void OnGridCalculationRectangle()
-        {
-            int i, j;
-            double dx = Params.Lx / (imax - 1);
-            for (j = 0; j < Ny; j++)
-            {
-                x[0][j] = xu[1][j] = 0;
-            }
-            for (i = 1; i < imax; i++)
-            {
-                for (j = 0; j < Ny; j++)
-                {
-                    // координаты узловых точек для скорости u
-                    xu[i + 1][j] = xu[i][j] + dx;
-                    // x - координата цетра контрольного объема 
-                    x[i][j] = (xu[i + 1][j] + xu[i][j]) / 2;
-                    // расстояние между центрами контрольных объемов по х
-                    Dx[i][j] = x[i][j] - x[i - 1][j];
-                    // расстояние между узловыми точеками для скорости u
-                    Hx[i][j] = xu[i + 1][j] - xu[i][j];
-                }
-            }
-            for (j = 0; j < Ny; j++)
-            {
-                x[imax][j] = xu[imax][j];
-                Dx[imax][j] = x[imax][j] - x[imax - 1][j];
-            }
-            double dy = Params.Ly / (jmax - 1);
-            for (i = 0; i < Nx; i++)
-            {
-                y[i][0] = yv[i][1] = 0;
-            }
-            for (i = 0; i < Nx; i++)
-            {
-                for (j = 1; j < jmax; j++)
-                {
-                    // координаты узловых точек для скорости v
-                    yv[i][j + 1] = yv[i][j] + dy;
-                    // y - координата цетра контрольного объема
-                    y[i][j] = (yv[i][j + 1] + yv[i][j]) / 2;
-                    // расстояние между центрами контрольных объемов по у
-                    Dy[i][j] = y[i][j] - y[i][j - 1];
-                    // расстояние между узловыми точеками для скорости v
-                    Hy[i][j] = yv[i][j + 1] - yv[i][j];
-                }
-                y[i][jmax] = yv[i][jmax];
-                Dy[i][jmax] = y[i][jmax] - y[i][jmax - 1];
-            }
-        }
         /// <summary>
         /// Получение координат дна zX,zY ? придонных касательных напряжений и давления
         /// </summary>
@@ -1164,9 +1279,9 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         {
             if (_AllBedForce == true)
             {
-                MEM.Alloc<double>(qmesh.NY, ref zX);
-                MEM.Alloc<double>(qmesh.NY, ref zY);
-                for (int j = 0; j < qmesh.NY; j++)
+                MEM.Alloc<double>(y[0].Length, ref zX);
+                MEM.Alloc<double>(y[0].Length, ref zY);
+                for (int j = 0; j < zX.Length; j++)
                 {
                     zX[j] = y[0][j];
                     zY[j] = x[0][j];
@@ -1185,149 +1300,6 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                     zX[j] = y[0][k];
                     zY[j] = x[0][k];
                 }
-            }
-        }
-        /// <summary>
-        /// Конверсися генерируемой сетки в расчетной области в формат КО сетки
-        /// </summary>
-        public void ConvertMeshToMesh()
-        {
-            try
-            {
-                // массивы координат сетки в
-                // вспомогательной системе координат 
-                //  ^ x |
-                //  |   |
-                //  |   V (i)
-                //  |
-                //  *-----------> x (j)
-                // взятой из старого кода 
-                double[][] xx = qmesh.xx;
-                double[][] yy = qmesh.yy;
-                int NY = qmesh.NX;
-                int NX = qmesh.NY;
-                // конвертация сетки
-                #region стенка справа
-
-                // координаты узловых точек для скорости u
-                for (int i = 1; i < NY; i++)
-                    for (int j = 1; j < NX; j++)
-                        xu[i][j] = 0.5 * (yy[i][j] + yy[i][j - 1]);
-
-                // координаты узловых точек для скорости v
-                for (int i = 0; i < NY; i++)
-                    for (int j = 1; j < NX; j++)
-                        yv[i][j] = 0.5 * (xx[i][j] + xx[i][j - 1]);
-
-                for (int i = 1; i < NY; i++)
-                    for (int j = 1; j < NX; j++)
-                    {
-                        x[i][j] = 0.25 * (yy[i - 1][j - 1] + yy[i - 1][j] + yy[i][j - 1] + yy[i][j]);
-                        y[i][j] = 0.25 * (xx[i - 1][j - 1] + xx[i - 1][j] + xx[i][j - 1] + xx[i][j]);
-                    }
-
-                y[0][0] = xx[0][0];
-                y[NY][0] = xx[NY - 1][0];
-                y[0][NX] = xx[0][NX - 1];
-                y[NY][NX] = xx[NY - 1][NX - 1];
-
-                x[0][0] = yy[0][0];
-                x[NY][0] = yy[NY - 1][0];
-                x[0][NX] = yy[0][NX - 1];
-                x[NY][NX] = yy[NY - 1][NX - 1];
-
-                for (int i = 1; i < NY; i++)
-                {
-                    y[i][0] = 0.5 * (xx[i][0] + xx[i - 1][0]);
-                    y[i][NX] = 0.5 * (xx[i][NX - 1] + xx[i - 1][NX - 1]);
-
-                    x[i][0] = 0.5 * (yy[i][0] + yy[i - 1][0]);
-                    x[i][NX] = 0.5 * (yy[i][NX - 1] + yy[i - 1][NX - 1]);
-                }
-
-                for (int j = 1; j < NX; j++)
-                {
-                    y[0][j] = 0.5 * (xx[0][j] + xx[0][j - 1]);
-                    y[NY][j] = 0.5 * (xx[NY - 1][j] + xx[NY - 1][j - 1]);
-
-                    x[0][j] = 0.5 * (yy[0][j] + yy[0][j - 1]);
-                    x[NY][j] = 0.5 * (yy[NY - 1][j] + yy[NY - 1][j - 1]);
-                }
-
-                for (int i = 0; i < x.Length / 2; i++)
-                {
-                    double[] buf = x[i];
-                    x[i] = x[x.Length - 1 - i];
-                    x[x.Length - 1 - i] = buf;
-                }
-
-                // Переворот для у
-                MEM.MReverseOrder(y);
-
-                for (int i = 0; i < imax - 1; i++)
-                {
-                    for (int j = 0; j < jmax; j++)
-                    {
-                        // расстояние между узловыми точеками для скорости u
-                        Hx[i + 1][j] = Math.Sqrt(
-                            (xx[i][j] - xx[i + 1][j]) * (xx[i][j] - xx[i + 1][j]) +
-                            (yy[i][j] - yy[i + 1][j]) * (yy[i][j] - yy[i + 1][j]));
-                    }
-                }
-                // Разворот
-                int Length = Hx.Length - 1;
-                for (int i = 1; i < Length / 2; i++)
-                {
-                    double[] buf = Hx[i];
-                    Hx[i] = Hx[Hx.Length - i];
-                    Hx[Hx.Length - i] = buf;
-                }
-
-                for (int i = 0; i < Nx - 1; i++)
-                {
-                    for (int j = 0; j < jmax - 1; j++)
-                    {
-                        // расстояние между узловыми точеками для скорости v
-                        Hy[i][j + 1] = Math.Sqrt(
-                              (xx[i][j] - xx[i][(j + 1)]) * (xx[i][j] - xx[i][(j + 1)]) +
-                              (yy[i][j] - yy[i][(j + 1)]) * (yy[i][j] - yy[i][(j + 1)]));
-                    }
-                }
-                // Разворот
-                Length = Hy.Length - 1;
-                for (int i = 0; i < Length / 2; i++)
-                {
-                    double[] buf = Hy[i];
-                    Hy[i] = Hy[Hx.Length - i - 2];
-                    Hy[Hx.Length - i - 2] = buf;
-                }
-
-                for (int i = 0; i < imax; i++)
-                {
-                    for (int j = 0; j < jmax + 1; j++)
-                    {
-                        // расстояние между центрами контрольных объемов по х
-                        Dx[i + 1][j] = Math.Sqrt(
-                                 (x[i][j] - x[i + 1][j]) * (x[i][j] - x[i + 1][j]) +
-                                 (y[i][j] - y[i + 1][j]) * (y[i][j] - y[i + 1][j]));
-                    }
-                }
-                for (int i = 0; i < Nx; i++)
-                {
-                    for (int j = 0; j < jmax; j++)
-                    {
-                        // расстояние между центрами контрольных объемов по у
-                        Dy[i][j + 1] = Math.Sqrt(
-                                (x[i][j] - x[i][j + 1]) * (x[i][j] - x[i][j + 1]) +
-                                (y[i][j] - y[i][j + 1]) * (y[i][j] - y[i][j + 1]));
-                    }
-                }
-                #endregion
-                //  OnOutputTest("output_Cos.txt");
-            }
-            catch (Exception ex)
-            {
-                Logger.Instance.Exception(ex);
             }
         }
         /// <summary>
@@ -1400,15 +1372,5 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             return mesh;
         }
         #endregion
-        ///// <summary>
-        ///// Создает список тестовых задач для загрузчика по умолчанию
-        ///// </summary>
-        ///// <returns></returns>
-        //public override List<string> GetTestsName()
-        //{
-        //    List<string> strings = new List<string>();
-        //    strings.Add("Основная задача - тестовая");
-        //    return strings;
-        //}
     }
 }

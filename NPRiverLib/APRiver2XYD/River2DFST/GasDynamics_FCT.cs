@@ -93,7 +93,7 @@ namespace NPRiverLib.APRiver2XYD.River2DFST
         #endregion
         public GasDynamics_FCT(SWE_FCTParams_2XYD p) : base(p)
         {
-            name = "задача газовой динамики 2XYD FCT ";
+            name = "Задача газовой динамики 2XYD FCT ";
             Version = "GasDynamics_FCT 25.07.2024";
         }
         public GasDynamics_FCT() : this(new SWE_FCTParams_2XYD())

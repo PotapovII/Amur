@@ -14,10 +14,10 @@
 //---------------------------------------------------------------------------
 namespace ChannelProcessLib
 {
-    using RiverLib;
     using CommonLib;
-    using RiverLib.River2D;
-    using RiverLib.Patankar;
+       // using RiverLib;
+        //using RiverLib.River2D;
+        //using RiverLib.Patankar;
     using NPRiverLib.APRiver1YD;
 
     using System.Collections.Generic;
@@ -27,6 +27,7 @@ namespace ChannelProcessLib
     using NPRiverLib.APRiver1XD.BEM_River2D;
     using NPRiverLib.APRiver2XYD.River2DFST;
     using NPRiverLib.APRiver1XD.KGD_River2D;
+    using RiverLib;
 
     /// <summary>
     /// Менеджер решателей для задач расчета речного потока
@@ -54,7 +55,7 @@ namespace ChannelProcessLib
             // КГД (КО/KE)- канал - k -е/w модели (симплексы)
             tasks.Add(new KGD_Eliz2024_1XD(new RGDParameters1XD()));
 
-            // tasks.Add(new VPatankarStream1XD()); TODO добавить загрузчик для корректного старта
+            //tasks.Add(new VPatankarStream1XD()); TODO добавить загрузчик для корректного старта
             //tasks.Add(new RiverBEMCircleMeshAdapt1XD(new RiverBEMParams1XD()));
             //tasks.Add(new River2DFV_rho_var());
             //tasks.Add(new River2DFV_rho_const());
@@ -65,24 +66,23 @@ namespace ChannelProcessLib
             #endregion
 
             #region 1YD течение в створе реки
-            tasks.Add(new TriSroSecRiverTask(new RiverStreamParams()));
-            tasks.Add(new VarSroSecRiverTask(new RiverStreamParams()));
-            tasks.Add(new RiverStreamTask(new RiverStreamParams()));
-            tasks.Add(new SrossSectionalRiverTask(new RiverStreamParams()));
-            tasks.Add(new TriSroSecRiverTask_1Y(new RiverStreamParams()));
+                //tasks.Add(new TriSroSecRiverTask(new RiverStreamParams()));
+                //tasks.Add(new VarSroSecRiverTask(new RiverStreamParams()));
+                //tasks.Add(new RiverStreamTask(new RiverStreamParams()));
+                //tasks.Add(new SrossSectionalRiverTask(new RiverStreamParams()));
+                //tasks.Add(new TriSroSecRiverTask_1Y(new RiverStreamParams()));
+
             tasks.Add(new TriSroSecRiverTask1YD());
             tasks.Add(new TriRoseRiverTask1YD());
-            
             // 
+                //tasks.Add(new RiverSectionalQuad(new RiverStreamQuadParams()));
+                tasks.Add(new RiverSectionaChannel(new RiverStreamQuadParams()));
+                //tasks.Add(new RiverSectionaChannelQuad(new RiverStreamQuadParams()));
+                //tasks.Add(new RiverSectionaChannelTrapez(new RiverStreamQuadParams()));
 
-            tasks.Add(new RiverSectionalQuad(new RiverStreamQuadParams()));
-            tasks.Add(new RiverSectionaChannel(new RiverStreamQuadParams()));
-            tasks.Add(new RiverSectionaChannelQuad(new RiverStreamQuadParams()));
-            tasks.Add(new RiverSectionaChannelTrapez(new RiverStreamQuadParams()));
 
-
-            tasks.Add(new RiverSectionalQuad_SV(new RiverStreamQuadParams()));
-            tasks.Add(new RiverSectionalQuad_Phi(new RiverStreamQuadParams()));
+                //tasks.Add(new RiverSectionalQuad_SV(new RiverStreamQuadParams()));
+                //tasks.Add(new RiverSectionalQuad_Phi(new RiverStreamQuadParams()));
 
             #endregion
 
@@ -94,13 +94,13 @@ namespace ChannelProcessLib
             #endregion
 
             #region  прокси
-            tasks.Add(new RiverEmptyX1D(new RiverStreamParams()));
-            tasks.Add(new RiverFunctionX1D(new RiverStreamParams()));
-            tasks.Add(new RiverEmptyY1D(new RiverStreamParams()));
+                //tasks.Add(new RiverEmptyX1D(new RiverStreamParams()));
+                //tasks.Add(new RiverFunctionX1D(new RiverStreamParams()));
+                //tasks.Add(new RiverEmptyY1D(new RiverStreamParams()));
 
-            tasks.Add(new RiverEmptyXY2DQuad(new RiverStreamParams()));
-            tasks.Add(new RiverFunctionX1DTest01(new RiverStreamParams()));
-            tasks.Add(new RiverEmptyXY2D(new RiverStreamParams()));
+                //tasks.Add(new RiverEmptyXY2DQuad(new RiverStreamParams()));
+                //tasks.Add(new RiverFunctionX1DTest01(new RiverStreamParams()));
+                //tasks.Add(new RiverEmptyXY2D(new RiverStreamParams()));
             #endregion
 
         }

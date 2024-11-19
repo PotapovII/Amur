@@ -301,6 +301,11 @@ namespace RenderLib
         {
             try
             {
+                if (tb.Text == "")
+                {
+                    tb.Text = "1";
+                    Logger.Instance.Info("текстовое поле пусто, измените его!");
+                }
                 V = float.Parse(tb.Text, MEM.formatter);
             }
             catch (Exception ex)

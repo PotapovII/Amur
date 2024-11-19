@@ -536,12 +536,33 @@ namespace CPForm
                 }
                 catch(Exception ex) 
                 {
-                    toolStripStatusLabelStatus.Text = "ошибка удаления сохраненных задач" + ex.Message;
+                    toolStripStatusLabelStatus.Text = "ошибка при удаления сохраненных задач" + ex.Message;
                     Logger.Instance.Exception(ex);
                 }
             }
         }
-
+        private void smDelSaveCurve_Click(object sender, EventArgs e)
+        {
+            // выбрать папку
+            DirectoryInfo Dir = new DirectoryInfo(Application.StartupPath);
+            // выбрать все файлы из папки по расширению .rpsp
+            FileInfo[] files = Dir.GetFiles("*.cvs").Where(p => p.Extension == ".cvs").ToArray();
+            // пройти по циклу
+            foreach (FileInfo file in files)
+            {
+                try
+                {
+                    file.Attributes = FileAttributes.Normal;
+                    // удалить файлы из списка
+                    File.Delete(file.FullName);
+                }
+                catch (Exception ex)
+                {
+                    toolStripStatusLabelStatus.Text = "ошибка при удаления кривых" + ex.Message;
+                    Logger.Instance.Exception(ex);
+                }
+            }
+        }
         private void smDelSavePointTask_Click(object sender, EventArgs e)
         {
             // выбрать папку
@@ -559,7 +580,7 @@ namespace CPForm
                 }
                 catch (Exception ex)
                 {
-                    toolStripStatusLabelStatus.Text = "ошибка удаления точек сохранения" + ex.Message;
+                    toolStripStatusLabelStatus.Text = "ошибка при удаления точек сохранения" + ex.Message;
                     Logger.Instance.Exception(ex);
                 }
             }

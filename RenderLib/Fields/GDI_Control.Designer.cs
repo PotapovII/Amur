@@ -106,6 +106,8 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.checkedListBoxCurve = new System.Windows.Forms.CheckedListBox();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.btGraph = new System.Windows.Forms.Button();
+            this.btEvalGraph = new System.Windows.Forms.Button();
             this.buttonCurves = new System.Windows.Forms.Button();
             this.cb_opGraphicCurve = new System.Windows.Forms.CheckBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -162,6 +164,7 @@
             this.button6 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.renderControl1 = new RenderLib.CPRenderControlFields();
             this.panel3 = new System.Windows.Forms.Panel();
             this.cb_showBoudaryElems = new System.Windows.Forms.CheckBox();
             this.cb_showBoudaryKnots = new System.Windows.Forms.CheckBox();
@@ -196,9 +199,6 @@
             this.toolStripStatusLabel10 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tss_TaskName = new System.Windows.Forms.ToolStripStatusLabel();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.btEvalGraph = new System.Windows.Forms.Button();
-            this.btGraph = new System.Windows.Forms.Button();
-            this.renderControl1 = new RenderLib.CPRenderControlFields();
             this.panel2.SuspendLayout();
             this.tbc_Task.SuspendLayout();
             this.tabPage6.SuspendLayout();
@@ -251,9 +251,9 @@
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel2.Location = new System.Drawing.Point(969, 0);
+            this.panel2.Location = new System.Drawing.Point(701, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(290, 887);
+            this.panel2.Size = new System.Drawing.Size(290, 650);
             this.panel2.TabIndex = 11;
             // 
             // btCrossSection
@@ -1045,7 +1045,7 @@
             this.tabControlOption.Location = new System.Drawing.Point(6, 507);
             this.tabControlOption.Name = "tabControlOption";
             this.tabControlOption.SelectedIndex = 0;
-            this.tabControlOption.Size = new System.Drawing.Size(273, 374);
+            this.tabControlOption.Size = new System.Drawing.Size(273, 137);
             this.tabControlOption.TabIndex = 80;
             // 
             // tabPage1
@@ -1057,7 +1057,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(265, 345);
+            this.tabPage1.Size = new System.Drawing.Size(265, 108);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Объекты";
             // 
@@ -1068,14 +1068,14 @@
             this.listBoxPoles.ItemHeight = 20;
             this.listBoxPoles.Location = new System.Drawing.Point(6, 3);
             this.listBoxPoles.Name = "listBoxPoles";
-            this.listBoxPoles.Size = new System.Drawing.Size(256, 339);
+            this.listBoxPoles.Size = new System.Drawing.Size(256, 102);
             this.listBoxPoles.TabIndex = 12;
             // 
             // splitter1
             // 
             this.splitter1.Location = new System.Drawing.Point(3, 3);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 339);
+            this.splitter1.Size = new System.Drawing.Size(3, 102);
             this.splitter1.TabIndex = 10;
             this.splitter1.TabStop = false;
             // 
@@ -1111,6 +1111,28 @@
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(249, 58);
             this.panel9.TabIndex = 11;
+            // 
+            // btGraph
+            // 
+            this.btGraph.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btGraph.Location = new System.Drawing.Point(121, 30);
+            this.btGraph.Name = "btGraph";
+            this.btGraph.Size = new System.Drawing.Size(105, 25);
+            this.btGraph.TabIndex = 94;
+            this.btGraph.Text = "Графики";
+            this.btGraph.UseVisualStyleBackColor = true;
+            this.btGraph.Click += new System.EventHandler(this.btGraph_Click);
+            // 
+            // btEvalGraph
+            // 
+            this.btEvalGraph.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btEvalGraph.Location = new System.Drawing.Point(122, 4);
+            this.btEvalGraph.Name = "btEvalGraph";
+            this.btEvalGraph.Size = new System.Drawing.Size(104, 25);
+            this.btEvalGraph.TabIndex = 91;
+            this.btEvalGraph.Text = "Эволюция";
+            this.btEvalGraph.UseVisualStyleBackColor = true;
+            this.btEvalGraph.Click += new System.EventHandler(this.btEvalGraph_Click);
             // 
             // buttonCurves
             // 
@@ -1835,6 +1857,27 @@
             this.label9.TabIndex = 93;
             this.label9.Text = "Кисти для заливок";
             // 
+            // renderControl1
+            // 
+            this.renderControl1.BackColor = System.Drawing.Color.White;
+            colorSchemeFields1.Background = System.Drawing.Color.White;
+            colorSchemeFields1.FontKnot = new System.Drawing.Font("Arial", 8F);
+            colorSchemeFields1.FontReper = new System.Drawing.Font("Arial", 8F);
+            colorSchemeFields1.FontValue = null;
+            colorSchemeFields1.formatTextReper = ((uint)(2u));
+            this.renderControl1.colorScheme = colorSchemeFields1;
+            this.renderControl1.IndexTask = 0;
+            this.renderControl1.Location = new System.Drawing.Point(209, 3);
+            this.renderControl1.Name = "renderControl1";
+            this.renderControl1.Points = new System.Drawing.PointF[] {
+        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points"))),
+        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points1")))};
+            this.renderControl1.renderOptions = renderOptionsFields1;
+            this.renderControl1.Size = new System.Drawing.Size(32, 22);
+            this.renderControl1.TabIndex = 0;
+            this.renderControl1.Text = "renderControl1";
+            this.renderControl1.Visible = false;
+            // 
             // panel3
             // 
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -1941,7 +1984,7 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Location = new System.Drawing.Point(8, 7);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(953, 847);
+            this.panel1.Size = new System.Drawing.Size(685, 610);
             this.panel1.TabIndex = 10;
             // 
             // openFileDialog1
@@ -1971,9 +2014,9 @@
             this.toolStripStatusLabel9,
             this.toolStripStatusLabel10,
             this.tss_TaskName});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 861);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 624);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(969, 26);
+            this.statusStrip1.Size = new System.Drawing.Size(701, 26);
             this.statusStrip1.TabIndex = 12;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -2091,49 +2134,6 @@
             this.tss_TaskName.Size = new System.Drawing.Size(17, 21);
             this.tss_TaskName.Text = "_";
             // 
-            // btEvalGraph
-            // 
-            this.btEvalGraph.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btEvalGraph.Location = new System.Drawing.Point(122, 4);
-            this.btEvalGraph.Name = "btEvalGraph";
-            this.btEvalGraph.Size = new System.Drawing.Size(104, 25);
-            this.btEvalGraph.TabIndex = 91;
-            this.btEvalGraph.Text = "Эволюция";
-            this.btEvalGraph.UseVisualStyleBackColor = true;
-            this.btEvalGraph.Click += new System.EventHandler(this.btEvalGraph_Click);
-            // 
-            // btGraph
-            // 
-            this.btGraph.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btGraph.Location = new System.Drawing.Point(121, 30);
-            this.btGraph.Name = "btGraph";
-            this.btGraph.Size = new System.Drawing.Size(105, 25);
-            this.btGraph.TabIndex = 94;
-            this.btGraph.Text = "Графики";
-            this.btGraph.UseVisualStyleBackColor = true;
-            this.btGraph.Click += new System.EventHandler(this.btGraph_Click);
-            // 
-            // renderControl1
-            // 
-            this.renderControl1.BackColor = System.Drawing.Color.White;
-            colorSchemeFields1.Background = System.Drawing.Color.White;
-            colorSchemeFields1.FontKnot = new System.Drawing.Font("Arial", 8F);
-            colorSchemeFields1.FontReper = new System.Drawing.Font("Arial", 8F);
-            colorSchemeFields1.FontValue = null;
-            colorSchemeFields1.formatTextReper = ((uint)(2u));
-            this.renderControl1.colorScheme = colorSchemeFields1;
-            this.renderControl1.IndexTask = 0;
-            this.renderControl1.Location = new System.Drawing.Point(209, 3);
-            this.renderControl1.Name = "renderControl1";
-            this.renderControl1.Points = new System.Drawing.PointF[] {
-        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points"))),
-        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points1")))};
-            this.renderControl1.renderOptions = renderOptionsFields1;
-            this.renderControl1.Size = new System.Drawing.Size(32, 22);
-            this.renderControl1.TabIndex = 0;
-            this.renderControl1.Text = "renderControl1";
-            this.renderControl1.Visible = false;
-            // 
             // GDI_Control
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2143,7 +2143,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "GDI_Control";
-            this.Size = new System.Drawing.Size(1259, 887);
+            this.Size = new System.Drawing.Size(991, 650);
             this.Resize += new System.EventHandler(this.ResizeHandler);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
