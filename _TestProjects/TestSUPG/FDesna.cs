@@ -171,6 +171,7 @@
                 data.Add("Координата Х", xx);
                 data.Add("Координата Y", yy);
                 data.Add("Координаты ХY", xx, yy);
+                DateTime dateTime = DateTime.Now;
                 GraphicsCurve curves = new GraphicsCurve("Дно");
                 for (int i = 0; i < xx.Length; i++)
                     curves.Add(xx[i], yy[i]);
