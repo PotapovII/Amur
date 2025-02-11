@@ -293,6 +293,16 @@ namespace RiverDB.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CrossLine {
+            get {
+                object obj = ResourceManager.GetObject("CrossLine", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap DelAllSmLine {
             get {
                 object obj = ResourceManager.GetObject("DelAllSmLine", resourceCulture);
@@ -326,6 +336,16 @@ namespace RiverDB.Properties {
         internal static System.Drawing.Bitmap DelBeLine_ {
             get {
                 object obj = ResourceManager.GetObject("DelBeLine ", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DelCrossLine {
+            get {
+                object obj = ResourceManager.GetObject("DelCrossLine", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -996,6 +1016,16 @@ namespace RiverDB.Properties {
         internal static System.Drawing.Bitmap Амур1 {
             get {
                 object obj = ResourceManager.GetObject("Амур1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap АмурСтвор {
+            get {
+                object obj = ResourceManager.GetObject("АмурСтвор", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

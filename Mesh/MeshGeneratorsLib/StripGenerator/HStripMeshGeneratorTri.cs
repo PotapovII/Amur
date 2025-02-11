@@ -31,10 +31,6 @@ namespace MeshGeneratorsLib.StripGenerator
     [Serializable]
     public class HStripMeshGeneratorTri : AStripMeshGenerator
     {
-        ///// <summary>
-        ///// Карта
-        ///// </summary>
-        //int[][] map;
         /// <summary>
         /// Создаваемая сетка
         /// </summary>
@@ -52,10 +48,6 @@ namespace MeshGeneratorsLib.StripGenerator
         /// </summary>
         public int[] BoundElementsMark;
         /// <summary>
-        /// Получить массив типов границы для граничных элементов 
-        /// </summary>
-        public TypeBoundCond[] BoundElementsType;
-        /// <summary>
         /// координаты узлов сетки
         /// </summary>
         double[] CoordsX;
@@ -68,10 +60,6 @@ namespace MeshGeneratorsLib.StripGenerator
         /// флаг граничных узлов сетки
         /// </summary>
         int[] BoundKnotsMark;
-        /// <summary>
-        /// Массив типов границы  для граничных узловых точек
-        /// </summary>
-        public TypeBoundCond[] BoundKnotsType;
         /// <summary>
         /// количество КЭ сетки
         /// </summary>
@@ -98,7 +86,8 @@ namespace MeshGeneratorsLib.StripGenerator
         /// </summary>
         /// <param name="MAXElem">максимальное количество КЭ сетки</param>
         /// <param name="MAXKnot">максимальное количество узлов сетки</param>
-        public HStripMeshGeneratorTri(int MAXElem = 1000000, int MAXKnot = 1000000)
+        public HStripMeshGeneratorTri(bool axisOfSymmetry = false, int MAXElem = 1000000, int MAXKnot = 1000000)
+            : base(axisOfSymmetry)
         {
             AreaElems = new TriElement[MAXElem];
             BoundElems = new TwoElement[MAXElem];
@@ -107,8 +96,6 @@ namespace MeshGeneratorsLib.StripGenerator
             CoordsY = new double[MAXKnot];
             BoundKnots = new int[MAXKnot];
             BoundKnotsMark = new int[MAXKnot];
-            BoundKnotsType = new TypeBoundCond[MAXKnot];
-            BoundElementsType = new  TypeBoundCond[MAXKnot];
         }
         public override IMesh CreateMesh(ref double GR, double WaterLevel, double[] xx, double[] yy, int Count = 0)
         {
@@ -135,17 +122,10 @@ namespace MeshGeneratorsLib.StripGenerator
                 CountKnots = 0;
                 CountBoundKnots = 0;
                 BoundElementsCount = 0;
-                int beginLeft;
-                int beginRight;
-                // Поиск береговых точек створа
-                LookingBoundary(WaterLevel, xx, yy, out beginLeft, out beginRight);
-                // Расчет характеристик живого сечения створа
-                CreateBedWet(ref WetBed, WaterLevel, xx, yy, beginLeft, beginRight);
+
+                CalkBedFunction(ref WetBed, WaterLevel, xx, yy);
 
                 this.mesh = new TriMesh();
-
-                // количество элементов
-                int CountBed = beginRight - beginLeft + 1;
                 if (Count == 0)
                     Count = CountBed;
                 // шаг сетки по створу
@@ -163,18 +143,19 @@ namespace MeshGeneratorsLib.StripGenerator
                 lb = new HNumbKnot(left.x, left.y, bottom, CountKnots++);
                 lt = lb;
                 BoundKnots[CountBoundKnots] = lb.number;
-                BoundElementsType[CountBoundKnots] = TypeBoundCond.ImpossibleBC;
-                BoundKnotsType[CountBoundKnots] = TypeBoundCond.ImpossibleBC;
                 BoundKnotsMark[CountBoundKnots++] = lb.type;
+
                 x = left.x + dx;
                 y = spline.Value(x);
                 rb = new HNumbKnot(x, y, bottom, CountKnots++);
                 BoundKnots[CountBoundKnots] = rb.number;
-                BoundElementsType[CountBoundKnots] = TypeBoundCond.ImpossibleBC;
-                BoundKnotsType[CountBoundKnots] = TypeBoundCond.ImpossibleBC;
                 BoundKnotsMark[CountBoundKnots++] = rb.type;
+
                 y = left.y;
                 rt = new HNumbKnot(x, y, waterLevel, CountKnots++);
+                BoundKnots[CountBoundKnots] = rt.number;
+                BoundKnotsMark[CountBoundKnots++] = rt.type;
+
                 AreaElems[CountElems].Vertex1 = (uint)lb.number;
                 AreaElems[CountElems].Vertex2 = (uint)rb.number;
                 AreaElems[CountElems].Vertex3 = (uint)rt.number;
@@ -198,10 +179,19 @@ namespace MeshGeneratorsLib.StripGenerator
                 knotsTmp[0] = new HNumbKnot(rb);
                 knotsTmp[1] = new HNumbKnot(rt);
                 // герерация сетки в затопленной части
-                for (int i = 1; i < Count; i++)
-                    knotsTmp = DevideStripe(knotsTmp, i, Count);
+                int ii = 1;
+                try
+                {
+                    for (ii = 1; ii < Count; ii++)
+                        knotsTmp = DevideStripe(knotsTmp, ii, Count);
+                }
+                catch(Exception eez) 
+                {
+                    Logger.Instance.Exception(eez);
+                    Logger.Instance.Info("ОШИБКА: На "+ii.ToString()+" шаге генерации сетки");
+                }
                 // замыкание
-                if (dryRight != true)
+                if(dryRight != true)
                 {
                     // формирование граничных узлов на затопленной правой границе 
                     for (int i = 0; i < knotsTmp.Length - 1; i++)
@@ -209,12 +199,16 @@ namespace MeshGeneratorsLib.StripGenerator
                         if (i != knotsTmp.Length - 2)
                         {
                             BoundKnots[CountBoundKnots] = knotsTmp[i + 1].number;
-                            BoundElementsType[CountBoundKnots] = TypeBoundCond.ImpossibleBC;
-                            BoundKnotsType[CountBoundKnots] = TypeBoundCond.ImpossibleBC;
-                            BoundKnotsMark[CountBoundKnots] = 0;
+                            if(AxisOfSymmetry == true)
+                                BoundKnotsMark[CountBoundKnots] = vertRight;
+                            else
+                                BoundKnotsMark[CountBoundKnots] = bottom;
                             CountBoundKnots++;
                         }
-                        BoundElementsMark[BoundElementsCount] = vertRight;
+                        if (AxisOfSymmetry == true)
+                            BoundElementsMark[BoundElementsCount] = vertRight;
+                        else
+                            BoundKnotsMark[CountBoundKnots] = bottom;
                         BoundElems[BoundElementsCount].Vertex1 = (uint)knotsTmp[i + 1].number;
                         BoundElems[BoundElementsCount].Vertex2 = (uint)knotsTmp[i].number;
                         BoundElementsCount++;

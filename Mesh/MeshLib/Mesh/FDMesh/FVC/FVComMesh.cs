@@ -55,6 +55,21 @@ namespace MeshLib
         /// </summary>
         public IFVFacet[] boundaryFacets;
         #endregion
+        public FVComMesh() { }
+        public FVComMesh(MeshCore cmesh)
+        {
+            SetFVМesh(cmesh);
+        }
+        public FVComMesh(FVComMesh m)
+        {
+            MeshCore cmesh = new MeshCore(m);
+            SetFVМesh(cmesh);
+        }
+        public FVComMesh(IMesh m)
+        {
+            MeshCore cmesh = new MeshCore(m);
+            SetFVМesh(cmesh);
+        }
 
         #region IMesh
         /// <summary>
@@ -382,6 +397,7 @@ namespace MeshLib
             }
             return max + 1;
         }
+
         /// <summary>
         /// Клонирование объекта сетки
         /// </summary>
@@ -436,22 +452,6 @@ namespace MeshLib
         /// Плащади связанные с узлами
         /// </summary>
         double[] S = null;
-
-        public FVComMesh() { }
-        public FVComMesh(MeshCore cmesh)
-        {
-            SetFVМesh(cmesh);
-        }
-        public FVComMesh(FVComMesh m)
-        {
-            MeshCore cmesh = new MeshCore(m);
-            SetFVМesh(cmesh);
-        }
-        public FVComMesh(IMesh m)
-        {
-            MeshCore cmesh = new MeshCore(m);
-            SetFVМesh(cmesh);
-        }
         /// <summary>
         /// формирование сетки задачи
         /// </summary>
@@ -464,7 +464,6 @@ namespace MeshLib
             MEM.MemCopy(ref CoordsY, cmesh.points[1]);
 
             Dictionary<string, FVFacet> dictionary = new Dictionary<string, FVFacet>();
-            
             int cu;
             areaElems = new FVElement[cmesh.elems[0].Length];
             int faceid = 0;

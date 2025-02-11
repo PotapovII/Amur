@@ -1,16 +1,17 @@
-﻿using CommonLib;
-using CommonLib.ChannelProcess;
-using CommonLib.Delegate;
-using CommonLib.IO;
-using GeometryLib.Vector;
-using MeshLib;
-using NPRiverLib.APRiver_2XYD;
-using NPRiverLib.IO;
-using System;
-using System.IO;
-
-namespace NPRiverLib.APRiver2XYD.River2DFST
+﻿namespace NPRiverLib.APRiver2XYD.River2DFST
 {
+    using System;
+    using System.IO;
+
+    using MeshLib;
+    using NPRiverLib.IO;
+
+    using CommonLib;
+    using CommonLib.IO;
+    using CommonLib.ChannelProcess;
+    using CommonLib.Delegate;
+    using CommonLib.Function;
+
     /// <summary>
     /// Флаг ГУ задачи
     /// </summary>
@@ -155,6 +156,11 @@ namespace NPRiverLib.APRiver2XYD.River2DFST
         {
             return false;
         }
+        /// <summary>
+        /// Загрузка задачи иp форматного файла
+        /// </summary>
+        /// <param name="file">имя файла</param>
+        public override void LoadData(IDigFunction[] crossFunctions = null) { }
         #region методы предстартовой подготовки задачи
         /// <summary>
         /// Чтение данных задачи из файла

@@ -355,6 +355,71 @@ namespace ConnectLib
             }
             return 0;
         }
+        /// <summary>
+        /// Информация об водомерном посте 
+        /// </summary>
+        /// <param name="placeID"></param>
+        /// <param name="Name"></param>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <param name="Zerro">отметка нуля водомерного поста</param>
+        /// <param name="height"></param>
+        /// <returns></returns>
+        public static double PlaceInfo(int placeID, ref string Name, ref string X, 
+            ref string Y,ref double Zerro, ref double height)
+        {
+            string TName = "Place";
+            try
+            {
+                string strAccessSelect = "select * from dbo.place where place_id = '" + placeID.ToString() + "'";
+                DataTable place = ConnectDB.GetDataTable(strAccessSelect, TName);
+                if (place != null)
+                {
+                    foreach (DataRow dr in place.Rows)
+                    {
+                        int id = (int)dr["place_id"];
+                        if (placeID == id)
+                        {
+                            // Ноль графика - отметка репера по Балтийской системе
+                            Name = (string)dr["place_name"];
+                            X = ((double)dr["place_x"]).ToString();
+                            Y = ((double)dr["place_y"]).ToString();
+                            Zerro = (double)dr["place_nullheight"];
+                            height = (double)dr["place_height"];
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return 0;
+        }
+        /// <summary>
+        /// Получение отметки нуля водомерного поста 
+        /// </summary>
+        /// <param name="placeID">1 == Хабаровск</param>
+        /// <returns></returns>
+        public static double WaterLevelData(string Data, int placeID = 1)
+        {
+            string TName = "Experiment";
+            try
+            {
+                string sql = "select * from dbo.Experiment where [place_id] = '"
+                 + placeID.ToString() + "' AND CAST([experiment_datetime] AS DATE) = '" +
+                            Data + "'";
+                DataTable place = ConnectDB.GetDataTable(sql, TName);
+                DataRow dr = place.Rows[0];
+                double WL = (double)dr["experiment_waterlevel"];
+                return WL;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return 0;
+        }
 
     }
 }

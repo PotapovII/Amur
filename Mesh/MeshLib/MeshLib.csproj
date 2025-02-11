@@ -49,6 +49,11 @@
     <Compile Include="Mesh\FDMesh\RecMesh\QVectorMesh.cs" />
     <Compile Include="Mesh\Mesh Core.cs" />
     <Compile Include="Wrappers\KsiWrapper.cs" />
+    <Compile Include="Wrappers\MWDLink.cs" />
+    <Compile Include="Wrappers\Old\MWRiver.cs" />
+    <Compile Include="Wrappers\Old\MWRiverNormDistance.cs" />
+    <Compile Include="Wrappers\Old\MWRiverDistance.cs" />
+    <Compile Include="Wrappers\Old\MWRiverCross.cs" />
     <Compile Include="_OLD\ATable\Elements.cs" />
     <Compile Include="_OLD\ATable\TablKnot.cs" />
     <Compile Include="_OLD\ATable\IAdressTables.cs" />
@@ -56,11 +61,9 @@
     <Compile Include="_OLD\ATable\IAdressUnknow.cs" />
     <Compile Include="_OLD\ATable\ITablKnot.cs" />
     <Compile Include="_OLD\BoundaryConditions\BoundaryConditionsQuad.cs" />
-    <Compile Include="Wrappers\OLD\BCValues.cs" />
-    <Compile Include="Wrappers\OLD\ABaseCalculationDomain.cs" />
-    <Compile Include="Wrappers\MWCrossSectionTri.cs" />
-    <Compile Include="Wrappers\MWDistanceTri.cs" />
-    <Compile Include="Wrappers\MWCrossTri.cs" />
+    <Compile Include="Wrappers\Old\MWCrossSectionTri.cs" />
+    <Compile Include="Wrappers\Old\MWDistanceTri.cs" />
+    <Compile Include="Wrappers\Old\MWCrossTri.cs" />
     <Compile Include="Wrappers\MeshWrapperTri.cs" />
     <Compile Include="FEMTools\FunForm\FunLagrange2D.cs" />
     <Compile Include="FEMTools\FunForm\FunLagrange1D.cs" />
@@ -145,6 +148,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="DOC\Хеширование при аппроксимации.doc" />
   </ItemGroup>
   <ItemGroup />

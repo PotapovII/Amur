@@ -108,6 +108,24 @@ namespace AlgebraLib
             Right[IndexRow] = R;
         }
         /// <summary>
+        /// Получить строку (не для всех решателей)
+        /// </summary>
+        /// <param name="IndexRow">Индекс получемой строки системы</param>
+        /// <param name="ColElems">Коэффициенты строки системы</param>
+        /// <param name="R">Значение правой части</param>
+        public override void GetStringSystem(uint IndexRow, ref double[] ColElems, ref double R)
+        {
+            MEM.Alloc(FN, ref ColElems);
+            int i = (int)IndexRow;
+            for (int j = 0; j < FN; j++)
+            {
+                int jp = j - i + 1;
+                if (jp < 3 && jp > -1)
+                    ColElems[j] = Matrix[i][jp];
+            }
+            R = Right[IndexRow];
+        }
+        /// <summary>
         /// Удовлетворение ГУ приближенное
         /// </summary>
         public override void BoundConditions(double[] Conditions, uint[] Adress)
@@ -265,7 +283,9 @@ namespace AlgebraLib
         /// <summary>
         /// Вывод САУ на КОНСОЛЬ
         /// </summary>
-        public override void Print(int flag = 0)
+        /// <param name="flag">количество знаков мантисы</param>
+        /// <param name="color">длина цветового блока</param>
+        public override void Print(int flag = 0, int color = 1)
         {
             double V = 0;
             Console.WriteLine("Matrix");

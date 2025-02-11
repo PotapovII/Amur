@@ -1,10 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
-namespace MemLogLib.Reflection
+﻿namespace MemLogLib.Reflection
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+    using System.ComponentModel;
+    using System.Collections.Generic;
+    
+    /// <summary>
+    /// Работа с рефлексией
+    /// </summary>
+    public static class REFL
+    {
+        /// <summary>
+        /// Получить значение атрибута Description для значения enum
+        /// </summary>
+        public static string GetEnumDescription(Enum value)
+        {
+            FieldInfo fieldInfo = value.GetType().GetField(value.ToString());
+            DescriptionAttribute[] attributes = 
+            (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            if (attributes.Length > 0)
+                return attributes[0].Description;
+            else
+                return value.ToString();
+        }
+    }
     /// <summary>
     /// Методы расширения позволяют "добавлять" методы в существующие типы без создания 
     /// нового производного типа, перекомпиляции и иного изменения первоначального типа. 

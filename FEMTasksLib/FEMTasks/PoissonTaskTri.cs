@@ -40,19 +40,34 @@ namespace FEMTasksLib
     [Serializable]
     public class PoissonTaskTri : AFETask
     {
+        public double[] U = null;
         private double Mu;
         private double Q;
         private int indexBC;
+        private int[] indexsBC = null;
         //Градиенты от функций форм
         const int cu = 3;
-        double[] a = new double[cu];
-        double[] dNdx = new double[cu];
+        double[] b = new double[cu];
+        double[] c = new double[cu];
         public PoissonTaskTri(double Mu, double Q, int indexBC)
         {
             this.Mu = Mu;
             this.Q = Q;
             this.indexBC = indexBC;
         }
+        public PoissonTaskTri(double Mu, double Q, int[] indexsBC)
+        {
+            this.Mu = Mu;
+            this.Q = Q;
+            this.indexsBC = indexsBC;
+        }
+        public void Test()
+        {
+            double[] result = null;
+            SolveTask(ref result);
+            U = result;
+        }
+
         public override void SolveTask(ref double[] result)
         {
             MEM.Alloc<double>(mesh.CountKnots, ref result);
@@ -66,16 +81,16 @@ namespace FEMTasksLib
                 mesh.GetElemCoords(elem, ref x, ref y);
                 // площадь
                 double S = mesh.ElemSquare(elem);
-                a[0] = (y[1] - y[2]);
-                dNdx[0] = (x[2] - x[1]);
-                a[1] = (y[2] - y[0]);
-                dNdx[1] = (x[0] - x[2]);
-                a[2] = (y[0] - y[1]);
-                dNdx[2] = (x[1] - x[0]);
+                b[0] = (y[1] - y[2]);
+                c[0] = (x[2] - x[1]);
+                b[1] = (y[2] - y[0]);
+                c[1] = (x[0] - x[2]);
+                b[2] = (y[0] - y[1]);
+                c[2] = (x[1] - x[0]);
                 // вычисление ЛЖМ
                 for (int ai = 0; ai < cu; ai++)
                     for (int aj = 0; aj < cu; aj++)
-                        LaplMatrix[ai][aj] = Mu * (a[ai] * a[aj] + dNdx[ai] * dNdx[aj]) / (4 * S);
+                        LaplMatrix[ai][aj] = Mu * (b[ai] * b[aj] + c[ai] * c[aj]) / (4 * S);
                 // добавление вновь сформированной ЛЖМ в ГМЖ
                 algebra.AddToMatrix(LaplMatrix, knots);
                 // вычисление ЛПЧ
@@ -86,8 +101,19 @@ namespace FEMTasksLib
             }
             //algebra.Print();
             // удовлетворение ГУ
-            uint[] bound = mesh.GetBoundKnotsByMarker(indexBC);
-            algebra.BoundConditions(0.0, bound);
+            if (indexsBC == null)
+            {
+                uint[] bound = mesh.GetBoundKnotsByMarker(indexBC);
+                algebra.BoundConditions(0.0, bound);
+            }
+            else
+            {
+                for (int i = 0; i < indexsBC.Length; i++)
+                {
+                    uint[] bound = mesh.GetBoundKnotsByMarker(indexsBC[i]);
+                    algebra.BoundConditions(0.0, bound);
+                }
+            }
             //algebra.Print();
             algebra.Solve(ref result);
             //algebra.Print();

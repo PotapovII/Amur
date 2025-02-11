@@ -38,6 +38,17 @@ namespace GeometryLib
                 y0.Add(y);
             }
         }
+        /// <summary>
+        /// Сохранение данных в файл
+        /// </summary>
+        /// <param name="file"></param>
+        public override void Save(StreamWriter file) 
+        {
+            file.WriteLine(name);
+            for (int i=0; i<x0.Count; i++)
+                file.WriteLine("{0} {1}", x0[i], y0[i]);
+            file.WriteLine("#");
+        }
 
         public DigFunction(string name = "функция по точкам")
         : base(SmoothnessFunction.linear, false)

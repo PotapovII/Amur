@@ -1,16 +1,18 @@
-﻿using ConnectLib;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
+﻿//---------------------------------------------------------------------------
+//                         проектировщик:
+//                           Потапов И.И.
+//---------------------------------------------------------------------------
+//        кодировка : 04.10.2020 Потапов И.И. & Потапов Д.И.
+//---------------------------------------------------------------------------
 namespace RiverDB.FormsDB
 {
+    using System;
+    using System.Data;
+    using System.Linq;
+    using System.Windows.Forms;
+
+    using ConnectLib;
+
     public partial class Place : Form
     {
         //public static string SConnection = MainForm.SConnection;//string SConnection = Settings.connectpath;

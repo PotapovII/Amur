@@ -259,23 +259,23 @@ namespace MeshLib
                     Weight.Add(0.166666666666667);
                     break;
                 case 3:           // третьего порядка
-                                  // координаты интегрирования по xi
-                    Xi.Add(0.5);
-                    Xi.Add(0.0);
-                    Xi.Add(0.5);
-                    // координаты интегрирования по eta
-                    Eta.Add(0.5);
-                    Eta.Add(0.5);
-                    Eta.Add(0.0);
-                    // координаты интегрирования по zeta
-                    Zeta.Add(0);
-                    Zeta.Add(0);
-                    Zeta.Add(0);
-                    // весовые коэффициенты
-                    Weight.Add(1.0 / 6.0);
-                    Weight.Add(1.0 / 6.0);
-                    Weight.Add(1.0 / 6.0);
-                    break;
+                    //// координаты интегрирования по xi
+                    //Xi.Add(0.5);
+                    //Xi.Add(0.0);
+                    //Xi.Add(0.5);
+                    //// координаты интегрирования по eta
+                    //Eta.Add(0.5);
+                    //Eta.Add(0.5);
+                    //Eta.Add(0.0);
+                    //// координаты интегрирования по zeta
+                    //Zeta.Add(0);
+                    //Zeta.Add(0);
+                    //Zeta.Add(0);
+                    //// весовые коэффициенты
+                    //Weight.Add(1.0 / 6.0);
+                    //Weight.Add(1.0 / 6.0);
+                    //Weight.Add(1.0 / 6.0);
+                    //break;
                 case 4:           //
                 case 5:           //
                 case 6:           //

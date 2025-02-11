@@ -1,0 +1,755 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MeshLib.ATable.Elements" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="24.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>_OLD\ATable\Elements.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.ATable.TablKnot" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAgAA=</HashCode>
+      <FileName>_OLD\ATable\TablKnot.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.BoundaryConditionsQuad" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAACABgQAAAAAACAAAAAgAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>_OLD\BoundaryConditions\BoundaryConditionsQuad.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.BoundaryConditionsVar" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAACABgQAAAAAAAAAAAAgAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>_OLD\BoundaryConditions\BoundaryConditionsVar.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.BoundCondition1D" Collapsed="true">
+    <Position X="19" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAABAEAAQAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>_OLD\BoundaryConditions\BoundCondition1D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.EnumTypeConverter" Collapsed="true">
+    <Position X="25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAgAAAAAAAAAAAACAAAAIAAAAAAAA=</HashCode>
+      <FileName>_OLD\BoundaryConditions\BoundCondition1D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.AbFunForm" Collapsed="true">
+    <Position X="15.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIACQIYAAi0BgQAAAiASABAAESgUAAAMCARBAMwQ=</HashCode>
+      <FileName>FEMTools\FunForm\AbFunForm.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.HFForm1D" Collapsed="true">
+    <Position X="15.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FEMTools\FunForm\HFForm1D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm1D_L0" Collapsed="true">
+    <Position X="4.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFForm1D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm1D_L1" Collapsed="true">
+    <Position X="11" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFForm1D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm1D_L2" Collapsed="true">
+    <Position X="15.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFForm1D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm1D_L3" Collapsed="true">
+    <Position X="20" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFForm1D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_RectangleConst" Collapsed="true">
+    <Position X="24.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormRectangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_RectangleL1" Collapsed="true">
+    <Position X="29" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAABgAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormRectangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_RectangleS2" Collapsed="true">
+    <Position X="22.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAABgAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormRectangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_RectangleS3" Collapsed="true">
+    <Position X="27" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAABgAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormRectangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_RectangleL2" Collapsed="true">
+    <Position X="1.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAABgAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormRectangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_RectangleL3" Collapsed="true">
+    <Position X="6.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAAAAAAAAAABgAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormRectangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_RectangleCR4" Collapsed="true">
+    <Position X="10.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAAAAAAAAAABgAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormRectangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_RectangleP8" Collapsed="true">
+    <Position X="6.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAAAAAAAAAABgAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormRectangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_RectangleInArea1" Collapsed="true">
+    <Position X="13.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAAAAAAAEAABgAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormRectangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_TriangleInArea1" Collapsed="true">
+    <Position X="17.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAAAAAAAAAABgAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormRectangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_RectangleMyReviar" Collapsed="true">
+    <Position X="22.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAAAAAAAgAQBgAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormRectangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_RectangleErmit4" Collapsed="true">
+    <Position X="26.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAABgAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormRectangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_TriangleAnaliticL1" Collapsed="true">
+    <Position X="20.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAQAAACAAgAAAAAgAAAAAAAQCAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormTriangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_TriangleConst" Collapsed="true">
+    <Position X="24.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormTriangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_TriangleL1" Collapsed="true">
+    <Position X="29.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormTriangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_TriangleL1_River" Collapsed="true">
+    <Position X="4" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormTriangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_TriangleCR" Collapsed="true">
+    <Position X="8.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormTriangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_TriangleL2" Collapsed="true">
+    <Position X="2" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormTriangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.HFForm2D_TriangleL3" Collapsed="true">
+    <Position X="8.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAACAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>FEMTools\FunForm\HFFormTriangle2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.FunFormsManager" Collapsed="true">
+    <Position X="17.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQACAAAAAAEAAAAAAAAAAAEAAAAAAABIAAAAAAAACAA=</HashCode>
+      <FileName>FEMTools\FunFormsManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.NumInegrationPoints" Collapsed="true">
+    <Position X="17.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAABAAqBBAAAgQBACAACAAgAQgAAkFgAAA=</HashCode>
+      <FileName>FEMTools\NumInegrationPoints.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.FileMeshProcessor" Collapsed="true">
+    <Position X="22.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAEAAAAAAAAAAgACAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>IO\FileMeshProcessor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.FiltrFileReadLine" Collapsed="true">
+    <Position X="22.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAQAAAIAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>IO\FiltrFileReadLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.FVМeshFormat" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAgACAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>IO\UseFormats\FVМeshFormat.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.TriMeshFormat" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20.75" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAgACAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>IO\UseFormats\TriМeshFormat.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.ArrayMesh" Collapsed="true">
+    <Position X="4.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAioCABAABkAAUAAsABACARoAAAAAAIChACAMQVA=</HashCode>
+      <FileName>Mesh\ArrayMesh\ArrayMesh.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MeshLib.ComplecsMesh" Collapsed="true">
+    <Position X="2.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAiAACAAABEAAEAAAAAAAABAAAAAAIIAwACAEABA=</HashCode>
+      <FileName>Mesh\ArrayMesh\ComplecsMesh.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.KsiMesh" Collapsed="true">
+    <Position X="1.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAoAIQBgQAQACAAgACEAAAIAAAgACAAAEAAAAAAAYBA=</HashCode>
+      <FileName>Mesh\ArrayMesh\KsiMesh.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.KsiMesh2017" Collapsed="true">
+    <Position X="3.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAto8YRkQEUQCgAgAD0ACAKAAA7WCBCAMDBiQGKAMBQ=</HashCode>
+      <FileName>Mesh\ArrayMesh\KsiMesh2017.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.RenderMesh" Collapsed="true">
+    <Position X="3.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAACgCCAAgAkAAUAAsAAQCARIAAAAAYAChACAMQBA=</HashCode>
+      <FileName>Mesh\ArrayMesh\RenderMesh.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MeshLib.RenderMeshGL" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAGAAAAAkAAAAAAAAAAAAABAAAEAACAAAAIQAA=</HashCode>
+      <FileName>Mesh\ArrayMesh\RenderMeshGL.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.TriMesh" Collapsed="true">
+    <Position X="5.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAiACCBAABgAAEAAAAAAAABAAAAAAIIAgACAEABA=</HashCode>
+      <FileName>Mesh\ArrayMesh\TriMesh.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.TwoMesh" Collapsed="true">
+    <Position X="8" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAiACAAAABgAAEAAAAAAAABAAAAAAIIAgACAEABA=</HashCode>
+      <FileName>Mesh\ArrayMesh\TwoMesh.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.AFacet" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAEAAIAAAAAAAAAAAAAAAEAAAIAEAAAAAAAgAg=</HashCode>
+      <FileName>Mesh\FDMesh\FVC\AFacet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.362" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.FVComMesh" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gABAAiJCwBAAhkAAUIAsABAAARgAAAAAIICgACCMQVA=</HashCode>
+      <FileName>Mesh\FDMesh\FVC\FVComMesh.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.FVElement" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AADqAAAAYIBBAIAAAQgAMCAAAOAQAABAAAJQACAk4AA=</HashCode>
+      <FileName>Mesh\FDMesh\FVC\FVElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.FVFacet" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACACCEAAIBAIAAAAAQIABAAAEIABIAEAAAAACEgAg=</HashCode>
+      <FileName>Mesh\FDMesh\FVC\FVFacet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.FVElem" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAEAEBAAAABAAAAAAIgAAAAEmAAAAAoEACAACAAAA=</HashCode>
+      <FileName>Mesh\FDMesh\FVMQ\FVElem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.FVEMesh" Collapsed="true">
+    <Position X="14.5" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAFAAAAwACCgCAAQAIAAAAAgAAAAAgAQAAABAABAA=</HashCode>
+      <FileName>Mesh\FDMesh\FVMQ\FVEMesh.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.FVSTask" Collapsed="true">
+    <Position X="14.5" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAACAAAAAAAAAAAIAQAAAAAgIQAAABAiAAA=</HashCode>
+      <FileName>Mesh\FDMesh\FVMQ\FVEMesh.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.RectFVMesh" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQMEiICAxADFkiA0QAgABAABRgAAAAAAIDmADEMQVA=</HashCode>
+      <FileName>Mesh\FDMesh\FVMQ\RectFVMesh.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.ARectangleMesh" Collapsed="true">
+    <Position X="5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QQCAFCghABGADhAAAAAIAAgBQACAAAAAAAACAAEAZGg=</HashCode>
+      <FileName>Mesh\FDMesh\RecMesh\CrossSecMesh\ARectangleMesh.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MeshLib.ChannelMesh" Collapsed="true">
+    <Position X="3.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAFAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Mesh\FDMesh\RecMesh\CrossSecMesh\ChannelMesh.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.ChannelRectMesh" Collapsed="true">
+    <Position X="6" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Mesh\FDMesh\RecMesh\CrossSecMesh\ChannelRectMesh.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.ChannelTrapezMesh" Collapsed="true">
+    <Position X="8.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAABAAAAAAAAAQAAAAAAAAgAAAAEAAAA=</HashCode>
+      <FileName>Mesh\FDMesh\RecMesh\CrossSecMesh\ChannelTrapezMesh.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.RectangleMeshTri" Collapsed="true">
+    <Position X="5.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAgAAAAAIAAAAAAAAAAAAAAAAAAEABAA=</HashCode>
+      <FileName>Mesh\FDMesh\RecMesh\RectangleMesh.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.RectangleMesh" Collapsed="true">
+    <Position X="2.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAgAAAAAIAAAAAAAAAAAAAAAAAAEABAA=</HashCode>
+      <FileName>Mesh\FDMesh\RecMesh\RectangleMesh.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.ReverseQMesh" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>4EQAAIAASGIQACBdBEAIAgMQAAAEwiBwAAABAkRgBCA=</HashCode>
+      <FileName>Mesh\FDMesh\RecMesh\ReverseQMesh.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.FElement" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAggAAAAAAAhAAEiAAAAABAAAAAAIAAAAAgAAAEAAA=</HashCode>
+      <FileName>Mesh\FEMesh\FElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.FEMesh" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAIQAioCCBAghkBAVAAsABAADRgAgABAIICgACAMQVA=</HashCode>
+      <FileName>Mesh\FEMesh\FEMesh.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.FENods" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAggAAAAAAAgAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mesh\FEMesh\FENods.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.MeshCore" Collapsed="true">
+    <Position X="7" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAEAAKgAAAAhAAAAAAAAAAAAgAIAAAAAAAAAAAGAAA=</HashCode>
+      <FileName>Mesh\Mesh Core.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.Renumberator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAgAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mesh\Renumberator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.GCurve" Collapsed="true">
+    <Position X="27.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAiAAAAAAAAAAAAAAAYACAAAAAAACIAAABhAAAA=</HashCode>
+      <FileName>SaveData\GCurve.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.GData" Collapsed="true">
+    <Position X="29.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAQAAACAAAAAAAAAAAhAAAA=</HashCode>
+      <FileName>SaveData\GData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.GPoint" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAQEUAAAAQBAAQAAAAAAAAAAABAAYAA=</HashCode>
+      <FileName>SaveData\GPoint.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.GraphicsCurve" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.25" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MAIAIAiwgAEBAFAACENAABYCAAAQAAIACAAAAhBAAAA=</HashCode>
+      <FileName>SaveData\GraphicsCurve.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.GraphicsCurveFormat" Collapsed="true">
+    <Position X="27.5" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAAAAAAAAAAAAAgAAAAAAAAACAAAAEAAAA=</HashCode>
+      <FileName>SaveData\GraphicsCurveFormat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.GraphicsData" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="27.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAJAAgAAAAABACAAAAAAAAQAAQCECAAAAAAAAABAAAA=</HashCode>
+      <FileName>SaveData\GraphicsData.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.SavePoint" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QCaBAAAACAAABAQBgAAAEQQAAAADAAQgAAAQAAAAIAA=</HashCode>
+      <FileName>SaveData\SavePoint.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.FEMTools.FunForm.FunLagrange1D" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAQAAAA=</HashCode>
+      <FileName>FEMTools\FunForm\FunLagrange1D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.FEMTools.FunForm.FunLagrange2D" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAEAAAAAAABAAAAAAAAgAAABAAAAAAAA=</HashCode>
+      <FileName>FEMTools\FunForm\FunLagrange2D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.Locators.CreatorMeshFacets" Collapsed="true">
+    <Position X="24.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAACAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Locators\CreatorMeshFacets.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.Locators.Link" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="27" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Locators\Link.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.Locators.Locator_TriMeshToQuad" Collapsed="true">
+    <Position X="14.5" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAwAEQACgAQAYAAAQAAAJAAACCADgAAEQBiI=</HashCode>
+      <FileName>Locators\Locator_TriMeshToQuad.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.Locators.Locator_TriMeshToQuadTrue" Collapsed="true">
+    <Position X="16.25" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAwAEQACgAQAYAAAQAAAJAAACCADgAAEQBiI=</HashCode>
+      <FileName>Locators\Locator_TriMeshToQuadTrue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.Locators.LocatorRect" Collapsed="true">
+    <Position X="18" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Locators\LocatorRect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.Locators.LocatorTriMesh" Collapsed="true">
+    <Position X="14.5" Y="20.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAgAAAAAAAAgAgAAAAAAAAEQBAAAAgAAAABAAAAQ=</HashCode>
+      <FileName>Locators\LocatorTriMesh.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.Locators.LocatorTriMeshFacet" Collapsed="true">
+    <Position X="16.25" Y="20.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEEAiAAAAAAAAwAAAAAAEgAAEABAAAAgAAAAAAAAAQ=</HashCode>
+      <FileName>Locators\LocatorTriMeshFacet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.Locators.SFacet" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAIAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Locators\SFacet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.Locators.TriToQuadMesh" Collapsed="true">
+    <Position X="17.25" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAACBAAAQgCAAAAYAEAAAAAJAQAADADwAAAABgA=</HashCode>
+      <FileName>Locators\TriToQuadMesh.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.Mesh.RecMesh.ChannelRectangleMesh" Collapsed="true">
+    <Position X="1.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Mesh\FDMesh\RecMesh\CrossSecMesh\ChannelRectangleMesh.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.RecMesh.QVectorMesh" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>YAUAFAAAQKYjCjMgBEAIAgsQAAAEQCAQAEADAlBkBCA=</HashCode>
+      <FileName>Mesh\FDMesh\RecMesh\QVectorMesh.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.TaskArea.RectangleArea" Collapsed="true">
+    <Position X="17.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAFAAAAAAASwAAAAAIAAAAAgAAAAAQAIgAAAEABAA=</HashCode>
+      <FileName>Mesh\FDMesh\RecMesh\RectangleArea.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.SaveData.CloudBedRiverNods" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAEAAQAEAAAAABAAAAAQAAgAAAAQIQAA=</HashCode>
+      <FileName>SaveData\CloudBedRiverNods.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.SaveData.SavePointRiverNods" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="27.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAEAAQAEAAAAABAAAAAQAAgAAAAQIQAA=</HashCode>
+      <FileName>SaveData\CloudRiverNods.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MeshLib.Wrappers.KsiWrapper" Collapsed="true">
+    <Position X="6.5" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEo0IAAQEEAAgQAAB0ACAAAAAbSCBCAMTBiAHKAcDQ=</HashCode>
+      <FileName>Wrappers\KsiWrapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshLib.Wrappers.MeshWrapperTri" Collapsed="true">
+    <Position X="8.75" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAQAAAAAChkEEAAAAAHAAAgAIBAAAAAIAQABCAAAA=</HashCode>
+      <FileName>Wrappers\MeshWrapperTri.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MeshLib.Wrappers.MWCrossSectionTri" Collapsed="true">
+    <Position X="8.75" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAgAYIIQXBYBYgCgAAACAAQEBAIAIKAAwAgIAAAKkCA=</HashCode>
+      <FileName>Wrappers\MWCrossSectionTri.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MeshLib.Wrappers.MWRiver" Collapsed="true">
+    <Position X="8.75" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQAAAJAAAAAEAAAAAAQAEAQAAABAAAAAAAAFUCAAAA=</HashCode>
+      <FileName>Wrappers\MWRiver.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MeshLib.Wrappers.MWRiverDistance" Collapsed="true">
+    <Position X="8.75" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAIEAAAAAAAAAAAAEABAAAAAAACBAAAQAA=</HashCode>
+      <FileName>Wrappers\MWRiverDistance.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Struct Name="MeshLib.MeshIndex" Collapsed="true">
+    <Position X="17.25" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEIAEAAAAAAAA=</HashCode>
+      <FileName>Mesh\FDMesh\RecMesh\CrossSecMesh\MeshIndex.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="MeshLib.ATable.IAdressTables" Collapsed="true">
+    <Position X="17.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAJAAAAAQAAEAAAAAAAAAAAAgA=</HashCode>
+      <FileName>_OLD\ATable\IAdressTables.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MeshLib.ATable.IAdressUnknow" Collapsed="true">
+    <Position X="19" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAEAAAA=</HashCode>
+      <FileName>_OLD\ATable\IAdressUnknow.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MeshLib.ATable.IElements" Collapsed="true">
+    <Position X="20.75" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>_OLD\ATable\IElements.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MeshLib.ATable.ITablKnot" Collapsed="true">
+    <Position X="22.5" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>_OLD\ATable\ITablKnot.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MeshLib.IFVElem" Collapsed="true">
+    <Position X="22.5" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAEBAAAABAAAAAAIgAAAAAiAAAAAIEACAACAAAA=</HashCode>
+      <FileName>Mesh\FDMesh\FVMQ\IFVElem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="MeshLib.FFContinueType" Collapsed="true">
+    <Position X="19" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAABAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FEMTools\FunForm\AbFunForm.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MeshLib.FFGeomType" Collapsed="true">
+    <Position X="20.75" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABgAAAAAAAAAAgAAAAAIAAAAABAAA=</HashCode>
+      <FileName>FEMTools\FunForm\AbFunForm.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MeshLib.DirectMeshIndex" Collapsed="true">
+    <Position X="17.25" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhDIAAA=</HashCode>
+      <FileName>Mesh\FDMesh\RecMesh\CrossSecMesh\MeshIndex.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

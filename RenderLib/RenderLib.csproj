@@ -64,6 +64,7 @@
     <Compile Include="Fields\MeshEdit\TaskRendererEdit.cs" />
     <Compile Include="Fields\SolidColorBrush.cs" />
     <Compile Include="EditRenderOptions.cs" />
+    <Compile Include="GDI\Class1.cs" />
     <Compile Include="GDI\ConvertCurve.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -234,6 +235,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="DOCS\ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FEMTasksLib.ABEMTask" Collapsed="true">
+    <Position X="8.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>SCCAIQAAJAACRIBgAAEAAQAQAIINABgEwwJgABICgBA=</HashCode>
+      <FileName>BEMTasks\Order0\ABEMTask.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FEMTasksLib.LaplaceBEM" Collapsed="true">
+    <Position X="7" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEgAAAQBAAAAAAAAAAAAhAAAAAgAAgAAAKCgAAAAwA=</HashCode>
+      <FileName>BEMTasks\Order0\LaplaceBEM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.PoissonBEMTask" Collapsed="true">
+    <Position X="9.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEgAAEUBAAAAAAAAAAAAhAAICAgAAgAAACCgAAAAwA=</HashCode>
+      <FileName>BEMTasks\Order0\PoissonBEMTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.APeriodicBEMTask" Collapsed="true">
+    <Position X="1.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AwGAAQAABAAAAIQAAAACAAQAIAAhIggAAQEAgQAQkAI=</HashCode>
+      <FileName>BEMTasks\Order5\APeriodicBEMTask.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FEMTasksLib.AxisyBETask" Collapsed="true">
+    <Position X="2.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAQAAAAAAAAAAAAAQAAAAAAQAAAgAAAAAAQAAAAA=</HashCode>
+      <FileName>BEMTasks\Order5\AxisyBETask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.BEMStreamParams" Collapsed="true">
+    <Position X="1.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAGQAAQA=</HashCode>
+      <FileName>BEMTasks\Order5\BEMStreamParams.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.FlatBETask" Collapsed="true">
+    <Position X="0.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAAAAAAAAAAAAAAAgAAACAAQAAAAA=</HashCode>
+      <FileName>BEMTasks\Order5\FlatBETask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.PSpline" Collapsed="true">
+    <Position X="15.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAMCQIAAAAAAAAAIBQEAQkAAgABAAAhQ=</HashCode>
+      <FileName>BEMTasks\Order5\PSpline.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.BoundLabel" Collapsed="true">
+    <Position X="13.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAIAAAAAAAAAAAgAAAAABA=</HashCode>
+      <FileName>BoundLabel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.AComplexFEMTask" Collapsed="true">
+    <Position X="7.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QACAgAAABYAAwAEAAABAAIAEAAABAAgACQBgAACB4AI=</HashCode>
+      <FileName>FEComplexTask\AComplexFEMTask.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FEMTasksLib.AFETask" Collapsed="true">
+    <Position X="17.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QACAAAAABQAAQIAAAAAAAIAEAAABAAgACQBgAAABgAI=</HashCode>
+      <FileName>FEMTasks\AFETask.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FEMTasksLib.LameTask" Collapsed="true">
+    <Position X="26.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAEAAAAAAAAAAAAAAAAAAAAAAAAAAAgAABIAAAAgAAA=</HashCode>
+      <FileName>FEMTasks\LameTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.LameTaskTri" Collapsed="true">
+    <Position X="31.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAEAAAAEAAAAAAEAAAAAAAAAAAAAAAggABIAAAAgAAA=</HashCode>
+      <FileName>FEMTasks\LameTaskTri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.NonStationarylTask" Collapsed="true">
+    <Position X="2" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAQABCACIAAAAAAAAIAAAFAAAAgEAAYAAAAkAAA=</HashCode>
+      <FileName>FEMTasks\NonStationarylTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.NonStationaryThermalTask" Collapsed="true">
+    <Position X="8.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAQABCACIAAAAAAAAIAAAFAAAAgEAAYAAAAkAAA=</HashCode>
+      <FileName>FEMTasks\NonStationaryThermalTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.NonStationaryThermalTaskTri" Collapsed="true">
+    <Position X="11" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAQEBCACIAEAAAABAIAAAFAAAAgkAAYAAAAkAAA=</HashCode>
+      <FileName>FEMTasks\NonStationaryThermalTaskTri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.PoissonTask" Collapsed="true">
+    <Position X="15.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAIAAAAgAAA=</HashCode>
+      <FileName>FEMTasks\PoissonTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.PoissonTaskTri" Collapsed="true">
+    <Position X="20" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAEAAAAAAEAAAAAAAAAAAAAAAggAAIAAAAgAAA=</HashCode>
+      <FileName>FEMTasks\PoissonTaskTri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.SophieGermainTask" Collapsed="true">
+    <Position X="29" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAAAgAABAAAAAgAAA=</HashCode>
+      <FileName>FEMTasks\SophieGermainTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.VortexStreamFunction" Collapsed="true">
+    <Position X="33.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FAEABAAEAAAAiAEACgAACAAAAAIAACggAI8AAACgAAA=</HashCode>
+      <FileName>FEMTasks\VortexStreamFunction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.VortexStreamRectangle" Collapsed="true">
+    <Position X="4.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAGAAAAAAgBgAAAAAASQQAAACAIAgERBNAAABaBAA=</HashCode>
+      <FileName>FEMTasks\VortexStreamRectangle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.AFVM" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QACAAAAABQAAQIAAAAAAAIAEAAABAAgACQBgAAABgAI=</HashCode>
+      <FileName>FVMTasks\FVM.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="FEMTasksLib.PhiTask" Collapsed="true">
+    <Position X="13.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAIAAAAAAAgAAAAAAgAIAAAAAAABAA=</HashCode>
+      <FileName>VortexPhi\Mazo\PhiTriTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.VortexBoundaryTask" Collapsed="true">
+    <Position X="17.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAQABCACIAAAAAAAAIAAAFAAAAgEAAYAAAAkAAA=</HashCode>
+      <FileName>VortexPhi\Mazo\VortexBoundaryTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.VortexTask" Collapsed="true">
+    <Position X="22.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAQABCACIAAAAAAAAIAAAFAAAAgEAAYAAAAkAAA=</HashCode>
+      <FileName>VortexPhi\Mazo\VortexTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.FESimpleTask.ATriFEMTask" Collapsed="true">
+    <Position X="12.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAQwAYEBgAQgAAAAAABAAQAEAAgCRAGAAACACgoAAA=</HashCode>
+      <FileName>FEComplexTask\ATriFEMTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.FESimpleTask.CFETurbulVortexPhiTri" Collapsed="true">
+    <Position X="14.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GIAASBIQZAQDAAAAAQIAQACAEYoAAEMEEAnEEAFARIA=</HashCode>
+      <FileName>FEComplexTask\CFETurbulVortexPhiTri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.FESimpleTask.CFEVortexPhiTri" Collapsed="true">
+    <Position X="1" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GIAAQAAQJAACAAAAAAIAAAAAAIoAAEEAEAlAcAFARIA=</HashCode>
+      <FileName>FEComplexTask\CFEVortexPhiTri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.FESimpleTask.DiffTurbulentModelTri" Collapsed="true">
+    <Position X="3.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAARoAIACIJAAAAQgAggAAAQAQAAiAAAAEA=</HashCode>
+      <FileName>FEComplexTask\DiffTurbulentModelTri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.FESimpleTask.RiverSectionVortexPhiTri" Collapsed="true">
+    <Position X="5.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GIAAABIQBCACAAAgAAIAAAAEAIoAAEMAUAlAEIBIRIA=</HashCode>
+      <FileName>FEComplexTask\RiverSectionVortexPhiTri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.FESimpleTask.RiverSedimentTri_1Y" Collapsed="true">
+    <Position X="7.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAiAAAAAAAAAAAAAAAAAQCAAAAgIAA=</HashCode>
+      <FileName>FEComplexTask\RiverSedimentTri_1Y.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.FESimpleTask.FEMPoissonTask" Collapsed="true">
+    <Position X="24.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAIEAAAAIAAAAAAIAKgAAAAAAwggAAIAAAAgAAQ=</HashCode>
+      <FileName>FESimpleTask\FEPoissonTask.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FEMTasksLib.FESimpleTask.FEPoissonTaskTri" Collapsed="true">
+    <Position X="0.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wACQAAIEBQAAYIAAAAAAAKgEAAABAwggAQpgAAAA4AQ=</HashCode>
+      <FileName>FESimpleTask\FEPoissonTaskTri.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FEMTasksLib.FESimpleTask.FEPoissonTaskTriOld" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wACQAAIEBQAAYIAAAAAAAKgEAAABAwggAQpgAAAA4AQ=</HashCode>
+      <FileName>FESimpleTask\FEPoissonTaskTriOld.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="FEMTasksLib.FESimpleTask.FETransportEquationsTask" Collapsed="true">
+    <Position X="24.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgBAAAAAAAAEEAAAIIAIAAAACAAAAAAAAAAAAABGA=</HashCode>
+      <FileName>FESimpleTask\FETransportEquations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.FESimpleTask.FETransportEquationsTri" Collapsed="true">
+    <Position X="0.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAgEEAAAIAAAAAAAAAAAAAAAAAgAAAAGA=</HashCode>
+      <FileName>FESimpleTask\FETransportEquationsTri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.FESimpleTask.FEVortexPhi" Collapsed="true">
+    <Position X="12" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GICAQAAQJAACAAAAAQIAAAAAAAIBAAAAEQtAEAFAxIA=</HashCode>
+      <FileName>FESimpleTask\FEVortexPhi.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.FESimpleTask.FEVortexPhiTri" Collapsed="true">
+    <Position X="13.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GICAQAAQJAACAAAAAQIAAAAAAAIBAAAAEQtAEAFAxIA=</HashCode>
+      <FileName>FESimpleTask\FEVortexPhiTri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.FESimpleTask.CFEPoissonTaskTri" Collapsed="true">
+    <Position X="10" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAQAAYkBACIgAAAAAAKAAgACAAgAQAAAAgBAIAgAAQ=</HashCode>
+      <FileName>VortexPhi\CFEPoissonTaskTri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.FESimpleTask.CTransportEquationsTri" Collapsed="true">
+    <Position X="10" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAARCBABACAAAEIEAAAEAAAAAAAAAAAAAAAgAAAAAQ=</HashCode>
+      <FileName>VortexPhi\CTransportEquationsTri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.FESimpleTask.RiverCrossVortexPhiTri" Collapsed="true">
+    <Position X="12.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GIAAAABQBCEAAAAgAAIAAACEAEoAEEMAUAlCUoAMRIA=</HashCode>
+      <FileName>VortexPhi\RiverCrossVortexPhiTri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEMTasksLib.FVMTasks.HeatMassTri" Collapsed="true">
+    <Position X="6.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEADACAAEAQAAAAAAAIAADAggiAAYAAAAgQAA=</HashCode>
+      <FileName>FVMTasks\HeatMassTri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="FEMTasksLib.IBEMTask" Collapsed="true">
+    <Position X="12" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAIAAAAEAAIAAAAAAAA=</HashCode>
+      <FileName>BEMTasks\Order0\IBEMTask.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -41,8 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AllWallFunctions\WallFunction_Lutskoy.cs" />
-    <Compile Include="AllWallFunctions\WallFunction_Nguyen.cs" />
+    <Compile Include="ABaseTask\RiverEmpty2XYD.cs" />
+    <Compile Include="ABaseTask\RiverEmpty1XDCircle.cs" />
+    <Compile Include="ABaseTask\RiverFunctionX1DTest01.cs" />
+    <Compile Include="AllWallFunctions\OLD\WallFunction_Lutskoy.cs" />
+    <Compile Include="AllWallFunctions\OLD\WallFunction_Nguyen.cs" />
     <Compile Include="APRiver1XD\APRiver1XD.cs" />
     <Compile Include="APRiver1XD\BEM_River2D\ARiverBE.cs" />
     <Compile Include="APRiver1XD\BEM_River2D\Green.cs" />
@@ -63,7 +66,13 @@
     <Compile Include="APRiver1XD\FVM_ke_River2D\CPatankarStream1XD.cs" />
     <Compile Include="APRiver1XD\FVM_ke_River2D\VPatankarStream1XD.cs" />
     <Compile Include="APRiver1XD\FVM_ke_River2D\PatankarParams1XD.cs" />
+    <Compile Include="APRiver1YD\FDMRiverSectionaChannel.cs" />
+    <Compile Include="APRiver1YD\Params\RiverStreamQuadParams.cs" />
+    <Compile Include="APRiver1YD\Params\TurbulentViscosityQuadModel.cs" />
     <Compile Include="APRiver1YD\TriRoseRiverTask1YD.cs" />
+    <Compile Include="APRiver1YD\TriSecRiver_1YD.cs" />
+    <Compile Include="APRiver1YD\TriSecRiverTask1YD.cs" />
+    <Compile Include="APRiver1YD\TriSecRiverTask1YBase.cs" />
     <Compile Include="APRiver2XYD\APRiver2XYD.cs" />
     <Compile Include="APRiver2XYD\River2DFST\ARiverSWE_FCT_2XYD.cs" />
     <Compile Include="APRiver2XYD\River2DFST\GasDynamics_FCT.cs" />
@@ -71,37 +80,42 @@
     <Compile Include="APRiver2XYD\River2DFST\RiverSWE_FCT_2XYD.cs" />
     <Compile Include="APRiver2XYD\River2DFST\SWE_FCTParams_2XYD.cs" />
     <Compile Include="APRiver2XYD\River2DSW\Algebra\RiverAlgebra.cs" />
-    <Compile Include="APRiver2XYD\River2DSW\APRiverFEM_2XYD.cs" />
-    <Compile Include="APRiver2XYD\River2DSW\ParamsRiver_2XYD.cs" />
+    <Compile Include="APRiver2XYD\River2DSW\APRiverFEM2XYD.cs" />
+    <Compile Include="APRiver2XYD\River2DSW\ParamsRiver2XYD.cs" />
     <Compile Include="APRiver2XYD\River2DSW\RiverMesh\RiverBankGaussPoints.cs" />
-    <Compile Include="APRiver2XYD\River2DSW\TriRiverSW_2XYD.cs" />
+    <Compile Include="APRiver2XYD\River2DSW\TriRiverSWE2XYD.cs" />
     <Compile Include="APRiver2XYD\River2DSW\RiverMesh\BoundElementRiver.cs" />
     <Compile Include="APRiver2XYD\River2DSW\RiverMesh\BoundSegmentRiver.cs" />
     <Compile Include="APRiver2XYD\River2DSW\RiverMesh\GaussPoints.cs" />
     <Compile Include="APRiver2XYD\River2DSW\RiverMesh\RiverNode.cs" />
     <Compile Include="APRiver2XYD\River2DSW\RiverMesh\TriElementRiver.cs" />
     <Compile Include="APRiver2XYD\River2DSW\RiverMesh\TriRiverMesh.cs" />
-    <Compile Include="APRiver\ETaskStatus.cs" />
-    <Compile Include="IO\TaskReader2XYD_FCT.cs" />
-    <Compile Include="IO\TaskReaderKGD_1XD.cs" />
-    <Compile Include="IO\TaskTestClass.cs" />
-    <Compile Include="IO\TaskReaderBEM_1XD.cs" />
-    <Compile Include="IO\TaskReaderSWE_1XD.cs" />
-    <Compile Include="IO\TaskReader1YD_Rose.cs" />
-    <Compile Include="IO\TaskReader_Patankar1XD.cs" />
-    <Compile Include="IO\TaskReader2XYD_CFG.cs" />
+    <Compile Include="ABaseTask\ARiverEmpty.cs" />
+    <Compile Include="ABaseTask\ETaskStatus.cs" />
+    <Compile Include="ABaseTask\RiverEmptyParams.cs" />
+    <Compile Include="IO\TaskReaderEmptyAll.cs" />
+    <Compile Include="IO\2XYD\TaskReaderEmpty2XYD.cs" />
+    <Compile Include="IO\2XYD\TaskReaderEmpty2XYDTri.cs" />
+    <Compile Include="IO\2XYD\TaskReader2XYD_FCT.cs" />
+    <Compile Include="IO\1XD\TaskReaderKGD_1XD.cs" />
+    <Compile Include="ABaseTask\TaskTestClass.cs" />
+    <Compile Include="IO\1XD\TaskReaderBEM_1XD.cs" />
+    <Compile Include="IO\1XD\TaskReaderSWE_1XD.cs" />
+    <Compile Include="IO\1YD\TaskReader1YD_Rose.cs" />
+    <Compile Include="IO\1XD\TaskReader_Patankar1XD.cs" />
+    <Compile Include="IO\2XYD\TaskReader2XYD_CFG.cs" />
     <Compile Include="APRiver1YD\Params\TaskVariant.cs" />
     <Compile Include="APRiver1YD\APRiverFEM1YD.cs" />
     <Compile Include="APRiver1YD\APRiver1YD.cs" />
     <Compile Include="APRiver1YD\TriSroSecRiverTask1YD.cs" />
-    <Compile Include="IO\TaskReader1YD_RvY.cs" />
+    <Compile Include="IO\1YD\TaskReader1YD_RvY.cs" />
     <Compile Include="RiverEmpty\ARiverEmpty2XYD.cs" />
     <Compile Include="RiverEmpty\ARiverEmpty1YD.cs" />
     <Compile Include="RiverEmpty\ARiverEmpty1XD.cs" />
     <Compile Include="RiverEmpty\ARiverBaseEmpty.cs" />
     <Compile Include="RiverEmpty\EmptyParams.cs" />
     <Compile Include="RiverError.cs" />
-    <Compile Include="APRiver\APRiver.cs" />
+    <Compile Include="ABaseTask\APRiver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="APRiver1YD\Params\TaskEvolution.cs" />
     <Compile Include="APRiver1YD\Params\RSCrossParams.cs" />
@@ -114,6 +128,14 @@
     <ProjectReference Include="..\CommonLib\CommonLib.csproj">
       <Project>{a387740f-c4f9-44f3-afa8-0b55ea4487fa}</Project>
       <Name>CommonLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EddyViscosityLib\EddyViscosityLib.csproj">
+      <Project>{c3f731aa-1e56-45b0-92f4-00ce6997a4f1}</Project>
+      <Name>EddyViscosityLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FDMTaskLib\FDMTaskLib.csproj">
+      <Project>{5e1ca56b-8b0d-4553-8385-3feefe03f54f}</Project>
+      <Name>FDMTaskLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\FEMTasksLib\FEMTasksLib.csproj">
       <Project>{288d677a-c46f-44f8-a451-5afa1a0d4c46}</Project>
@@ -139,6 +161,10 @@
       <Project>{b8062e08-76ac-4ec2-a7aa-2d7a4c601351}</Project>
       <Name>MeshLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RenderLib\RenderLib.csproj">
+      <Project>{3330d65d-e283-47a3-b43c-ce8c4eb2b201}</Project>
+      <Name>RenderLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\_ExternalLibraries\Cloo\Cloo\Cloo.csproj">
       <Project>{48885e8c-19eb-4408-8a06-3792586ef500}</Project>
       <Name>Cloo</Name>
@@ -148,9 +174,23 @@
       <Name>InterpolationLib</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="APRiver1YD\Data\NameCrossRData.rvy">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="APRiver1YD\Data\NameCrossRDataOLD.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="APRiver1YD\Data\NameRSParams.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="APRiver1YD\Data\NameTaskGeometry.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <None Include="APRiver2XYD\River2DSW\_DOC\Дополнения.doc" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

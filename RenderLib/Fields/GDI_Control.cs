@@ -22,6 +22,7 @@ namespace RenderLib
     using System.Runtime.Serialization.Formatters.Binary;
     using CommonLib.Geometry;
     using MeshLib.Locators;
+    using GeometryLib.Geometry;
 
     /// <summary>
     ///ОО: Компонент визуализации данных (сетки, и сеточных полей, кривых (устарело) ) 
@@ -259,8 +260,9 @@ namespace RenderLib
             CValue(ref renderOptions.MinValue, tbMin);
             CValue(ref renderOptions.MaxValue, tbMax);
 
-            proxyRendererControl.colorScheme = colorScheme;
             proxyRendererControl.renderOptions = renderOptions;
+            proxyRendererControl.colorScheme = colorScheme;
+            
         }
 
         /// <summary>
@@ -315,9 +317,6 @@ namespace RenderLib
                 Logger.Instance.Info("Формат числа неверен, измените его!");
             }
         }
-
-
-
         private void trackBarMinMax_Scroll(object sender, EventArgs e)
         {
             if (trackBarMin.Value > 95)
@@ -771,10 +770,10 @@ namespace RenderLib
             if (cbCrossList.SelectedIndex != -1)
             {
                 CrossLine current = ListCross[cbCrossList.SelectedIndex];
-                tbAX.Text = current.xa.ToString("F5");
-                tbAY.Text = current.ya.ToString("F5");
-                tbBX.Text = current.xb.ToString("F5");
-                tbBY.Text = current.yb.ToString("F5");
+                tbAX.Text = current.A.X.ToString("F5");
+                tbAY.Text = current.A.Y.ToString("F5");
+                tbBX.Text = current.B.X.ToString("F5");
+                tbBY.Text = current.B.Y.ToString("F5");
                 SendOption();
             }
         }
@@ -980,8 +979,9 @@ namespace RenderLib
                 else
                 {
                     CrossLine current = ListCross[idx];
-                    IHPoint[] tPoints = { new HPoint((float)current.xa, (float)current.ya),
-                                          new HPoint((float)current.xb, (float)current.yb) };
+                    //IHPoint[] tPoints = { new HPoint(current.A.X, current.A.Y),
+                    //                      new HPoint(current.B.X, current.B.Y) };
+                    IHPoint[] tPoints = { new HPoint(current.A), new HPoint(current.B) };
                     Points = tPoints;
                     CName = "Ств" + idx.ToString() + ": ";
                 }
@@ -1087,6 +1087,11 @@ namespace RenderLib
                 FVCurves form = new FVCurves(spv);
                 form.Show();
             }
+        }
+
+        private void btCrossSection_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

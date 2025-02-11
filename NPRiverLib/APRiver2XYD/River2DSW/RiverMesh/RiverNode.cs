@@ -7,7 +7,7 @@
 ////---------------------------------------------------------------------------
 ////               кодировка : 27.12.2023 Потапов И.И.  оптимизация и читка
 ////---------------------------------------------------------------------------
-//namespace NPRiverLib.APRiver_2XYD.River2DSW
+//namespace NPRiverLib.APRiver2XYD.River2DSW
 //{
 //    using CommonLib.Geometry;
 //    using MemLogLib;

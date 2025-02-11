@@ -85,9 +85,9 @@ namespace RiverLib
             this.ViscosityModel = TurbulentViscosityQuadModelOld.ViscosityConst;
             // this.ViscosityModel = TurbulentViscosityQuadModelOld.ViscosityWolfgangRodi;
             //this.ViscosityModel = TurbulentViscosityQuadModelOld.Viscosity2DXY;
-            //this.ViscosityModel = TurbulentViscosityQuadModelOld.SpalartAllmarasStandard;
+            this.ViscosityModel = TurbulentViscosityQuadModelOld.SpalartAllmarasStandard;
             //this.ViscosityModel = TurbulentViscosityQuadModelOld.SpalartAllmarasStandardQ;
-            this.ViscosityModel = TurbulentViscosityQuadModelOld.WrayAgarwal2018;
+            //this.ViscosityModel = TurbulentViscosityQuadModelOld.WrayAgarwal2018;
             //this.ViscosityModel = TurbulentViscosityQuadModelOld.WrayAgarwal2018Q;
             //this.ViscosityModel = TurbulentViscosityQuadModelOld.ViscositySA0;
             // this.ViscosityModel = TurbulentViscosityQuadModelOld.Potapovs_00;

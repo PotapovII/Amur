@@ -126,26 +126,26 @@ namespace FEMTasksLib.FESimpleTask
 
         protected virtual void Init()
         {
-            MEM.Alloc((uint)mesh.CountKnots, ref TauXY);
-            MEM.Alloc((uint)mesh.CountKnots, ref TauXZ);
-            MEM.Alloc((uint)mesh.CountKnots, ref TauYY);
-            MEM.Alloc((uint)mesh.CountKnots, ref TauYZ);
-            MEM.Alloc((uint)mesh.CountKnots, ref TauZZ);
+            MEM.Alloc(mesh.CountKnots, ref TauXY);
+            MEM.Alloc(mesh.CountKnots, ref TauXZ);
+            MEM.Alloc(mesh.CountKnots, ref TauYY);
+            MEM.Alloc(mesh.CountKnots, ref TauYZ);
+            MEM.Alloc(mesh.CountKnots, ref TauZZ);
 
-            MEM.Alloc((uint)mesh.CountKnots, ref Ux);
-            MEM.Alloc((uint)mesh.CountKnots, ref Uy);
-            MEM.Alloc((uint)mesh.CountKnots, ref Uz);
-            MEM.Alloc((uint)mesh.CountKnots, ref eddyViscosity);
+            MEM.Alloc(mesh.CountKnots, ref Ux);
+            MEM.Alloc(mesh.CountKnots, ref Uy);
+            MEM.Alloc(mesh.CountKnots, ref Uz);
+            MEM.Alloc(mesh.CountKnots, ref eddyViscosity);
 
-            MEM.Alloc((uint)mesh.CountElements, ref eTauXY);
-            MEM.Alloc((uint)mesh.CountElements, ref eTauXZ);
-            MEM.Alloc((uint)mesh.CountElements, ref eTauYY);
-            MEM.Alloc((uint)mesh.CountElements, ref eTauYZ);
-            MEM.Alloc((uint)mesh.CountElements, ref eTauZZ);
+            MEM.Alloc(mesh.CountElements, ref eTauXY);
+            MEM.Alloc(mesh.CountElements, ref eTauXZ);
+            MEM.Alloc(mesh.CountElements, ref eTauYY);
+            MEM.Alloc(mesh.CountElements, ref eTauYZ);
+            MEM.Alloc(mesh.CountElements, ref eTauZZ);
 
-            MEM.Alloc((uint)mesh.CountElements, ref eUy);
-            MEM.Alloc((uint)mesh.CountElements, ref eUz);
-            MEM.Alloc((uint)mesh.CountElements, ref e_eddyViscosity);
+            MEM.Alloc(mesh.CountElements, ref eUy);
+            MEM.Alloc(mesh.CountElements, ref eUz);
+            MEM.Alloc(mesh.CountElements, ref e_eddyViscosity);
         }
 
         /// <summary>

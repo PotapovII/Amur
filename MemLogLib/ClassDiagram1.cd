@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MemLogLib.Diagnostician" Collapsed="true">
+    <Position X="4" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAASAAAAAAAAAAAAQAAAAAAAIAIggAKAAEAAA=</HashCode>
+      <FileName>Diagnostic\Diagnostician.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MemLogLib.Logger" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAgAAAAoAQACAIAAABAkAABAABAAQABABMHAAAQ=</HashCode>
+      <FileName>Diagnostic\Logger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MemLogLib.MessageItem" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAEAAIAAAECAAABAAAAAAAAIAAAASA=</HashCode>
+      <FileName>Diagnostic\MessageItem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MemLogLib.ERR" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>ERR.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MemLogLib.LOG" Collapsed="true">
+    <Position X="0.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AESAQCEgAAAAAAAAAABAhAAAAAACAgAQAEQAAIDEACA=</HashCode>
+      <FileName>LOG.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MemLogLib.MEM" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ggDwCQEAABAIAWyAkRQAIgpgEiEwAAQAQBgQAAAIAEA=</HashCode>
+      <FileName>MEM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MemLogLib.WR" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAjBAAAAYAAAAAggAACAAD0CwAAAAAAACAAAAAAACA=</HashCode>
+      <FileName>WR.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MemLogLib.Reflection.MLReflect" Collapsed="true">
+    <Position X="4" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgABAAAAAAAAAAAAAAABEEAAAAAAIAAAAA=</HashCode>
+      <FileName>Reflection\MLReflect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="MemLogLib.ILogger&lt;T&gt;" Collapsed="true">
+    <Position X="0.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAgAAAAgAQAAAIAAABAkAAAAABAAAABABMFAAAA=</HashCode>
+      <FileName>Diagnostic\ILogger.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MemLogLib.IMessageItem" Collapsed="true">
+    <Position X="2.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAIAAAEAAAAAAAAAAAAAIAAAAQA=</HashCode>
+      <FileName>Diagnostic\IMessageItem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="MemLogLib.TypeMessage" Collapsed="true">
+    <Position X="0.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAABAAAAAAABAAAIAAAECAAAA=</HashCode>
+      <FileName>Diagnostic\ILogger.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="MemLogLib.Delegate.SendLog" Collapsed="true">
+    <Position X="4" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MEMLogDelegate.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="MemLogLib.Delegate.SendHeader" Collapsed="true">
+    <Position X="2.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MEMLogDelegate.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="MemLogLib.Delegate.TestHandle" Collapsed="true">
+    <Position X="0.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MEMLogDelegate.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="MemLogLib.Delegate.MLoadParams" Collapsed="true">
+    <Position X="0.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>MEMLogDelegate.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

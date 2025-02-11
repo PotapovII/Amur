@@ -43,6 +43,8 @@ namespace CommonLib.Geometry
     using MemLogLib;
     using System.Drawing;
     using System.Diagnostics;
+    using System.Runtime.CompilerServices;
+
     /// <summary>
     /// Определение класса HPoint Точка в (2) мерной системе координат
     /// </summary>
@@ -87,7 +89,7 @@ namespace CommonLib.Geometry
             x = a.x;
             y = a.y;
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual HPoint Clone()
         {
             return new HPoint(x, y);
@@ -120,6 +122,7 @@ namespace CommonLib.Geometry
         }
 
         #region IComparable
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual int CompareTo(HPoint other)
         {
             if (1e10 * (x + 1) > y && 1e10 * (other.x + 1) > other.y)
@@ -131,11 +134,13 @@ namespace CommonLib.Geometry
             else
                 return x.CompareTo(other.x);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual int CompareTo(object obj)
         {
             HPoint other = obj as HPoint;
             return CompareTo(other);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
         {
             int hash = 19;
@@ -148,6 +153,7 @@ namespace CommonLib.Geometry
         /// <summary>
         /// Сравнение вещественных чисел
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Equals(IHPoint a, IHPoint b)
         {
             if (Math.Abs(a.X - b.X) < MEM.Error7 && Math.Abs(a.Y - b.Y) < MEM.Error7)
@@ -158,6 +164,7 @@ namespace CommonLib.Geometry
         /// <summary>
         /// Сравнение вещественных чисел
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Equals(HPoint a, HPoint b)
         {
             if (Math.Abs(a.x - b.x) < MEM.Error7 && Math.Abs(a.y - b.y) < MEM.Error7)
@@ -165,60 +172,59 @@ namespace CommonLib.Geometry
             else
                 return false;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Equals(HPoint p)
         {
             return Equals(this, p);
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual string ToString(string format = "F4")
         {
             return x.ToString(format) + " " + y.ToString(format) + " ";
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static HPoint Parse(string str)
         {
             string[] ls = (str.Trim()).Split(' ');
             HPoint knot = new HPoint(double.Parse(ls[0], MEM.formatter), double.Parse(ls[1], MEM.formatter));
             return knot;
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator PointF(HPoint p)
         {
             return new PointF((float)p.x, (float)p.y);
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator HPoint(PointF p)
         {
             return new HPoint((float)p.X, (float)p.Y);
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Length(double x1, double y1, double x2, double y2)
         {
             return Math.Sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Length2(double x1, double y1, double x2, double y2)
         {
             return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Length(HPoint a, HPoint b)
         {
             return Math.Sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Length2(HPoint a, HPoint b)
         {
             return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
-        }
-        // расстояние мж точкой текущей точкой и точкой b
-        private double LengthAB(HPoint b)
-        {
-            return Math.Sqrt((x - b.x) * (x - b.x) + (y - b.y) * (y - b.y));
         }
         /// <summary>
         /// длина радиус вектора для точки а
         /// </summary>
         /// <param name="a"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double Scalar(HPoint a)
         {
             return Math.Sqrt(x * a.x + y * a.y);
@@ -229,14 +235,28 @@ namespace CommonLib.Geometry
         /// <param name="Vector1">Вектор 1</param>
         /// <param name="Vector2">Вектор 2</param>
         /// <returns></returns>
-        public static double Cross(HPoint Vector1, HPoint Vector2)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double Cross(HPoint a, HPoint b)
         {
-            return Vector1.x * Vector2.y - Vector1.y * Vector2.x;
+            return a.x * b.y - a.y * b.x;
         }
+        /// <summary>
+        /// Скалярное произведение.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double Dot(HPoint a, HPoint b)
+        {
+            return a.X * b.X + a.Y * b.Y;
+        }
+
         /// <summary>
         /// норма или длинна вектора  |v|   ||v|| 
         /// </summary>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double Length()
         {
             return Math.Sqrt(x * x + y * y);
@@ -246,6 +266,7 @@ namespace CommonLib.Geometry
         /// с направлением текущего
         /// </summary>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public HPoint GetNormalize()
         {
             HPoint result = new HPoint();
@@ -269,6 +290,7 @@ namespace CommonLib.Geometry
         /// с направлением текущего
         /// </summary>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public HPoint GetNormalize(ref double length)
         {
             HPoint result = new HPoint();
@@ -291,6 +313,7 @@ namespace CommonLib.Geometry
         /// нахождение единичного вектора направление которого совпадает 
         /// с направлением текущего
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Normalize()
         {
             double length = Length();
@@ -309,6 +332,7 @@ namespace CommonLib.Geometry
         /// Получить орт к вектору
         /// </summary>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public HPoint GetOrt()
         {
             HPoint result = new HPoint();
@@ -331,6 +355,7 @@ namespace CommonLib.Geometry
         /// Получить внешний (правый) ортогональный вектор 
         /// </summary>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public HPoint GetOrtogonalRight()
         {
             return new HPoint(y, -x);
@@ -339,60 +364,72 @@ namespace CommonLib.Geometry
         /// Получить внутренний (левый) ортогональный вектор 
         /// </summary>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public HPoint GetOrtogonalLeft()
         {
             return new HPoint(-y, x);
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static HPoint operator *(double scal, HPoint b)
         {
             return new HPoint(scal * b.x, scal * b.y);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double operator *(HPoint a, HPoint b)
         {
             return (a.x * b.x + a.y * b.y);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static HPoint operator *(HPoint b, double a)
         {
             return new HPoint(a * b.x, a * b.y);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static HPoint operator +(HPoint a, HPoint b)
         {
             return new HPoint(a.x + b.x, a.y + b.y);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static HPoint operator +(double a, HPoint b)
         {
             return new HPoint(a + b.x, a + b.y);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static HPoint operator +(HPoint b, double a)
         {
             return new HPoint(a + b.x, a + b.y);
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static HPoint operator -(HPoint b)
         {
             return new HPoint(-b.x, -b.y);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static HPoint operator -(HPoint a, HPoint b)
         {
             return new HPoint(a.x - b.x, a.y - b.y);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static HPoint operator -(double a, HPoint b)
         {
             return new HPoint(a - b.x, a - b.y);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static HPoint operator -(HPoint b, double a)
         {
             return new HPoint(b.x - a, b.y - a);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static HPoint operator /(HPoint a, HPoint b)
         {
             return new HPoint(a.x / b.x, a.y / b.y);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static HPoint operator /(double a, HPoint b)
         {
             return new HPoint(a / b.x, a / b.y);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static HPoint operator /(HPoint b, double a)
         {
             return new HPoint(b.x / a, b.y / a);
@@ -401,8 +438,9 @@ namespace CommonLib.Geometry
         /// Создает копию объекта
         /// </summary>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual IHPoint IClone() => new HPoint(this);
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static HPoint Interpolation(HPoint A, HPoint B, double s)
         {
             double N1 = 1 - s;

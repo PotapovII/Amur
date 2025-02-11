@@ -119,7 +119,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         public int nfmax = 7;
         ///// <summary>
         /// Размерность модели  
-        /// колиество переменных задачи: u, v, pc, t, tke, dis
+        /// колиество переменных задачи: _time, v, pc, t, tke, dis
         /// </summary>
         [DisplayName("Колиество переменных")]
         [Description("Колиество переменных задачи")]

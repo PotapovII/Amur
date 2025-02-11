@@ -84,7 +84,7 @@ namespace BLLib
                 for (int i = 0; i < N; i++)
                 {
                     dx = x[i + 1] - x[i];
-                    
+
                     dp = (ps[i + 1] - ps[i]) / dx;
                     Gs[idxTransit][i] = G0[i] * A[i];
                     Gs[idxZeta][i] = -G0[i] * B[i] * dZeta[i];
@@ -106,29 +106,11 @@ namespace BLLib
                 MEM.Alloc2DClear(3, Count, ref dGs);
                 // Расчет коэффициентов  на грани  P--e--E
                 BuilderABC();
-                for (int i = 0; i < Count-1; i++)
+                for (int i = 0; i < Count - 1; i++)
                 {
-                    //mtau = Math.Abs(tau[i]);
-                    //if (mtau < MEM.Error10)
-                    //{
-                    //    Gs[idxTransit][i] = 0;
-                    //    Gs[idxZeta][i] = 0;
-                    //    Gs[idxAll][i] = 0;
-                    //}
-                    //else
-                    //{
-                    //    chi = Math.Sqrt(tau0 / mtau);
-                    //    dx = x[i + 1] - x[i];
-                    //    //dz = (Zeta0[i + 1] - Zeta0[i]) / dx;
-                    //    dp = (ps[i + 1] - ps[i]) / dx;
-                    //    A[i] = Math.Max(0, 1 - Math.Sqrt(chi));
-                    //    B[i] = (chi / 2 + A[i]) / tanphi;
-                        // косинус гамма
-                        //CosGamma[i] = Math.Sqrt(1 / (1 + dz * dz));
-                        Gs[idxTransit][i] = G0[i] * A[i];
-                        Gs[idxZeta][i] = -G0[i] * B[i] * dZeta[i];
-                        Gs[idxAll][i] = Gs[idxTransit][i] + Gs[idxZeta][i];
-                    //}
+                    Gs[idxTransit][i] = G0[i] * A[i];
+                    Gs[idxZeta][i] = -G0[i] * B[i] * dZeta[i];
+                    Gs[idxAll][i] = Gs[idxTransit][i] + Gs[idxZeta][i];
                 }
                 for (int i = 0; i < N - 1; i++)
                 {
@@ -141,7 +123,7 @@ namespace BLLib
         }
 
         /// <summary>
-        /// Формирование данных для отрисовки данных несвязанных/связанных 
+        /// Формирование данных для отрисовки полей несвязанных/связанных 
         /// с сеткой IMesh со сороны задачи
         /// </summary>
         /// <param name="sp">контейнер данных</param>
@@ -149,10 +131,12 @@ namespace BLLib
         {
             if (sp != null)
             {
+                // плотность жидкости
                 double rho_w = SPhysics.rho_w;
+                // Рауз
                 double RaC = SPhysics.PHYS.RaC;
+                // гидравлическая крупеость
                 double Ws = SPhysics.PHYS.Ws;
-
                 for (int i = 0; i < X.Length; i++)
                 {
                     X[i] = 0.5 * (x[i + 1] + x[i]);
@@ -301,32 +285,19 @@ namespace BLLib
                 this.tau = tau;
                 this.P = P;
                 MEM.Alloc(Zeta0.Length, ref Zeta);
-                //if (BConditions?.GetValueNeu().Length == 2)
-                //{
-                //    TypeBoundCond[] BCType = mesh.GetBoundElementsType();
-                //    double[] BCValue = BConditions.GetValueDir();
-                //        // коррекция ГГУ
-                //        if (BCType[0] == TypeBoundCond.Dirichlet)
-                //            Zeta0[0] = BCValue[1];
-                //        if (BCType[1] == TypeBoundCond.Dirichlet)
-                //            Zeta0[N] = BCValue[3];
-                //}
-                //else
-                {
-                    // старый способ
-                    // коррекция ГГУ
-                    if (BCondIn.typeBC == TypeBoundCond.Dirichlet)
-                        Zeta0[0] = BCondIn.valueBC;
-                    if (BCondOut.typeBC == TypeBoundCond.Dirichlet)
-                        Zeta0[N] = BCondOut.valueBC;
-                }
+
+                // коррекция ГГУ
+                if (BCondIn.typeBC == TypeBoundCond.Dirichlet)
+                    Zeta0[0] = BCondIn.valueBC;
+                if (BCondOut.typeBC == TypeBoundCond.Dirichlet)
+                    Zeta0[N] = BCondOut.valueBC;
                 // Расчет деформаций дна от влекомых наносов
                 if (blm == TypeBLModel.BLModel_2014 || blm == TypeBLModel.BLModel_2021)
                 {
                     ConvertElemToNode(P, ref ps, gamma);
                 }
                 // +2024:
-                // Если расходы концентрации заданны симмируем их для вссех фракций
+                // Если расходы концентрации заданны симмируем их для всех фракций
                 if (CS != null)
                 {
                     for (int i = 0; i < N; i++)
@@ -337,7 +308,6 @@ namespace BLLib
                     }
                 }
                 // Расчет производных от геометрии
-
                 // Расчет коэффициентов  на грани  P--e--E
                 // цикл по интервалам
                 BuilderABC();
@@ -348,7 +318,6 @@ namespace BLLib
                 DryWet[Count - 1] = DryWetEelm[N - 1];
                 // цикл по внутренним узлам 
                 // расчет коэффициентов схемы для вунутренних узлов
-
                 for (int i = 1; i < Count - 1; i++)
                 {
                     double dGs = GCx[i] - GCx[i - 1];
@@ -360,13 +329,13 @@ namespace BLLib
                     if (DryWet[i] == 0)
                     {
 
-                        if (dGs < 0 && Math.Abs(dGs/dxp) > MEM.Error8)
+                        if (dGs < 0 && Math.Abs(dGs / dxp) > MEM.Error8)
                         {
                             AP0[i] = dxp / dtime;
                             AE[i] = 0;
                             AW[i] = 0;
                             AP[i] = 1;
-                            S[i] =  - dGs/AP0[i] +  Zeta0[i];
+                            S[i] = -dGs / AP0[i] + Zeta0[i];
                         }
                         else
                         {
@@ -383,7 +352,7 @@ namespace BLLib
                         AW[i] = Math.Abs(G0[i - 1] * B[i - 1]) / dxw;
                         AP[i] = AE[i] + AW[i] + AP0[i];
                         // +2024:  - (GCx[i] - GCx[i-1])
-                        S[i] = - (G0[i] * A[i] - G0[i - 1] * A[i - 1]) - dGs + AP0[i] * Zeta0[i];
+                        S[i] = -(G0[i] * A[i] - G0[i - 1] * A[i - 1]) - dGs + AP0[i] * Zeta0[i];
 
                         if (blm != TypeBLModel.BLModel_1991)
                         {
@@ -394,101 +363,49 @@ namespace BLLib
                         }
                     }
                 }
-                // Новый формат данных определяющий ГУ в областях произвольной формы
-                //if (BConditions != null)
-                //{
-                //    TypeBoundCond[] BCType = mesh.GetBoundElementsType();
-                //    double[] BCValue = BConditions.GetValueDir();
-                //    // коррекция ГГУ
-                //    if (BCType[0] == TypeBoundCond.Neumann || BCType[0] == TypeBoundCond.Transit)
-                //    {
-                //        if (DryWet[0] == 0) // если берег сухой/не размываемый (автоматом условия Дирихле)
-                //        {
-                //            AP[0] = 1;
-                //            S[0] = Zeta0[0];
-                //        }
-                //        else // затопленный берег
-                //        {
-                //            if (BCondIn.typeBC == TypeBoundCond.Transit)
-                //            {
-                //                S[0] = 0;
-                //            }
-                //            else
-                //            {
-                //                // + GCx[0] 2024
-                //                Gtran_in = G0[0] * A[0] + GCx[0];
-                //                S[0] = BCValue[0] - Gtran_in;
-                //            }
-                //            AE[0] = AW[1];
-                //            AP[0] = AW[1];
-                //        }
-                //    }
-                //    if (BCType[1] == TypeBoundCond.Neumann || BCType[1] == TypeBoundCond.Transit)
-                //    {
-                //        if (DryWet[N] == 0) // если берег сухой/не размываемый (автоматом условия Дирихле)
-                //        {
-                //            AP[N] = 1;
-                //            S[N] = Zeta0[N];
-                //        }
-                //        else // исток
-                //        {
-                //            // +2024:  + GCx[N - 1]
-                //            Gtran_out = G0[N - 1] * A[N - 1] + GCx[N - 1];
-                //            AP[N] = AE[N - 1];
-                //            AW[N] = AE[N - 1];
-                //            if (BCType[1] == TypeBoundCond.Transit)
-                //                S[N] = 0;
-                //            else
-                //                S[N] = -(BCValue[1] - Gtran_out);
-                //        }
-                //    }
-
-                //}
-                //else
+                // ВХОД
+                // граничные узлы
+                if (BCondIn.typeBC == TypeBoundCond.Neumann || BCondOut.typeBC == TypeBoundCond.Transit)
                 {
-                    // Старый формат данных определяющий ГУ в 1D областях
-                    // граничные узлы
-                    if (BCondIn.typeBC == TypeBoundCond.Neumann || BCondOut.typeBC == TypeBoundCond.Transit)
+                    if (DryWet[0] == 0) // если берег сухой/не размываемый (автоматом условия Дирихле)
                     {
-                        if (DryWet[0] == 0) // если берег сухой/не размываемый (автоматом условия Дирихле)
-                        {
-                            AP[0] = 1;
-                            S[0] = Zeta0[0];
-                        }
-                        else // затопленный берег
-                        {
-                            if (BCondIn.typeBC == TypeBoundCond.Transit)
-                            {
-                                S[0] = 0;
-                            }
-                            else
-                            {
-                                // +2024:  + GCx[0]
-                                Gtran_in = G0[0] * A[0] + GCx[0];
-                                S[0] = BCondIn.valueBC - Gtran_in;
-                            }
-                            AE[0] = AW[1];
-                            AP[0] = AW[1];
-                        }
+                        AP[0] = 1;
+                        S[0] = Zeta0[0];
                     }
-                    if (BCondOut.typeBC == TypeBoundCond.Neumann || BCondOut.typeBC == TypeBoundCond.Transit)
+                    else // затопленный берег
                     {
-                        if (DryWet[N] == 0) // если берег сухой/не размываемый (автоматом условия Дирихле)
+                        if (BCondIn.typeBC == TypeBoundCond.Transit)
                         {
-                            AP[N] = 1;
-                            S[N] = Zeta0[N];
+                            S[0] = 0;
                         }
-                        else // исток
+                        else
                         {
-                            // +2024:  + GCx[N - 1]
-                            Gtran_out = G0[N - 1] * A[N - 1] + GCx[N - 1];
-                            AP[N] = AE[N - 1];
-                            AW[N] = AE[N - 1];
-                            if (BCondOut.typeBC == TypeBoundCond.Transit)
-                                S[N] = 0;
-                            else
-                                S[N] = -(BCondOut.valueBC - Gtran_out);
+                            // +2024:  + GCx[0]
+                            Gtran_in = G0[0] * A[0] + GCx[0];
+                            S[0] = BCondIn.valueBC - Gtran_in;
                         }
+                        AE[0] = AW[1];
+                        AP[0] = AW[1];
+                    }
+                }
+                // ВЫВХОД
+                if (BCondOut.typeBC == TypeBoundCond.Neumann || BCondOut.typeBC == TypeBoundCond.Transit)
+                {
+                    if (DryWet[N] == 0) // если берег сухой/не размываемый (автоматом условия Дирихле)
+                    {
+                        AP[N] = 1;
+                        S[N] = Zeta0[N];
+                    }
+                    else // исток
+                    {
+                        // +2024:  + GCx[N - 1]
+                        Gtran_out = G0[N - 1] * A[N - 1] + GCx[N - 1];
+                        AP[N] = AE[N - 1];
+                        AW[N] = AE[N - 1];
+                        if (BCondOut.typeBC == TypeBoundCond.Transit)
+                            S[N] = 0;
+                        else
+                            S[N] = -(BCondOut.valueBC - Gtran_out);
                     }
                 }
                 // Прогонка
@@ -500,12 +417,6 @@ namespace BLLib
                 // Сглаживание дна по лавинной моделе
                 if (isAvalanche == AvalancheType.AvalancheSimple)
                     avalanche.Lavina(ref Zeta);
-
-                //double[] dZ = new double[Zeta.Length];
-                //for (int j = 0; j < Zeta.Length; j++)
-                //    dZ[j] = Zeta[j] - Zeta0[j];
-                //LOG.Print("Zeta", Zeta, 6);
-
                 // переопределение начального значения zeta 
                 // для следующего шага по времени
                 for (int j = 0; j < Zeta.Length; j++)
@@ -712,8 +623,6 @@ namespace BLLib
         {
             double tanphi = SPhysics.PHYS.tanphi;
             double tau0 = SPhysics.PHYS.tau0;
-         
-
 
             BedLoadParams blp = new BedLoadParams();
             blp.blm = TypeBLModel.BLModel_1991;

@@ -5,7 +5,7 @@
 //---------------------------------------------------------------------------
 //               кодировка : 04.06.2021 Потапов И.И.
 //---------------------------------------------------------------------------
-namespace NPRiverLib.APRiver_2XYD.River2DSW
+namespace NPRiverLib.APRiver2XYD.River2DSW
 {
     using MemLogLib;
     using System;

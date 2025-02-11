@@ -21,6 +21,7 @@ namespace RenderLib
     using MeshLib.SaveData;
     using GeometryLib;
     using MeshLib.Locators;
+    using GeometryLib.Geometry;
 
     /// <summary>
     ///ОО: Компонент визуализации данных (сетки, и сеточных полей, кривых (устарело) ) 

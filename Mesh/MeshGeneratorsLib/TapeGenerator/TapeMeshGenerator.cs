@@ -39,13 +39,10 @@ namespace MeshGeneratorsLib.TapeGenerator
             int CountElems = 2 * (Nx - 1) * (Ny - 1);
 
             MEM.Alloc(CountElems, ref mesh.AreaElems, "mesh.AreaElems");
-            //MEM.Alloc(CountElems, ref mesh.AreaElemsFFType, "mesh.AreaElemsFFType");
-
             MEM.Alloc(counter, ref mesh.BoundElems, "mesh.BoundElems");
             MEM.Alloc(counter, ref mesh.BoundElementsMark, "mesh.BoundElementsMark");
             MEM.Alloc(counter, ref mesh.BoundKnots, "mesh.BoundKnots");
             MEM.Alloc(counter, ref mesh.BoundKnotsMark, "mesh.BoundKnotsMark");
-
             MEM.Alloc(counter, ref mesh.CoordsX, "mesh.CoordsX");
             MEM.Alloc(counter, ref mesh.CoordsY, "mesh.CoordsY");
 
@@ -58,7 +55,7 @@ namespace MeshGeneratorsLib.TapeGenerator
                 mesh.CoordsY[k] = zeta[i]; 
                 map[i, 0] = k++;
                 mesh.CoordsX[k] = xx[i];
-                mesh.CoordsY[k] = wl[i] - zeta[i];
+                mesh.CoordsY[k] = wl[i];// - zeta[i];
                 map[i, 1] = k++;
             }
 

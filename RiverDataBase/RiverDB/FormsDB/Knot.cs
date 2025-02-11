@@ -1,11 +1,17 @@
-﻿using System;
-using System.Data;
-using System.Linq;
-using ConnectLib;
-using System.Windows.Forms;
-
+﻿//---------------------------------------------------------------------------
+//                         проектировщик:
+//                           Потапов И.И.
+//---------------------------------------------------------------------------
+//        кодировка : 03.10.2020 Потапов И.И. & Потапов Д.И.
+//---------------------------------------------------------------------------
 namespace RiverDB.FormsDB
 {
+    using System;
+    using System.Data;
+    using System.Linq;
+    using ConnectLib;
+    using System.Windows.Forms;
+
     public partial class Knot : Form
     {
         KnotUp form;

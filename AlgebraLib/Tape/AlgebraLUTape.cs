@@ -114,11 +114,30 @@ namespace AlgebraLib
             for (int j = 0; j < Adress.Length; j++)
             {
                 nh = (int)Adress[j] - nv + FHL;
-                if (nh >= 0)
-                    Matrix[nv][nh] += ColElems[j];
+                if (nh >= 0 && nh < FH)
+                    Matrix[nv][nh] = ColElems[j];
             }
             Right[IndexRow] = R;
         }
+        /// <summary>
+        /// Получить строку (не для всех решателей)
+        /// </summary>
+        /// <param name="IndexRow">Индекс получемой строки системы</param>
+        /// <param name="ColElems">Коэффициенты строки системы</param>
+        /// <param name="R">Значение правой части</param>
+        public override void GetStringSystem(uint IndexRow, ref double[] ColElems, ref double R)
+        {
+            MEM.AllocClear(N, ref ColElems);
+            int i = (int)IndexRow;
+            for (int j = 0; j < FN; j++)
+            {
+                int jp = j - i + FHL;
+                if (jp < FH && jp > -1)
+                    ColElems[j] = Matrix[i][jp];
+            }
+            R = Right[IndexRow];
+        }
+
         /// <summary>
         /// Удовлетворение ГУ приближенное
         /// </summary>
@@ -372,7 +391,9 @@ namespace AlgebraLib
         /// <summary>
         /// Вывод САУ на КОНСОЛЬ
         /// </summary>
-        public override void Print(int flag = 0)
+        /// <param name="flag">количество знаков мантисы</param>
+        /// <param name="color">длина цветового блока</param>
+        public override void Print(int flag = 0, int color = 1)
         {
             double V = 0;
             int dFH = FH;

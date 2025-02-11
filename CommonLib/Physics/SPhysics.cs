@@ -43,7 +43,10 @@ namespace CommonLib.Physics
     using CommonLib.Delegate;
     using CommonLib.Mesh;
     using System.Linq;
-    
+    using CommonLib.Function;
+    using System.Xml.Linq;
+    using CommonLib.EddyViscosity;
+
 
     /// <summary>
     /// Турбулентная вязкость 
@@ -53,7 +56,7 @@ namespace CommonLib.Physics
     /// <param name="typeEddyViscosity">способ расчета динамической скорости</param>
     /// <param name="U">контекстное поле</param>
     /// <param name="J">уклон русла</param>
-    public delegate void CalkTurbVisc(ref double[] mu_t, TypeTask typeTask, IMWCrossSection wMesh, 
+    public delegate void CalkTurbVisc(ref double[] mu_t, TypeTask typeTask, IMWRiver wMesh, 
                                        ECalkDynamicSpeed typeEddyViscosity, double[] U,  double J = 0);
     /// <summary>
     /// ОО: Источник физических параметров русловых задач (патерн одиночка)
@@ -102,6 +105,7 @@ namespace CommonLib.Physics
                         avtoKappa = LOG.GetBool(file.ReadLine());
 
                         wsType = (EWsType)LOG.GetInt(file.ReadLine());
+                        particleForms = (ParticleForms)LOG.GetInt(file.ReadLine());
                         сbType = (ECbType)LOG.GetInt(file.ReadLine());
                         turbViscType = (ETurbViscType)LOG.GetInt(file.ReadLine());
                     }
@@ -143,6 +147,7 @@ namespace CommonLib.Physics
             K_filtr = ps.K_filtr;
             Water_f = ps.Water_f;
             wsType = ps.wsType;
+            particleForms = ps.particleForms;
             сritTauType = ps.сritTauType;
             avtoPhi = ps.avtoPhi;
             avtoKappa = ps.avtoKappa;
@@ -223,7 +228,11 @@ namespace CommonLib.Physics
         [Category("Настройка физической модели")]
         [TypeConverter(typeof(MyEnumConverter))]
         public EWsType wsType { get; set; }
-
+        [DisplayName("Форма частиц")]
+        [Description("Флаг формы частиц для модели расчета гидравлической крупности Ws")]
+        [Category("Настройка физической модели")]
+        [TypeConverter(typeof(MyEnumConverter))]
+        public ParticleForms particleForms { get; set; }
         /// <summary>
         /// Флаг для модели алгебраической турбулентной вязкости
         /// </summary>
@@ -332,6 +341,18 @@ namespace CommonLib.Physics
         [Description("Удельная теплоемкость потока , Дж/К")]
         [Category("Физика")]
         public double Cp { get; set; }
+        /// <summary>
+        /// Удельная теплоемкость потока 
+        /// </summary>
+        [DisplayName("Критические напряжения на ровном дне")]
+        [Category("Физика")]
+        public double tau0 { get; set; } = 0;
+        /// <summary>
+        /// Удельная теплоемкость потока 
+        /// </summary>
+        [DisplayName("Критические Шильдс")]
+        [Category("Физика")]
+        public double theta0 { get; set; } = 0;
         #endregion
         /// <summary>
         /// Придонная концентрация взвешенных наносов
@@ -341,7 +362,6 @@ namespace CommonLib.Physics
         /// Расчет турбулентной вязкости
         /// </summary>
         public CalkTurbVisc calkTurbVisc;
-
         #region Вычисляемые параметры задачи
         /// <summary>
         /// безразмерный диаметр частиц
@@ -363,14 +383,6 @@ namespace CommonLib.Physics
         /// тангенс угла phi
         /// </summary>
         public double tanphi;
-        /// <summary>
-        /// критические напряжения на ровном дне
-        /// </summary>
-        public double tau0 = 0;
-        /// <summary>
-        /// критические напряжения на ровном дне
-        /// </summary>
-        public double theta0 = 0;
         /// <summary>
         /// относительная плотность
         /// </summary>
@@ -417,14 +429,10 @@ namespace CommonLib.Physics
         /// Критическая динамическая скорость
         /// </summary>
         public double u_cr;
-        ///// <summary>
-        ///// Коэффициент Шези от зернистой шероховатости дна
-        ///// </summary>
-        //public double Cs_d50;
-        ///// <summary>
-        ///// Коэффициент Шези от волновй шероховатости дна
-        ///// </summary>
-        //public double Cs_wave;
+        /// <summary>
+        /// Константа формы частиц Гришанина для определения Ws
+        /// </summary>
+        double Const_Grishanin = 1.2;
         /// <summary>
         /// Пересчет зависимых параметров задачи
         /// </summary>
@@ -452,6 +460,22 @@ namespace CommonLib.Physics
             Fa0 = tanphi * (rho_s - rho_w) * GRAV;
             // 
             normaTheta = (rho_s - rho_w) * GRAV * d50;
+            // Флаг формы частиц для модели расчета гидравлической крупности
+            switch (particleForms)
+            {
+                case ParticleForms.Spherical:
+                    Const_Grishanin = 1.2;
+                    break;
+                case ParticleForms.Polyhedral:
+                    Const_Grishanin = 1.05;
+                    break;
+                case ParticleForms.Flattened:
+                    Const_Grishanin = 0.75;
+                    break;
+                case ParticleForms.Lamellar:
+                    Const_Grishanin = 0.5;
+                    break;
+            }
             // критические напряжения на ровном дне
             switch (сritTauType)
             {
@@ -480,10 +504,12 @@ namespace CommonLib.Physics
             // модели расчета гидравлической крупности
             switch (wsType)
             {
-                case EWsType.Ruby: Ws = Ws_Ruby(); break;
+                case EWsType.Arkhangelsky: Ws = Ws_Arkhangelsky(); break;
+                case EWsType.Grishanin: Ws = Ws_Grishanin(); break;
                 case EWsType.Goncharova: Ws = Ws_Goncharova(); break;
-                case EWsType.Sha: Ws = Ws_Sha(); break;
                 case EWsType.Ibade_Zade: Ws = Ws_Ibade_Zade(); break;
+                case EWsType.Ruby: Ws = Ws_Ruby(); break;
+                case EWsType.Sha: Ws = Ws_Sha(); break;
                 case EWsType.Van_Rijn: Ws = Ws_Van_Rijn(); break;
                 default: Ws = Ws_Van_Rijn(); break;
             }
@@ -514,7 +540,7 @@ namespace CommonLib.Physics
         /// <summary>
         /// модели алгебраической турбулентной вязкости
         /// </summary>
-        protected void SetTurbViscModel()
+        void SetTurbViscModel()
         {
             switch (_turbViscType)
             {
@@ -554,8 +580,6 @@ namespace CommonLib.Physics
                 case ETurbViscType.PotapobII_2024:
                     calkTurbVisc = calkTurbVisc_PotapovII_2024;
                     break;
-                    
-
             }
         }
         #endregion
@@ -568,7 +592,8 @@ namespace CommonLib.Physics
             phi = 30;
             //
             //d50 = 0.00071;
-            d50 = 0.00022;
+            //d50 = 0.00022;
+            d50 = 0.002;
             // 
 
             epsilon = 0.35;
@@ -585,7 +610,9 @@ namespace CommonLib.Physics
             
 
             сbType = ECbType.Van_Rijn_Leo_1984;
-            wsType = EWsType.Ruby;
+            wsType = EWsType.Goncharova;
+            particleForms = ParticleForms.Flattened;
+
             сritTauType = ECritTauType.Petrov2001;
             _turbViscType = ETurbViscType.Boussinesq1865;
 
@@ -699,14 +726,73 @@ namespace CommonLib.Physics
             //else
             //    return 10* ( Math.Sqrt(1 + (10e-6) * Db * Db * Db) - 1) * Vd;
         }
-        #endregion
-
-        #region Вычисление придонной концентрации
         /// <summary>
-        /// Вычисление придонной концентрации Потапов И И (2024)
+        /// гидравлическая крупность по формуле Гришанина К В (1979)
         /// </summary>
         /// <returns></returns>
-        double A = 1.0 / 22.5;
+        public double Ws_Grishanin()
+        {
+            return Const_Grishanin * Math.Sqrt(Db) * Vd;
+        }
+        /// <summary>
+        /// гидравлическая крупность по таблице Архангельского Б.В.(1935)
+        /// при температуре 15 С
+        /// </summary>
+        /// <returns></returns>
+        public double Ws_Arkhangelsky()
+        {
+            double[] d_50 = { 0.0001, 0.0002, 0.0003, 0.0004, 0.00050, 0.00075, 0.001, 0.0035 };
+            double[] Ws_a = { 0.0057, 0.0170, 0.0321, 0.0461, 0.0567, 0.0858, 0.1115, 0.254 };
+            IFunction1D WW = new DigFunction1D("A", d_50, Ws_a);
+            return WW.FunctionValue(d50);
+        }
+        public double Ws_Sokolov()
+        {
+            // до 0.3 мм по Архангельскому Б.В.
+            // Источник Шамов Г.И. Речные наносы 1959 ст 64
+            IFunction1D WW = null;
+            switch (particleForms)
+            {
+                case ParticleForms.Spherical: // округленная форма частиц
+                    {
+                        double[] d_50 = { 0.0001, 0.0002, 0.0003, 0.0004, 0.0005, 0.0007, 0.0009, 0.00125, 0.00225, 0.00275, 0.0035 };
+                        double[] Ws_a = { 0.008,  0.021,  0.0321, 0.051,  0.06,   0.0111, 0.0125, 0.148,   0.214,   0.2211,  0.254 };
+                        WW = new DigFunction1D("A", d_50, Ws_a);
+                    }
+                    break;
+                case ParticleForms.Polyhedral: // многогранная форма частиц
+                    {
+                        double[] d_50 = { 0.0001, 0.0002, 0.0003, 0.0004, 0.0007, 0.0009, 0.00125, 0.00225, 0.00275, 0.0035 };
+                        double[] Ws_a = { 0.0057, 0.0170, 0.0321, 0.047,  0.0097, 0.0118, 0.131,   0.196,   0.1996,  0.229 };
+                        WW = new DigFunction1D("A", d_50, Ws_a);
+                    }
+                    break;
+                case ParticleForms.Flattened: // удлиненная форма частиц
+                    {
+                        double[] d_50 = { 0.0001, 0.0002, 0.0003, 0.0005, 0.0007, 0.0009, 0.00125, 0.00225, 0.00275, 0.0035 };
+                        double[] Ws_a = { 0.0057, 0.021, 0.0321, 0.061,  0.0105, 0.0115, 0.133,   0.167,   0.19,    0.193 };
+                        WW = new DigFunction1D("A", d_50, Ws_a);
+                    }
+                    break;
+                case ParticleForms.Lamellar: // пластинчатая форма частиц
+                    {
+                        double[] d_50 = { 0.0001, 0.0002, 0.0003, 0.0004, 0.0007, 0.0009, 0.00125, 0.00225, 0.00275, 0.0035 };
+                        double[] Ws_a = { 0.0057, 0.0170, 0.0321, 0.054,  0.07,   0.087,  0.096,   0.123,   0.1305,  0.146  };
+                        WW = new DigFunction1D("A", d_50, Ws_a);
+                    }
+                    break;
+            }
+            return WW.FunctionValue(d50);
+        }
+
+    #endregion
+
+    #region Вычисление придонной концентрации
+    /// <summary>
+    /// Вычисление придонной концентрации Потапов И И (2024)
+    /// </summary>
+    /// <returns></returns>
+    double A = 1.0 / 22.5;
         double B = 1.0 / 110;
         public double Cb_PotapovII_2024(double tau)
         {
@@ -801,7 +887,7 @@ namespace CommonLib.Physics
         #endregion
 
         #region Вычисление динамической скорости в створе канала
-        public double DynamicSpeedCrossJ(IMWCross wm, double J)
+        public double DynamicSpeedCrossJ(IMeshWrapper wm, double J)
         {
             double Area = wm.GetArea();
             double Bottom = wm.GetBottom();
@@ -810,7 +896,7 @@ namespace CommonLib.Physics
             return dynamicSpeed;
         }
 
-        public double DynamicSpeedCrossKs(IMWCross wm, double[] U)
+        public double DynamicSpeedCrossKs(IMeshWrapper wm, double[] U)
         {
             double Area = wm.GetArea();
             double Bottom = wm.GetBottom();
@@ -824,7 +910,7 @@ namespace CommonLib.Physics
         /// <param name="wm"></param>
         /// <param name="U"></param>
         /// <returns></returns>
-        public double DynamicSpeedCrossCs(IMWCross wm, double[] U)
+        public double DynamicSpeedCrossCs(IMeshWrapper wm, double[] U)
         {
             double Area = 0;
             // Расход
@@ -846,24 +932,25 @@ namespace CommonLib.Physics
         /// </summary>
         
         public void calkTurbVisc_Boussinesq1865(ref double[] mu_t, TypeTask typeTask,
-            IMWCrossSection _wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
+            IMWRiver wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
         {
-            IMesh mesh = _wMesh.GetMesh();
+            IMesh mesh = wMesh.GetMesh();
             double mu_t0;
             double a = 22;
             if (typeTask == TypeTask.streamY1D)
             {
-                IMWCross wMesh = (IMWCross)_wMesh;
                 double Area = wMesh.GetArea();
                 double Bottom = wMesh.GetBottom();
                 double H0 = Area / Bottom;
                 double mCs = Cs(H0);
                 double Q = wMesh.RiverFlowRate(Vx, ref Area);
                 double U0;
-                if (typeEddyViscosity == ECalkDynamicSpeed.u_start_J)
+                //if (typeEddyViscosity == ECalkDynamicSpeed.u_start_U && Q > 0)
+                //    U0 = Q / Area;
+                //else
                     U0 = Math.Sqrt(SPhysics.GRAV * H0 * J) * mCs;
-                else
-                    U0 = Q / Area;
+                
+                    
                 mu_t0 = rho_w * U0 * H0 * Math.Sqrt(GRAV) / (2 * a * mCs);
             }
             else
@@ -881,11 +968,11 @@ namespace CommonLib.Physics
         /// Профиль турбулентной вязкости Караушев 1977
         /// </summary>
         public void calkTurbVisc_Karaushev1977(ref double[] mu_t, TypeTask typeTask,
-            IMWCrossSection wMesh,ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
+            IMWRiver wMesh,ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
         {
             IMesh mesh = wMesh.GetMesh();
             double[] Hp = wMesh.GetHp();
-            IMWCross wm = (IMWCross)wMesh;
+            IMeshWrapper wm = (IMeshWrapper)wMesh;
             double Area = wm.GetArea();
             double Bottom = wm.GetBottom();
             double R0 = Area / Bottom;
@@ -906,7 +993,7 @@ namespace CommonLib.Physics
         /// "Профиль турбулентной вязкости Прандтль 1934
         /// </summary>
         public void calkTurbVisc_Prandtl1934(ref double[] mu_t, TypeTask typeTask,
-            IMWCrossSection wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
+            IMWRiver wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
         {
             IMesh mesh = wMesh.GetMesh();
             double[] Hp = wMesh.GetHp();
@@ -934,12 +1021,12 @@ namespace CommonLib.Physics
         /// Профиль турбулентной вязкости Великанова 1948
         /// </summary>
         public void calkTurbVisc_Velikanov1948(ref double[] mu_t, TypeTask typeTask,
-            IMWCrossSection wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
+            IMWRiver wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
         {
             IMesh mesh = wMesh.GetMesh();
             double[] Hp = wMesh.GetHp();
             double[] Distance = wMesh.GetDistance();
-            IMWCross wm = (IMWCross)wMesh;
+            IMeshWrapper wm = (IMeshWrapper)wMesh;
             double Area = 0;
             double Q = wm.RiverFlowRate(Vx, ref Area);
             double U0 = Q / Area;
@@ -966,16 +1053,17 @@ namespace CommonLib.Physics
         /// Профиль турбулентной вязкости Великанова 1948 с ядром
         /// </summary>
         public void calkTurbVisc_Leo_van_Rijn1984(ref double[] mu_t, TypeTask typeTask,
-            IMWCrossSection wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
+            IMWRiver wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
         {
             IMesh mesh = wMesh.GetMesh();
             double[] Hp = wMesh.GetHp();
             double[] Distance = wMesh.GetDistance();
-            IMWCrossSection wm = (IMWCrossSection)wMesh;
+            
 
             if (Vx.Sum() == 0 || typeEddyViscosity == ECalkDynamicSpeed.u_start_J ||
                 typeEddyViscosity == ECalkDynamicSpeed.u_start_M)
-            { 
+            {
+                IMeshWrapper wm = (IMeshWrapper)wMesh;
                 double Area = 0;
                 double Q = wm.RiverFlowRate(Vx, ref Area);
                 double U0 = Q / Area;
@@ -1000,6 +1088,7 @@ namespace CommonLib.Physics
             }
             else
             {
+                IMWCrossSection wm = (IMWCrossSection)wMesh;
                 double[] Us = null;
                 wm.CalkBoundary_U_star(Vx, ref Us);
                 for (int node = 0; node < mesh.CountKnots; node++)
@@ -1020,9 +1109,10 @@ namespace CommonLib.Physics
                 }
             }
         }
+
         public double Get_U_star_J(IMWDistance wMesh, double J)
         {
-            IMWCross wm = (IMWCross)wMesh;
+            IMeshWrapper wm = (IMeshWrapper)wMesh;
             double Area = wm.GetArea();
             double Bottom = wm.GetBottom();
             double R0 = Area / Bottom;
@@ -1031,7 +1121,7 @@ namespace CommonLib.Physics
         }
         public double Get_U_star_Vx(IMWDistance wMesh, double[] Vx)
         {
-            IMWCross wm = (IMWCross)wMesh;
+            IMeshWrapper wm = (IMeshWrapper)wMesh;
             double Area = wm.GetArea();
             double Q = wm.RiverFlowRate(Vx, ref Area);
             double U0 = Q / Area;
@@ -1039,83 +1129,116 @@ namespace CommonLib.Physics
             double u_star = (U_max - U0) * kappa_w;
             return u_star;
         }
+        IMWCrossSection wm = null;
         /// <summary>
         /// Профиль турбулентной вязкости Рафик Абси 2012
         /// </summary>
         public void calkTurbVisc_Absi_2012(ref double[] mu_t, TypeTask typeTask,
-            IMWCrossSection wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
+            IMWRiver wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
         {
-            IMesh mesh = wMesh.GetMesh();
-            double[] Hp = wMesh.GetHp();
-            double[] Distance = wMesh.GetDistance();
-            IMWCrossSection wm = (IMWCrossSection)wMesh;
-            if (Vx.Sum() == 0 || typeEddyViscosity == ECalkDynamicSpeed.u_start_J ||
-                                 typeEddyViscosity == ECalkDynamicSpeed.u_start_M)
+            try
             {
-                double u_star = 0;
-                if (typeEddyViscosity != ECalkDynamicSpeed.u_start_J)
-                    u_star = Vx.Max() * kappa_w / Math.Log(Hp.Max() / d50);
-                for (int node = 0; node < mesh.CountKnots; node++)
-                {
+                IMesh mesh = wMesh.GetMesh();
+                double[] Hp = wMesh.GetHp();
+                double[] Distance = wMesh.GetDistance();
+                double sVx = Vx.Sum();
 
-                    if (typeEddyViscosity == ECalkDynamicSpeed.u_start_J && J > MEM.Error7)
+                if (MEM.Equals(sVx, 0) == true ||
+                     typeEddyViscosity == ECalkDynamicSpeed.u_start_J ||
+                     typeEddyViscosity == ECalkDynamicSpeed.u_start_M ||
+                     wMesh as IMWCrossSection == null)
+                {
+                    double u_star = 0;
+                    if (typeEddyViscosity != ECalkDynamicSpeed.u_start_J && sVx > 0)
                     {
-                        if (Hp[node] > MEM.Error4)
-                            u_star = Math.Sqrt(GRAV * Hp[node] * J);
-                        else
-                            u_star = 0;
+                        double mHp = Hp.Max() / d50;
+                        if (mHp > 1)
+                            u_star = Vx.Max() * kappa_w / Math.Log(mHp);
                     }
-                    mu_t[node] = GetMuAbsi_2012(Hp[node], Distance[node], u_star);
+                    for (int node = 0; node < mesh.CountKnots; node++)
+                    {
+                        if (typeEddyViscosity == ECalkDynamicSpeed.u_start_J && J > MEM.Error7 ||
+                            MEM.Equals(sVx, 0) == true)
+                        {
+                            if (Hp[node] > MEM.Error4)
+                                u_star = Math.Sqrt(GRAV * Hp[node] * J);
+                            else
+                                u_star = 0;
+                        }
+                        mu_t[node] = GetMuAbsi_2012(Hp[node], Distance[node], u_star);
+                    }
                 }
+                else
+                {
+                    double[] Us = null;
+                    ((IMWCrossSection)wMesh).CalkBoundary_U_star(Vx, ref Us);
+                    for (int node = 0; node < mesh.CountKnots; node++)
+                        mu_t[node] = GetMuAbsi_2012(Hp[node], Distance[node], Us[node]);
+                }
+                //if (ERR.INF_NAN("Mu", mu_t) == false)
+                //    throw new Exception("Ups");
             }
-            else
+            catch(Exception ex)
             {
-                double[] Us = null;
-                wm.CalkBoundary_U_star(Vx, ref Us);
-                for (int node = 0; node < mesh.CountKnots; node++)
-                    mu_t[node] = GetMuAbsi_2012(Hp[node], Distance[node], Us[node]);
+                Console.WriteLine(ex.Message);
             }
         }
 
         public double GetMuAbsi_2012(double H, double D, double u_star)
         {
-            double Re_star = H * u_star / nu;
-            double C1 = Re_star / (0.46 * Re_star - 5.98);
-            double Ca = 0;
-            if (Math.Abs(0.46 * Re_star - 5.98) > MEM.Error8)
-                Ca = Math.Exp(-(0.34 * Re_star - 11.5) / (0.46 * Re_star - 5.98));
-            if (Ca > 50)
-                Ca = Math.Exp(-Math.Abs((0.34 * Re_star - 11.5) / (0.46 * Re_star - 5.98)));
             double mu_t0 = 0;
-            if (MEM.Equals(Math.Abs(H), 0) == false)
+            if (MEM.Equals(Math.Abs(H), 0) == false && u_star > MEM.Error5)
             {
                 double xi = D / H;
-                if (xi < MEM.Error5)
-                    mu_t0 = 0;
-                else
-                    mu_t0 = rho_w * u_star * D * Ca * Math.Exp(-C1 * xi);
+                if (xi > MEM.Error5 && MEM.Equals(Math.Abs(u_star), 0) == false)
+                {
+                    double Re_star = H * u_star / nu;
+                    double C1 = 1000;
+                    double Z = 0.46 * Re_star - 5.98;
+                    if (Z > MEM.Error2)
+                    {
+                        C1 = Re_star / Z;
+                        double Ca = 0;
+                        if (Math.Abs(0.46 * Re_star - 5.98) > MEM.Error8)
+                            Ca = Math.Exp(-(0.34 * Re_star - 11.5) / Z);
+                        if (Ca > 50)
+                            Ca = Math.Exp(-Math.Abs((0.34 * Re_star - 11.5) / Z));
+                        mu_t0 = rho_w * u_star * D * Ca * Math.Exp(-C1 * xi);
+                    }
+                }
             }
             return mu_t0 + mu;
         }
+        
         /// <summary>
         /// Профиль турбулентной вязкости Рафик Абси 2019
         /// </summary>
         public void calkTurbVisc_Absi_2019(ref double[] mu_t, TypeTask typeTask,
-            IMWCrossSection wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
+            IMWRiver wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
         {
             IMesh mesh = wMesh.GetMesh();
             double[] Hp = wMesh.GetHp();
             double[] Distance = wMesh.GetDistance();
-            //double Bf = 6;
-
+            double sVx = Vx.Sum();
+            double mHp = Hp.Max();
+            double bHp = mHp / d50;
             double u_star = 0;
-            if (typeEddyViscosity != ECalkDynamicSpeed.u_start_J)
-                u_star = Vx.Max() * kappa_w / Math.Log(Hp.Max() / d50);
-            
-            IMWCrossSection wm = (IMWCrossSection)wMesh;
-            if (Vx.Sum() == 0 || typeEddyViscosity == ECalkDynamicSpeed.u_start_J ||
-                                 typeEddyViscosity == ECalkDynamicSpeed.u_start_M)
+
+            if (MEM.Equals(sVx, 0) == true || 
+                typeEddyViscosity == ECalkDynamicSpeed.u_start_J ||
+                typeEddyViscosity == ECalkDynamicSpeed.u_start_M ||
+                wMesh as IMWCrossSection == null)
             {
+                if (typeEddyViscosity != ECalkDynamicSpeed.u_start_J && sVx > 0 ||
+                    MEM.Equals(sVx, 0) != true)
+                {
+                    if (bHp > 1)
+                        u_star = sVx * kappa_w / Math.Log(bHp);
+                }
+                else
+                {
+                    u_star = Math.Sqrt(GRAV * mHp);
+                }
                 for (int node = 0; node < mesh.CountKnots; node++)
                 {
                     if (typeEddyViscosity == ECalkDynamicSpeed.u_start_J && J > MEM.Error7)
@@ -1127,40 +1250,62 @@ namespace CommonLib.Physics
                     }
                     mu_t[node] = GetMuAbsi_2019(Hp[node], Distance[node], u_star);
                 }
+                //if (typeEddyViscosity != ECalkDynamicSpeed.u_start_J && sVx > 0)
+                //{
+                //    if (mHp > 1)
+                //        u_star = Vx.Max() * kappa_w / Math.Log(mHp);
+                //}
+                //for (int node = 0; node < mesh.CountKnots; node++)
+                //{
+                //    if (typeEddyViscosity == ECalkDynamicSpeed.u_start_J && J > MEM.Error7 && Hp[node] > MEM.Error4)
+                //    {
+                //            u_star = Math.Sqrt(GRAV * Hp[node] * J);
+                //            mu_t[node] = GetMuAbsi_2019(Hp[node], Distance[node], u_star);
+                //    }
+                //    else
+                //        mu_t[node] = mu;
+
+                //}
             }
             else
             {
                 double[] Us = null;
-                wm.CalkBoundary_U_star(Vx, ref Us);
+                ((IMWCrossSection)wMesh).CalkBoundary_U_star(Vx, ref Us);
                 for (int node = 0; node < mesh.CountKnots; node++)
                     mu_t[node] = GetMuAbsi_2019(Hp[node], Distance[node], Us[node]);
             }
         }
         public double GetMuAbsi_2019(double H, double D, double u_star)
         {
-            double Bf = 6;
-            double Re_star = H * u_star / nu;
-            double C1 = Re_star / (0.46 * Re_star - 5.98);
-            double Ca = Math.Exp(-(0.34 * Re_star - 11.5) / (0.46 * Re_star - 5.98));
             double mu_t0 = 0;
-            if (H > MEM.Error4)
+            if (u_star > MEM.Error5)
             {
                 double xi = D / H;
                 //xi = Math.Min(0.5, xi);
-                if (xi < MEM.Error5)
-                    mu_t0 = 0;
-                else
-                    mu_t0 = rho_w * u_star * D * Ca * Math.Exp(-C1 * xi) * (1 - Math.Exp(-Bf * Math.Max(0, 1 - xi)));
+                if (xi > MEM.Error5)
+                {
+                    double Bf = 6;
+                    double Re_star = H * u_star / nu;
+                    double C1 = 1000;
+                    double Z = 0.46 * Re_star - 5.98;
+                    if (Z > MEM.Error2)
+                    {
+                        C1 = Re_star / Z;
+                        double Ca = Math.Exp(-(0.34 * Re_star - 11.5) / Z);
+                        if (H > MEM.Error4)
+                        {
+                            mu_t0 = rho_w * u_star * D * Ca * Math.Exp(-C1 * xi) * (1 - Math.Exp(-Bf * Math.Max(0, 1 - xi)));
+                        }
+                    }
+                }
             }
-            else
-                mu_t0 = 0;
             return  mu_t0 + mu;
         }
         /// <summary>
         /// Профиль турбулентной вязкости ванн Дрист 1956
         /// </summary>
         public void calkTurbVisc_VanDriest1956(ref double[] mu_t, TypeTask typeTask,
-            IMWCrossSection wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
+            IMWRiver wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
         {
             double A_vd = 26;
             IMesh mesh = wMesh.GetMesh();
@@ -1209,8 +1354,8 @@ namespace CommonLib.Physics
         /// <summary>
         /// Двухслойная модель GLS 1995 : А. В. Гарбарук, Ю. В. Лапин, М. X. Стрелец
         /// </summary>
-        public void calkTurbVisc_GLS_1995(ref double[] mu_t, TypeTask typeTask,
-            IMWCrossSection wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
+        void calkTurbVisc_GLS_1995(ref double[] mu_t, TypeTask typeTask,
+            IMWRiver wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] Vx, double J = 0)
         {
             double z1 = d50;
             IMesh mesh = wMesh.GetMesh();
@@ -1254,7 +1399,7 @@ namespace CommonLib.Physics
         /// <param name="u_star"></param>
         /// <param name="z1"></param>
         /// <returns></returns>
-        protected double GLS_1995(double z, double h, double u_star, double z1)
+        double GLS_1995(double z, double h, double u_star, double z1)
         {
             double A_vd = 13;
             double xi = z / h;
@@ -1286,15 +1431,15 @@ namespace CommonLib.Physics
         /// <param name="Vx"></param>
         /// <param name="J"></param>
         public void calkTurbVisc_Smagorinsky_Lilly_1996(ref double[] mu_t, TypeTask typeTask,
-            IMWCrossSection wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] E2, double J = 0)
+            IMWRiver wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] E2, double J = 0)
         {
             //double Csm = 0.2;
             //double Csm2 = Csm * Csm;
             double Csm2 = 0.04;
+            IMWCrossSection wm = (IMWCrossSection)wMesh;
             IMesh mesh = wMesh.GetMesh();
-            
             // площади Ко в окрестности узла
-            double[] Se = wMesh.GetElemS();
+            double[] Se = wm.GetElemS();
             double K = 0.000125/Se.Max();
             Csm2 *= K;
             // шероховатость
@@ -1316,28 +1461,8 @@ namespace CommonLib.Physics
         /// < param name= "typeEddyViscosity" ></ param >
         /// < param name= "Vx" ></ param >
         /// < param name= "J" ></ param >
-        //public void calkTurbVisc_Derek_G_Goring_and_K_1997(ref double[] mu_t, TypeTask typeTask,
-        //    IMWDistance wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] E2, double J = 0)
-        //{
-        //    IMesh mesh = wMesh.GetMesh();
-        //    double[] Hp = wMesh.GetHp();
-        //    double[] Distance = wMesh.GetDistance();
-        //    // шероховатость
-        //    for (int node = 0; node < mesh.CountKnots; node++)
-        //    {
-        //        double z = Distance[node];
-        //        double lm2 =  kappa_w * z * kappa_w * z;// * z * Math.Max(0, 1 - z / h);
-        //        double mu_tn = rho_w * lm2 * E2[node];
-        //        mu_t[node] = mu_tn + mu;
-        //    }
-        //}
-
-        /// <summary>
-        /// Модель Derek G.Goring, Jeremy M.Walsh, Peter Rutschmann & Jürg Trösch
-        /// Модель Дерек Г.Горинг, Джереми М. Уолш, Питер Ратчманн и Юрг Треш 1997
-        /// </summary>
         public void calkTurbVisc_Derek_G_Goring_and_K_1997(ref double[] mu_t, TypeTask typeTask,
-            IMWCrossSection wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] E2, double J = 0)
+            IMWRiver wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] E2, double J = 0)
         {
             IMesh mesh = wMesh.GetMesh();
             double[] Hp = wMesh.GetHp();
@@ -1346,8 +1471,7 @@ namespace CommonLib.Physics
             for (int node = 0; node < mesh.CountKnots; node++)
             {
                 double z = Distance[node];
-                double h = Hp[node];
-                double lm2 = kappa_w * z * kappa_w * z * Math.Max(0, 1 - z / h);
+                double lm2 = kappa_w * z * kappa_w * z;// * z * Math.Max(0, 1 - z / h);
                 double mu_tn = rho_w * lm2 * E2[node];
                 mu_t[node] = mu_tn + mu;
             }
@@ -1356,7 +1480,7 @@ namespace CommonLib.Physics
         /// Модель Потапова И И. 2024
         /// </summary>
         public void calkTurbVisc_PotapovII_2024(ref double[] mu_t, TypeTask typeTask,
-            IMWCrossSection wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] E2, double J = 0)
+            IMWRiver wMesh, ECalkDynamicSpeed typeEddyViscosity, double[] E2, double J = 0)
         {
             IMesh mesh = wMesh.GetMesh();
             double[] Distance = wMesh.GetDistance();
@@ -1371,5 +1495,6 @@ namespace CommonLib.Physics
         }
 
         #endregion
+
     }
 }

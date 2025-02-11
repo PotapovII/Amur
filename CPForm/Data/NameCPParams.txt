@@ -1,11 +1,11 @@
 time 0
 timeMax 2000
-dtime 0.01
-dtimeRiver 0.01
-timeSavePeriod 0.01
+dtime 0.1
+dtimeRiver 0.1
+timeSavePeriod 0.1
 saveFileNeme Результат
 flagSave 1
 flagSP 0
 bedErosion 0
-CountBedLoad 300
-CountRiver 150
+CountBedLoad 800
+CountRiver 500

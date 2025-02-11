@@ -215,7 +215,7 @@ namespace MeshAdapterLib
                     mesh = (MeshNet)(new GenericMesher()).Triangulate(polygon, options, quality);
                 }
                 Direction direction = Direction.toRight;
-                BedMesh = FrontRenumberation(mesh, direction);
+                BedMesh = ConvertMeshNetToTriMesh(mesh, direction);
             }
             catch (Exception e)
             {
@@ -229,7 +229,7 @@ namespace MeshAdapterLib
         /// <param name="mesh"></param>
         /// <param name="direction"></param>
         /// <returns></returns>
-        public static TriMesh FrontRenumberation(IMeshNet mesh, Direction direction = Direction.toRight)
+        public static TriMesh ConvertMeshNetToTriMesh(IMeshNet mesh, Direction direction = Direction.toRight)
         {
             TriMesh BedMesh = new TriMesh();
             int ix, iy, jy;
@@ -432,7 +432,7 @@ namespace MeshAdapterLib
         /// <param name="mesh"></param>
         /// <param name="direction"></param>
         /// <returns></returns>
-        public static void FrontRenumberation(ref IMesh bmesh, MeshNet mesh, Direction direction = Direction.toRight)
+        public static void ConvertMeshNetToTriMesh(ref IMesh bmesh, MeshNet mesh, Direction direction = Direction.toRight)
         {
             TriMesh BedMesh = new TriMesh();
             int ix, iy, jy;
@@ -1543,7 +1543,7 @@ namespace MeshAdapterLib
             }
             CommonLib.IMesh tmesh = null;
             //MeshAdapter.Adapter(ref tmesh, meshDel1);
-            MeshAdapter.FrontRenumberation(ref tmesh, meshDel1, Direction.toRight);
+            MeshAdapter.ConvertMeshNetToTriMesh(ref tmesh, meshDel1, Direction.toRight);
 
             femesh = new FEMesh(tmesh);
             return femesh;

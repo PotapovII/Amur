@@ -5,6 +5,8 @@
 namespace MeshLib.FEMTools.FunForm
 {
     using CommonLib;
+    using System.Runtime.CompilerServices;
+
     /// <summary>
     /// ОО:  Функции Лагранжа 2 
     /// </summary>
@@ -24,6 +26,7 @@ namespace MeshLib.FEMTools.FunForm
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double CalkForm(double xp, double Ua, double Ub, double Uc = 0)
         {
             double N1 = (xp - x[1]) * (xp - x[2]) / L1;
@@ -36,6 +39,7 @@ namespace MeshLib.FEMTools.FunForm
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double CalkForm(double xp, double[] U)
         {
             double N1 = (xp - x[1]) * (xp - x[2]) / (x[0] - x[1]) / (x[0] - x[2]);

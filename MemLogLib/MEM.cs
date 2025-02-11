@@ -155,7 +155,7 @@ namespace MemLogLib
         /// <typeparam name="T"></typeparam>
         /// <param name="N">размер массива</param>
         /// <param name="X">массив</param>
-        public static void Alloc<T>(int N, ref T[] X, string name="")
+        public static void Alloc<T>(int N, ref T[] X, string name = "")
         {
             try
             {
@@ -167,11 +167,98 @@ namespace MemLogLib
             }
             catch (Exception exp)
             {
-                if(name!="")
-                    Logger.Instance.Info("Наименование массива " +name);
+                if (name != "")
+                    Logger.Instance.Info("Наименование массива " + name);
                 Logger.Instance.Exception(exp);
             }
         }
+        #region Частные перегрузки
+        public static void Alloc(int N, ref double[] X, string name = "")
+        {
+            try
+            {
+                if (X == null)
+                    X = new double[N];
+                else
+                    if (X.Length != N)
+                    X = new double[N];
+            }
+            catch (Exception exp)
+            {
+                if (name != "")
+                    Logger.Instance.Info("Наименование массива " + name);
+                Logger.Instance.Exception(exp);
+            }
+        }
+        public static void Alloc(int N, ref float[] X, string name = "")
+        {
+            try
+            {
+                if (X == null)
+                    X = new float[N];
+                else
+                    if (X.Length != N)
+                    X = new float[N];
+            }
+            catch (Exception exp)
+            {
+                if (name != "")
+                    Logger.Instance.Info("Наименование массива " + name);
+                Logger.Instance.Exception(exp);
+            }
+        }
+        public static void Alloc(int N, ref int[] X, string name = "")
+        {
+            try
+            {
+                if (X == null)
+                    X = new int[N];
+                else
+                    if (X.Length != N)
+                    X = new int[N];
+            }
+            catch (Exception exp)
+            {
+                if (name != "")
+                    Logger.Instance.Info("Наименование массива " + name);
+                Logger.Instance.Exception(exp);
+            }
+        }
+        public static void Alloc(int N, ref uint[] X, string name = "")
+        {
+            try
+            {
+                if (X == null)
+                    X = new uint[N];
+                else
+                    if (X.Length != N)
+                    X = new uint[N];
+            }
+            catch (Exception exp)
+            {
+                if (name != "")
+                    Logger.Instance.Info("Наименование массива " + name);
+                Logger.Instance.Exception(exp);
+            }
+        }
+        public static void Alloc(int N, ref bool[] X, string name = "")
+        {
+            try
+            {
+                if (X == null)
+                    X = new bool[N];
+                else
+                    if (X.Length != N)
+                    X = new bool[N];
+            }
+            catch (Exception exp)
+            {
+                if (name != "")
+                    Logger.Instance.Info("Наименование массива " + name);
+                Logger.Instance.Exception(exp);
+            }
+        }
+        #endregion
         /// <summary>
         /// Выделение памяти с присвоением значения
         /// </summary>
@@ -187,7 +274,7 @@ namespace MemLogLib
                     X = new T[N];
                 else
                     if (X.Length != N)
-                        X = new T[N];
+                    X = new T[N];
                 for (int i = 0; i < N; i++)
                     X[i] = value;
             }
@@ -213,6 +300,23 @@ namespace MemLogLib
                 else
                     if (X.Length != N)
                     X = new T[N];
+            }
+            catch (Exception exp)
+            {
+                if (name != "")
+                    Logger.Instance.Info("Наименование массива " + name);
+                Logger.Instance.Exception(exp);
+            }
+        }
+        public static void Alloc<T>(uint N, ref double[] X, string name = "")
+        {
+            try
+            {
+                if (X == null)
+                    X = new double[N];
+                else
+                    if (X.Length != N)
+                    X = new double[N];
             }
             catch (Exception exp)
             {
@@ -275,7 +379,7 @@ namespace MemLogLib
         /// </summary>
         /// <param name="Count">размерность</param>
         /// <param name="LaplMatrix">матрица</param>
-        public static void Alloc<T>(int Nx, int Ny, ref T[][] X, string name="")
+        public static void Alloc<T>(int Nx, int Ny, ref T[][] X, string name = "")
         {
             try
             {
@@ -365,7 +469,7 @@ namespace MemLogLib
             Alloc<T>(N, ref mas);
             return mas;
         }
-        public static T[][] New2Dp<T>(int Nx,int Ny, string name = "")
+        public static T[][] New2Dp<T>(int Nx, int Ny, string name = "")
         {
             T[][] mas = null;
             Alloc<T>(Nx, Ny, ref mas, name);
@@ -399,10 +503,6 @@ namespace MemLogLib
                     LaplMatrix = new double[Count, Count];
             }
         }
-
-
-
-
 
         public static void Alloc2DClear(uint Count, ref double[,] LaplMatrix)
         {
@@ -533,9 +633,8 @@ namespace MemLogLib
             if (LaplMatrix == null)
                 LaplMatrix = new T[Nx, Ny];
             else if (Nx != LaplMatrix.GetLength(0) || Ny != LaplMatrix.GetLength(1))
-                    LaplMatrix = new T[Nx, Ny];
+                LaplMatrix = new T[Nx, Ny];
         }
-
         /// <summary>
         /// Выделение памяти или очистка квадратной матрицы
         /// </summary>
@@ -558,9 +657,6 @@ namespace MemLogLib
                     LaplMatrix = new double[Nx, Ny];
             }
         }
-
-
-
         public static void Alloc2DClear(uint Nx, uint Ny, ref double[,] LaplMatrix)
         {
             if (LaplMatrix == null)
@@ -727,11 +823,152 @@ namespace MemLogLib
                     }
                 }
             }
-            catch(Exception exp)
+            catch (Exception exp)
             {
                 Logger.Instance.Exception(exp);
             }
         }
+        public static void Alloc2D(int Nx, int Ny, ref double[][] LaplMatrix)
+        {
+            try
+            {
+                if (LaplMatrix == null)
+                {
+                    LaplMatrix = new double[Nx][];
+                    for (int i = 0; i < Nx; i++)
+                        LaplMatrix[i] = new double[Ny];
+                }
+                else
+                {
+                    if (Nx == LaplMatrix.Length)
+                    {
+                        for (int i = 0; i < Nx; i++)
+                        {
+                            if (LaplMatrix[i] == null)
+                                LaplMatrix[i] = new double[Ny];
+                            if (Ny != LaplMatrix[i].Length)
+                                LaplMatrix[i] = new double[Ny];
+                        }
+                    }
+                    else
+                    {
+                        LaplMatrix = new double[Nx][];
+                        for (int i = 0; i < Nx; i++)
+                            LaplMatrix[i] = new double[Ny];
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                Logger.Instance.Exception(exp);
+            }
+        }
+        public static void Alloc2D(int Nx, int Ny, ref float[][] LaplMatrix)
+        {
+            try
+            {
+                if (LaplMatrix == null)
+                {
+                    LaplMatrix = new float[Nx][];
+                    for (int i = 0; i < Nx; i++)
+                        LaplMatrix[i] = new float[Ny];
+                }
+                else
+                {
+                    if (Nx == LaplMatrix.Length)
+                    {
+                        for (int i = 0; i < Nx; i++)
+                        {
+                            if (LaplMatrix[i] == null)
+                                LaplMatrix[i] = new float[Ny];
+                            if (Ny != LaplMatrix[i].Length)
+                                LaplMatrix[i] = new float[Ny];
+                        }
+                    }
+                    else
+                    {
+                        LaplMatrix = new float[Nx][];
+                        for (int i = 0; i < Nx; i++)
+                            LaplMatrix[i] = new float[Ny];
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                Logger.Instance.Exception(exp);
+            }
+        }
+        public static void Alloc2D(int Nx, int Ny, ref int[][] LaplMatrix)
+        {
+            try
+            {
+                if (LaplMatrix == null)
+                {
+                    LaplMatrix = new int[Nx][];
+                    for (int i = 0; i < Nx; i++)
+                        LaplMatrix[i] = new int[Ny];
+                }
+                else
+                {
+                    if (Nx == LaplMatrix.Length)
+                    {
+                        for (int i = 0; i < Nx; i++)
+                        {
+                            if (LaplMatrix[i] == null)
+                                LaplMatrix[i] = new int[Ny];
+                            if (Ny != LaplMatrix[i].Length)
+                                LaplMatrix[i] = new int[Ny];
+                        }
+                    }
+                    else
+                    {
+                        LaplMatrix = new int[Nx][];
+                        for (int i = 0; i < Nx; i++)
+                            LaplMatrix[i] = new int[Ny];
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                Logger.Instance.Exception(exp);
+            }
+        }
+        public static void Alloc2D(int Nx, int Ny, ref uint[][] LaplMatrix)
+        {
+            try
+            {
+                if (LaplMatrix == null)
+                {
+                    LaplMatrix = new uint[Nx][];
+                    for (int i = 0; i < Nx; i++)
+                        LaplMatrix[i] = new uint[Ny];
+                }
+                else
+                {
+                    if (Nx == LaplMatrix.Length)
+                    {
+                        for (int i = 0; i < Nx; i++)
+                        {
+                            if (LaplMatrix[i] == null)
+                                LaplMatrix[i] = new uint[Ny];
+                            if (Ny != LaplMatrix[i].Length)
+                                LaplMatrix[i] = new uint[Ny];
+                        }
+                    }
+                    else
+                    {
+                        LaplMatrix = new uint[Nx][];
+                        for (int i = 0; i < Nx; i++)
+                            LaplMatrix[i] = new uint[Ny];
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                Logger.Instance.Exception(exp);
+            }
+        }
+
         public static T[,] NewMassRec2D<T>(int Nx, int Ny)
         {
             object obj = new object();
@@ -855,7 +1092,7 @@ namespace MemLogLib
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
-        public static int CountUniqueElems(double[] x,ref double[] xx)
+        public static int CountUniqueElems(double[] x, ref double[] xx)
         {
             // double[] xxx = x.Distinct().ToArray();
             xx = MEM.Copy(xx, x);
@@ -988,7 +1225,7 @@ namespace MemLogLib
         public static int[] ToInt(uint[] mas)
         {
             int[] m = new int[mas.Length];
-            for(int i = 0; i < m.Length; i++)
+            for (int i = 0; i < m.Length; i++)
                 m[i] = (int)mas[i];
             return m;
         }
@@ -1060,7 +1297,7 @@ namespace MemLogLib
         /// <param name="source"></param>
         public static void MemCopy(ref double[] arr, double[] source)
         {
-            Alloc<double>(source.Length, ref arr);
+            Alloc(source.Length, ref arr);
             for (int i = 0; i < arr.Length; i++)
                 arr[i] = source[i];
         }
@@ -1077,6 +1314,19 @@ namespace MemLogLib
                 arr[i] = source[i];
             return arr;
         }
+        public static void Copy(ref double[] arr, double[] source)
+        {
+            Alloc(source.Length, ref arr);
+            for (int i = 0; i < arr.Length; i++)
+                arr[i] = source[i];
+        }
+        public static void Relax(ref double[] arr, double[] source, double relax = 0.3)
+        {
+            for (int i = 0; i < arr.Length; i++)
+                arr[i] = (1 - relax) * arr[i] + relax * source[i];
+        }
+        
+
         /// <summary>
         /// Копирование двухмерного массива
         /// </summary>
@@ -1109,15 +1359,15 @@ namespace MemLogLib
         /// <typeparam name="T"></typeparam>
         /// <param name="arr"></param>
         /// <param name="source"></param>
-        public static void MemCopy<T>(ref T[][] arr, T[][] source, string name ="")
+        public static void MemCopy<T>(ref T[][] arr, T[][] source, string name = "")
         {
-            if (source == null) 
+            if (source == null)
             {
                 Logger.Instance.Error("Ошибка копирования массива " + name, "пустой исходник");
                 return;
             }
-            if (source.Length == 0) 
-            { 
+            if (source.Length == 0)
+            {
                 Logger.Instance.Error("Ошибка копирования массива " + name, "пустой исходник");
                 return;
             }
@@ -1206,9 +1456,9 @@ namespace MemLogLib
         /// <summary>
         /// Копирование двухмерного массива d в одномерный
         /// </summary>
-        public static void MemCpy<T>(ref T[]a, T[][] b)
+        public static void MemCpy<T>(ref T[] a, T[][] b)
         {
-            MEM.Alloc(b.Length*b[0].Length, ref a);
+            MEM.Alloc(b.Length * b[0].Length, ref a);
             int k = 0;
             for (int i = 0; i < b.Length; i++)
                 for (int j = 0; j < b[0].Length; j++)

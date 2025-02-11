@@ -159,26 +159,26 @@ namespace BLLib
             this.N = Count - 1;
             this.L = x[N] - x[0];
             // узловые массивы
-            MEM.Alloc<double>(N, ref A);
-            MEM.Alloc<double>(N, ref B);
-            MEM.Alloc<double>(N, ref C);
-            MEM.Alloc<double>(N, ref G0);
-            MEM.Alloc<double>(N, ref dZeta);
-            MEM.Alloc<double>(N, ref CosGamma);
+            MEM.Alloc(N, ref A);
+            MEM.Alloc(N, ref B);
+            MEM.Alloc(N, ref C);
+            MEM.Alloc(N, ref G0);
+            MEM.Alloc(N, ref dZeta);
+            MEM.Alloc(N, ref CosGamma);
             MEM.Alloc<int>(N, ref DryWetEelm);
-            MEM.Alloc<double>(N, ref GCx);
+            MEM.Alloc(N, ref GCx);
 
             MEM.Alloc<int>(Count, ref DryWet);
-            MEM.Alloc<double>(Count, ref Zeta);
-            MEM.Alloc<double>(Count, ref ps);
-            MEM.Alloc<double>(Count, ref CE);
-            MEM.Alloc<double>(Count, ref CW);
-            MEM.Alloc<double>(Count, ref CP);
-            MEM.Alloc<double>(Count, ref S);
-            MEM.Alloc<double>(Count, ref AE);
-            MEM.Alloc<double>(Count, ref AW);
-            MEM.Alloc<double>(Count, ref AP);
-            MEM.Alloc<double>(Count, ref AP0);
+            MEM.Alloc(Count, ref Zeta);
+            MEM.Alloc(Count, ref ps);
+            MEM.Alloc(Count, ref CE);
+            MEM.Alloc(Count, ref CW);
+            MEM.Alloc(Count, ref CP);
+            MEM.Alloc(Count, ref S);
+            MEM.Alloc(Count, ref AE);
+            MEM.Alloc(Count, ref AW);
+            MEM.Alloc(Count, ref AP);
+            MEM.Alloc(Count, ref AP0);
 
             MEM.Alloc(mesh.CountElements, ref X);
             MEM.Alloc(mesh.CountElements, ref tau0Elem);

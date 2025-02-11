@@ -41,7 +41,7 @@ namespace CommonLib.Mesh
     /// Обертка для сетки для задач CFG в створе, выполняет предварительные расчеты задачи
     /// связанные с сеткой
     /// </summary>
-    public interface IMWCrossSection : IMWCross, IMWDistance
+    public interface IMWCrossSection : IMWCross, IMWDistance, IMWRiver
     {
         /// <summary>
         /// индексы приповерхностных конечных элементов в которые попадает точка наблюдения

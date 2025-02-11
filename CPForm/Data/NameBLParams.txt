@@ -1,6 +1,6 @@
 TypeBC 1
 InValue 0
-TypeBC 0
+TypeBC 1
 OutValue 0 
 Avalanche 1
 TypexBLoadModel 0

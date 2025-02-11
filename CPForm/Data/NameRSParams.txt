@@ -2,5 +2,5 @@ J 0.006
 TurbulentViscosityModel 3
 AxisSymmetry 1
 TaskVariant 1
-CountKnots 500
-CountBLKnots 800
+CountKnots 300
+CountBLKnots 500

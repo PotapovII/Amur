@@ -1,0 +1,578 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CPForm.FormInfo" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAACAAAACAAAIAAAAAEAQAQAAAAA=</HashCode>
+      <FileName>FormInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPForm.FormLogger" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAASAAAABCBAABECACCBAAAKAAgYgCkgAGAAAQEBAAE=</HashCode>
+      <FileName>FormLogger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPForm.FTaskManager" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAECAAACgACBAIJAHGAAACAAgAAAAAAQAABQAAQAA=</HashCode>
+      <FileName>FTaskManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPForm.FTestsList" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAACBAABAAAACAAAACAAAAAAAAAAAIAAAAAAg=</HashCode>
+      <FileName>FTestsList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPForm.Program" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPForm.PropertyGridExtensions" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>PropertyGridExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPForm.TaskForm" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQXgGcgEACgBSKAqDayq0AZqGChBoAyiQEAAQgnBQi0=</HashCode>
+      <FileName>TaskForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPForm.Properties.Resources" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPForm.Properties.Settings" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CommonLib.FunFormHelp" Collapsed="true">
+    <Position X="26.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommonLib.TaskFileNames" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CommonLib.EConverter.MyEnumConverter" Collapsed="true">
+    <Position X="19.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommonLib.EConverter.BooleanTypeConverter" Collapsed="true">
+    <Position X="18" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommonLib.EConverter.BooleanTypeConverterSave" Collapsed="true">
+    <Position X="19.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommonLib.EConverter.BooleanTypeConverterYN" Collapsed="true">
+    <Position X="21.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommonLib.Function.DigFunction1D" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CommonLib.Geometry.FPoint" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="25" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CommonLib.Geometry.HPoint" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CommonLib.IO.ATaskFormat&lt;Task&gt;" Collapsed="true">
+    <Position X="13.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CommonLib.IO.ProxyTaskFormat&lt;Task&gt;" Collapsed="true">
+    <Position X="13.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommonLib.Physics.SPhysics" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Struct Name="CommonLib.TriElement" Collapsed="true">
+    <Position X="21.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier />
+  </Struct>
+  <Struct Name="CommonLib.TwoElement" Collapsed="true">
+    <Position X="25" Y="2.75" Width="1.5" />
+    <TypeIdentifier />
+  </Struct>
+  <Struct Name="CommonLib.TaskMetka" Collapsed="true">
+    <Position X="19.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier />
+  </Struct>
+  <Struct Name="CommonLib.Areas.RectangleWorld" Collapsed="true">
+    <Position X="18" Y="2.75" Width="1.5" />
+    <TypeIdentifier />
+  </Struct>
+  <Struct Name="CommonLib.DrvGraphics.TriVertex" Collapsed="true">
+    <Position X="23.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier />
+  </Struct>
+  <Interface Name="CommonLib.IAlgebra" Collapsed="true">
+    <Position X="18" Y="4" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IAlgebraResult" Collapsed="true">
+    <Position X="19.75" Y="4" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IAvalanche" Collapsed="true">
+    <Position X="21.5" Y="4" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IBedLoadTask" Collapsed="true">
+    <Position X="7" Y="3.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IBaseFEMTask" Collapsed="true">
+    <Position X="1.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IComplexFEMTask" Collapsed="true">
+    <Position X="18" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFEPoissonTask" Collapsed="true">
+    <Position X="0.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFEMTask" Collapsed="true">
+    <Position X="2.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFForm" Collapsed="true">
+    <Position X="26.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFunLagrange1D" Collapsed="true">
+    <Position X="23.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IRectFDMesh" Collapsed="true">
+    <Position X="13" Y="5.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFElement" Collapsed="true">
+    <Position X="21.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFEMesh" Collapsed="true">
+    <Position X="15.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFENods" Collapsed="true">
+    <Position X="23.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IAFacet" Collapsed="true">
+    <Position X="0.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFVComMesh" Collapsed="true">
+    <Position X="9.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFVElement" Collapsed="true">
+    <Position X="25" Y="5.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFVFacet" Collapsed="true">
+    <Position X="0.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.ISFacet" Collapsed="true">
+    <Position X="0.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFVMesh" Collapsed="true">
+    <Position X="12.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IRectFVMesh" Collapsed="true">
+    <Position X="12.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.ILink" Collapsed="true">
+    <Position X="21.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IMesh" Collapsed="true">
+    <Position X="15.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IRenderMeshGL" Collapsed="true">
+    <Position X="25" Y="7" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IClouds" Collapsed="true">
+    <Position X="26.75" Y="4" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IGraphicsCurve" Collapsed="true">
+    <Position X="26.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IGraphicsData" Collapsed="true">
+    <Position X="18" Y="6.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IRenderMesh" Collapsed="true">
+    <Position X="9.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.ISavePoint" Collapsed="true">
+    <Position X="18" Y="7.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IBoundaryConditions" Collapsed="true">
+    <Position X="25" Y="4" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IRiver" Collapsed="true">
+    <Position X="7" Y="5.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.ITaskFileNames" Collapsed="true">
+    <Position X="19.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IPropertyTask" Collapsed="true">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.ITask" Collapsed="true">
+    <Position X="9" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.ITProperty&lt;TParam&gt;" Collapsed="true">
+    <Position X="21.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IUnknown" Collapsed="true">
+    <Position X="23.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMArea" Collapsed="true">
+    <Position X="23.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMBoundary" Collapsed="true">
+    <Position X="25" Y="6.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMFigura" Collapsed="true">
+    <Position X="26.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMHesgGrid" Collapsed="true">
+    <Position X="18" Y="7" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMPoint" Collapsed="true">
+    <Position X="0.75" Y="7" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMSegment" Collapsed="true">
+    <Position X="19.75" Y="7" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.DrvGraphics.IDrvGraphic" Collapsed="true">
+    <Position X="19.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.FDM.IQuadMesh" Collapsed="true">
+    <Position X="21.5" Y="7" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.FDM.IRectangleMesh" Collapsed="true">
+    <Position X="23.25" Y="7" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="GeometryLib.IField" Collapsed="true">
+    <Position X="18" Y="5.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Function.IDigFunction" Collapsed="true">
+    <Position X="0.5" Y="16.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Function.IFunction1D" Collapsed="true">
+    <Position X="0.5" Y="15.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Function.IFunction2D" Collapsed="true">
+    <Position X="21.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IFPoint" Collapsed="true">
+    <Position X="19.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IHEdge" Collapsed="true">
+    <Position X="11.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IHFigure" Collapsed="true">
+    <Position X="19.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IHLine" Collapsed="true">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IHPoint" Collapsed="true">
+    <Position X="3" Y="5.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IDPoint" Collapsed="true">
+    <Position X="3" Y="7" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IHSmLine" Collapsed="true">
+    <Position X="13.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IBedRiverNode" Collapsed="true">
+    <Position X="5.25" Y="7" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IMeshRiverNode" Collapsed="true">
+    <Position X="4" Y="8.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IRiverNode" Collapsed="true">
+    <Position X="4" Y="10.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IO.IBaseFormater&lt;Type&gt;" Collapsed="true">
+    <Position X="12.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IO.IOFormater&lt;Type&gt;" Collapsed="true">
+    <Position X="12.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IRiverMesh" Collapsed="true">
+    <Position X="9.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IMeshWrapper" Collapsed="true">
+    <Position X="8.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IMWCross" Collapsed="true">
+    <Position X="9.75" Y="13.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IMWCrossSection" Collapsed="true">
+    <Position X="9.75" Y="14.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IMWDistance" Collapsed="true">
+    <Position X="11" Y="11.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IFERenumberator" Collapsed="true">
+    <Position X="25" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IRenumberator" Collapsed="true">
+    <Position X="26.75" Y="7" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Tasks.IBCValues" Collapsed="true">
+    <Position X="23.25" Y="4" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Tasks.IBaseCalculationDomain" Collapsed="true">
+    <Position X="5.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Tasks.ICalculationDomain" Collapsed="true">
+    <Position X="5.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Enum Name="CPForm.TaskState" Collapsed="true">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAACABAAAAAAAAAAAAACCg=</HashCode>
+      <FileName>TaskState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.ErrorType" Collapsed="true">
+    <Position X="18" Y="9.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.TypeBLModel" Collapsed="true">
+    <Position X="19.75" Y="11" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.TypeFunForm" Collapsed="true">
+    <Position X="23.25" Y="11" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.IntRange" Collapsed="true">
+    <Position X="19.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.TypeBoundCond" Collapsed="true">
+    <Position X="21.5" Y="11" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.TypeMesh" Collapsed="true">
+    <Position X="26.75" Y="11" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.TypeRangeMesh" Collapsed="true">
+    <Position X="18" Y="11.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.TypeGraphicsCurve" Collapsed="true">
+    <Position X="25" Y="11" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.StressesFlag" Collapsed="true">
+    <Position X="26.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.TypeTask" Collapsed="true">
+    <Position X="19.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Areas.FigureType" Collapsed="true">
+    <Position X="26.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Areas.FigureStatus" Collapsed="true">
+    <Position X="25" Y="9.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.ChannelProcess.EBedErosion" Collapsed="true">
+    <Position X="21.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.DrvGraphics.GradientFillMode" Collapsed="true">
+    <Position X="18" Y="10.25" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Function.SmoothnessFunction" Collapsed="true">
+    <Position X="25" Y="10.25" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Mesh.SСhannelForms" Collapsed="true">
+    <Position X="18" Y="11" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Mesh.Direction" Collapsed="true">
+    <Position X="19.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Mesh.RVData.RVFixedNodeFlag" Collapsed="true">
+    <Position X="23.25" Y="10.25" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Mesh.RVData.BoundaryNodeFlag" Collapsed="true">
+    <Position X="18" Y="8.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Physics.ECalkDynamicSpeed" Collapsed="true">
+    <Position X="23.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Physics.ECbType" Collapsed="true">
+    <Position X="25" Y="8.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Physics.ECritTauType" Collapsed="true">
+    <Position X="26.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Physics.ETurbViscType" Collapsed="true">
+    <Position X="19.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Physics.ETurbViscType_1D" Collapsed="true">
+    <Position X="21.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Physics.EWsType" Collapsed="true">
+    <Position X="23.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Physics.ParticleForms" Collapsed="true">
+    <Position X="21.5" Y="10.25" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Delegate Name="CommonLib.SendParamCloud" Collapsed="true">
+    <Position X="26.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.SendParam" Collapsed="true">
+    <Position X="25" Y="12.75" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.SendText" Collapsed="true">
+    <Position X="18" Y="13.5" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.SendValue&lt;Tp&gt;" Collapsed="true">
+    <Position X="19.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.SendData&lt;TArg&gt;" Collapsed="true">
+    <Position X="23.25" Y="12.75" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.Function&lt;TResult, TArg&gt;" Collapsed="true">
+    <Position X="21.5" Y="12.75" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.SimpleProcedure" Collapsed="true">
+    <Position X="21.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.WallFunction" Collapsed="true">
+    <Position X="25" Y="13.5" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.TurbulentModel" Collapsed="true">
+    <Position X="23.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.BProc" Collapsed="true">
+    <Position X="18" Y="12.75" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.Physics.CalkTurbVisc" Collapsed="true">
+    <Position X="19.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -792,7 +792,7 @@ namespace DelaunayGenerator
             int crossCount = 0;
             for (int k = 0; k < Boundary.Length; k++)
             {
-                if (CrossLine.IsCrossing(
+                if (CrossLineUtils.IsCrossing(
                     (HPoint)Boundary[k],
                     (HPoint)Boundary[(k + 1) % Boundary.Length],
                      pc, Points) == true)

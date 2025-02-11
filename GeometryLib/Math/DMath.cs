@@ -9,10 +9,10 @@
 //---------------------------------------------------------------------------
 namespace GeometryLib
 {
-    using CommonLib.Delegate;
-    using MemLogLib;
     using System;
-
+    using MemLogLib;
+    using CommonLib.Delegate;
+    
     public class DMath
     {
         public static double F(double x)

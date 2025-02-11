@@ -415,11 +415,11 @@ namespace AlgebraLib
                     map[i, j] = k++;
             int NE = (int)((Nx - 1) * (Ny - 1));
 
-            LOG.Print("Ap", Ap);
-            LOG.Print("Ae", Ae);
-            LOG.Print("Aw", Aw);
-            LOG.Print("An", An);
-            LOG.Print("As ", As);
+            LOG.Print("Ap", Ap, 3);
+            LOG.Print("Ae", Ae, 3);
+            LOG.Print("Aw", Aw, 3);
+            LOG.Print("An", An, 3);
+            LOG.Print("As ", As, 3);
             try
             {
 
@@ -504,7 +504,7 @@ namespace AlgebraLib
             for (method = 0; method < 2; method++)
             {
                 Console.WriteLine();
-                LOG.Print("Индекс метода в тесте", method);
+                LOG.TPrint("Индекс метода в тесте", method);
                 //switch (method)
                 //{
                 //    case 0:
@@ -563,7 +563,7 @@ namespace AlgebraLib
             for (method = 0; method < 12; method++)
             {
                 Console.WriteLine();
-                LOG.Print("Индекс метода в тесте", method);
+                LOG.TPrint("Индекс метода в тесте", method);
                 switch (method)
                 {
                     case 0:

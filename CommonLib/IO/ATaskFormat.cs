@@ -35,11 +35,11 @@ OTHER DEALINGS IN THE SOFTWARE.
 //---------------------------------------------------------------------------
 namespace CommonLib.IO
 {
-    using MemLogLib;
     using System;
-    using System.Collections.Generic;
-    using System.Globalization;
     using System.IO;
+    using System.Collections.Generic;
+
+    using MemLogLib;
     /// <summary>
     /// ОО: Интерфейс для ввода / вывода документов.
     /// </summary>
@@ -238,7 +238,12 @@ namespace CommonLib.IO
         /// Создает список тестовых задач для загрузчика по умолчанию
         /// </summary>
         /// <returns></returns>
-        public abstract List<string> GetTestsName();
+        public virtual List<string> GetTestsName()
+        {
+            List<string> list = new List<string>();
+            list.Add("Основная задача - тестовая");
+            return list;
+        }
         #endregion
 
     }

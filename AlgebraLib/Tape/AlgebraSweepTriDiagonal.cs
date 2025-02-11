@@ -128,12 +128,68 @@ namespace AlgebraLib
             this.AW = AW;
             this.Right = Right;
         }
+        /// <summary>
+        /// Сборка САУ по строкам !!!
+        /// </summary>
+        /// <param name="ColElems">Коэффициенты системы</param>
+        /// <param name="ColAdress">Адреса коэффицентов</param>
+        /// <param name="IndexRow">Индекс формируемой строки системы</param>
+        /// <param name="R">Значение правой части строки</param>
         public override void AddStringSystem(double[] ColElems, uint[] ColAdress, uint IndexRow, double R)
         {
-            this.AW[IndexRow] = ColElems[0];
-            this.AP[IndexRow] = ColElems[0];
-            this.AE[IndexRow] = ColElems[0];
+            if (IndexRow == 0)
+            {
+                AP[IndexRow] = ColElems[0];
+                AE[IndexRow] = ColElems[1];
+            }
+            else
+            {
+                if (IndexRow == FN - 1)
+                {
+                    AW[IndexRow] = ColElems[FN - 2];
+                    AP[IndexRow] = ColElems[FN - 1];
+                }
+                else
+                {
+                    AW[IndexRow] = ColElems[IndexRow - 1];
+                    AP[IndexRow] = ColElems[IndexRow];
+                    AE[IndexRow] = ColElems[IndexRow + 1];
+                }
+            }
+            //this.AW[IndexRow] = ColElems[0];
+            //this.AP[IndexRow] = ColElems[0];
+            //this.AE[IndexRow] = ColElems[0];
             this.Right[IndexRow] = R;
+        }
+        /// <summary>
+        /// Получить строку (не для всех решателей)
+        /// </summary>
+        /// <param name="IndexRow">Индекс получемой строки системы</param>
+        /// <param name="ColElems">Коэффициенты строки системы</param>
+        /// <param name="R">Значение правой части</param>
+        public override void GetStringSystem(uint IndexRow, ref double[] ColElems, ref double R)
+        {
+            MEM.Alloc(FN, ref ColElems);
+            if (IndexRow == 0)
+            {
+                ColElems[0] = AP[IndexRow];
+                ColElems[1] = AE[IndexRow];
+            }
+            else
+            {
+                if (IndexRow == FN - 1)
+                {
+                    ColElems[FN - 2] = AW[IndexRow];
+                    ColElems[FN - 1] = AP[IndexRow];
+                }
+                else
+                {
+                    ColElems[IndexRow - 1] = AW[IndexRow];
+                    ColElems[IndexRow] = AP[IndexRow];
+                    ColElems[IndexRow + 1] = AE[IndexRow];
+                }
+            }
+            R = Right[IndexRow];
         }
         /// <summary>
         /// Удовлетворение ГУ (с накопительными вызовами)
@@ -221,10 +277,12 @@ namespace AlgebraLib
         /// <summary>
         /// Вывод САУ на КОНСОЛЬ
         /// </summary>
-        public override void Print(int flag = 0)
+        /// <param name="flag">количество знаков мантисы</param>
+        /// <param name="color">длина цветового блока</param>
+        public override void Print(int flag = 0, int color = 1)
         {
-            double[,] Matrix = new double[Right.Length, Right.Length];
-
+            double[,] Matrix = null;
+            MEM.Alloc(Right.Length, Right.Length, ref Matrix);
             for (int i = 0; i < N; i++)
                 for (int j = 0; j < N; j++)
                     Matrix[i, j] = 0;

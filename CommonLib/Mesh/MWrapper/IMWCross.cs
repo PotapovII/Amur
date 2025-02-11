@@ -37,7 +37,7 @@ namespace CommonLib.Mesh
     /// <summary>
     /// Обертка для сетки для задач CFG в створе
     /// </summary>
-    public interface IMWCross : IMWDistance
+    public interface IMWRiverCross 
     {
         /// <summary>
         /// Площадь сечения
@@ -64,4 +64,8 @@ namespace CommonLib.Mesh
         /// <exception cref="Exception"></exception>  
         double RiverFlowRate(double[] U, ref double Area);
     }
+    /// <summary>
+    /// Обертка для сетки для задач CFG в створе
+    /// </summary>
+    public interface IMWCross : IMWDistance, IMWRiverCross { }
 }

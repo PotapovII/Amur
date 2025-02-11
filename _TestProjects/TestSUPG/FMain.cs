@@ -22,6 +22,7 @@
     using MeshLib.FEMTools.FunForm;
     using CommonLib.Function;
     using MeshGeneratorsLib.Renumberation;
+    using CommonLib.EddyViscosity;
 
     public partial class FMain : Form
     {
@@ -225,7 +226,8 @@
             {
                 if(listBoxTypeMesh.SelectedIndex == 0)
                 {
-                    CrossStripMeshGenerator sg = new CrossStripMeshGenerator(TypeMesh.MixMesh);
+                    bool AxisOfSymmetry = false;
+                    CrossStripMeshGenerator sg = new CrossStripMeshGenerator(AxisOfSymmetry, TypeMesh.MixMesh);
                     mesh = (TriMesh)((ComplecsMesh)sg.CreateMesh(ref GR, WL, x, y));
                 }
                 else
@@ -582,7 +584,7 @@
                         MEM.Alloc(mesh.CountKnots, ref mQ, Q);
                         CFEPoissonTaskTri taskV = new CFEPoissonTaskTri(wMesh, algebra, typeTask);
                         taskV.PoissonTask(ref mVx, meddyViscosity, mbc, mbv, mQ);
-                        SPhysics.PHYS.calkTurbVisc_Boussinesq1865(ref meddyViscosity, typeTask, wMesh, typeEddyViscosity, mVx, J);
+                        SPhysics.PHYS.calkTurbVisc_Boussinesq1865(ref meddyViscosity, typeTask, (IMWRiver)wMesh, typeEddyViscosity, mVx, J);
                     }
                     break;
                 case 1:
@@ -590,20 +592,20 @@
                         MEM.Alloc(mesh.CountKnots, ref mQ, Q);
                         CFEPoissonTaskTri taskV = new CFEPoissonTaskTri(wMesh, algebra, typeTask);
                         taskV.PoissonTask(ref mVx, meddyViscosity, mbc, mbv, mQ);
-                        SPhysics.PHYS.calkTurbVisc_Karaushev1977(ref meddyViscosity, typeTask, wMesh, typeEddyViscosity, mVx, J);
+                        SPhysics.PHYS.calkTurbVisc_Karaushev1977(ref meddyViscosity, typeTask, (IMWRiver)wMesh, typeEddyViscosity, mVx, J);
                     }
                     break;
                 case 2:
-                    SPhysics.PHYS.calkTurbVisc_Prandtl1934(ref meddyViscosity, typeTask, wMesh, typeEddyViscosity, mVx, J);
+                    SPhysics.PHYS.calkTurbVisc_Prandtl1934(ref meddyViscosity, typeTask, (IMWRiver)wMesh, typeEddyViscosity, mVx, J);
                     break;
                 case 3:
-                    SPhysics.PHYS.calkTurbVisc_Velikanov1948(ref meddyViscosity, typeTask, wMesh, typeEddyViscosity, mVx, J);
+                    SPhysics.PHYS.calkTurbVisc_Velikanov1948(ref meddyViscosity, typeTask, (IMWRiver)wMesh, typeEddyViscosity, mVx, J);
                     break;
                 case 4:
-                    SPhysics.PHYS.calkTurbVisc_Absi_2012(ref meddyViscosity, typeTask, wMesh, typeEddyViscosity, mVx, J);
+                    SPhysics.PHYS.calkTurbVisc_Absi_2012(ref meddyViscosity, typeTask, (IMWRiver)wMesh, typeEddyViscosity, mVx, J);
                     break;
                 case 5:
-                    SPhysics.PHYS.calkTurbVisc_Absi_2019(ref meddyViscosity, typeTask, wMesh, typeEddyViscosity, mVx, J);
+                    SPhysics.PHYS.calkTurbVisc_Absi_2019(ref meddyViscosity, typeTask, (IMWRiver)wMesh, typeEddyViscosity, mVx, J);
                     break;
             }
             

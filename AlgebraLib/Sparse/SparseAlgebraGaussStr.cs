@@ -142,9 +142,11 @@ namespace AlgebraLib
             return new SparseAlgebraGaussStr(this.FN);
         }
         /// <summary>
-        /// вывод САУ на КОНСОЛЬ
+        /// Вывод САУ на КОНСОЛЬ
         /// </summary>
-        public override void Print(int flag = 0)
+        /// <param name="flag">количество знаков мантисы</param>
+        /// <param name="color">длина цветового блока</param>
+        public override void Print(int flag = 0, int color = 1)
         {
             if (flag == 0)
             {

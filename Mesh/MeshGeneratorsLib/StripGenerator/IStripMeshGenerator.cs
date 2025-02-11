@@ -15,6 +15,10 @@ namespace MeshGeneratorsLib.StripGenerator
     public interface IStripMeshGenerator
     {
         /// <summary>
+        /// Ось симметрии
+        /// </summary>
+        bool AxisOfSymmetry { get; }
+        /// <summary>
         /// Правая береговая точка
         /// </summary>
         HKnot Right();

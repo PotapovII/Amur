@@ -8,8 +8,10 @@ namespace TestSUPG
     class Test0
     {
         public double w = 0.3;
-        public const int N = 11;
+        public const int N =5;
         public const int n = N-1;
+        public const double H = 0.4;
+        public const double u = 1;
         public double[] Phi = new double[N];
         public double[] Vortex = new double[N];
         public double[] Phi_old = new double[N];
@@ -23,8 +25,7 @@ namespace TestSUPG
 
         public void Do()
         {
-            double H = 0.14;
-            double u = 0.05;
+
             double h = H / (N - 1);
             double h2 = h*h;
             for (int node = 0; node < N; node++)
@@ -39,7 +40,7 @@ namespace TestSUPG
 
                 for (int k = 0; k < 100; k++)
                 {
-                    Vortex[0] = - Phi[1] / h2;
+                    Vortex[0] = - 2 * Phi[1] / h2;
                     Vortex[n] = - 2 * Phi[n - 1] / h2 - 2*u/h;
                     //Vortex[n] =  - 2 * u / h;
                     for (int i = 1; i < N - 1; i++)
@@ -80,10 +81,19 @@ namespace TestSUPG
                     Console.WriteLine("-- Прямой створ --");
                     LOG.Print("VortexA", VortexA, 3);
                     LOG.Print("Vortex", Vortex, 3);
-                    LOG.Print("Phi", Phi, 3);
+                    LOG.Print("Phi", Phi, 6);
                     LOG.Print("V", V, 3);
-                    Console.WriteLine(" u = {0}, h = {1}, V = {2}", u, h, V[n]);
-                    Console.WriteLine(" iter = {2} epsVortex = {0}, normVortex = {1}", epsVortex, normVortex, sn);
+                    Console.WriteLine(" u = {0}, h = {1}, V = {2}, errV = {3}", 
+                        u, h, V[n], 100*Math.Abs(V[n]-u)/u);
+                    Console.WriteLine(" VortexA0 = {0:F4}, Vortex0 = {1:F4}, errV = {2:F4}",
+                      VortexA[0], Vortex[0], 100 * Math.Abs(Vortex[0] - VortexA[0]) / VortexA[0]);
+                    Console.WriteLine(" VortexAn = {0:F4}, Vortexn = {1:F4}, errV = {2:F4}",
+                     VortexA[n], Vortex[n], 100 * Math.Abs(Vortex[n] - VortexA[n]) / VortexA[n]); 
+                    Console.WriteLine(" u = {0:F4}, h = {1:F4}, V = {2:F4}, errV = {3:F4}",
+                      u, h, V[n], 100 * Math.Abs(V[n] - u) / u);
+                    Console.WriteLine(" iter = {2} epsVortex = {0:F4}, normVortex = {1:F4}", 
+                        epsVortex, normVortex, sn);
+                    
                     break;
                 }
             }
@@ -145,7 +155,7 @@ namespace TestSUPG
 
                 for (int k = 0; k < 100; k++)
                 {
-                    Vortex[0] = - Phi[1] / h2 / R;
+                    Vortex[0] = - 2 * Phi[1] / h2 / R;
                     Vortex[n] = - 2 * Phi[n - 1] / h2 / R - 2 * u / h;
                     for (int i = 1; i < N - 1; i++)
                     {

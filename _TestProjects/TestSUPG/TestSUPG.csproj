@@ -49,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FAmur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FAmur.Designer.cs">
+      <DependentUpon>FAmur.cs</DependentUpon>
+    </Compile>
     <Compile Include="FDitrich.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -79,11 +85,12 @@
     <Compile Include="FVortexStream.Designer.cs">
       <DependentUpon>FVortexStream.cs</DependentUpon>
     </Compile>
-    <Compile Include="PhiVortex.cs" />
+    <Compile Include="TestPhiVortex.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Show.cs" />
     <Compile Include="Test0.cs" />
+    <Compile Include="TestFEM0.cs" />
     <Compile Include="FTrapezoidStreem.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +103,13 @@
     <Compile Include="Tests.Designer.cs">
       <DependentUpon>Tests.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestStoksFem2D.cs" />
+    <Compile Include="TestVortexStreamRectangle.cs" />
+    <Compile Include="VortexStream\RiverCrossSteramTri.cs" />
+    <Compile Include="VortexStream\RiverVortexStreamTri.cs" />
+    <EmbeddedResource Include="FAmur.resx">
+      <DependentUpon>FAmur.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FDitrich.resx">
       <DependentUpon>FDitrich.cs</DependentUpon>
     </EmbeddedResource>
@@ -148,6 +162,10 @@
       <Project>{a387740f-c4f9-44f3-afa8-0b55ea4487fa}</Project>
       <Name>CommonLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\EddyViscosityLib\EddyViscosityLib.csproj">
+      <Project>{c3f731aa-1e56-45b0-92f4-00ce6997a4f1}</Project>
+      <Name>EddyViscosityLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\FDMTaskLib\FDMTaskLib.csproj">
       <Project>{5e1ca56b-8b0d-4553-8385-3feefe03f54f}</Project>
       <Name>FDMTaskLib</Name>
@@ -175,6 +193,10 @@
     <ProjectReference Include="..\..\Mesh\MeshLib\MeshLib.csproj">
       <Project>{b8062e08-76ac-4ec2-a7aa-2d7a4c601351}</Project>
       <Name>MeshLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NPRiverLib\NPRiverLib.csproj">
+      <Project>{954912e8-f132-4779-8300-520f1c534665}</Project>
+      <Name>NPRiverLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\RenderLib\RenderLib.csproj">
       <Project>{3330d65d-e283-47a3-b43c-ce8c4eb2b201}</Project>

@@ -36,7 +36,9 @@ namespace MeshGeneratorsLib.StripGenerator
         /// </summary>
         /// <param name="MAXElem">максимальное количество КЭ сетки</param>
         /// <param name="MAXKnot">максимальное количество узлов сетки</param>
-        public CrossStripMeshGeneratorTri(SСhannelForms channelSectionForms = SСhannelForms.porabolicСhannelSection)
+        public CrossStripMeshGeneratorTri(bool axisOfSymmetry = false, 
+            SСhannelForms channelSectionForms = SСhannelForms.porabolic) 
+            : base(axisOfSymmetry)
         {
             this.channelSectionForms = channelSectionForms;
         }
@@ -47,109 +49,6 @@ namespace MeshGeneratorsLib.StripGenerator
         public uint CalkCountElements()
         {
             CountElements = 0;
-            //for (int i = 0; i < Map.Count - 1; i++)
-            //{
-            //    if (Map.map1D[i] == 1)
-            //    {
-            //        //  i 0 ----- i+1 0
-            //        //     \       |
-            //        //        \    |
-            //        //           \ |   
-            //        //          i+1 1
-            //        mesh.AreaElems[CountElements].Vertex1 = map[i][0];
-            //        mesh.AreaElems[CountElements].Vertex2 = map[i + 1][1];
-            //        mesh.AreaElems[CountElements].Vertex3 = map[i + 1][0];
-            //        CountElements++;
-            //    }
-            //    else if (Map.map1D[i + 1] == 1)
-            //    {
-            //        //  i 0 ------i+1 0
-            //        //  |        /
-            //        //  |     /  
-            //        //  |  /      
-            //        //  i 1
-            //        mesh.AreaElems[CountElements].Vertex1 = map[i][0];
-            //        mesh.AreaElems[CountElements].Vertex2 = map[i][1];
-            //        mesh.AreaElems[CountElements].Vertex3 = map[i + 1][0];
-            //        CountElements++;
-            //    }
-            //    else
-            //    {
-            //        uint Nmin = Math.Min(Map.map1D[i], Map.map1D[i + 1]) - 1;
-            //        for (int j = 0; j < Nmin; j++)
-            //        {
-            //            //  ij ----- i+1 j
-            //            //  |  \    1  |
-            //            //  |     \    |
-            //            //  |  2     \ |   
-            //            //  ij+1---- i+1j+1
-            //            double dx1 = mesh.CoordsX[map[i][j]] - mesh.CoordsX[map[i + 1][j + 1]];
-            //            double dy1 = mesh.CoordsY[map[i][j]] - mesh.CoordsY[map[i + 1][j + 1]];
-            //            double L1 = dx1 * dx1 + dy1 * dy1;
-
-            //            double dx2 = mesh.CoordsX[map[i + 1][j]] - mesh.CoordsX[map[i][j + 1]];
-            //            double dy2 = mesh.CoordsY[map[i + 1][j]] - mesh.CoordsY[map[i][j + 1]];
-            //            double L2 = dx2 * dx2 + dy2 * dy2;
-            //            if (L1 <= 0.99 * L2)
-            //            {
-            //                mesh.AreaElems[CountElements].Vertex1 = map[i][j];
-            //                mesh.AreaElems[CountElements].Vertex2 = map[i + 1][j + 1];
-            //                mesh.AreaElems[CountElements].Vertex3 = map[i + 1][j];
-            //                CountElements++;
-
-            //                mesh.AreaElems[CountElements].Vertex1 = map[i][j];
-            //                mesh.AreaElems[CountElements].Vertex2 = map[i][j + 1];
-            //                mesh.AreaElems[CountElements].Vertex3 = map[i + 1][j + 1];
-            //                CountElements++;
-            //            }
-            //            else
-            //            {
-            //                //  ij ----- i+1 j
-            //                //  |  1    /  |
-            //                //  |     /    |
-            //                //  |  /     2 |   
-            //                //  ij+1---- i+1j+1
-            //                mesh.AreaElems[CountElements].Vertex1 = map[i][j];
-            //                mesh.AreaElems[CountElements].Vertex2 = map[i][j + 1];
-            //                mesh.AreaElems[CountElements].Vertex3 = map[i + 1][j];
-            //                CountElements++;
-
-            //                mesh.AreaElems[CountElements].Vertex1 = map[i][j + 1];
-            //                mesh.AreaElems[CountElements].Vertex2 = map[i + 1][j + 1];
-            //                mesh.AreaElems[CountElements].Vertex3 = map[i + 1][j];
-            //                CountElements++;
-            //            }
-            //        }
-            //        int flag = (int)Map.map1D[i] - (int)Map.map1D[i + 1];
-            //        if (flag > 0)
-            //        {
-            //            //  ij ------i+1 j
-            //            //  |        /
-            //            //  |     /  
-            //            //  |  /      
-            //            //  ij+1
-            //            uint j = Map.map1D[i] - 2;
-            //            mesh.AreaElems[CountElements].Vertex1 = map[i][j];
-            //            mesh.AreaElems[CountElements].Vertex2 = map[i][j + 1];
-            //            mesh.AreaElems[CountElements].Vertex3 = map[i + 1][j];
-            //            CountElements++;
-            //        }
-            //        if (flag < 0)
-            //        {
-            //            //  ij ----- i+1 j
-            //            //     \       |
-            //            //        \    |
-            //            //           \ |   
-            //            //          i+1j+1
-            //            uint j = Map.map1D[i + 1] - 2;
-            //            mesh.AreaElems[CountElements].Vertex1 = map[i][j];
-            //            mesh.AreaElems[CountElements].Vertex2 = map[i + 1][j + 1];
-            //            mesh.AreaElems[CountElements].Vertex3 = map[i + 1][j];
-            //            CountElements++;
-            //        }
-            //    }
-            //}
-
             for (int i = 0; i < Map.Count - 1; i++)
             {
                 if (Map.map1D[i] == 1)
@@ -204,31 +103,6 @@ namespace MeshGeneratorsLib.StripGenerator
                     }
                 }
             }
-
-
-            //CountElements = 0;
-            //for (int i = 0; i < Map.Count - 1; i++)
-            //{
-            //    if (Map.map1D[i] == 1)
-            //    {
-            //        CountElements++;
-            //    }
-            //    else if (Map.map1D[i + 1] == 1)
-            //    {
-            //        CountElements++;
-            //    }
-            //    else
-            //    {
-            //        if (Map.map1D[i] == Map.map1D[i + 1])
-            //        {
-            //            CountElements += 2 * (Map.map1D[i] - 1);
-            //        }
-            //        else
-            //        {
-            //            CountElements += 2 * (Map.map1D[i] - 1) + 1;
-            //        }
-            //    }
-            //}
             return CountElements;
         }
 
@@ -246,6 +120,7 @@ namespace MeshGeneratorsLib.StripGenerator
             try
             {
                 CreateMap(WaterLevel, xx, yy, Count, ref WetBed);
+
                 uint[] map1D = Map.map1D;
                 uint[][] map = Map.map;
                 double[][] mapZ = Map.mapZ;
@@ -255,7 +130,7 @@ namespace MeshGeneratorsLib.StripGenerator
                 uint CountKnots = Map.CountKnots;
                 uint CountElements = CalkCountElements();
                 int CountBoundKnots = 2 * Count - 2;
-                if (channelSectionForms == SСhannelForms.boxСhannelCrossTrapezoidSection)
+                if (channelSectionForms == SСhannelForms.trapezoid)
                 {
                     CountBoundKnots = CountBoundKnots + (int)map1D[0] + (int)map1D[Count - 1];
                 }
@@ -386,6 +261,7 @@ namespace MeshGeneratorsLib.StripGenerator
                         }
                     }
                 }
+
                 CountKnots = 0;
                 // дно канала
                 for (int i = 0; i < Count; i++)
@@ -401,7 +277,7 @@ namespace MeshGeneratorsLib.StripGenerator
                     mesh.BoundKnotsMark[CountKnots] = 2;
                     CountKnots++;
                 }
-                if (channelSectionForms == SСhannelForms.boxСhannelCrossTrapezoidSection)
+                if (channelSectionForms == SСhannelForms.trapezoid)
                 {
                     // левая сторона
                     for (int i = 0; i < map1D[0]; i++)
@@ -435,7 +311,7 @@ namespace MeshGeneratorsLib.StripGenerator
                     mesh.BoundElementsMark[belem] = 2;
                     belem++;
                 }
-                if (channelSectionForms == SСhannelForms.boxСhannelCrossTrapezoidSection)
+                if (channelSectionForms == SСhannelForms.trapezoid)
                 {
                     // левая сторона
                     for (int i = 0; i < map1D[0]-1; i++)

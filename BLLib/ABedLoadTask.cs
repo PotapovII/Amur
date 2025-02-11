@@ -140,8 +140,8 @@ namespace BLLib
         /// <summary>
         /// Масштаб расхода от уклона дна
         /// </summary>
-        /// <param name="Gx"></param>
-        /// <param name="Gy"></param>
+        /// <param name="Gx">(d zeta/d x)/tan phi</param>
+        /// <param name="Gy">(d zeta/d y)/tan phi</param>
         /// <returns></returns>
         public double DRate(double Gx, double Gy=0)
         {
@@ -152,6 +152,11 @@ namespace BLLib
             else
                 return 1.0 / scale;
         }
+
+
+
+
+
         // старая 05 11 2022
         //public double DRate(double Gx, double Gy = 0)
         //{

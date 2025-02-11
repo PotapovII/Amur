@@ -61,6 +61,10 @@ namespace RenderLib
             set => sLines = value;
         }
         /// <summary>
+        /// Линия створа
+        /// </summary>
+        public IHLine crossLine { get; set; }
+        /// <summary>
         /// Линии сглаживания
         /// </summary>
         List<IHSmLine> sLines = new List<IHSmLine>();
@@ -76,6 +80,10 @@ namespace RenderLib
         /// Загрузка данных о линиях сглаживания
         /// </summary>
         public SendData<List<IHSmLine>> sendSListData { get; set; } = null;
+        /// <summary>
+        /// Загрузка данных о линии створа
+        /// </summary>
+        public SendData<IHLine> sendCrossLine { get; set; } = null;
         #endregion
         /// <summary>
         /// Флаг первой отрисовки при передаче данных
@@ -420,8 +428,29 @@ namespace RenderLib
                         }
                     }
                     break;
+                case EditState.CrossLine:
+                    {
+                        // отрисовка линий сглаживания
+                        if (crossLine != null)
+                        {
+                            var pA = new PointF((float)crossLine.A.X, (float)crossLine.A.Y);
+                            var pB = new PointF((float)crossLine.B.X, (float)crossLine.B.Y);
+                            zoom.WorldToScreen(ref pA);
+                            zoom.WorldToScreen(ref pB);
+                            g.FillEllipse(colorScheme.BrushTextNodes, pA.X - 1.5f, pA.Y - 1.5f, 3, 3);
+                            g.FillEllipse(colorScheme.BrushTextNodes, pB.X - 1.5f, pB.Y - 1.5f, 3, 3);
+                            Pen pen = colorScheme.PenSelectCounturLine;
+                            g.DrawLine(pen, pA, pB);
+                        }
+                        if (start != null)
+                        {
+                            var pA = new PointF((float)start.X, (float)start.Y);
+                            zoom.WorldToScreen(ref pA);
+                            g.FillEllipse(colorScheme.BrushTextNodes, pA.X - 1.5f, pA.Y - 1.5f, 3, 3);
+                        }
+                    }
+                    break;
             }
-
         }
 
 
@@ -577,6 +606,25 @@ namespace RenderLib
                                     sendSListData(sLines);
                             }
                             break;
+                        case EditState.CrossLine:
+                            if (start == null)
+                            {
+                                start = new CloudKnot(c.X, c.Y, new double[5], 1);
+                                p = start;
+                            }
+                            else
+                            {
+                                CloudKnot end = new CloudKnot(c.X, c.Y, new double[5], 1);
+                                crossLine = new CloudKnotLine(start, end);
+                                //CrossLine
+
+                                p = end;
+                                start = null;
+                                if (sendCrossLine != null)
+                                    sendCrossLine(crossLine);
+                            }
+                            break;
+
                     }
                     if (sendPintData != null && p != null)
                         sendPintData(p);
@@ -651,6 +699,18 @@ namespace RenderLib
                 sLines.Remove(sLines[sLines.Count - 1]);
                 if (sendSListData != null && sLines.Count >-1)
                     sendSListData(sLines);
+                Invalidate();
+            }
+        }
+        /// <summary>
+        ///  Удаление последней линий сглаживания
+        /// </summary>
+        /// <param name="p"></param>
+        public void DelCrossLine()
+        {
+            if (crossLine != null)
+            {
+                crossLine = null;
                 Invalidate();
             }
         }

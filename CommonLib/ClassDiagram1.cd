@@ -1,0 +1,885 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CommonLib.FunFormHelp" Collapsed="true">
+    <Position X="25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAwAAAQAAAAiQAAAAAAACIIAgEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FEM\IFForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CommonLib.TaskFileNames" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAgCAIIAAAAAAAIAAgAAAAIAAAA=</HashCode>
+      <FileName>River\TaskFileNemes.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CommonLib.EConverter.MyEnumConverter" Collapsed="true">
+    <Position X="18" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAABACAAAAAAAAAAAAA=</HashCode>
+      <FileName>EConverter\MyEnumConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CommonLib.EConverter.BooleanTypeConverter" Collapsed="true">
+    <Position X="16.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>EConverter\PConverters.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CommonLib.EConverter.BooleanTypeConverterSave" Collapsed="true">
+    <Position X="18" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>EConverter\PConverters.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CommonLib.EConverter.BooleanTypeConverterYN" Collapsed="true">
+    <Position X="19.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>EConverter\PConverters.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CommonLib.Function.DigFunction1D" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAiAAAAAAAAAAAAAAQAgAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Function\IFunction1D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CommonLib.Geometry.FPoint" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GAAgAAAAAAAAAAQE+AUAAABAEADAAIAAAADgAAAAYDA=</HashCode>
+      <FileName>Geometry\FPoint.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CommonLib.Geometry.HPoint" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAgIAAAAAAAAAQE+AUAAABAEADAAYBAAADgAAEAYDA=</HashCode>
+      <FileName>Geometry\HPoint.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CommonLib.IO.ATaskFormat&lt;Task&gt;" Collapsed="true">
+    <Position X="3.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAgAAgAAEEAAAAIAAAABAgACgAIAAAACAAAAGAAAA=</HashCode>
+      <FileName>IO\ATaskFormat.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CommonLib.IO.ProxyTaskFormat&lt;Task&gt;" Collapsed="true">
+    <Position X="3.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAAAAAAAAAAAAAgAAAAAAAAACAAAAEAAAA=</HashCode>
+      <FileName>IO\ProxyTaskFormat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CommonLib.Physics.SPhysics" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FEmhkyoHkAS+KACQFBIAgDAAs8BJkUFUPKAMKEHAis8=</HashCode>
+      <FileName>Physics\SPhysics.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Struct Name="CommonLib.TriElement" Collapsed="true">
+    <Position X="19.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAA4AAACAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mesh\Elements\TriElement.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CommonLib.TwoElement" Collapsed="true">
+    <Position X="23.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAwAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mesh\Elements\TwoElement.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CommonLib.TaskMetka" Collapsed="true">
+    <Position X="18" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Tasks\ITask.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CommonLib.Areas.RectangleWorld" Collapsed="true">
+    <Position X="16.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIABAAAAAAAAAAQAEAAAAAIAQAACACAAAAIAiA=</HashCode>
+      <FileName>Area\RectangleWorld.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CommonLib.DrvGraphics.TriVertex" Collapsed="true">
+    <Position X="21.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAgAAAAAAAAAAAAQAABAAAAhgABAAAAA=</HashCode>
+      <FileName>DrvGraphics\TriVertex.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="CommonLib.IAlgebra" Collapsed="true">
+    <Position X="16.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAUAAIAAAAAAYAQIAAAAAAAAAAAAABREABI=</HashCode>
+      <FileName>Algebra\IAlgebra.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IAlgebraResult" Collapsed="true">
+    <Position X="18" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAASAAAAAAAAAAAAQAAAAAAAAAIgAAIBAEQAA=</HashCode>
+      <FileName>Algebra\IAlgebraResult.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IAvalanche" Collapsed="true">
+    <Position X="19.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BedLoad\IAvalanche.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IBedLoadTask" Collapsed="true">
+    <Position X="0.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAABAAAAAAAAAACAAAAAACAAgAAIAAAAAAAABA=</HashCode>
+      <FileName>BedLoad\IBedLoadTask.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IBaseFEMTask" Collapsed="true">
+    <Position X="12.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAABAAAAIAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>FEM\IBaseFEMTask.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IComplexFEMTask" Collapsed="true">
+    <Position X="16.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAABIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FEM\IComplexFEMTask.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IFEPoissonTask" Collapsed="true">
+    <Position X="11.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAIAAAAAIAAAAAAAAIgAAAAAAQAgAAAAAAAAAAA=</HashCode>
+      <FileName>FEM\IFEPoissonTask.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IFEMTask" Collapsed="true">
+    <Position X="13.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>FEM\IFETask.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IFForm" Collapsed="true">
+    <Position X="25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAiEAAAAAACAAABAAAAgAAAAAAAQAAAQA=</HashCode>
+      <FileName>FEM\IFForm.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IFunLagrange1D" Collapsed="true">
+    <Position X="21.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FEM\IFForm.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IRectFDMesh" Collapsed="true">
+    <Position X="1" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAgAAAAAIAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Mesh\FDM\IRectFDMesh.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IFElement" Collapsed="true">
+    <Position X="19.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAggAAAAAAAgAAACAAAAABAAAAAAAAAAAAgAAAEAAA=</HashCode>
+      <FileName>Mesh\FEM\IFElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IFEMesh" Collapsed="true">
+    <Position X="10" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIQAAIACAAghABABAAMAAAAAAAAgABAIAAAAAAAAAA=</HashCode>
+      <FileName>Mesh\FEM\IFEMesh.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IFENods" Collapsed="true">
+    <Position X="21.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAggAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mesh\FEM\IFENods.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IAFacet" Collapsed="true">
+    <Position X="10.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAIAEAAAAAAAAAA=</HashCode>
+      <FileName>Mesh\FVM\IAFacet.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IFVComMesh" Collapsed="true">
+    <Position X="12.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAACAAgAAAgAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Mesh\FVM\IFVComMesh.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IFVElement" Collapsed="true">
+    <Position X="23.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABqAAAAIABBAIAAAAAAMCAAAIAAAABAAAJQAAAkgAA=</HashCode>
+      <FileName>Mesh\FVM\IFVElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IFVFacet" Collapsed="true">
+    <Position X="10.5" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACCAAAABAIAAAAAQIABAAAAIABAAAAAAAACEAAA=</HashCode>
+      <FileName>Mesh\FVM\IFVFacet.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.ISFacet" Collapsed="true">
+    <Position X="10.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAIAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Mesh\FVM\ISFacet.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IFVMesh" Collapsed="true">
+    <Position X="3.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAEBCAAAAAAAAgAAAAAAAAAAAAAAAACYAAAAQAAYEA=</HashCode>
+      <FileName>Mesh\FVM1\IFVMesh.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IRectFVMesh" Collapsed="true">
+    <Position X="5.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAMEAAAAAACAggAgAAAAAAAAAAAAAAAAABgADAAAEA=</HashCode>
+      <FileName>Mesh\FVM1\IFVMeshTetra4.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.ILink" Collapsed="true">
+    <Position X="19.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mesh\ILink.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IMesh" Collapsed="true">
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgIAABAABAAAEAAAABAAAAgAAAAAAIAgAAAEARA=</HashCode>
+      <FileName>Mesh\IMesh.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IRenderMeshGL" Collapsed="true">
+    <Position X="23.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAACAAAAAkAAAAAAAAAAAAAAAAAEAACAAAAIQAA=</HashCode>
+      <FileName>Mesh\IRenderMeshGL.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IClouds" Collapsed="true">
+    <Position X="25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAEAAQAAAAAAABAAAAAQAAgAAAAQIQAA=</HashCode>
+      <FileName>Render\ICloud.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IGraphicsCurve" Collapsed="true">
+    <Position X="25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MAIAIAAwgAAAAAAAAAMAAAYAAAAAAAIAAAAAABBAAAA=</HashCode>
+      <FileName>Render\IGraphicsCurve.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IGraphicsData" Collapsed="true">
+    <Position X="16.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAAAAAAAABAAAAAAAAAAQAAQAACAAAAAAAAABAAAA=</HashCode>
+      <FileName>Render\IGraphicsData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IRenderMesh" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAACACAAAAAkAAQAAgAAAAARAAAAAAAACAACAIQAA=</HashCode>
+      <FileName>Render\IRenderMesh.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.ISavePoint" Collapsed="true">
+    <Position X="16.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QCKBAAAAAAAAAAABgAAAEAQAAAABAAQgAAAAAAAAIAA=</HashCode>
+      <FileName>Render\ISavePoint.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IBoundaryConditions" Collapsed="true">
+    <Position X="23.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACABgAAAAAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>River\IBoundCondition.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IRiver" Collapsed="true">
+    <Position X="2.75" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAEAABAAABAAAAAEAQAAAAAAAAAAIAEQEAAAAABA=</HashCode>
+      <FileName>River\IRiver.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.ITaskFileNames" Collapsed="true">
+    <Position X="18" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAgCAIIAAAAAAAIAAgAAAAIAAAA=</HashCode>
+      <FileName>River\ITaskFileNames.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IPropertyTask" Collapsed="true">
+    <Position X="1.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIgAAAACAAAAAAAAA=</HashCode>
+      <FileName>Tasks\IPropertyTask.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.ITask" Collapsed="true">
+    <Position X="1.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAhAAAAAAAAAAAAAABAAAQEACAAAAAAAQAEAAAAAAA=</HashCode>
+      <FileName>Tasks\ITask.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.ITProperty&lt;TParam&gt;" Collapsed="true">
+    <Position X="19.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Tasks\ITProperty.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IUnknown" Collapsed="true">
+    <Position X="21.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACDAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAMAA=</HashCode>
+      <FileName>Tasks\IUnknown.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMArea" Collapsed="true">
+    <Position X="21.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>YBIAgAEAAAAAQCFACgAABIQAgIAQAgAAEABAEABAAAA=</HashCode>
+      <FileName>Area\IMArea.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMBoundary" Collapsed="true">
+    <Position X="23.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAgAAAAAAAAAQAAAEAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Area\IMBoundary.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMFigura" Collapsed="true">
+    <Position X="25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgIAIAAEAgAAgAABAAAABAQAACAAAAAIAAAAAABAAAA=</HashCode>
+      <FileName>Area\IMFigura.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMHesgGrid" Collapsed="true">
+    <Position X="16.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAACAAAAABAAAQAAAQAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Area\IMHesgGrid.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMPoint" Collapsed="true">
+    <Position X="3.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAEAAAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Area\IMPoint.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMSegment" Collapsed="true">
+    <Position X="18" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABCEAAAAAAAAAAAAAQQAAAAAAEAQAAAAACABQAA=</HashCode>
+      <FileName>Area\IMSegment.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.DrvGraphics.IDrvGraphic" Collapsed="true">
+    <Position X="18" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAIAAAIAIAEAAQAAAAAA=</HashCode>
+      <FileName>DrvGraphics\IDrvGraphic.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.FDM.IQuadMesh" Collapsed="true">
+    <Position X="19.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAQCIAACAAAAAAAgIAAAAAACAQAAABAkAAAAA=</HashCode>
+      <FileName>FDM\IQuadMesh.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.FDM.IRectangleMesh" Collapsed="true">
+    <Position X="21.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QACAFCAAABAACgAAAAAIAAAAAAAAAAAAAAAAAAAABCA=</HashCode>
+      <FileName>FDM\IRectangleMesh.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryLib.IField" Collapsed="true">
+    <Position X="16.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAIAAAAAAAAAAAAAQAAAAAQAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Fields\IField.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Function.IDigFunction" Collapsed="true">
+    <Position X="13.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QQIQgCAADAQAAIAAAABAAABAAAAAAAAAAAAAgABAABA=</HashCode>
+      <FileName>Function\IDigFunction.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Function.IFunction1D" Collapsed="true">
+    <Position X="13.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAACAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Function\IFunction1D.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Function.IFunction2D" Collapsed="true">
+    <Position X="19.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Function\IFunction2D.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IFPoint" Collapsed="true">
+    <Position X="18" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Geometry\IFPoint.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IHEdge" Collapsed="true">
+    <Position X="5.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometry\IHEdge.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IHFigure" Collapsed="true">
+    <Position X="18" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometry\IHFigure.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IHLine" Collapsed="true">
+    <Position X="6.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAEAAAA=</HashCode>
+      <FileName>Geometry\IHLine.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IHPoint" Collapsed="true">
+    <Position X="6" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Geometry\IHPoint.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IDPoint" Collapsed="true">
+    <Position X="6" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Geometry\IHPoint.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IHSmLine" Collapsed="true">
+    <Position X="7.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAAAAAIARAAAAAAAAAAAAAQAAAAAI=</HashCode>
+      <FileName>Geometry\IHSmLine.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IBedRiverNode" Collapsed="true">
+    <Position X="8.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Geometry\IRiverPoint.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IMeshRiverNode" Collapsed="true">
+    <Position X="8.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Geometry\IRiverPoint.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IRiverNode" Collapsed="true">
+    <Position X="8.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAABAEkQAAAAAAYAAACAAAAQABAgAAJAA=</HashCode>
+      <FileName>Geometry\IRiverPoint.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IO.IBaseFormater&lt;Type&gt;" Collapsed="true">
+    <Position X="6.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAgACAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>IO\IBaseFormater.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IO.IOFormater&lt;Type&gt;" Collapsed="true">
+    <Position X="6.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAABAAACgAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>IO\IOFormater.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IRiverMesh" Collapsed="true">
+    <Position X="7.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mesh\IRiverMesh.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IMeshWrapper" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAhEEAAAAAAHAAAgAIAAAAAAIAQAAAAAAA=</HashCode>
+      <FileName>Mesh\MWrapper\IMeshWrapper.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IMWCross" Collapsed="true">
+    <Position X="0.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAEEAAAAA=</HashCode>
+      <FileName>Mesh\MWrapper\IMWCross.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IMWCrossSection" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAIAFBAAAgAgAAAAAAQEBAIAAKAAgAgIAAACACA=</HashCode>
+      <FileName>Mesh\MWrapper\IMWCrossSection.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IMWDistance" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAEAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Mesh\MWrapper\IMWDistance.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IFERenumberator" Collapsed="true">
+    <Position X="23.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mesh\Renumberators\IFERenumberator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IRenumberator" Collapsed="true">
+    <Position X="25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mesh\Renumberators\IRenumberator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Tasks.IBCValues" Collapsed="true">
+    <Position X="21.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAgAAAAAAQ=</HashCode>
+      <FileName>Tasks\IBaseCalculationDomain.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Tasks.IBaseCalculationDomain" Collapsed="true">
+    <Position X="0.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABgAAAAAAIAACAACAQAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Tasks\IBaseCalculationDomain.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.Tasks.ICalculationDomain" Collapsed="true">
+    <Position X="0.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tasks\IBaseCalculationDomain.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="CommonLib.ErrorType" Collapsed="true">
+    <Position X="16.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAACAAAAAAABAAAAAQAAAAAAAAQAAAAAAUAAAA=</HashCode>
+      <FileName>Algebra\IAlgebraResult.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.TypeBLModel" Collapsed="true">
+    <Position X="18" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>BedLoad\IBedLoadTask.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.TypeFunForm" Collapsed="true">
+    <Position X="21.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AADIEwBAChAAAAAAAAEAQAABgEACAAABgAgAAAA8ACQ=</HashCode>
+      <FileName>FEM\IFForm.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.IntRange" Collapsed="true">
+    <Position X="18" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FEM\IFForm.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.TypeBoundCond" Collapsed="true">
+    <Position X="19.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAgAAAAAAAAQAAAIAACAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Mesh\TypeBoundCond.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.TypeMesh" Collapsed="true">
+    <Position X="25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAABgAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Mesh\TypeMesh.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.TypeRangeMesh" Collapsed="true">
+    <Position X="16.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAB4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mesh\TypeRangeMesh.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.TypeGraphicsCurve" Collapsed="true">
+    <Position X="23.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAACAAAAAAAEAAgAAAA=</HashCode>
+      <FileName>Render\IGraphicsCurve.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.StressesFlag" Collapsed="true">
+    <Position X="25" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>River\IRiver.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.TypeTask" Collapsed="true">
+    <Position X="18" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEACAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tasks\ITask.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.Areas.FigureType" Collapsed="true">
+    <Position X="25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAAAIAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Area\IMFigura.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.Areas.FigureStatus" Collapsed="true">
+    <Position X="23.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAiAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Area\IMPoint.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.ChannelProcess.EBedErosion" Collapsed="true">
+    <Position X="19.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIQAgAA=</HashCode>
+      <FileName>ChannelProcess\EBedErosion.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.DrvGraphics.GradientFillMode" Collapsed="true">
+    <Position X="16.25" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAIAAAAAABAAAAACAAAAA=</HashCode>
+      <FileName>DrvGraphics\GradientFillMode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.Function.SmoothnessFunction" Collapsed="true">
+    <Position X="23.25" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Function\IDigFunction.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.Mesh.SСhannelForms" Collapsed="true">
+    <Position X="16.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAIKAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mesh\MWrapper\IMWDistance.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.Mesh.Direction" Collapsed="true">
+    <Position X="18" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAACQAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Mesh\Renumberators\IRenumberator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.Mesh.RVData.RVFixedNodeFlag" Collapsed="true">
+    <Position X="21.5" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAIAAAAAAAAAAAAAAAgAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Mesh\RVData\FixedNodeFlag.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.Mesh.RVData.BoundaryNodeFlag" Collapsed="true">
+    <Position X="16.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mesh\RVData\FixedNodeFlag.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.Physics.ECalkDynamicSpeed" Collapsed="true">
+    <Position X="21.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Physics\ECalkDynamicSpeed.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.Physics.ECbType" Collapsed="true">
+    <Position X="23.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAABAAAAAAAAgAAAAAIAAAAAAAAw=</HashCode>
+      <FileName>Physics\ECbType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.Physics.ECritTauType" Collapsed="true">
+    <Position X="25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Physics\ECritTauType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.Physics.ETurbViscType" Collapsed="true">
+    <Position X="18" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FARAAAAAAAAgAAAAAAgAgAAAAAAAQCQBAAAAAAAIAAA=</HashCode>
+      <FileName>Physics\ETurbViscType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.Physics.ETurbViscType_1D" Collapsed="true">
+    <Position X="19.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAABAAAAAAAAAAAAAgFAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Physics\ETurbViscType_1D.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.Physics.EWsType" Collapsed="true">
+    <Position X="21.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAEAAEAAAAAAAQgAAAAAAAAAACAAAAAAAQ=</HashCode>
+      <FileName>Physics\EWsType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.Physics.ParticleForms" Collapsed="true">
+    <Position X="19.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAABAAAAAAAAAAAAAAAAQAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Physics\EWsType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="CommonLib.SendParamCloud" Collapsed="true">
+    <Position X="25" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Render\ICloud.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="CommonLib.SendParam" Collapsed="true">
+    <Position X="23.25" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Render\ISavePoint.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="CommonLib.SendText" Collapsed="true">
+    <Position X="16.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Render\ISavePoint.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="CommonLib.SendValue&lt;Tp&gt;" Collapsed="true">
+    <Position X="18" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Render\ISavePoint.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.SendData&lt;TArg&gt;" Collapsed="true">
+    <Position X="21.5" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Delegate\CommonDelegate.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.Function&lt;TResult, TArg&gt;" Collapsed="true">
+    <Position X="19.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Delegate\CommonDelegate.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.SimpleProcedure" Collapsed="true">
+    <Position X="19.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Delegate\CommonDelegate.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.WallFunction" Collapsed="true">
+    <Position X="23.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Delegate\CommonDelegate.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.TurbulentModel" Collapsed="true">
+    <Position X="21.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Delegate\CommonDelegate.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.BProc" Collapsed="true">
+    <Position X="16.25" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Delegate\CommonDelegate.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="CommonLib.Physics.CalkTurbVisc" Collapsed="true">
+    <Position X="18" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAARAAAAAgAAAAAAAAAAAAAAAAgAAAAAAQAAAAIAAAA=</HashCode>
+      <FileName>Physics\SPhysics.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

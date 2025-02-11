@@ -10,12 +10,12 @@
 // выполняются через граничные элементы (модифициуя ЛМЖ и ЛПЧ) перед
 // сборкой САУ
 //---------------------------------------------------------------------------
-namespace NPRiverLib.APRiver_2XYD.River2DSW
+namespace NPRiverLib.APRiver2XYD.River2DSW
 {
     using System;
     using CommonLib;
-    using MemLogLib;
     using AlgebraLib;
+    using MemLogLib;
     /// <summary>
     /// ОО: Общий интерфейс Алгебры
     /// </summary>
@@ -230,6 +230,16 @@ namespace NPRiverLib.APRiver_2XYD.River2DSW
         {
         }
         /// <summary>
+        /// Получить строку (не для всех решателей)
+        /// </summary>
+        /// <param name="IndexRow">Индекс получемой строки системы</param>
+        /// <param name="ColElems">Коэффициенты строки системы</param>
+        /// <param name="R">Значение правой части</param>
+        public void GetStringSystem(uint IndexRow, ref double[] ColElems, ref double R)
+        {
+            throw new NotImplementedException("метод GetStringSystem не реализован для класса");
+        }
+        /// <summary>
         /// Добавление в правую часть
         /// </summary>
         public void CopyRight(double[] CRight)
@@ -358,10 +368,12 @@ namespace NPRiverLib.APRiver_2XYD.River2DSW
         {
             return new AlgebraRiver(this);
         }
-        ///// <summary>
-        ///// Вывод САУ на КОНСОЛЬ
-        ///// </summary>
-        public void Print(int flag = 0)
+        /// <summary>
+        /// Вывод САУ на КОНСОЛЬ
+        /// </summary>
+        /// <param name="flag">количество знаков мантисы</param>
+        /// <param name="color">длина цветового блока</param>
+        public void Print(int flag = 0, int color = 1)
         {
 
         }

@@ -101,6 +101,11 @@ namespace CommonLib.Function
         /// <param name="file"></param>
         void Load(StreamReader file);
         /// <summary>
+        /// Сохранение данных в файл
+        /// </summary>
+        /// <param name="file"></param>
+        void Save(StreamWriter file);
+        /// <summary>
         /// Формирование данных основы
         /// </summary>
         /// <param name="x">аргумент</param>

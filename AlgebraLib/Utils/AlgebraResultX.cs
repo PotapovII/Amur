@@ -41,9 +41,9 @@ namespace AlgebraLib
         public override void Print()
         {
             base.Print();
-            LOG.Print<double>("Ширина ленты", FH);
-            LOG.Print<double>("ШШириной нижней полуленты", FHL);
-            LOG.Print<double>("Шириной верхней полуленты", FHR);
+            LOG.Print("Ширина ленты", FH);
+            LOG.Print("ШШириной нижней полуленты", FHL);
+            LOG.Print("Шириной верхней полуленты", FHR);
         }
     }
     public class AlgebraResultIterative : AlgebraResult
@@ -109,13 +109,13 @@ namespace AlgebraLib
         public override void Print()
         {
             base.Print();
-            LOG.Print<double>("Количество итераций до сходимости", Iterations);
-            LOG.Print<double>("Норма ошибки max(| r |)", Error_C);
-            LOG.Print<double>("Норма ошибки sqrt( r * r )", Error_L2);
-            LOG.Print<double>("Норма начальной ошибки sqrt( r0 * r0 )", Error0_L2);
-            LOG.Print<double>("Относительная ошибка", ratioError);
-            LOG.Print<double>("Нома матрицы max | A |", normA);
-            LOG.Print<bool>("Предобуславливание", isPrecond);
+            LOG.TPrint<double>("Количество итераций до сходимости", Iterations);
+            LOG.TPrint<double>("Норма ошибки max(| r |)", Error_C);
+            LOG.TPrint<double>("Норма ошибки sqrt( r * r )", Error_L2);
+            LOG.TPrint<double>("Норма начальной ошибки sqrt( r0 * r0 )", Error0_L2);
+            LOG.TPrint<double>("Относительная ошибка", ratioError);
+            LOG.TPrint<double>("Нома матрицы max | A |", normA);
+            LOG.TPrint<bool>("Предобуславливание", isPrecond);
         }
     }
 

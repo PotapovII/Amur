@@ -18,7 +18,7 @@ namespace NPRiverLib.APRiver_1XD.River1DSW
     using CommonLib.ChannelProcess;
     using CommonLib.Function;
     using MeshGeneratorsLib.TapeGenerator;
-    using NPRiverLib.ATask;
+    using NPRiverLib.ABaseTask;
     using System.Collections.Generic;
 
     /// <summary>
@@ -143,6 +143,16 @@ namespace NPRiverLib.APRiver_1XD.River1DSW
         {
             Geometry = new DigFunction();
             Geometry.Load(file);
+            Geometry.GetFunctionData(ref x, ref zeta, Params.CountKnots);
+            Set(mesh, null);
+        }
+        /// <summary>
+        /// Загрузка задачи иp форматного файла
+        /// </summary>
+        /// <param name="file">имя файла</param>
+        public override void LoadData(IDigFunction[] crossFunctions = null) 
+        {
+            Geometry = crossFunctions[0];
             Geometry.GetFunctionData(ref x, ref zeta, Params.CountKnots);
             Set(mesh, null);
         }

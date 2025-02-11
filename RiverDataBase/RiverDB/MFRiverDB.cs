@@ -1,10 +1,13 @@
-﻿namespace RiverDB
+﻿
+namespace RiverDB
 {
-    using RiverDB.ConvertorOut;
-    using RiverDB.Convertors;
-    using RiverDB.FormsDB;
     using System;
     using System.Windows.Forms;
+
+    using RiverDB.Report;
+    using RiverDB.FormsDB;
+    using RiverDB.Convertors;
+    using RiverDB.ConvertorOut;
 
     public partial class MFRiverDB : Form
     {
@@ -17,7 +20,7 @@
         private void gpxToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ConvertForm form = new ConvertForm();
-            form.ShowDialog();
+            form.Show();
         }
 
         private void ExittTSM_Click(object sender, EventArgs e)
@@ -39,25 +42,31 @@
         private void tsm_ExperimentData_Click(object sender, EventArgs e)
         {
             LevelsRiver list = new LevelsRiver("Experiment");
-            list.ShowDialog();
+            list.Show();
         }
 
         private void tsm_Knots_Click(object sender, EventArgs e)
         {
             Knot list = new Knot("Knot");
-            list.ShowDialog();
+            list.Show();
         }
 
         private void tsm_GPost_Click(object sender, EventArgs e)
         {
             Place list = new Place("Place");
-            list.ShowDialog();
+            list.Show();
         }
 
         private void работаСВычислительнойСеткойToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateMeshForm form = new CreateMeshForm();
             form.Show();
+        }
+
+        private void tsmWaterLevel_Click(object sender, EventArgs e)
+        {
+            FormReportWL florm = new FormReportWL();
+            florm.Show();
         }
     }
 }

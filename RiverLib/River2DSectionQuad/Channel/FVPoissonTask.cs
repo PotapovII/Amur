@@ -854,8 +854,11 @@ namespace RiverLib
         /// Расчет коэффициентов модели  Spalart - Allmaras
         /// </summary>
         /// <param name="nu0_t"></param>
-        public virtual void CalkSpalartAllmaras(double[][] nu0_t, double[][] u0, double tau, ref double[][] B,
-            ref double[][] dU_dx, ref double[][] dU_dy, ref double[][] dMu_dx, ref double[][] dMu_dy, double alphaQ)
+        public virtual void CalkSpalartAllmaras(double[][] nu0_t, 
+            double[][] u0, double tau, ref double[][] B,
+            ref double[][] dU_dx, ref double[][] dU_dy, 
+            ref double[][] dMu_dx, ref double[][] dMu_dy, 
+            double alphaQ)
         {
             double nu = MEM.Error6;
             #region Spalart - Allmaras константы
@@ -916,17 +919,20 @@ namespace RiverLib
                     double Eii = Omegaii + fv2 * nuP / kd2;
                     double r = Math.Min(nuP / (Eii * kd2), 10);
                     double gw = r + Cw2 * (Math.Pow(r, 6) - r);
-                    double fw = gw * Math.Pow((1 + Cw3_6) / (Math.Pow(gw, 6) + Cw3_6), n16);
+                    double ag = (1 + Cw3_6) / (Math.Pow(gw, 6) + Cw3_6);
+                    double fw = gw * Math.Pow(ag, n16);
                     double ft2 = Ct3 * Math.Exp(-Ct4 * chi * chi);
 
-                    double Ap0 = btau + (Cw1 * fw - Cb1 * ft2 / kappa2) * nuP / (dp * dp) * alphaQ - Cb1 * (1 - ft2) * Eii / alphaQ;
+                    double Ap0 = btau 
+                    + (Cw1 * fw - Cb1 * ft2 / kappa2) * nuP / (dp * dp) * alphaQ 
+                    - Cb1 * (1 - ft2) * Eii / alphaQ;
 
                     Ae[i][j] = (nu + (nuE + nuP) / 2.0 / sigma) / dx_2;
                     Aw[i][j] = (nu + (nuW + nuP) / 2.0 / sigma) / dx_2;
                     As[i][j] = (nu + (nuS + nuP) / 2.0 / sigma) / dy_2;
                     An[i][j] = (nu + (nuN + nuP) / 2.0 / sigma) / dy_2;
                     Ap[i][j] = Ae[i][j] + Aw[i][j] + An[i][j] + As[i][j] + Ap0;
-                    B[i][j] = btau * nuP + Nuii * alphaQ; // - ft1 * (nuP - Utrim) * (nuP - Utrim);
+                    B[i][j] = btau * nuP + Nuii * alphaQ; 
                 }
         }
 
@@ -957,8 +963,11 @@ namespace RiverLib
         /// Расчет коэффициентов модели Рэя-Агарвала 
         /// </summary>
         /// <param name="R"></param>
-        public virtual void CalkWrayAgarwal2018(double[][] R, double[][] u0, double tau, ref double[][] B,
-            ref double[][] dU_dx, ref double[][] dU_dy, ref double[][] dMu_dx, ref double[][] dMu_dy, double alphaQ)
+        public virtual void CalkWrayAgarwal2018(double[][] R, 
+            double[][] u0, double tau, ref double[][] B,
+            ref double[][] dU_dx, ref double[][] dU_dy, 
+            ref double[][] dMu_dx, ref double[][] dMu_dy, 
+            double alphaQ)
         {
             double nu = MEM.Error6;
             #region  Рэя-Агарвала  константы

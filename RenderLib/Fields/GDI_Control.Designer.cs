@@ -265,6 +265,7 @@
             this.btCrossSection.TabIndex = 93;
             this.btCrossSection.Text = "Профиль";
             this.btCrossSection.UseVisualStyleBackColor = true;
+            this.btCrossSection.Click += new System.EventHandler(this.btCrossSection_Click);
             // 
             // btCurve
             // 
@@ -1086,7 +1087,7 @@
             this.tabPage4.Controls.Add(this.panel9);
             this.tabPage4.Location = new System.Drawing.Point(4, 25);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(265, 345);
+            this.tabPage4.Size = new System.Drawing.Size(265, 108);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Кривые";
             // 
@@ -1167,7 +1168,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(265, 345);
+            this.tabPage3.Size = new System.Drawing.Size(265, 108);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Перья";
             // 
@@ -1480,7 +1481,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(265, 345);
+            this.tabPage2.Size = new System.Drawing.Size(265, 108);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Кисти";
             // 

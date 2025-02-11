@@ -17,6 +17,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
 
     using CommonLib;
     using CommonLib.IO;
+    using CommonLib.FDM;
     using CommonLib.Physics;
     using CommonLib.Function;
     using CommonLib.ChannelProcess;
@@ -27,10 +28,8 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
     using GeometryLib;
     using NPRiverLib.AllWallFunctions;
     using NPRiverLib.IO;
-    using NPRiverLib.ATask;
-    using System.Collections.Generic;
-    using MeshLib.RecMesh;
-    using CommonLib.FDM;
+    using NPRiverLib.ABaseTask;
+    
 
     [Serializable]
     public abstract class APatankarRiver1XD : APRiver1XD<PatankarParams1XD>, IRiver
@@ -301,6 +300,11 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
 
         public override void LoadData(StreamReader file) { }
         /// <summary>
+        /// Загрузка задачи иp форматного файла
+        /// </summary>
+        /// <param name="file">имя файла</param>
+        public override void LoadData(IDigFunction[] crossFunctions = null) { }
+        /// <summary>
         /// Конфигурация задачи по умолчанию (тестовые задачи)
         /// </summary>
         /// <param name="testTaskID">номер задачи по умолчанию</param>
@@ -317,7 +321,18 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             //  imax |------V------| 
             //       | x    1  исток
             //       V i    E          
-
+            // Координатная система решателя
+            //             (S) дно    
+            //i=0,j=0|-------------|--> j y  jmax
+            //       |             |
+            //       |    ----|\   |      
+            //   W   |   |      |  | E 
+            // Вток  |    ----|/   | исток    
+            //       |             |     
+            //       |             |     
+            //  imax |-------------| 
+            //       | x     (верх)
+            //       V i    N        
 
             imax = Params.FV_X + 1;
             jmax = Params.FV_Y + 1;
@@ -874,6 +889,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             
 
         }
+
         /// <summary>
         /// Получение полей придонных касательных напряжений и давления/свободной поверхности по контексту задачи
         /// усредненных на конечных элементах

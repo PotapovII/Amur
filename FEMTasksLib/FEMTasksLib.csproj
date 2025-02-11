@@ -42,15 +42,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllWallFunctions\AWallFunction.cs" />
+    <Compile Include="AllWallFunctions\IWallFunction.cs" />
+    <Compile Include="AllWallFunctions\WallData.cs" />
+    <Compile Include="AllWallFunctions\WallFunctionLutskoy.cs" />
+    <Compile Include="AllWallFunctions\WallFunctionNguyen.cs" />
+    <Compile Include="AllWallFunctions\WallFunctionVolkov.cs" />
     <Compile Include="BEMTasks\Order0\ABEMTask.cs" />
     <Compile Include="BEMTasks\Order5\BEMStreamParams.cs" />
     <Compile Include="BEMTasks\Order0\PoissonBEMTask.cs" />
     <Compile Include="BEMTasks\Order0\LaplaceBEM.cs" />
     <Compile Include="BoundLabel.cs" />
+    <Compile Include="СontinuumMechanics.cs" />
     <Compile Include="FEComplexTask\AComplexFEMTask.cs" />
     <Compile Include="FEComplexTask\ATriFEMTask.cs" />
     <Compile Include="FEComplexTask\DiffTurbulentModelTri.cs" />
     <Compile Include="FEComplexTask\RiverSedimentTri_1Y.cs" />
+    <Compile Include="FEMTasks\AFETaskTri.cs" />
+    <Compile Include="FEMTasks\AWRAP_FETaskTri.cs" />
+    <Compile Include="FEMTasks\Reynolds\ReynoldsVortexStreamTri.cs" />
+    <Compile Include="FEMTasks\Reynolds\ReynoldsTransportTri.cs" />
+    <Compile Include="FEMTasks\VortexStream\TransportTri.cs" />
+    <Compile Include="FEMTasks\VortexStream\NSVortexStreamTri.cs" />
+    <Compile Include="FEMTasks\VortexStream\VortexStreamTri.cs" />
+    <Compile Include="FEMTasks\SophieGermainTask.cs" />
+    <Compile Include="FEMTasks\VortexStreamRectangle.cs" />
+    <Compile Include="FEMTasks\VortexStream\VSUtils.cs" />
     <Compile Include="VortexPhi\CFEPoissonTaskTri.cs" />
     <Compile Include="VortexPhi\Mazo\RiverCrossVortexPhi.cs" />
     <Compile Include="FEMTasks\NonStationarylTask.cs" />
@@ -103,6 +120,10 @@
       <Project>{4d84c29a-57f3-44d0-9520-0294dc35763e}</Project>
       <Name>MemLogLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mesh\MeshAdapterLib\MeshAdapterLib.csproj">
+      <Project>{2e2053d5-a41d-487f-8b7b-12f8673edf65}</Project>
+      <Name>MeshAdapterLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mesh\MeshGeneratorsLib\MeshGeneratorsLib.csproj">
       <Project>{5F4DA40D-74C6-4E31-8973-1860378B3234}</Project>
       <Name>MeshGeneratorsLib</Name>
@@ -114,6 +135,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="ClassDiagram2.cd" />
     <None Include="DOC\VortexPhi.doc" />
     <None Include="DOC\Задача Пуассона для МГЭ.doc" />
     <None Include="DOC\КЭ Анадиз 2D SWE .doc" />

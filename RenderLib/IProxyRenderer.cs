@@ -181,6 +181,10 @@ namespace RenderLib
         /// </summary>
         List<IHSmLine> SLines { get; set; }
         /// <summary>
+        /// Линии сглаживания
+        /// </summary>
+        IHLine crossLine { get; set; }
+        /// <summary>
         /// Загрузка данных о вершине
         /// </summary>
         SendData<CloudKnot> sendPintData { get; set; }
@@ -193,6 +197,11 @@ namespace RenderLib
         /// </summary>
         /// <param name="p"></param>
         void DelSmLines();
+        /// <summary>
+        ///  удаление линии створа
+        /// </summary>
+        /// <param name="p"></param>
+        void DelCrossLine();
         /// <summary>
         /// Удаление линий сглаживания
         /// </summary>

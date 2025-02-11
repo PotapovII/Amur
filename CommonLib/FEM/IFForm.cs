@@ -44,28 +44,102 @@ namespace CommonLib
     [Serializable]
     public enum TypeFunForm
     {
+        /// <summary>
+        /// точка на отрезке
+        /// </summary>
         Form_1D_L0 = 0,
+        /// <summary>
+        /// функции Лагранжа 1 порядка на отрезке (2 узла) 
+        /// </summary>
         Form_1D_L1,
+        /// <summary>
+        /// функции Лагранжа 2 порядка на отрезке (3 узла) 
+        /// </summary>
         Form_1D_L2,
+        /// <summary>
+        /// функции Лагранжа 3 порядка на отрезке (4 узла) 
+        /// </summary>
         Form_1D_L3,
+        /// <summary>
+        /// функции Лагранжа 1 порядка на симплексе (3 узла) 
+        /// </summary>
         Form_2D_TriangleAnalitic_L1,
+        /// <summary>
+        /// константа на симплексе (3 узла) ***
+        /// </summary>
         Form_2D_Triangle_L0,
+        /// <summary>
+        /// функции Лагранжа 1 порядка на симплексе (3 узла) 
+        /// </summary>
         Form_2D_Triangle_L1,
+        /// <summary>
+        /// функции 1 порядка на симплексе (3 узла) в центах граней
+        /// </summary>
         Form_2D_Triangle_L1_River,
+        /// <summary>
+        /// функции 1 порядка на симплексе (3 узла) в центах граней
+        /// </summary>
         Form_2D_Triangle_CR,
+        /// <summary>
+        /// функции Лагранжа 2 порядка на симплексе (6 узлов) 
+        /// </summary>
         Form_2D_Triangle_L2,
+        /// <summary>
+        /// функции Лагранжа 3 порядка на симплексе (10 узлов) 
+        /// </summary>
         Form_2D_Triangle_L3,
+        /// <summary>
+        /// костанта 0 порядка в квадрате (1 узел) ***
+        /// </summary>
         Form_2D_Rectangle_L0,
+        /// <summary>
+        /// функции Лагранжа 1 порядка в квадрате  (4 узла) 
+        /// </summary>
         Form_2D_Rectangle_L1,
+        /// <summary>
+        /// функции Серендита 2 порядка в квадрате  (8 узлов) 
+        /// </summary>
         Form_2D_Rectangle_S2,
+        /// <summary>
+        /// функции Серендита 3 порядка в квадрате  (12 узлов) 
+        /// </summary>
         Form_2D_Rectangle_S3,
+        /// <summary>
+        /// функции Лагранжа 2 порядка в квадрате  (9 узла) 
+        /// </summary>
         Form_2D_Rectangle_L2,
+        /// <summary>
+        /// функции Лагранжа 3 порядка в квадрате  (16 узла) 
+        /// </summary>
         Form_2D_Rectangle_L3,
+        /// <summary>
+        /// функции  Кроуза-Равиарта порядка в квадрате (4 узла) в центах граней
+        /// </summary>
         Form_2D_Rectangle_CR,
+        /// <summary>
+        /// мои функции 2 порядка в квадрате (8 узла) в центах граней
+        /// </summary>
         Form_2D_Rectangle_P,
+        /// <summary>
+        /// внутреннии не согласованные функции Лагранжа 1 порядка в квадрате  (4 узла) 
+        /// </summary>
         Form_2D_Rectangle_Area4_L1N,
+        /// <summary>
+        /// внутреннии не согласованные функции Лагранжа 1 порядка в квадрате  (3 узла) 
+        /// </summary>
         Form_2D_Rectangle_Area3_L1N,
+        /// <summary>
+        ///  мод функций Кроуза-Равиарта
+        /// </summary>
         Form_2D_Rectangle_CRM,
+        /// <summary>
+        /// функции формы Эрмита (полные) 3 порядка в квадрате  (4 узла)
+        /// </summary>
+        Form_2D_Rectangle_Ermit4,
+        /// <summary>
+        /// функции формы Эрмита (полные) 3 порядка в квадрате  (4 узла)
+        /// </summary>
+        Form_2D_Triangle_Ermit3,
         Form_Zerro,
         Form_Unknown
     }

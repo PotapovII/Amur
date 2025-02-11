@@ -12,7 +12,6 @@ namespace MeshLib
     using System;
     using System.Collections.Generic;
     using System.IO;
-
     class TriMeshFormat : IBaseFormater<IMesh>
     {
         public bool IsSupported(string file)

@@ -8,13 +8,13 @@
 //                      Сбока No Property River Lib
 //              с убранными из наследников Property классами 
 //---------------------------------------------------------------------------
-namespace NPRiverLib.APRiver_2XYD
+namespace NPRiverLib.APRiver2XYD
 {
     using CommonLib;
     using CommonLib.Physics;
     using GeometryLib;
     using MemLogLib;
-    using NPRiverLib.ATask;
+    using NPRiverLib.ABaseTask;
     
     using System;
     /// <summary>
@@ -127,4 +127,5 @@ namespace NPRiverLib.APRiver_2XYD
             unknowns.Add(new CalkPapams("Вихревая вязкость", _Mu, TypeFunForm.Form_2D_Rectangle_L1));
         }
     }
+
 }

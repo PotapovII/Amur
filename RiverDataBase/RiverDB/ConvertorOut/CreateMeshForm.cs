@@ -1,21 +1,28 @@
-﻿using System;
-using System.Windows.Forms;
-using CommonLib;
-using CommonLib.Mesh;
-using GeometryLib;
-using MeshAdapterLib;
-using MeshExplorer.IO;
-using MeshLib;
-using RenderLib;
-using TriangleNet;
-using TriangleNet.Geometry;
-using TriangleNet.Meshing;
-using TriangleNet.Meshing.Algorithm;
-using TriangleNet.Smoothing;
-using TriangleNet.Tools;
-
+﻿//---------------------------------------------------------------------------
+//                         проектировщик:
+//                           Потапов И.И.
+//---------------------------------------------------------------------------
+//        кодировка : 04.10.2023 Потапов И.И. 
+//--------------------------------------------------------------------------
 namespace RiverDB.ConvertorOut
 {
+    using System;
+    using System.Windows.Forms;
+
+    using MeshLib;
+    using CommonLib;
+    using CommonLib.Mesh;
+
+    using GeometryLib;
+    using MeshAdapterLib;
+    using MeshExplorer.IO;
+
+    using TriangleNet;
+    using TriangleNet.Tools;
+    using TriangleNet.Meshing;
+    using TriangleNet.Geometry;
+    using TriangleNet.Smoothing;
+    using TriangleNet.Meshing.Algorithm;
 
     public partial class CreateMeshForm : Form
     {

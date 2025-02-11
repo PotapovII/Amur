@@ -351,66 +351,6 @@ namespace ChannelProcessLib
         /// <summary>
         /// Расчет русловых процессов
         /// </summary>
-        //public double SolverStep()
-        //{
-        //    try
-        //    {
-        //        logger = Logger.Instance;
-        //        if (sps == null) sps = new SavePoint();
-        //        // =========== ГИДРОДИНАМИКА ========
-        //        channelProcessError = ChannelProcessError.riverMeshError;
-        //        riverTask.time = ps.time;
-        //        // генерация сетки для задачи гидродинамики
-        //        riverTask.SetZeta(Zeta, ps.bedErosion);
-        //        channelProcessError = ChannelProcessError.riverError;
-        //        // расчет гидрадинамики  (скоростей потока)
-        //        riverTask.SolverStep();
-        //        ps.dtime = riverTask.dtime;
-        //        IMesh bedMesh = null;
-        //        // расчет донных деформаций
-        //        if (ps.bedErosion != EBedErosion.NoBedErosion)
-        //        {
-        //            channelProcessError = ChannelProcessError.bedError;
-        //            bedLoadTask.dtime = ps.dtime;
-        //            // расчет  придонных касательных напряжений на дне
-        //            riverTask.GetTau(ref tauX, ref tauY, ref P, ref CS);
-        //            // ========== БИБЛИОТЕКА === BLLib === 
-        //            if (bedLoadTask.TaskReady() == false)
-        //            {
-        //                riverTask.GetZeta(ref Zeta);
-        //                bedMesh = riverTask.BedMesh();
-        //                bedLoadTask.SetTask(riverTask.BedMesh(), Zeta, riverTask.BoundCondition());
-        //            }
-        //            if (bedLoadTask.TaskReady() == true)
-        //            {
-        //                bedLoadTask.time = ps.time;
-        //                bedLoadTask.CalkZetaFDM(ref Zeta, tauX, tauY, P, CS);
-        //            }
-        //            else
-        //            {
-        //                if (bedMesh != null)
-        //                    Logger.Instance.Info("не загружена сетка для дна, возможно задача гидрадинамики требует загрузки");
-        //                else
-        //                {
-        //                    Logger.Instance.Info("ошибка! не активирована задача донных деформаций: ChannelProcess.SolverStep()");
-        //                    logger.Error("ошибка! не активирована задача донных деформаций", "ChannelProcess.SolverStep()");
-        //                }
-        //            }
-        //        }
-        //        // текущее время
-        //        ps.time += ps.dtime;
-        //        // сохранение результатов расчета
-        //        SaveData();
-        //        // шаг расчета выполнен
-        //        channelProcessError = ChannelProcessError.notError;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logger.Instance.Exception(ex);
-        //        logger.Exception(ex);
-        //    }
-        //    return ps.time;
-        //}
         public double SolverStep()
         {
             try
@@ -419,13 +359,16 @@ namespace ChannelProcessLib
                 if (sps == null) sps = new SavePoint();
                 // =========== ГИДРОДИНАМИКА ========
                 channelProcessError = ChannelProcessError.riverMeshError;
-
                 // генерация сетки для задачи гидродинамики
-                riverTask.SetZeta(Zeta, ps.bedErosion);
+                if (Zeta != null)
+                    riverTask.SetZeta(Zeta, ps.bedErosion);
 
-                if (ps.time >= ps.countRiver * ps.dtimeRiver || MEM.Equals(ps.time, ps.dtime) == true ||
+                if (ps.time >= ps.countRiver * ps.dtimeRiver ||
+                    ps.time < ps.dtime ||
+                    MEM.Equals(ps.time, ps.dtime) == true ||
                     ps.bedErosion == EBedErosion.NoBedErosion)
                 {
+                    riverTask.dtime = ps.dtime;
                     riverTask.time = ps.time;
                     channelProcessError = ChannelProcessError.riverError;
                     // расчет гидрадинамики  (скоростей потока)

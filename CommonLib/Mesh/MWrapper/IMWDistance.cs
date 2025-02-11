@@ -42,11 +42,11 @@ namespace CommonLib.Mesh
         /// <summary>
         /// Параьолический профиль канала (2 границы)
         /// </summary>
-        porabolicСhannelSection = 0,
+        porabolic = 0,
         /// <summary>
         /// Полу параболический профиль канала (3 границы)
         /// </summary>
-        halfPorabolicСhannelSection = 1,
+        halfPorabolic = 1,
         /// <summary>
         /// Канал с вертикальными стенками (4 границы)
         /// </summary>
@@ -58,12 +58,12 @@ namespace CommonLib.Mesh
         /// <summary>
         /// Канал с вертикальными стенками (4 границы)
         /// </summary>
-        boxСhannelCrossTrapezoidSection = 5,
+        trapezoid = 5,
     }
     /// <summary>
     /// Обертка для сетки для задач CFG в створе
     /// </summary>
-    public interface IMWDistance : IMeshWrapper
+    public interface IMWRiverDistance 
     {
         /// <summary>
         /// Тип формы канала в створе потока
@@ -78,5 +78,20 @@ namespace CommonLib.Mesh
         /// </summary>
         /// <returns></returns>
         double[] GetHp();
+    }
+    /// <summary>
+    /// Обертка для сетки для задач CFG в створе
+    /// </summary>
+    public interface IMWDistance : IMeshWrapper, IMWRiverDistance {}
+    /// <summary>
+    /// Обертка для сетки для задач CFG в створе
+    /// </summary>
+    public interface IMWRiver : IMWRiverDistance, IMWRiverCross 
+    {
+        /// <summary>
+        /// Сетка расчетной области
+        /// </summary>
+        /// <returns></returns>
+        IMesh GetMesh();
     }
 }

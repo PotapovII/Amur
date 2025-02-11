@@ -398,6 +398,19 @@ namespace MeshLib
                 GetBottom(botton);
                 //this.bottomTube = bottomTube;
                 //this.jdxTube = jdxTube;
+
+                int NNx = yy.Length - 1;
+                double minZ = yy[NNx][0];
+                int minIdx = 0;
+                //for (int i = 1; i < yy[0].Length; i++)
+                //{
+                //    if (minZ > yy[NNx][i])
+                //    {
+                //        minZ = yy[NNx][i];
+                //        minIdx = i;
+                //    }
+                //}
+                //jdxTube = minIdx/2;
                 for (index = 0; index < Count; index++)
                 {
                     maxErr = 0;

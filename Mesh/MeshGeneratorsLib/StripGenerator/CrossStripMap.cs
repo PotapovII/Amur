@@ -72,12 +72,25 @@ namespace MeshGeneratorsLib.StripGenerator
         /// </summary>
         /// <param name="spline">функция дна</param>
         /// <param name="WaterLevel">отметка свободной поверхности потока</param>
-        /// <param name="dy">шаг сетки по створу</param>
-        /// <param name="y0">левая координата створа</param>
+        /// <param name="ymin">минимальная отменка дна</param>
         /// <param name="Count">количество узлов по дну</param>
-        /// <param name="CountH">максимальное количество узлов по глубине</param>
-        public void CreateMap(TSpline spline, double WaterLevel, double dy, double y0, int Count, int CountH)
+        /// <param name="width">щирина створа</param>
+        /// <param name="left">Левая береговая точка</param>
+        /// <param name="right">Правая береговая точка</param>
+        /// <exception cref="Exception"></exception>
+        public void CreateMap(TSpline spline, double WaterLevel, double ymin,
+            int Count, double width, HKnot left, HKnot right)
         {
+            // шаг сетки по створу
+            double dy = width / (Count - 1);
+            // левая координата створа
+            double y0 = left.X;
+            // глубина максимальная
+            double H = WaterLevel - ymin;
+            // максимальное количество узлов по глубине
+            int CountH = (int)(H / dy) + 1;
+            if (CountH < 5)
+                throw new Exception("Сетка вырождена по напрявлению Z");
             this.dy = dy;
             this.y0 = y0;
             this.Count = Count;
@@ -95,7 +108,8 @@ namespace MeshGeneratorsLib.StripGenerator
                 double zeta = spline.Value(y);
                 // находим глубину 
                 double h = WaterLevel - zeta;
-                if ((i == 0 || i == Count - 1) && h < 0.0001)
+                
+                if ((i == 0 || i == Count - 1) && h < MEM.Error5)
                 {
                     // берега
                     map1D[i] = 1;
@@ -107,7 +121,11 @@ namespace MeshGeneratorsLib.StripGenerator
                 {
                     // находим количество узлов на вертикали
                     uint n = (uint)Math.Abs(h / dy) + 1;
-                    uint nOld = map1D[i-1];
+                    uint nOld;
+                    if (i == 0)
+                        nOld = n;
+                    else
+                        nOld = map1D[i-1];
                     if( n == nOld || n == nOld-1 || n == nOld+1 )
                     {
                         map1D[i] = n;
@@ -115,7 +133,7 @@ namespace MeshGeneratorsLib.StripGenerator
                     else
                     {
                         if(n > nOld) n = nOld + 1;
-                        if (n < nOld) n = nOld - 1;
+                        if(n < nOld) n = nOld - 1;
                     }
                     if (n < 3)
                     {

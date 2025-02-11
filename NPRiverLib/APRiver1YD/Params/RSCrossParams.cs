@@ -7,6 +7,8 @@
 //---------------------------------------------------------------------------
 //               Реверс в NPRiverLib 09.02.2024 Потапов И.И.
 //---------------------------------------------------------------------------
+//                ++ кодировка :  03.02.2025 Потапов И.И.
+//---------------------------------------------------------------------------
 namespace NPRiverLib.APRiver1YD.Params
 {
     using System;
@@ -17,6 +19,7 @@ namespace NPRiverLib.APRiver1YD.Params
     using CommonLib;
     using CommonLib.EConverter;
     using CommonLib.Physics;
+    using CommonLib.EddyViscosity;
 
     /// <summary>
     /// Тип решателя
@@ -112,12 +115,6 @@ namespace NPRiverLib.APRiver1YD.Params
         [Category("Задача")]
         public double J { get; set; }
         /// <summary>
-        /// Средний радиус
-        /// </summary>
-        [DisplayName("Средний радиус закругления канала")]
-        [Category("Задача")]
-        public double midleRadius { get; set; }
-        /// <summary>
         /// модель турбулентной вязкости
         /// </summary>
         [DisplayName("Y модель турбулентной вязкости")]
@@ -146,13 +143,6 @@ namespace NPRiverLib.APRiver1YD.Params
         [TypeConverter(typeof(MyEnumConverter))]
         public TaskVariant taskVariant { get; set; }
         /// <summary>
-        /// Тип геомерии створа
-        /// </summary>
-        [DisplayName("Тип геомерии створа")]
-        [Category("Задача")]
-        [TypeConverter(typeof(MyEnumConverter))]
-        public CrossFormGeometry crossFormGeometry { get; set; }
-        /// <summary>
         /// Тип граничныого условия для вихря
         /// </summary>
         [DisplayName("Тип граничныого условия для вихря")]
@@ -178,19 +168,6 @@ namespace NPRiverLib.APRiver1YD.Params
         [Category("Сетка")]
         public int CountBLKnots { get; set; }
         /// <summary>
-        /// Номер створа в вариантных задачах
-        /// </summary>
-        [DisplayName("Номер створа в вариантных задачах")]
-        [Category("Задача")]
-        public int crossSectionNamber { get; set; }
-        /// <summary>
-        /// количество узлов в области
-        /// </summary>
-        [DisplayName("Тип Задачи, 0 плоская; 1 изгиб русла")]
-        [Category("Задача")]
-        [TypeConverter(typeof(MyEnumConverter))]
-        public CrossTypeTask crossSectionType { get; set; }
-        /// <summary>
         /// Скорость Ux на поверхности потока задана
         /// </summary>
         [DisplayName("Скорость Ux на поверхности потока задана")]
@@ -204,11 +181,72 @@ namespace NPRiverLib.APRiver1YD.Params
         [Category("Задача")]
         [TypeConverter(typeof(BooleanTypeConverterYN))]
         public ECalkDynamicSpeed typeEddyViscosity { get; set; }
+
+        #region + 03 02 2025 ОО: Параметры для класса TriSecRiver_1YD 
+        /// <summary>
+        /// Количество итераций по нелинейности на текущем шаге по времени
+        /// </summary>
+        [DisplayName("Количество итераций по нелинейности на текущем шаге по времени")]
+        [Category("Алгоритм")]
+        public int NLine { get; set; }
+        /// <summary>
+        /// тип задачи 0 - плоская 1 - цилиндрическая
+        /// </summary>
+        [DisplayName("тип задачи 0 - плоская 1 - цилиндрическая")]
+        [Category("Задача")]
+        public int SigmaTask { get; set; }
+        /// <summary>
+        /// начальынй радиус закругления канала по выпуклому берегу
+        /// </summary>
+        [DisplayName("начальынй радиус закругления канала по выпуклому берегу")]
+        [Category("Задача")]
+        public double RadiusMin { get; set; }
+        /// <summary>
+        /// Тип решаемых уравнений Стокса, Навье-Стокса, Рейнольдс а также
+        /// нестационар/стационар
+        /// </summary>
+        [DisplayName("Тип решаемых уравнений Стокса, Рейнольдса ...")]
+        [Category("Задача")]
+        public int ReTask { get; set; }
+        
+        [DisplayName("Параметр неявности схемы при шаге по времени")]
+        [Category("Задача")]
+        public double theta { get; set; }
+        #endregion
+        /// <summary>
+        /// Нужен для менеджера задач / настройки по умолчанию
+        /// </summary>
         public RSCrossParams()
         {
             SetDef();
         }
-        protected void SetDef()
+        /// <summary>
+        /// Нужен определения настроек тестовых задач
+        /// </summary>
+        public RSCrossParams(double J, double RadiusMin, double theta, int axisSymmetry, int CountKnots, 
+            int CountBLKnots, bool velocityOnWL, int NLine, int SigmaTask, int ReTask, 
+            ECalkDynamicSpeed typeEddyViscosity, ETurbViscType turbViscTypeA,
+            ETurbViscType turbViscTypeB, CrossAlgebra сrossAlgebra, 
+            TaskVariant taskVariant, BCTypeVortex bcTypeVortex)
+        {
+            this.J = J;
+            this.RadiusMin = RadiusMin;
+            this.theta = theta;
+            this.axisSymmetry = axisSymmetry;
+            this.CountKnots = CountKnots;
+            this.CountBLKnots = CountBLKnots;
+            this.velocityOnWL = velocityOnWL;
+            this.NLine = NLine;
+            this.SigmaTask = SigmaTask;
+            this.ReTask = ReTask;
+            this.typeEddyViscosity = typeEddyViscosity;
+            this.turbViscTypeA = turbViscTypeA;
+            this.turbViscTypeB = turbViscTypeB;
+            this.сrossAlgebra = сrossAlgebra;
+            this.taskVariant = taskVariant;
+            this.bcTypeVortex = bcTypeVortex;
+        }
+        protected virtual void SetDef()
         {
             J = 0.001;
             turbViscTypeA = ETurbViscType.Leo_C_van_Rijn1984;
@@ -216,22 +254,22 @@ namespace NPRiverLib.APRiver1YD.Params
             сrossAlgebra = CrossAlgebra.TapeGauss;
             taskVariant = TaskVariant.WaterLevelFun;
             bcTypeVortex = BCTypeVortex.VortexAllCalk;
-            crossFormGeometry = CrossFormGeometry.Trapezoidal;
             typeEddyViscosity = ECalkDynamicSpeed.u_start_U;
             velocityOnWL = true;
             axisSymmetry = 0;
             CountKnots = 400;
             CountBLKnots = 600;
-            crossSectionNamber = 0;
-            crossSectionType = CrossTypeTask.CylindricalProblem;
-            midleRadius = 5.0;
+            NLine = 100;
+            SigmaTask = 0;
+            RadiusMin = 100.0;
+            ReTask = 0;
+            theta = 0.5;
         }
-
+        /// <summary>
+        /// Нужен для копирования свойств с интерфейса
+        /// </summary>
+        /// <param name="p"></param>
         public RSCrossParams(RSCrossParams p)
-        {
-            Set(p);
-        }
-        public virtual void Set(RSCrossParams p)
         {
             J = p.J;
             CountKnots = p.CountKnots;
@@ -241,28 +279,26 @@ namespace NPRiverLib.APRiver1YD.Params
             turbViscTypeA = p.turbViscTypeA;
             turbViscTypeB = p.turbViscTypeB;
             сrossAlgebra = p.сrossAlgebra;
-            crossSectionNamber = p.crossSectionNamber;
-            crossSectionType = p.crossSectionType;
-            midleRadius = p.midleRadius;
             bcTypeVortex = p.bcTypeVortex;
             velocityOnWL = p.velocityOnWL;
-            crossFormGeometry = p.crossFormGeometry;
             typeEddyViscosity = p.typeEddyViscosity;
+            // + 03 02 2025
+            NLine = p.NLine;
+            SigmaTask = p.SigmaTask;
+            RadiusMin = p.RadiusMin;
+            ReTask = p.ReTask;
+            theta = p.theta;
         }
-
         /// <summary>
-        /// свойств задачи
-        /// </summary>
-        /// <param name="p"></param>
-        public virtual object GetParams() { return this; }
-        /// <summary>
-        /// Чтение параметров задачи из файла
+        /// Нужен для чтение параметров задачи из файла
         /// </summary>
         /// <param name="file"></param>
         public virtual void Load(StreamReader file)
         {
+            string ver = "";
             try
             {
+                ver = file.ReadLine();
                 J = LOG.GetDouble(file.ReadLine());
                 turbViscTypeA = (ETurbViscType)LOG.GetInt(file.ReadLine());
                 turbViscTypeB = (ETurbViscType)LOG.GetInt(file.ReadLine());
@@ -270,41 +306,31 @@ namespace NPRiverLib.APRiver1YD.Params
                 сrossAlgebra = (CrossAlgebra)LOG.GetInt(file.ReadLine());
                 taskVariant = (TaskVariant)LOG.GetInt(file.ReadLine());
                 bcTypeVortex = (BCTypeVortex)LOG.GetDouble(file.ReadLine());
-                crossFormGeometry = (CrossFormGeometry)LOG.GetInt(file.ReadLine());
                 axisSymmetry = LOG.GetInt(file.ReadLine());
                 CountKnots = LOG.GetInt(file.ReadLine());
                 CountBLKnots = LOG.GetInt(file.ReadLine());
-                crossSectionNamber = LOG.GetInt(file.ReadLine());
-                crossSectionType = (CrossTypeTask)LOG.GetInt(file.ReadLine());
-                midleRadius = LOG.GetDouble(file.ReadLine());
                 velocityOnWL = LOG.GetBool(file.ReadLine());
-                
+                // + 03 02 2025
+                NLine = LOG.GetInt(file.ReadLine());
+                SigmaTask = LOG.GetInt(file.ReadLine());
+                ReTask = LOG.GetInt(file.ReadLine());
+                RadiusMin = LOG.GetDouble(file.ReadLine());
+                theta = LOG.GetDouble(file.ReadLine());
             }
-            catch(Exception)
+            catch (Exception)
             {
-                Logger.Instance.Info("Файл параметров не синхронизирован, использованы параметры по умолчанию");
+                Logger.Instance.Info("Файл параметров не синхронизирован, использована версия "+ver);
                 SetDef();
             }
         }
         /// <summary>
-        /// Запись
+        /// Нужен для работы конструктора копирования при работе с интерфецсом шаблона свойств
         /// </summary>
-        /// <param name="file"></param>
-        public virtual void Save(StreamReader file)
-        {
-        }
-        public virtual void LoadParams(string fileName)
-        {
-            string message = "Файл парамеров задачи - доные деформации - не обнаружен";
-            WR.LoadParams(Load, message, fileName);
-        }
+        /// <param name="p"></param>
+        /// <returns></returns>
         public RSCrossParams Clone(RSCrossParams p)
         {
             return new RSCrossParams(p);
-        }
-        public void SetParams(object p)
-        {
-            Set((RSCrossParams)p);
         }
     }
 }

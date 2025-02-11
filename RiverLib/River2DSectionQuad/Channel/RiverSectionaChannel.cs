@@ -556,7 +556,8 @@ namespace RiverLib
             }
         }
 
-        #region IRiver
+
+       #region IRiver 
         /// <summary>
         /// Наименование задачи
         /// </summary>
@@ -909,13 +910,14 @@ namespace RiverLib
                 }
 
                 // Находим источник турбулентности по модели Спаларта – Аллмареса 
-                for (int index = 0; index < 2; index++)
+                for (int index = 0; index < 1; index++)
                 {
-                    for (int indexMu = 0; indexMu < 3; indexMu++)
+                    for (int indexMu = 0; indexMu < 1; indexMu++)
                     {
                         // Расчет правой части для вычисления вязкости
                         taskMu.SpalartAllmarasTaskSolve(nuTilda0, mU, ref nuTilda, ref Mu, 
                             ref dU_dx, ref dU_dy, ref dMu_dx, ref dMu_dy, alphaQ);
+
                         RelaxMu(ref nuTilda, nuTilda0, relax, taskMu.mesh.Y_init);
                         //LOG.Print("mMuTilda", mMuTilda, 3);
                     }
@@ -932,6 +934,7 @@ namespace RiverLib
                     Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.WriteLine(" ==== начат рачет скорости ====");
                     taskU.PoissonTaskSolve(mMu, sc, ref mU, ref U);
+
                     RelaxMu(ref mU, mU0, relax, taskMu.mesh.Y_init);
                     Console.WriteLine(" ==== завершон рачет скорости ====");
                     Console.ForegroundColor = ConsoleColor.White;
@@ -1566,6 +1569,7 @@ namespace RiverLib
             }
         }
         #endregion
+
         /// <summary>
         /// Установка свойств задачи
         /// </summary>
@@ -1782,5 +1786,6 @@ namespace RiverLib
             }
         }
         #endregion
+
     }
 }

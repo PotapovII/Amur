@@ -26,6 +26,7 @@ namespace NPRiverLib.APRiver1XD.BEM_River2D
     using GeometryLib;
     using NPRiverLib.APRiver_1XD;
     using MeshAdapterLib;
+    using CommonLib.Function;
 
     [Serializable]
     public abstract class ARiverBEM1XD : APRiver1XD<RiverBEMParams1XD>, IRiver
@@ -193,12 +194,13 @@ namespace NPRiverLib.APRiver1XD.BEM_River2D
         /// <param name="file"></param>
         public override void LoadData(StreamReader file)
         {
-            //Geometry = new DigFunction();
-            //Geometry.Load(file);
-            //Geometry.GetFunctionData(ref x, ref zeta, Params.CountKnots);
-            //Set(mesh, null);
             InitTask();
         }
+        /// <summary>
+        /// Загрузка задачи иp форматного файла
+        /// </summary>
+        /// <param name="file">имя файла</param>
+        public override void LoadData(IDigFunction[] crossFunctions = null) { }
 
         public virtual bool LoadData(string fileName)
         {

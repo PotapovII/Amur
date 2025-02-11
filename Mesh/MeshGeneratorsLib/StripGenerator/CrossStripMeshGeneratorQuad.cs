@@ -24,6 +24,11 @@ namespace MeshGeneratorsLib.StripGenerator
     [Serializable]
     public class CrossStripMeshGeneratorQuad : IStripMeshGenerator
     {
+        /// <summary>
+        /// Ось симметрии
+        /// </summary>
+        public bool AxisOfSymmetry { get; }
+
         protected double[] xx, yy;
         protected HKnot left, right;
         /// <summary>
@@ -78,9 +83,10 @@ namespace MeshGeneratorsLib.StripGenerator
         /// </summary>
         /// <param name="MAXElem">максимальное количество КЭ сетки</param>
         /// <param name="MAXKnot">максимальное количество узлов сетки</param>
-        public CrossStripMeshGeneratorQuad(TypeMesh typeMesh = TypeMesh.Triangle)
+        public CrossStripMeshGeneratorQuad(TypeMesh typeMesh = TypeMesh.Triangle, bool axisOfSymmetry = false)
         {
             this.typeMesh = typeMesh;
+            AxisOfSymmetry = axisOfSymmetry;
         }
 
         public void GetMap(ref uint[][] map)

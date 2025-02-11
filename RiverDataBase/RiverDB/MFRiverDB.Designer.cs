@@ -40,6 +40,8 @@
             this.tsm_Knots = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_GPost = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.отчетыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmWaterLevel = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,6 +51,7 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.конвертерToolStripMenuItem,
             this.tsmListData,
+            this.отчетыToolStripMenuItem,
             this.tsmOptions});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -140,6 +143,21 @@
             this.tsmOptions.Text = "Настройки";
             this.tsmOptions.Click += new System.EventHandler(this.tsmOptions_Click);
             // 
+            // отчетыToolStripMenuItem
+            // 
+            this.отчетыToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmWaterLevel});
+            this.отчетыToolStripMenuItem.Name = "отчетыToolStripMenuItem";
+            this.отчетыToolStripMenuItem.Size = new System.Drawing.Size(76, 25);
+            this.отчетыToolStripMenuItem.Text = "Отчеты";
+            // 
+            // tsmWaterLevel
+            // 
+            this.tsmWaterLevel.Name = "tsmWaterLevel";
+            this.tsmWaterLevel.Size = new System.Drawing.Size(180, 26);
+            this.tsmWaterLevel.Text = "Уровни";
+            this.tsmWaterLevel.Click += new System.EventHandler(this.tsmWaterLevel_Click);
+            // 
             // MFRiverDB
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -171,5 +189,7 @@
         private System.Windows.Forms.ToolStripMenuItem ExittTSM;
         private System.Windows.Forms.ToolStripMenuItem tsm_CreareCloudMesh;
         private System.Windows.Forms.ToolStripMenuItem работаСВычислительнойСеткойToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem отчетыToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmWaterLevel;
     }
 }

@@ -1,4 +1,10 @@
-﻿namespace RiverDB.FormsDB
+﻿//---------------------------------------------------------------------------
+//                         проектировщик:
+//                           Потапов И.И.
+//---------------------------------------------------------------------------
+//        кодировка : 01.10.2020 Потапов И.И. & Потапов Д.И.
+//---------------------------------------------------------------------------
+namespace RiverDB.FormsDB
 {
     using System;
     using System.Data;
@@ -18,6 +24,24 @@
             TName = tablename;
             DataGridSettings.DataGridViewSetup(ref dataGridView1);
         }
+        /// <summary>
+        /// Получить первую запись таблицы
+        /// </summary>
+        /// <param name="RowID"></param>
+        /// <param name="RowName"></param>
+        public void GetFirstValue(ref string RowID,ref string RowName)
+        {
+            string strAccessSelect = "exec SP_" + TName + "_SEL";
+            dataGridView1.DataSource = ConnectDB.GetDataTable(strAccessSelect, TName);
+            int id = Convert.ToInt32(this.dataGridView1.CurrentRow.Cells[0].Value);
+            if (id > 0)
+            {
+                RowID = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                RowName = (string)dataGridView1.CurrentRow.Cells[1].Value;
+            }
+        }
+
+
         private void Catalogue_Load(object sender, EventArgs e)
         {
             string strAccessSelect = "exec SP_" + TName + "_SEL";
@@ -100,16 +124,6 @@
         private void button1_Click(object sender, EventArgs e)
         {
             findButton_Click(sender, e);
-            //if (textBox1.Text != null)
-            //{
-            //    char[] charsToTrim = { ' ' };
-            //    string pole = textBox1.Text.Trim(charsToTrim);
-            //    string strCommand = "SELECT " + TName + "_ID as [Код]," + TName +
-            //        "_Name as [Наименование] FROM " + TName + " WHERE " + TName + "_Name LIKE @POLE";
-            //    DataTable mapTable = ConnectDB.SelectTableBystrKey(strCommand, TName, pole);
-            //    dataGridView1.DataSource = mapTable;
-            //    Catalogue_Resize(sender, e);
-            //}
         }
 
         private void dataGridView1_DoubleClick(object sender, EventArgs e)

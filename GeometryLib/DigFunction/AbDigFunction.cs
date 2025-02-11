@@ -289,6 +289,11 @@ namespace GeometryLib
         /// <param name="file"></param>
         public virtual void Load(StreamReader file) { }
         /// <summary>
+        /// Сохранение данных в файл
+        /// </summary>
+        /// <param name="file"></param>
+        public virtual void Save(StreamWriter file) { }
+        /// <summary>
         /// внешняя загрузка начальной геометрии
         /// например из точки сохранения
         /// </summary>

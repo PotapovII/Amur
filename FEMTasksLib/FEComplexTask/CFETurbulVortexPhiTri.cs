@@ -370,7 +370,7 @@ namespace FEMTasksLib.FESimpleTask
                 }
                 // расчет поля вязкости
                 //taskViscosity.TransportEquationsTaskSUPG(ref eddyViscosity, eddyViscosity_old, Vy, Vz, bc_Phi, bv_Phi, eVQ);
-                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWCrossSection)wMesh, typeEddyViscosity, Vx, J);
+                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWRiver)wMesh, typeEddyViscosity, Vx, J);
                 // релаксация функции вязкости
                 for (int i = 0; i < CountKnots; i++)
                     eddyViscosity[i] = (1 - w) * eddyViscosity_old[i] + w * eddyViscosity[i];
@@ -782,7 +782,7 @@ namespace FEMTasksLib.FESimpleTask
                     Vx[i] = (1 - w) * Vx_old[i] + w * Vx[i];
                 // расчет поля вязкости
                 //taskViscosity.TransportEquationsTaskSUPG(ref eddyViscosity, eddyViscosity_old, Vy, Vz, bc_Phi, bv_Phi, eVQ);
-                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWCrossSection)wMesh, typeEddyViscosity, Vx, J);
+                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWRiver)wMesh, typeEddyViscosity, Vx, J);
                 // релаксация функции вязкости
                 for (int i = 0; i < CountKnots; i++)
                     eddyViscosity[i] = (1 - w) * eddyViscosity_old[i] + w * eddyViscosity[i];

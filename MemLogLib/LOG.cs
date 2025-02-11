@@ -25,7 +25,7 @@ namespace MemLogLib
         /// <summary>
         /// Разделитель значимых частей строки
         /// </summary>
-        public static char Spliter = ' ';
+        public static char[] Spliter = { ' ', '\t' };
         /// <summary>
         /// Имя файла лога 
         /// </summary>
@@ -164,7 +164,39 @@ namespace MemLogLib
             return slines;
         }
         #endregion
-        public static void Print<MyType>(string Name, MyType value) where MyType : struct
+        public static void TPrint<MyType>(string Name, MyType value) where MyType : struct
+        {
+            string s = String.Format(Name + " = " + value.ToString());
+            if (flagLogger == 0)
+                Console.WriteLine(s);
+            else
+                sendToFile(s);
+        }
+        public static void Print(string Name, int value) 
+        {
+            string s = String.Format(Name + " = " + value.ToString());
+            if (flagLogger == 0)
+                Console.WriteLine(s);
+            else
+                sendToFile(s);
+        }
+        public static void Print(string Name, double value)
+        {
+            string s = String.Format(Name + " = " + value.ToString());
+            if (flagLogger == 0)
+                Console.WriteLine(s);
+            else
+                sendToFile(s);
+        }
+        public static void Print(string Name, float value)
+        {
+            string s = String.Format(Name + " = " + value.ToString());
+            if (flagLogger == 0)
+                Console.WriteLine(s);
+            else
+                sendToFile(s);
+        }
+        public static void Print(string Name, bool value)
         {
             string s = String.Format(Name + " = " + value.ToString());
             if (flagLogger == 0)
@@ -254,19 +286,64 @@ namespace MemLogLib
         /// <param name="M"></param>
         /// <param name="Count"></param>
         /// <param name="F"></param>
-        public static void Print(string Name, double[][] M, int F = 2)
+        public static void Print(string Name, double[][] M, int F = 3, int color = 0)
         {
             string Format = "F" + F.ToString();
             if (flagLogger == 0)
             {
+                //Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine();
                 Console.WriteLine(Name);
-                for (int i = 0; i < M.Length; i++)
+                Console.ForegroundColor = ConsoleColor.White;
+                if (color == 0)
                 {
-                    Console.Write("{0} ", i);
-                    for (int j = 0; j < M[i].Length; j++)
-                        Console.Write(DoubleToString(M[i][j], Format) + " ");
-                    Console.WriteLine();
+                    for (int i = 0; i < M.Length; i++)
+                    {
+                        Console.Write("{0} ", i);
+                        for (int j = 0; j < M[i].Length; j++)
+                            Console.Write(DoubleToString(M[i][j], Format) + " ");
+                        Console.WriteLine();
+                    }
                 }
+                else
+                {
+                    bool r = false;
+                    bool c = false;
+                    for (int i = 0; i < M.Length; i++)
+                    {
+                        if (i % color == 0) r = !r;
+                        int cl = (int)Console.ForegroundColor;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write("{0} ", i);
+                        Console.ForegroundColor = (ConsoleColor)cl;
+                        for (int j = 0; j < M[i].Length; j++)
+                        {
+                            if (j % color == 0) c = !c;
+                            if (color > 0 && MEM.Equals(M[i][j],0) == true)
+                            {
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+                            else
+                            {
+                                if (MEM.Equals(M[i][j], 1) == true)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                }
+                                else
+                                {
+                                    if (c == r)
+                                        Console.ForegroundColor = ConsoleColor.Green;
+                                    else
+                                        Console.ForegroundColor = ConsoleColor.Cyan;
+                                }
+                            }
+                            Console.Write(DoubleToString(M[i][j], Format) + " ");
+                        }
+                        Console.WriteLine();
+                    }
+                }
+                Console.ForegroundColor = ConsoleColor.White;
             }
             else
             {
@@ -287,22 +364,93 @@ namespace MemLogLib
         /// <summary>
         /// Печать ЛМЖ для отладки
         /// </summary>
+        /// <param name="M"></param>
+        /// <param name="Count"></param>
+        /// <param name="F"></param>
+        public static void Print(string Name, int[][] M, int color = 1)
+        {
+            //Console.BackgroundColor
+            if (flagLogger == 0)
+            {
+                Console.WriteLine(Name);
+                for (int i = 0; i < M.Length; i++)
+                {
+                    Console.Write("{0} ", i);
+                    for (int j = 0; j < M[i].Length; j++)
+                        Console.Write(IntToString(M[i][j]) + " ");
+                    Console.WriteLine();
+                }
+            }
+            else
+            {
+                using (StreamWriter writer = new StreamWriter(FileLogger, true))
+                {
+                    writer.WriteLine(Name);
+                    for (int i = 0; i < M.Length; i++)
+                    {
+                        writer.Write("{0} ", i);
+                        for (int j = 0; j < M[i].Length; j++)
+                            writer.Write(IntToString(M[i][j]) + " ");
+                        writer.WriteLine();
+                    }
+                    writer.Close();
+                }
+            }
+        }
+        /// <summary>
+        /// Печать ЛМЖ для отладки
+        /// </summary>
+        /// <param name="M"></param>
+        /// <param name="Count"></param>
+        /// <param name="F"></param>
+        public static void Print(string Name, uint[][] M, int color = 1)
+        {
+            if (flagLogger == 0)
+            {
+                Console.WriteLine(Name);
+                for (int i = 0; i < M.Length; i++)
+                {
+                    Console.Write("{0} ", i);
+                    for (int j = 0; j < M[i].Length; j++)
+                        Console.Write(M[i][j].ToString() + " ");
+                    Console.WriteLine();
+                }
+            }
+            else
+            {
+                using (StreamWriter writer = new StreamWriter(FileLogger, true))
+                {
+                    writer.WriteLine(Name);
+                    for (int i = 0; i < M.Length; i++)
+                    {
+                        writer.Write("{0} ", i);
+                        for (int j = 0; j < M[i].Length; j++)
+                            writer.Write(M[i][j].ToString() + " ");
+                        writer.WriteLine();
+                    }
+                    writer.Close();
+                }
+            }
+        }
+        /// <summary>
+        /// Печать ЛМЖ для отладки
+        /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="Name"></param>
         /// <param name="M"></param>
-        public static void Print<T>(string Name, T[][] M) where T : struct
-        {
-            Console.WriteLine(Name);
-            for (int i = 0; i < M.Length; i++)
-            {
-                for (int j = 0; j < M[i].Length; j++)
-                {
-                    Console.Write(" ");
-                    Console.Write(M[i][j]);
-                }
-                Console.WriteLine();
-            }
-        }
+        //public static void Print<T>(string Name, T[][] M, int color = 1) where T : struct
+        //{
+        //    Console.WriteLine(Name);
+        //    for (int i = 0; i < M.Length; i++)
+        //    {
+        //        for (int j = 0; j < M[i].Length; j++)
+        //        {
+        //            Console.Write(" ");
+        //            Console.Write(M[i][j]);
+        //        }
+        //        Console.WriteLine();
+        //    }
+        //}
         /// <summary>
         /// Печать ЛМЖ для отладки
         /// </summary>
@@ -328,7 +476,7 @@ namespace MemLogLib
         /// <typeparam name="T"></typeparam>
         /// <param name="Name"></param>
         /// <param name="M"></param>
-        public static void Print<T>(string Name, T[,] M) where T : struct
+        public static void Print<T>(string Name, T[,] M, int color = 1) where T : struct
         {
             Console.WriteLine(Name);
             for (int i = 0; i < M.GetLength(0); i++)

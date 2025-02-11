@@ -109,6 +109,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Data\NameCrossRData.rvy">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\NameCrossRData1.rvy">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Example\ExampleTriRiverSW_2XYD.CDG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -153,10 +160,6 @@
       <Project>{3330d65d-e283-47a3-b43c-ce8c4eb2b201}</Project>
       <Name>RenderLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RiverLib\RiverLib.csproj">
-      <Project>{9ac6e045-03a5-4c7c-a597-d245ea7e2c04}</Project>
-      <Name>RiverLib</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\Conf.txt">
@@ -198,6 +201,9 @@
     <Content Include="Data\NameRSParams.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Data\CrossTask1.crf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Data\NameRSParamsCross.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

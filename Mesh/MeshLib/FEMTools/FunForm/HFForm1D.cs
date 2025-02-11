@@ -12,6 +12,8 @@
 namespace MeshLib
 {
     using System;
+    using System.Runtime.CompilerServices;
+
     using CommonLib;
     /// <summary>
     /// ОО: Возвращает тип ф.ф., по рангу сетки
@@ -69,23 +71,27 @@ namespace MeshLib
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void CalkForm(double x, double y)
         {
             N[0] = 0.5 * (1 - x);
             N[1] = 0.5 * (1 + x);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void CalkLocalDiffForm(double x, double y)
         {
             DN_xi[0] = -0.5;
             DN_xi[1] = 0.5;
         }
         // вычисление  координат i узла
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void CalkVertex(uint IdxKnot, ref double _x, ref double _y)
         {
             double[] x = { -1, 1 };
             _x = x[IdxKnot];
             _y = 0;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override uint GetBoundFormType() { return 0; }
     }
     //---------------------------------------------------------------------------
@@ -111,11 +117,13 @@ namespace MeshLib
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void CalkForm(double x, double y)
         {
             N[0] = 0.5 * (1 - x);
             N[1] = 0.5 * (1 + x);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void CalkLocalDiffForm(double x, double y)
         {
             DN_xi[0] = -0.5;
@@ -127,12 +135,14 @@ namespace MeshLib
         /// <param name="IdxKnot"></param>
         /// <param name="_x"></param>
         /// <param name="_y"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void CalkVertex(uint IdxKnot, ref double _x, ref double _y)
         {
             double[] x = { -1, 1 };
             _x = x[IdxKnot];
             _y = 0;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override uint GetBoundFormType() { return 0; }
     }
     //---------------------------------------------------------------------------
@@ -154,12 +164,14 @@ namespace MeshLib
             Init(Count);
         }
         // вычисление значений функций формы
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void CalkForm(double x, double y)
         {
             N[0] = -0.5 * (1 - x) * x;
             N[1] = (1 - x * x);
             N[2] = 0.5 * (1 + x) * x;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void CalkLocalDiffForm(double x, double y)
         {
             DN_xi[0] = -0.5 + x;
@@ -168,12 +180,14 @@ namespace MeshLib
         }
         //---------------------------------------------------------------------------
         // вычисление  координат i узла
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void CalkVertex(uint IdxKnot, ref double _x, ref double _y)
         {
             double[] x = { -1, 0, 1 };
             _x = x[IdxKnot];
             _y = 0;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] 
         public override uint GetBoundFormType() { return 0; }
     }
     //---------------------------------------------------------------------------
@@ -196,6 +210,7 @@ namespace MeshLib
         }
         //---------------------------------------------------------------------------
         // вычисление значений функций формы
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void CalkForm(double x, double y)
         {
             double a = x * x;
@@ -204,6 +219,7 @@ namespace MeshLib
             N[2] = 9.0 * (1 - a) * (1 + 3 * x) / 16.0;
             N[3] = -(1 + x) * (1 - 9.0 * a) / 16.0;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void CalkLocalDiffForm(double x, double y)
         {
             double a = x * x;
@@ -213,12 +229,14 @@ namespace MeshLib
             DN_xi[3] = (-1.0 - 18.0 * x - 27.0 * a) / 16.0;
         }
         // вычисление  координат i узла
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void CalkVertex(uint IdxKnot, ref double _x, ref double _y)
         {
             double[] x = { -1, -1.0 / 3.0, 1.0 / 3.0, 1 };
             _x = x[IdxKnot];
             _y = 0;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override uint GetBoundFormType() { return 0; }
     }
 }

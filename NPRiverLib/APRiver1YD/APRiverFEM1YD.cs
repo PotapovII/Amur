@@ -12,16 +12,13 @@ namespace NPRiverLib.APRiver1YD
 {
     using MemLogLib;
     using CommonLib;
-    using CommonLib.Mesh;
-    using CommonLib.Physics;
-    using MeshGeneratorsLib.StripGenerator;
     using NPRiverLib.APRiver1YD.Params;
+    using MeshGeneratorsLib.StripGenerator;
 
     using System;
     using System.Linq;
     using CommonLib.Geometry;
     using GeometryLib;
-
     /// <summary>
     ///  ОО: Определение класса APRiverFEM1YD - расчет полей скорости, 
     ///  вязкости и напряжений в живом сечении потока методом КЭ 
@@ -67,21 +64,29 @@ namespace NPRiverLib.APRiver1YD
         /// Шероховатость дна
         /// </summary>
         protected double roughness = 0.001;
-        protected double[] tauY = null;
-        protected double[] tauZ = null;
+        /// <summary>
+        /// Придонныое касательыое напряжение tau_xy
+        /// </summary>
+        protected double[] tau_xy = null;
+        /// <summary>
+        /// Придонныое касательыое напряжение tau_xz
+        /// </summary>
+        protected double[] tau_xz = null;
+        /// <summary>
+        /// Аргумент для придонных касательынх напряжений
+        /// </summary>
         protected double[] Coord = null;
 
         /// <summary>
         /// Генератор КЭ сетки в ствое задачи
         /// </summary>
         protected IStripMeshGenerator meshGenerator = null;
-        /// <summary>
-        /// Обертка для работы с КЭ сеткой и вычисления алгебраической турбулентной вязкости
-        /// </summary>
-        protected IMWCross wMesh = null;
+
 
         #endregion
-        public APRiverFEM1YD(RSCrossParams p) : base(p) { }
+        public APRiverFEM1YD(RSCrossParams p) : base(p) 
+        {
+        }
 
         #region Локальные методы
 
@@ -90,9 +95,7 @@ namespace NPRiverLib.APRiver1YD
         /// </summary>
         protected override void InitTask()
         {
-            double g = SPhysics.GRAV;
-            double rho_w = SPhysics.rho_w;
-            Q = rho_w * g * Params.J;
+            Q = rho_w * GRAV * Params.J;
             // получение отметок дна
             Geometry.GetFunctionData(ref bottom_x, ref bottom_y, Params.CountBLKnots);
             // начальный уровень свободной поверхности
@@ -144,6 +147,7 @@ namespace NPRiverLib.APRiver1YD
             else
                 return false;
         }
+
         /// <summary>
         /// Расчет касательных напряжений на дне канала
         /// </summary>
@@ -152,33 +156,34 @@ namespace NPRiverLib.APRiver1YD
         /// <param name="TauY">напражения на сетке</param>
         /// <param name="xv">координаты Х узлов КО</param>
         /// <param name="yv">координаты У узлов КО</param>
-        protected override double[] TausToVols(in double[] xv, in double[] yv)
+        protected override double[] TausToVols(in double[] xv,in double[] yv)
         {
+            // массив касательных напряжений
+            MEM.Alloc(xv.Length - 1, ref tau);
             // расчет напряжений Txy  Txz
-            taskPoisson.SolveTaus(ref TauY, ref TauZ, Ux, eddyViscosity);
+            SolveTaus();
             // граничные узлы на нижней границе области
             uint[] bounds = mesh.GetBoundKnotsByMarker(0);
             // количество узлов на нижней границе области
             TSpline tauSplineZ = new TSpline();
             TSpline tauSplineY = new TSpline();
-            MEM.Alloc(bounds.Length, ref tauY);
-            MEM.Alloc(bounds.Length, ref tauZ);
+            MEM.Alloc(bounds.Length, ref tau_xy);
+            MEM.Alloc(bounds.Length, ref tau_xz);
             MEM.Alloc(bounds.Length, ref Coord);
             // пробегаем по граничным узлам и записываем для них Ty, Tz T
             double[] xx = mesh.GetCoords(0);
             for (int i = 0; i < bounds.Length - 1; i++)
             {
-                tauZ[i] = 0.5 * (TauZ[bounds[i]] + TauZ[bounds[i + 1]]);
-                tauY[i] = 0.5 * (TauY[bounds[i]] + TauY[bounds[i + 1]]);
+                tau_xz[i] = 0.5 * (TauZ[bounds[i]] + TauZ[bounds[i + 1]]);
+                tau_xy[i] = 0.5 * (TauY[bounds[i]] + TauY[bounds[i + 1]]);
                 Coord[i] = 0.5 * (xx[bounds[i]] + xx[bounds[i + 1]]);
             }
             double left = xx[bounds[0]];
             double right = xx[bounds[bounds.Length - 1]];
             // формируем сплайны напряжений в натуральной координате
-            tauSplineZ.Set(tauZ, Coord, (uint)bounds.Length);
-            tauSplineY.Set(tauY, Coord, (uint)bounds.Length);
-            // массив касательных напряжений
-            MEM.Alloc(xv.Length - 1, ref tau);
+            tauSplineZ.Set(tau_xz, Coord, (uint)bounds.Length);
+            tauSplineY.Set(tau_xy, Coord, (uint)bounds.Length);
+
             for (int i = 0; i < tau.Length; i++)
             {
                 double xtau = 0.5 * (xv[i] + xv[i + 1]);
@@ -202,22 +207,74 @@ namespace NPRiverLib.APRiver1YD
             return tau;
         }
 
-        #endregion 
-
-        #region Вычисление вязкости
         /// <summary>
-        /// расчет параметров потока, скоростей и глубины потока
+        /// Нахождение полей напряжений и их сглаживание по методу Галеркина
         /// </summary>
-        //protected override void SolveVelosity()
-        //{
-        //    SPhysics.PHYS.turbViscType = ETurbViscType.Leo_C_van_Rijn1984_C;
-        //    SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, wMesh, Ux, Params.J);
-        //    uint[] bc = mesh.GetBoundKnotsByMarker(0);
-        //    // вычисление скорости
-        //    task.FEPoissonTask(ref Ux, eddyViscosity, bc, null, Q);
+        protected  void SolveTaus()
+        {
+            try
+            {
+                double[] x = { 0, 0, 0 };
+                double[] y = { 0, 0, 0 };
+                double[] u = { 0, 0, 0 };
+                double S;
+                uint[] knots = { 0, 0, 0 };
+                double[] Selem = new double[mesh.CountElements];
+                double[] tmpTausZ = new double[mesh.CountElements];
+                double[] tmpTausY = new double[mesh.CountElements];
+                for (int i = 0; i < TauZ.Length; i++)
+                {
+                    TauY[i] = 0;
+                    TauZ[i] = 0;
+                }
+                for (uint i = 0; i < mesh.CountElements; i++)
+                {
+                    mesh.ElementKnots(i, ref knots);
+                    mesh.GetElemCoords(i, ref x, ref y);
+                    mesh.ElemValues(Ux, i, ref u);
+                    // получить среднюю вязкость на КЭ
+                    double Mu = (eddyViscosity[knots[0]] + eddyViscosity[knots[1]] + eddyViscosity[knots[2]]) / 3;
+                    //Mu = mesh.ElementMidleValues(eddyViscosity, i);
+                    // площадь КЭ
+                    S = mesh.ElemSquare(i);
+                    // деформации
+                    double dN0dz = (x[2] - x[1]) / (2 * S);
+                    double dN1dz = (x[0] - x[2]) / (2 * S);
+                    double dN2dz = (x[1] - x[0]) / (2 * S);
 
-        //    FlagStartMu = true;
-        //}
+                    double dN0dy = (y[1] - y[2]) / (2 * S);
+                    double dN1dy = (y[2] - y[0]) / (2 * S);
+                    double dN2dy = (y[0] - y[1]) / (2 * S);
+
+                    double Ez = (u[0] * (x[2] - x[1]) + u[1] * (x[0] - x[2]) + u[2] * (x[1] - x[0]));
+                    double Ey = (u[0] * (y[1] - y[2]) + u[1] * (y[2] - y[0]) + u[2] * (y[0] - y[1]));
+                    // 
+                    tmpTausZ[i] = Mu * Ez / (2 * S);
+                    tmpTausY[i] = Mu * Ey / (2 * S);
+
+                    Selem[(int)knots[0]] += S / 3;
+                    Selem[(int)knots[1]] += S / 3;
+                    Selem[(int)knots[2]] += S / 3;
+
+                    TauZ[(int)knots[0]] += S * tmpTausZ[i] / 3;
+                    TauZ[(int)knots[1]] += S * tmpTausZ[i] / 3;
+                    TauZ[(int)knots[2]] += S * tmpTausZ[i] / 3;
+
+                    TauY[(int)knots[0]] += S * tmpTausY[i] / 3;
+                    TauY[(int)knots[1]] += S * tmpTausY[i] / 3;
+                    TauY[(int)knots[2]] += S * tmpTausY[i] / 3;
+                }
+                for (int i = 0; i < TauZ.Length; i++)
+                {
+                    TauY[i] /= Selem[i];
+                    TauZ[i] /= Selem[i];
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Exception(ex);
+            }
+        }
         #endregion
 
         /// <summary>
@@ -230,14 +287,19 @@ namespace NPRiverLib.APRiver1YD
             // кривые 
             // дно - берег
             sp.AddCurve("Русловой профиль", bottom_x, bottom_y);
-            //if (left != null && right != null)
-            //{
-            //    double[] xwl = { left.x, right.x };
-            //    double[] ywl = { left.y, right.y };
-            //    // свободная поверхность
-            //    sp.AddCurve("Свободная поверхность", xwl, ywl);
-            //    Scan();
-            //}
+            double[] xx = null;
+            MEM.Alloc(tau.Length, ref xx);
+            for (int i = 0; i < xx.Length; i++)
+                xx[i] = 0.5 * (bottom_x[i] + bottom_x[i + 1]);
+            sp.AddCurve("Придонные напряжения", xx, tau);
+            if (left != null && right != null)
+            {
+                double[] xwl = { left.x, right.x };
+                double[] ywl = { left.y, left.y };
+                // свободная поверхность
+                sp.AddCurve("Свободная поверхность", xwl, ywl);
+                // Scan();
+            }
             if (evolution.Count > 1)
             {
                 double[] times = (from arg in evolution select arg.time).ToArray();

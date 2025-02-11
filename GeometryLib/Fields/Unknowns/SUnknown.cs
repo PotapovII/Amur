@@ -188,7 +188,7 @@ namespace GeometryLib
     {
         public CalkPapams(string nameUnknow, double[] mas) :
             base(nameUnknow, mas, false, TypeFunForm.Form_2D_Rectangle_L1) { }
-        public CalkPapams(string nameUnknow, double[] mas, TypeFunForm approxUnknow) :
+        public CalkPapams(string nameUnknow, double[] mas, TypeFunForm approxUnknow = TypeFunForm.Form_2D_Triangle_L1) :
             base(nameUnknow, mas, false, approxUnknow) { }
         public CalkPapams(string nameUnknow, double[] masX, double[] masY, TypeFunForm approxUnknow) :
             base(nameUnknow, masX, masY, false, approxUnknow) { }

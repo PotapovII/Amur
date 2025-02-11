@@ -43,29 +43,68 @@ namespace CommonLib.Physics
     public enum EWsType
     {
         /// <summary>
-        /// Модель Руби
+        /// Гидравлическая крупность по Архангельскому
         /// </summary>
-        [Description("Гидравлическая крупность по Руби")]
-        Ruby = 0,
+        [Description("по Архангельскому")]
+        Arkhangelsky = 0,
         /// <summary>
-        /// Модель Горчарова
+        /// Гидравлическая крупность по Горчарову
         /// </summary>
-        [Description("Гидравлическая крупность по Горчарову")]
+        [Description("по Горчарову")]
         Goncharova,
         /// <summary>
-        /// Модель Ибн - Заде
+        /// Гидравлическая крупность по Гришанину
         /// </summary>
-        [Description("Гидравлическая крупность по Ибн - Заде")]
+        [Description("по Гришанину")]
+        Grishanin,
+        /// <summary>
+        /// Гидравлическая крупность по Руби
+        /// </summary>
+        [Description("по Руби")]
+        Ruby,
+        /// <summary>
+        /// Гидравлическая крупность по Ибн - Заде
+        /// </summary>
+        [Description("по Ибн - Заде")]
         Ibade_Zade,
         /// <summary>
-        /// Модель Ван Рейна
+        /// Гидравлическая крупность по Ван Рейну
         /// </summary>
-        [Description("Гидравлическая крупность по Ван Рейну")]
+        [Description("по Ван Рейну")]
         Van_Rijn,
         /// <summary>
-        /// Модель Ша
+        /// Гидравлическая крупность по Ша
         /// </summary>
-        [Description("Гидравлическая крупность по Ша")]
+        [Description("по Ша")]
         Sha
     }
+    /// <summary>
+    /// Флаг формы частиц для модели расчета гидравлической крупности
+    /// </summary>
+    [Serializable]
+    public enum ParticleForms
+    {
+        /// <summary>
+        /// Округленные частицы  (шарообразные) 1.2
+        /// </summary>
+        [Description("Округленные частицы")]
+        Spherical = 0,
+        /// <summary>
+        /// Многогранные частицы  1
+        /// </summary>
+        [Description("Многогранные частицы")]
+        Polyhedral,
+        /// <summary>
+        /// Гидравлическая частицы (эллипсоидальные) 3/4 = 0.75
+        /// </summary>
+        [Description("Уплощенные частицы")]  
+        Flattened,
+        /// <summary>
+        /// Пластинчатые частицы (уплощенные) 0.5
+        /// </summary>
+        [Description("Пластинчатые частицы")]
+        Lamellar
+    }
+
+
 }

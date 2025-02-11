@@ -74,41 +74,18 @@
             this.tbMessage = new System.Windows.Forms.ToolStripStatusLabel();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.tsb_SsaveContur = new System.Windows.Forms.ToolStripButton();
-            this.tsm_SaveArea = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton9 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.tsm_LoadArea = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsb_Contur = new System.Windows.Forms.ToolStripButton();
-            this.tsb_DelNod = new System.Windows.Forms.ToolStripButton();
-            this.tsb_ClearCountur = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsb_SaveFig = new System.Windows.Forms.ToolStripButton();
-            this.tsb_DelFig = new System.Windows.Forms.ToolStripButton();
-            this.tsb_ClearArea = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsb_BeLine = new System.Windows.Forms.ToolStripButton();
-            this.tsb_delBeLine = new System.Windows.Forms.ToolStripButton();
-            this.tsb_delAllLine = new System.Windows.Forms.ToolStripButton();
-            this.tsb_LinkSMLines = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsb_GenerMeshFroNods = new System.Windows.Forms.ToolStripButton();
-            this.tsb_CreateBoundaryCountsAreaMesh = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton8 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsb_GenerWorkFile = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -143,6 +120,32 @@
             this.помошьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.gdI_EditControlClouds1 = new RenderLib.GDI_EditControlClouds();
+            this.tsb_SsaveContur = new System.Windows.Forms.ToolStripButton();
+            this.tsm_SaveArea = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton9 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.tsm_LoadArea = new System.Windows.Forms.ToolStripButton();
+            this.tsb_Contur = new System.Windows.Forms.ToolStripButton();
+            this.tsb_DelNod = new System.Windows.Forms.ToolStripButton();
+            this.tsb_ClearCountur = new System.Windows.Forms.ToolStripButton();
+            this.tsb_SaveFig = new System.Windows.Forms.ToolStripButton();
+            this.tsb_DelFig = new System.Windows.Forms.ToolStripButton();
+            this.tsb_ClearArea = new System.Windows.Forms.ToolStripButton();
+            this.tsb_BeLine = new System.Windows.Forms.ToolStripButton();
+            this.tsb_delBeLine = new System.Windows.Forms.ToolStripButton();
+            this.tsb_delAllLine = new System.Windows.Forms.ToolStripButton();
+            this.tsb_LinkSMLines = new System.Windows.Forms.ToolStripButton();
+            this.tsb_GenerMeshFroNods = new System.Windows.Forms.ToolStripButton();
+            this.tsb_CreateBoundaryCountsAreaMesh = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton8 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
+            this.tsb_GenerWorkFile2D = new System.Windows.Forms.ToolStripButton();
+            this.tb_CrossLine = new System.Windows.Forms.ToolStripButton();
+            this.tb_DelCrossLine = new System.Windows.Forms.ToolStripButton();
+            this.tsb_GenerWorkFile1D = new System.Windows.Forms.ToolStripButton();
             this.panel1.SuspendLayout();
             this.tabControlState.SuspendLayout();
             this.tpDB.SuspendLayout();
@@ -166,9 +169,9 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Controls.Add(this.tabControlState);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(824, 0);
+            this.panel1.Location = new System.Drawing.Point(879, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(301, 672);
+            this.panel1.Size = new System.Drawing.Size(301, 744);
             this.panel1.TabIndex = 86;
             // 
             // tabControlState
@@ -180,7 +183,7 @@
             this.tabControlState.Location = new System.Drawing.Point(4, 0);
             this.tabControlState.Name = "tabControlState";
             this.tabControlState.SelectedIndex = 0;
-            this.tabControlState.Size = new System.Drawing.Size(293, 668);
+            this.tabControlState.Size = new System.Drawing.Size(293, 740);
             this.tabControlState.TabIndex = 92;
             // 
             // tpDB
@@ -197,7 +200,7 @@
             this.tpDB.Location = new System.Drawing.Point(4, 29);
             this.tpDB.Name = "tpDB";
             this.tpDB.Padding = new System.Windows.Forms.Padding(3);
-            this.tpDB.Size = new System.Drawing.Size(285, 635);
+            this.tpDB.Size = new System.Drawing.Size(285, 707);
             this.tpDB.TabIndex = 0;
             this.tpDB.Text = "Источник";
             // 
@@ -261,7 +264,7 @@
             this.cListBoxDates.FormattingEnabled = true;
             this.cListBoxDates.Location = new System.Drawing.Point(10, 143);
             this.cListBoxDates.Name = "cListBoxDates";
-            this.cListBoxDates.Size = new System.Drawing.Size(266, 466);
+            this.cListBoxDates.Size = new System.Drawing.Size(266, 529);
             this.cListBoxDates.TabIndex = 77;
             // 
             // btLoadData
@@ -693,9 +696,9 @@
             this.statusPanel.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.tbMessage});
-            this.statusPanel.Location = new System.Drawing.Point(0, 646);
+            this.statusPanel.Location = new System.Drawing.Point(0, 718);
             this.statusPanel.Name = "statusPanel";
-            this.statusPanel.Size = new System.Drawing.Size(824, 26);
+            this.statusPanel.Size = new System.Drawing.Size(879, 26);
             this.statusPanel.TabIndex = 90;
             this.statusPanel.Text = "statusStrip1";
             // 
@@ -749,66 +752,17 @@
             this.toolStripButton6,
             this.toolStripSeparator11,
             this.toolStripSeparator2,
-            this.tsb_GenerWorkFile,
+            this.tsb_GenerWorkFile2D,
+            this.toolStripSeparator14,
+            this.tb_CrossLine,
+            this.tb_DelCrossLine,
             this.toolStripSeparator13,
-            this.toolStripSeparator14});
+            this.tsb_GenerWorkFile1D});
             this.toolStrip1.Location = new System.Drawing.Point(0, 29);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(824, 31);
+            this.toolStrip1.Size = new System.Drawing.Size(879, 31);
             this.toolStrip1.TabIndex = 91;
             this.toolStrip1.Text = "toolStrip1";
-            // 
-            // tsb_SsaveContur
-            // 
-            this.tsb_SsaveContur.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_SsaveContur.Image = global::RiverDB.Properties.Resources.SaveA;
-            this.tsb_SsaveContur.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_SsaveContur.Name = "tsb_SsaveContur";
-            this.tsb_SsaveContur.Size = new System.Drawing.Size(28, 28);
-            this.tsb_SsaveContur.Text = "Сохранить контурный фильтр";
-            this.tsb_SsaveContur.Click += new System.EventHandler(this.tsb_SsaveContur_Click);
-            // 
-            // tsm_SaveArea
-            // 
-            this.tsm_SaveArea.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsm_SaveArea.Image = global::RiverDB.Properties.Resources.SaveB;
-            this.tsm_SaveArea.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsm_SaveArea.Name = "tsm_SaveArea";
-            this.tsm_SaveArea.Size = new System.Drawing.Size(28, 28);
-            this.tsm_SaveArea.Text = "Загрузить область";
-            this.tsm_SaveArea.ToolTipText = "Сохранить область";
-            this.tsm_SaveArea.Click += new System.EventHandler(this.tsm_SaveArea_Click);
-            // 
-            // toolStripButton9
-            // 
-            this.toolStripButton9.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton9.Image = global::RiverDB.Properties.Resources.Save;
-            this.toolStripButton9.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton9.Name = "toolStripButton9";
-            this.toolStripButton9.Size = new System.Drawing.Size(28, 28);
-            this.toolStripButton9.Text = "toolStripButton9";
-            this.toolStripButton9.Click += new System.EventHandler(this.tsm_SaveCloudNodes_Click);
-            // 
-            // toolStripButton3
-            // 
-            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton3.Image = global::RiverDB.Properties.Resources.LoadA;
-            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(28, 28);
-            this.toolStripButton3.Text = "Загрузить контурный фильтр";
-            this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
-            // 
-            // tsm_LoadArea
-            // 
-            this.tsm_LoadArea.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsm_LoadArea.Image = global::RiverDB.Properties.Resources.LoadB;
-            this.tsm_LoadArea.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsm_LoadArea.Name = "tsm_LoadArea";
-            this.tsm_LoadArea.Size = new System.Drawing.Size(28, 28);
-            this.tsm_LoadArea.Text = "toolStripButton5";
-            this.tsm_LoadArea.ToolTipText = "Сохранить область";
-            this.tsm_LoadArea.Click += new System.EventHandler(this.tsm_LoadArea_Click);
             // 
             // toolStripSeparator8
             // 
@@ -820,39 +774,6 @@
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 31);
             // 
-            // tsb_Contur
-            // 
-            this.tsb_Contur.Checked = true;
-            this.tsb_Contur.CheckOnClick = true;
-            this.tsb_Contur.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tsb_Contur.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_Contur.Image = global::RiverDB.Properties.Resources.NCloud;
-            this.tsb_Contur.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_Contur.Name = "tsb_Contur";
-            this.tsb_Contur.Size = new System.Drawing.Size(28, 28);
-            this.tsb_Contur.Text = "toolStripButton10";
-            this.tsb_Contur.Click += new System.EventHandler(this.tsb_Contur_Click);
-            // 
-            // tsb_DelNod
-            // 
-            this.tsb_DelNod.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_DelNod.Image = global::RiverDB.Properties.Resources.DelNode1;
-            this.tsb_DelNod.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_DelNod.Name = "tsb_DelNod";
-            this.tsb_DelNod.Size = new System.Drawing.Size(28, 28);
-            this.tsb_DelNod.Text = "Удалить последний узел контура";
-            this.tsb_DelNod.Click += new System.EventHandler(this.tsb_DelNod_Click);
-            // 
-            // tsb_ClearCountur
-            // 
-            this.tsb_ClearCountur.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_ClearCountur.Image = global::RiverDB.Properties.Resources.ClearContur1;
-            this.tsb_ClearCountur.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_ClearCountur.Name = "tsb_ClearCountur";
-            this.tsb_ClearCountur.Size = new System.Drawing.Size(28, 28);
-            this.tsb_ClearCountur.Text = "Удалить контур ";
-            this.tsb_ClearCountur.Click += new System.EventHandler(this.tsb_ClearCountur_Click);
-            // 
             // toolStripSeparator12
             // 
             this.toolStripSeparator12.Name = "toolStripSeparator12";
@@ -862,36 +783,6 @@
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
             this.toolStripSeparator9.Size = new System.Drawing.Size(6, 31);
-            // 
-            // tsb_SaveFig
-            // 
-            this.tsb_SaveFig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_SaveFig.Image = global::RiverDB.Properties.Resources.SaveFig1;
-            this.tsb_SaveFig.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_SaveFig.Name = "tsb_SaveFig";
-            this.tsb_SaveFig.Size = new System.Drawing.Size(28, 28);
-            this.tsb_SaveFig.Text = "Создать фигуру по контуру";
-            this.tsb_SaveFig.Click += new System.EventHandler(this.tsb_SaveFig_Click);
-            // 
-            // tsb_DelFig
-            // 
-            this.tsb_DelFig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_DelFig.Image = global::RiverDB.Properties.Resources.DelFig1;
-            this.tsb_DelFig.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_DelFig.Name = "tsb_DelFig";
-            this.tsb_DelFig.Size = new System.Drawing.Size(28, 28);
-            this.tsb_DelFig.Text = "Удалить текущую фигуру области";
-            this.tsb_DelFig.Click += new System.EventHandler(this.tsb_DelFig_Click);
-            // 
-            // tsb_ClearArea
-            // 
-            this.tsb_ClearArea.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_ClearArea.Image = global::RiverDB.Properties.Resources.DelArea1;
-            this.tsb_ClearArea.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_ClearArea.Name = "tsb_ClearArea";
-            this.tsb_ClearArea.Size = new System.Drawing.Size(28, 28);
-            this.tsb_ClearArea.Text = "Удалить все фигуры области";
-            this.tsb_ClearArea.Click += new System.EventHandler(this.tsb_ClearArea_Click);
             // 
             // toolStripSeparator4
             // 
@@ -903,49 +794,6 @@
             this.toolStripSeparator6.Name = "toolStripSeparator6";
             this.toolStripSeparator6.Size = new System.Drawing.Size(6, 31);
             // 
-            // tsb_BeLine
-            // 
-            this.tsb_BeLine.Checked = true;
-            this.tsb_BeLine.CheckOnClick = true;
-            this.tsb_BeLine.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tsb_BeLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_BeLine.Image = global::RiverDB.Properties.Resources.BeLine;
-            this.tsb_BeLine.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_BeLine.Name = "tsb_BeLine";
-            this.tsb_BeLine.Size = new System.Drawing.Size(28, 28);
-            this.tsb_BeLine.Text = "Добавление линий сглаживания";
-            this.tsb_BeLine.Click += new System.EventHandler(this.tsb_BeLine_Click);
-            // 
-            // tsb_delBeLine
-            // 
-            this.tsb_delBeLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_delBeLine.Image = global::RiverDB.Properties.Resources.DelBeLine_;
-            this.tsb_delBeLine.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_delBeLine.Name = "tsb_delBeLine";
-            this.tsb_delBeLine.Size = new System.Drawing.Size(28, 28);
-            this.tsb_delBeLine.Text = "Удаление последней линии сглаживания";
-            this.tsb_delBeLine.Click += new System.EventHandler(this.tsb_delBeLine_Click);
-            // 
-            // tsb_delAllLine
-            // 
-            this.tsb_delAllLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_delAllLine.Image = global::RiverDB.Properties.Resources.DelAllSmLine;
-            this.tsb_delAllLine.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_delAllLine.Name = "tsb_delAllLine";
-            this.tsb_delAllLine.Size = new System.Drawing.Size(28, 28);
-            this.tsb_delAllLine.Text = "Удаление всех линий сглаживания";
-            this.tsb_delAllLine.Click += new System.EventHandler(this.tsb_delAllLine_Click);
-            // 
-            // tsb_LinkSMLines
-            // 
-            this.tsb_LinkSMLines.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_LinkSMLines.Image = global::RiverDB.Properties.Resources.BeLineLink;
-            this.tsb_LinkSMLines.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_LinkSMLines.Name = "tsb_LinkSMLines";
-            this.tsb_LinkSMLines.Size = new System.Drawing.Size(28, 28);
-            this.tsb_LinkSMLines.Text = "Связывание линий сглаживания";
-            this.tsb_LinkSMLines.Click += new System.EventHandler(this.tsb_LinkSMLines_Click);
-            // 
             // toolStripSeparator10
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
@@ -955,26 +803,6 @@
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 31);
-            // 
-            // tsb_GenerMeshFroNods
-            // 
-            this.tsb_GenerMeshFroNods.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_GenerMeshFroNods.Image = global::RiverDB.Properties.Resources.MeshCount;
-            this.tsb_GenerMeshFroNods.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_GenerMeshFroNods.Name = "tsb_GenerMeshFroNods";
-            this.tsb_GenerMeshFroNods.Size = new System.Drawing.Size(28, 28);
-            this.tsb_GenerMeshFroNods.Text = "Создание сетки по облаку  узлов";
-            this.tsb_GenerMeshFroNods.Click += new System.EventHandler(this.tsb_GenerMeshFroNods_Click);
-            // 
-            // tsb_CreateBoundaryCountsAreaMesh
-            // 
-            this.tsb_CreateBoundaryCountsAreaMesh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_CreateBoundaryCountsAreaMesh.Image = global::RiverDB.Properties.Resources.MeshCloud4;
-            this.tsb_CreateBoundaryCountsAreaMesh.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_CreateBoundaryCountsAreaMesh.Name = "tsb_CreateBoundaryCountsAreaMesh";
-            this.tsb_CreateBoundaryCountsAreaMesh.Size = new System.Drawing.Size(28, 28);
-            this.tsb_CreateBoundaryCountsAreaMesh.Text = "Создание сетки с границами области";
-            this.tsb_CreateBoundaryCountsAreaMesh.Click += new System.EventHandler(this.tsb_CreateBoundaryCountsAreaMesh_Click);
             // 
             // toolStripSeparator7
             // 
@@ -986,56 +814,6 @@
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(6, 31);
             // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::RiverDB.Properties.Resources.SmoothMesh;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(28, 28);
-            this.toolStripButton1.Text = "Создание регулярной сетки по контуру";
-            this.toolStripButton1.Click += new System.EventHandler(this.tsCreateMesh_Click);
-            // 
-            // toolStripButton4
-            // 
-            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton4.Image = global::RiverDB.Properties.Resources.SmoothMesh3;
-            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton4.Name = "toolStripButton4";
-            this.toolStripButton4.Size = new System.Drawing.Size(28, 28);
-            this.toolStripButton4.Text = "Сглаживание регулярной сетки по контуру";
-            this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
-            // 
-            // toolStripButton2
-            // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = global::RiverDB.Properties.Resources.SmoothMesh2;
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(28, 28);
-            this.toolStripButton2.Text = "Сгущение регулярной сетки по контуру";
-            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
-            // 
-            // toolStripButton8
-            // 
-            this.toolStripButton8.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton8.Image = global::RiverDB.Properties.Resources.SmoothMesh5;
-            this.toolStripButton8.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton8.Name = "toolStripButton8";
-            this.toolStripButton8.Size = new System.Drawing.Size(28, 28);
-            this.toolStripButton8.Text = "Сгущение со сглаживанием";
-            this.toolStripButton8.Click += new System.EventHandler(this.toolStripButton8_Click);
-            // 
-            // toolStripButton6
-            // 
-            this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton6.Image = global::RiverDB.Properties.Resources.SmoothMesh4;
-            this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton6.Name = "toolStripButton6";
-            this.toolStripButton6.Size = new System.Drawing.Size(28, 28);
-            this.toolStripButton6.Text = "Расчет атрибутов";
-            this.toolStripButton6.Click += new System.EventHandler(this.toolStripButton6_Click);
-            // 
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
@@ -1045,16 +823,6 @@
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 31);
-            // 
-            // tsb_GenerWorkFile
-            // 
-            this.tsb_GenerWorkFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_GenerWorkFile.Image = ((System.Drawing.Image)(resources.GetObject("tsb_GenerWorkFile.Image")));
-            this.tsb_GenerWorkFile.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_GenerWorkFile.Name = "tsb_GenerWorkFile";
-            this.tsb_GenerWorkFile.Size = new System.Drawing.Size(28, 28);
-            this.tsb_GenerWorkFile.Text = "Создание файла задачи";
-            this.tsb_GenerWorkFile.Click += new System.EventHandler(this.tsb_GenerWorkFile_Click);
             // 
             // toolStripSeparator13
             // 
@@ -1076,7 +844,7 @@
             this.помошьToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(824, 29);
+            this.menuStrip1.Size = new System.Drawing.Size(879, 29);
             this.menuStrip1.TabIndex = 92;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -1307,14 +1075,285 @@
             this.gdI_EditControlClouds1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.gdI_EditControlClouds1.Location = new System.Drawing.Point(12, 61);
             this.gdI_EditControlClouds1.Name = "gdI_EditControlClouds1";
-            this.gdI_EditControlClouds1.Size = new System.Drawing.Size(800, 582);
+            this.gdI_EditControlClouds1.Size = new System.Drawing.Size(855, 654);
             this.gdI_EditControlClouds1.TabIndex = 0;
+            // 
+            // tsb_SsaveContur
+            // 
+            this.tsb_SsaveContur.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsb_SsaveContur.Image = global::RiverDB.Properties.Resources.SaveA;
+            this.tsb_SsaveContur.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsb_SsaveContur.Name = "tsb_SsaveContur";
+            this.tsb_SsaveContur.Size = new System.Drawing.Size(28, 28);
+            this.tsb_SsaveContur.Text = "Сохранить контурный фильтр";
+            this.tsb_SsaveContur.Click += new System.EventHandler(this.tsb_SsaveContur_Click);
+            // 
+            // tsm_SaveArea
+            // 
+            this.tsm_SaveArea.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsm_SaveArea.Image = global::RiverDB.Properties.Resources.SaveB;
+            this.tsm_SaveArea.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsm_SaveArea.Name = "tsm_SaveArea";
+            this.tsm_SaveArea.Size = new System.Drawing.Size(28, 28);
+            this.tsm_SaveArea.Text = "Загрузить область";
+            this.tsm_SaveArea.ToolTipText = "Сохранить область";
+            this.tsm_SaveArea.Click += new System.EventHandler(this.tsm_SaveArea_Click);
+            // 
+            // toolStripButton9
+            // 
+            this.toolStripButton9.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton9.Image = global::RiverDB.Properties.Resources.Save;
+            this.toolStripButton9.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton9.Name = "toolStripButton9";
+            this.toolStripButton9.Size = new System.Drawing.Size(28, 28);
+            this.toolStripButton9.Text = "toolStripButton9";
+            this.toolStripButton9.Click += new System.EventHandler(this.tsm_SaveCloudNodes_Click);
+            // 
+            // toolStripButton3
+            // 
+            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton3.Image = global::RiverDB.Properties.Resources.LoadA;
+            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton3.Name = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(28, 28);
+            this.toolStripButton3.Text = "Загрузить контурный фильтр";
+            this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
+            // 
+            // tsm_LoadArea
+            // 
+            this.tsm_LoadArea.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsm_LoadArea.Image = global::RiverDB.Properties.Resources.LoadB;
+            this.tsm_LoadArea.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsm_LoadArea.Name = "tsm_LoadArea";
+            this.tsm_LoadArea.Size = new System.Drawing.Size(28, 28);
+            this.tsm_LoadArea.Text = "toolStripButton5";
+            this.tsm_LoadArea.ToolTipText = "Сохранить область";
+            this.tsm_LoadArea.Click += new System.EventHandler(this.tsm_LoadArea_Click);
+            // 
+            // tsb_Contur
+            // 
+            this.tsb_Contur.Checked = true;
+            this.tsb_Contur.CheckOnClick = true;
+            this.tsb_Contur.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tsb_Contur.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsb_Contur.Image = global::RiverDB.Properties.Resources.NCloud;
+            this.tsb_Contur.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsb_Contur.Name = "tsb_Contur";
+            this.tsb_Contur.Size = new System.Drawing.Size(28, 28);
+            this.tsb_Contur.Text = "toolStripButton10";
+            this.tsb_Contur.Click += new System.EventHandler(this.tsb_Contur_Click);
+            // 
+            // tsb_DelNod
+            // 
+            this.tsb_DelNod.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsb_DelNod.Image = global::RiverDB.Properties.Resources.DelNode1;
+            this.tsb_DelNod.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsb_DelNod.Name = "tsb_DelNod";
+            this.tsb_DelNod.Size = new System.Drawing.Size(28, 28);
+            this.tsb_DelNod.Text = "Удалить последний узел контура";
+            this.tsb_DelNod.Click += new System.EventHandler(this.tsb_DelNod_Click);
+            // 
+            // tsb_ClearCountur
+            // 
+            this.tsb_ClearCountur.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsb_ClearCountur.Image = global::RiverDB.Properties.Resources.ClearContur1;
+            this.tsb_ClearCountur.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsb_ClearCountur.Name = "tsb_ClearCountur";
+            this.tsb_ClearCountur.Size = new System.Drawing.Size(28, 28);
+            this.tsb_ClearCountur.Text = "Удалить контур ";
+            this.tsb_ClearCountur.Click += new System.EventHandler(this.tsb_ClearCountur_Click);
+            // 
+            // tsb_SaveFig
+            // 
+            this.tsb_SaveFig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsb_SaveFig.Image = global::RiverDB.Properties.Resources.SaveFig1;
+            this.tsb_SaveFig.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsb_SaveFig.Name = "tsb_SaveFig";
+            this.tsb_SaveFig.Size = new System.Drawing.Size(28, 28);
+            this.tsb_SaveFig.Text = "Создать фигуру по контуру";
+            this.tsb_SaveFig.Click += new System.EventHandler(this.tsb_SaveFig_Click);
+            // 
+            // tsb_DelFig
+            // 
+            this.tsb_DelFig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsb_DelFig.Image = global::RiverDB.Properties.Resources.DelFig1;
+            this.tsb_DelFig.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsb_DelFig.Name = "tsb_DelFig";
+            this.tsb_DelFig.Size = new System.Drawing.Size(28, 28);
+            this.tsb_DelFig.Text = "Удалить текущую фигуру области";
+            this.tsb_DelFig.Click += new System.EventHandler(this.tsb_DelFig_Click);
+            // 
+            // tsb_ClearArea
+            // 
+            this.tsb_ClearArea.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsb_ClearArea.Image = global::RiverDB.Properties.Resources.DelArea1;
+            this.tsb_ClearArea.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsb_ClearArea.Name = "tsb_ClearArea";
+            this.tsb_ClearArea.Size = new System.Drawing.Size(28, 28);
+            this.tsb_ClearArea.Text = "Удалить все фигуры области";
+            this.tsb_ClearArea.Click += new System.EventHandler(this.tsb_ClearArea_Click);
+            // 
+            // tsb_BeLine
+            // 
+            this.tsb_BeLine.Checked = true;
+            this.tsb_BeLine.CheckOnClick = true;
+            this.tsb_BeLine.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tsb_BeLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsb_BeLine.Image = global::RiverDB.Properties.Resources.BeLine;
+            this.tsb_BeLine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsb_BeLine.Name = "tsb_BeLine";
+            this.tsb_BeLine.Size = new System.Drawing.Size(28, 28);
+            this.tsb_BeLine.Text = "Добавление линий сглаживания";
+            this.tsb_BeLine.Click += new System.EventHandler(this.tsb_BeLine_Click);
+            // 
+            // tsb_delBeLine
+            // 
+            this.tsb_delBeLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsb_delBeLine.Image = global::RiverDB.Properties.Resources.DelBeLine_;
+            this.tsb_delBeLine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsb_delBeLine.Name = "tsb_delBeLine";
+            this.tsb_delBeLine.Size = new System.Drawing.Size(28, 28);
+            this.tsb_delBeLine.Text = "Удаление последней линии сглаживания";
+            this.tsb_delBeLine.Click += new System.EventHandler(this.tsb_delBeLine_Click);
+            // 
+            // tsb_delAllLine
+            // 
+            this.tsb_delAllLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsb_delAllLine.Image = global::RiverDB.Properties.Resources.DelAllSmLine;
+            this.tsb_delAllLine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsb_delAllLine.Name = "tsb_delAllLine";
+            this.tsb_delAllLine.Size = new System.Drawing.Size(28, 28);
+            this.tsb_delAllLine.Text = "Удаление всех линий сглаживания";
+            this.tsb_delAllLine.Click += new System.EventHandler(this.tsb_delAllLine_Click);
+            // 
+            // tsb_LinkSMLines
+            // 
+            this.tsb_LinkSMLines.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsb_LinkSMLines.Image = global::RiverDB.Properties.Resources.BeLineLink;
+            this.tsb_LinkSMLines.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsb_LinkSMLines.Name = "tsb_LinkSMLines";
+            this.tsb_LinkSMLines.Size = new System.Drawing.Size(28, 28);
+            this.tsb_LinkSMLines.Text = "Связывание линий сглаживания";
+            this.tsb_LinkSMLines.Click += new System.EventHandler(this.tsb_LinkSMLines_Click);
+            // 
+            // tsb_GenerMeshFroNods
+            // 
+            this.tsb_GenerMeshFroNods.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsb_GenerMeshFroNods.Image = global::RiverDB.Properties.Resources.MeshCount;
+            this.tsb_GenerMeshFroNods.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsb_GenerMeshFroNods.Name = "tsb_GenerMeshFroNods";
+            this.tsb_GenerMeshFroNods.Size = new System.Drawing.Size(28, 28);
+            this.tsb_GenerMeshFroNods.Text = "Создание сетки по облаку  узлов";
+            this.tsb_GenerMeshFroNods.Click += new System.EventHandler(this.tsb_GenerMeshFroNods_Click);
+            // 
+            // tsb_CreateBoundaryCountsAreaMesh
+            // 
+            this.tsb_CreateBoundaryCountsAreaMesh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsb_CreateBoundaryCountsAreaMesh.Image = global::RiverDB.Properties.Resources.MeshCloud4;
+            this.tsb_CreateBoundaryCountsAreaMesh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsb_CreateBoundaryCountsAreaMesh.Name = "tsb_CreateBoundaryCountsAreaMesh";
+            this.tsb_CreateBoundaryCountsAreaMesh.Size = new System.Drawing.Size(28, 28);
+            this.tsb_CreateBoundaryCountsAreaMesh.Text = "Создание сетки с границами области";
+            this.tsb_CreateBoundaryCountsAreaMesh.Click += new System.EventHandler(this.tsb_CreateBoundaryCountsAreaMesh_Click);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = global::RiverDB.Properties.Resources.SmoothMesh;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(28, 28);
+            this.toolStripButton1.Text = "Создание регулярной сетки по контуру";
+            this.toolStripButton1.Click += new System.EventHandler(this.tsCreateMesh_Click);
+            // 
+            // toolStripButton4
+            // 
+            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton4.Image = global::RiverDB.Properties.Resources.SmoothMesh3;
+            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton4.Name = "toolStripButton4";
+            this.toolStripButton4.Size = new System.Drawing.Size(28, 28);
+            this.toolStripButton4.Text = "Сглаживание регулярной сетки по контуру";
+            this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = global::RiverDB.Properties.Resources.SmoothMesh2;
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(28, 28);
+            this.toolStripButton2.Text = "Сгущение регулярной сетки по контуру";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            // 
+            // toolStripButton8
+            // 
+            this.toolStripButton8.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton8.Image = global::RiverDB.Properties.Resources.SmoothMesh5;
+            this.toolStripButton8.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton8.Name = "toolStripButton8";
+            this.toolStripButton8.Size = new System.Drawing.Size(28, 28);
+            this.toolStripButton8.Text = "Сгущение со сглаживанием";
+            this.toolStripButton8.Click += new System.EventHandler(this.toolStripButton8_Click);
+            // 
+            // toolStripButton6
+            // 
+            this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton6.Image = global::RiverDB.Properties.Resources.SmoothMesh4;
+            this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton6.Name = "toolStripButton6";
+            this.toolStripButton6.Size = new System.Drawing.Size(28, 28);
+            this.toolStripButton6.Text = "Расчет атрибутов";
+            this.toolStripButton6.Click += new System.EventHandler(this.toolStripButton6_Click);
+            // 
+            // tsb_GenerWorkFile2D
+            // 
+            this.tsb_GenerWorkFile2D.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsb_GenerWorkFile2D.Image = ((System.Drawing.Image)(resources.GetObject("tsb_GenerWorkFile2D.Image")));
+            this.tsb_GenerWorkFile2D.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsb_GenerWorkFile2D.Name = "tsb_GenerWorkFile2D";
+            this.tsb_GenerWorkFile2D.Size = new System.Drawing.Size(28, 28);
+            this.tsb_GenerWorkFile2D.Text = "Создание файла плановой задачи";
+            this.tsb_GenerWorkFile2D.Click += new System.EventHandler(this.tsb_GenerWorkFile_Click);
+            // 
+            // tb_CrossLine
+            // 
+            this.tb_CrossLine.Checked = true;
+            this.tb_CrossLine.CheckOnClick = true;
+            this.tb_CrossLine.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tb_CrossLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tb_CrossLine.Image = global::RiverDB.Properties.Resources.CrossLine;
+            this.tb_CrossLine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tb_CrossLine.Name = "tb_CrossLine";
+            this.tb_CrossLine.Size = new System.Drawing.Size(28, 28);
+            this.tb_CrossLine.Text = "toolStripButton7";
+            this.tb_CrossLine.Click += new System.EventHandler(this.tb_CrossLine_Click);
+            // 
+            // tb_DelCrossLine
+            // 
+            this.tb_DelCrossLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tb_DelCrossLine.Image = global::RiverDB.Properties.Resources.DelCrossLine;
+            this.tb_DelCrossLine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tb_DelCrossLine.Name = "tb_DelCrossLine";
+            this.tb_DelCrossLine.Size = new System.Drawing.Size(28, 28);
+            this.tb_DelCrossLine.Text = "toolStripButton5";
+            this.tb_DelCrossLine.Click += new System.EventHandler(this.tb_DelCrossLine_Click);
+            // 
+            // tsb_GenerWorkFile1D
+            // 
+            this.tsb_GenerWorkFile1D.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsb_GenerWorkFile1D.Image = global::RiverDB.Properties.Resources.АмурСтвор;
+            this.tsb_GenerWorkFile1D.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsb_GenerWorkFile1D.Name = "tsb_GenerWorkFile1D";
+            this.tsb_GenerWorkFile1D.Size = new System.Drawing.Size(28, 28);
+            this.tsb_GenerWorkFile1D.Text = "Создание файла задачи в створе";
+            this.tsb_GenerWorkFile1D.Click += new System.EventHandler(this.tsb_GenerWorkFile1D_Click);
             // 
             // FCreateCloudMesh
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1125, 672);
+            this.ClientSize = new System.Drawing.Size(1180, 744);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusPanel);
             this.Controls.Add(this.menuStrip1);
@@ -1391,7 +1430,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripButton tsb_GenerWorkFile;
+        private System.Windows.Forms.ToolStripButton tsb_GenerWorkFile2D;
         private System.Windows.Forms.ToolStripButton tsm_LoadArea;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.ToolStripButton tsb_DelNod;
@@ -1465,5 +1504,8 @@
         private System.Windows.Forms.NumericUpDown nud_TimeBrack;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
+        private System.Windows.Forms.ToolStripButton tsb_GenerWorkFile1D;
+        private System.Windows.Forms.ToolStripButton tb_CrossLine;
+        private System.Windows.Forms.ToolStripButton tb_DelCrossLine;
     }
 }

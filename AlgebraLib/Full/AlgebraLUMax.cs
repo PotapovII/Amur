@@ -30,7 +30,7 @@ namespace AlgebraLib
                 if (NN != FN)
                     base.SetAlgebra(res, NN);
                 MEM.AllocClear(FN, ref work);
-                MEM.Alloc<int>((int)FN, ref index);
+                MEM.Alloc((int)FN, ref index);
             }
             catch (Exception ex)
             {

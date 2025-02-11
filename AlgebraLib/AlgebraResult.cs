@@ -90,11 +90,11 @@ namespace AlgebraLib
         public virtual void Print()
         {
             LOG.Print("Время решения СЛАУ", elapsedTime);
-            LOG.Print<uint>("Порядок СЛАУ", N);
+            LOG.Print("Порядок СЛАУ", N);
             LOG.Print("Имя метода", Name);
             LOG.Print("Сообщение о решении", Message);
-            LOG.Print<double>("Число обусловленности", conditionality);
-            LOG.Print<int>("Тип ошибки", (int)errorType);
+            LOG.Print("Число обусловленности", conditionality);
+            LOG.TPrint("Тип ошибки", (int)errorType);
             LOG.Print("==дополнительная ==", "== информация ======");
         }
     }

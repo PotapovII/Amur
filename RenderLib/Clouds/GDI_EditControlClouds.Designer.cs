@@ -38,15 +38,6 @@
             this.listBoxPoles = new System.Windows.Forms.ListBox();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.tabBrushes = new System.Windows.Forms.TabPage();
-            this.label11 = new System.Windows.Forms.Label();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.bt_FontCloud = new System.Windows.Forms.Button();
-            this.tb_FontCloud = new System.Windows.Forms.TextBox();
-            this.bt_FontReper = new System.Windows.Forms.Button();
-            this.tb_FontReper = new System.Windows.Forms.TextBox();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label34 = new System.Windows.Forms.Label();
             this.bt_NCountur = new System.Windows.Forms.Button();
@@ -96,6 +87,15 @@
             this.label30 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.tabPOptions = new System.Windows.Forms.TabPage();
+            this.label11 = new System.Windows.Forms.Label();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.bt_FontCloud = new System.Windows.Forms.Button();
+            this.tb_FontCloud = new System.Windows.Forms.TextBox();
+            this.bt_FontReper = new System.Windows.Forms.Button();
+            this.tb_FontReper = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label21 = new System.Windows.Forms.Label();
             this.nUD_formatText = new System.Windows.Forms.NumericUpDown();
@@ -108,6 +108,7 @@
             this.cb_ColoBrushrKnots = new System.Windows.Forms.CheckBox();
             this.tabControlState = new System.Windows.Forms.TabControl();
             this.tp_Area = new System.Windows.Forms.TabPage();
+            this.btPointFig = new System.Windows.Forms.Button();
             this.label39 = new System.Windows.Forms.Label();
             this.tb_LLS = new System.Windows.Forms.TextBox();
             this.bt_SegmentKnots = new System.Windows.Forms.Button();
@@ -168,13 +169,13 @@
             this.tSS_Max = new System.Windows.Forms.ToolStripStatusLabel();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.btPointFig = new System.Windows.Forms.Button();
+            this.listBoxCLine = new System.Windows.Forms.ListBox();
             this.renderControl1 = new RenderLib.CPRenderControlFields();
+            this.label40 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this.tabControlOption.SuspendLayout();
             this.tabObjects.SuspendLayout();
             this.tabBrushes.SuspendLayout();
-            this.panel7.SuspendLayout();
             this.panel6.SuspendLayout();
             this.tabPens.SuspendLayout();
             this.panel8.SuspendLayout();
@@ -189,6 +190,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nUD_penCounturLine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUD_penVectorLine)).BeginInit();
             this.tabPOptions.SuspendLayout();
+            this.panel7.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUD_formatText)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUD_formatReper)).BeginInit();
@@ -283,99 +285,6 @@
             this.tabBrushes.Size = new System.Drawing.Size(304, 289);
             this.tabBrushes.TabIndex = 1;
             this.tabBrushes.Text = "Кисти";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label11.Location = new System.Drawing.Point(16, 196);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(109, 20);
-            this.label11.TabIndex = 94;
-            this.label11.Text = "Шрифты для";
-            // 
-            // panel7
-            // 
-            this.panel7.BackColor = System.Drawing.Color.White;
-            this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel7.Controls.Add(this.label19);
-            this.panel7.Controls.Add(this.label18);
-            this.panel7.Controls.Add(this.label17);
-            this.panel7.Controls.Add(this.bt_FontCloud);
-            this.panel7.Controls.Add(this.tb_FontCloud);
-            this.panel7.Controls.Add(this.bt_FontReper);
-            this.panel7.Controls.Add(this.tb_FontReper);
-            this.panel7.Location = new System.Drawing.Point(8, 220);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(287, 63);
-            this.panel7.TabIndex = 97;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label19.Location = new System.Drawing.Point(10, 63);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(0, 20);
-            this.label19.TabIndex = 101;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label18.Location = new System.Drawing.Point(6, 36);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(63, 20);
-            this.label18.TabIndex = 100;
-            this.label18.Text = "облака";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label17.Location = new System.Drawing.Point(5, 10);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(91, 20);
-            this.label17.TabIndex = 93;
-            this.label17.Text = "координат";
-            // 
-            // bt_FontCloud
-            // 
-            this.bt_FontCloud.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bt_FontCloud.Location = new System.Drawing.Point(165, 34);
-            this.bt_FontCloud.Name = "bt_FontCloud";
-            this.bt_FontCloud.Size = new System.Drawing.Size(31, 24);
-            this.bt_FontCloud.TabIndex = 96;
-            this.bt_FontCloud.UseVisualStyleBackColor = true;
-            this.bt_FontCloud.Click += new System.EventHandler(this.bt_FontCloud_Click);
-            // 
-            // tb_FontCloud
-            // 
-            this.tb_FontCloud.Enabled = false;
-            this.tb_FontCloud.Location = new System.Drawing.Point(98, 35);
-            this.tb_FontCloud.Name = "tb_FontCloud";
-            this.tb_FontCloud.Size = new System.Drawing.Size(61, 26);
-            this.tb_FontCloud.TabIndex = 97;
-            this.tb_FontCloud.Text = "A 12";
-            // 
-            // bt_FontReper
-            // 
-            this.bt_FontReper.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bt_FontReper.Location = new System.Drawing.Point(165, 7);
-            this.bt_FontReper.Name = "bt_FontReper";
-            this.bt_FontReper.Size = new System.Drawing.Size(31, 24);
-            this.bt_FontReper.TabIndex = 93;
-            this.bt_FontReper.UseVisualStyleBackColor = true;
-            this.bt_FontReper.Click += new System.EventHandler(this.bt_FontReper_Click);
-            // 
-            // tb_FontReper
-            // 
-            this.tb_FontReper.Enabled = false;
-            this.tb_FontReper.Location = new System.Drawing.Point(98, 8);
-            this.tb_FontReper.Name = "tb_FontReper";
-            this.tb_FontReper.Size = new System.Drawing.Size(62, 26);
-            this.tb_FontReper.TabIndex = 95;
-            this.tb_FontReper.Text = "A 12";
             // 
             // panel6
             // 
@@ -1026,6 +935,99 @@
             this.tabPOptions.TabIndex = 2;
             this.tabPOptions.Text = "Отрисовка";
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label11.Location = new System.Drawing.Point(16, 196);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(109, 20);
+            this.label11.TabIndex = 94;
+            this.label11.Text = "Шрифты для";
+            // 
+            // panel7
+            // 
+            this.panel7.BackColor = System.Drawing.Color.White;
+            this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel7.Controls.Add(this.label19);
+            this.panel7.Controls.Add(this.label18);
+            this.panel7.Controls.Add(this.label17);
+            this.panel7.Controls.Add(this.bt_FontCloud);
+            this.panel7.Controls.Add(this.tb_FontCloud);
+            this.panel7.Controls.Add(this.bt_FontReper);
+            this.panel7.Controls.Add(this.tb_FontReper);
+            this.panel7.Location = new System.Drawing.Point(8, 220);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(287, 63);
+            this.panel7.TabIndex = 97;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label19.Location = new System.Drawing.Point(10, 63);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(0, 20);
+            this.label19.TabIndex = 101;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label18.Location = new System.Drawing.Point(6, 36);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(63, 20);
+            this.label18.TabIndex = 100;
+            this.label18.Text = "облака";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label17.Location = new System.Drawing.Point(5, 10);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(91, 20);
+            this.label17.TabIndex = 93;
+            this.label17.Text = "координат";
+            // 
+            // bt_FontCloud
+            // 
+            this.bt_FontCloud.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.bt_FontCloud.Location = new System.Drawing.Point(165, 34);
+            this.bt_FontCloud.Name = "bt_FontCloud";
+            this.bt_FontCloud.Size = new System.Drawing.Size(31, 24);
+            this.bt_FontCloud.TabIndex = 96;
+            this.bt_FontCloud.UseVisualStyleBackColor = true;
+            this.bt_FontCloud.Click += new System.EventHandler(this.bt_FontCloud_Click);
+            // 
+            // tb_FontCloud
+            // 
+            this.tb_FontCloud.Enabled = false;
+            this.tb_FontCloud.Location = new System.Drawing.Point(98, 35);
+            this.tb_FontCloud.Name = "tb_FontCloud";
+            this.tb_FontCloud.Size = new System.Drawing.Size(61, 26);
+            this.tb_FontCloud.TabIndex = 97;
+            this.tb_FontCloud.Text = "A 12";
+            // 
+            // bt_FontReper
+            // 
+            this.bt_FontReper.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.bt_FontReper.Location = new System.Drawing.Point(165, 7);
+            this.bt_FontReper.Name = "bt_FontReper";
+            this.bt_FontReper.Size = new System.Drawing.Size(31, 24);
+            this.bt_FontReper.TabIndex = 93;
+            this.bt_FontReper.UseVisualStyleBackColor = true;
+            this.bt_FontReper.Click += new System.EventHandler(this.bt_FontReper_Click);
+            // 
+            // tb_FontReper
+            // 
+            this.tb_FontReper.Enabled = false;
+            this.tb_FontReper.Location = new System.Drawing.Point(98, 8);
+            this.tb_FontReper.Name = "tb_FontReper";
+            this.tb_FontReper.Size = new System.Drawing.Size(62, 26);
+            this.tb_FontReper.TabIndex = 95;
+            this.tb_FontReper.Text = "A 12";
+            // 
             // panel3
             // 
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -1183,6 +1185,8 @@
             // tp_Area
             // 
             this.tp_Area.BackColor = System.Drawing.Color.LightGray;
+            this.tp_Area.Controls.Add(this.label40);
+            this.tp_Area.Controls.Add(this.listBoxCLine);
             this.tp_Area.Controls.Add(this.btPointFig);
             this.tp_Area.Controls.Add(this.label39);
             this.tp_Area.Controls.Add(this.tb_LLS);
@@ -1220,6 +1224,17 @@
             this.tp_Area.Size = new System.Drawing.Size(304, 423);
             this.tp_Area.TabIndex = 1;
             this.tp_Area.Text = "Область";
+            // 
+            // btPointFig
+            // 
+            this.btPointFig.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btPointFig.Location = new System.Drawing.Point(11, 147);
+            this.btPointFig.Name = "btPointFig";
+            this.btPointFig.Size = new System.Drawing.Size(277, 26);
+            this.btPointFig.TabIndex = 137;
+            this.btPointFig.Text = "Обновить тукущий узел фигуры";
+            this.btPointFig.UseVisualStyleBackColor = true;
+            this.btPointFig.Click += new System.EventHandler(this.btPointFig_Click);
             // 
             // label39
             // 
@@ -1309,7 +1324,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label7.Location = new System.Drawing.Point(183, 176);
+            this.label7.Location = new System.Drawing.Point(104, 176);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(101, 18);
             this.label7.TabIndex = 128;
@@ -1341,10 +1356,10 @@
             this.listBoxSLine.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.listBoxSLine.FormattingEnabled = true;
             this.listBoxSLine.ItemHeight = 18;
-            this.listBoxSLine.Location = new System.Drawing.Point(172, 198);
+            this.listBoxSLine.Location = new System.Drawing.Point(107, 198);
             this.listBoxSLine.Name = "listBoxSLine";
             this.listBoxSLine.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listBoxSLine.Size = new System.Drawing.Size(119, 130);
+            this.listBoxSLine.Size = new System.Drawing.Size(92, 130);
             this.listBoxSLine.TabIndex = 127;
             this.listBoxSLine.SelectedIndexChanged += new System.EventHandler(this.listBoxSLine_SelectedIndexChanged);
             // 
@@ -1385,7 +1400,7 @@
             this.listBoxSegments.Location = new System.Drawing.Point(11, 198);
             this.listBoxSegments.Name = "listBoxSegments";
             this.listBoxSegments.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listBoxSegments.Size = new System.Drawing.Size(154, 130);
+            this.listBoxSegments.Size = new System.Drawing.Size(90, 130);
             this.listBoxSegments.TabIndex = 109;
             this.listBoxSegments.SelectedIndexChanged += new System.EventHandler(this.listBoxSegments_SelectedIndexChanged);
             // 
@@ -1787,16 +1802,16 @@
             // 
             this.openFileDialog2.FileName = "openFileDialog2";
             // 
-            // btPointFig
+            // listBoxCLine
             // 
-            this.btPointFig.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btPointFig.Location = new System.Drawing.Point(11, 147);
-            this.btPointFig.Name = "btPointFig";
-            this.btPointFig.Size = new System.Drawing.Size(277, 26);
-            this.btPointFig.TabIndex = 137;
-            this.btPointFig.Text = "Обновить тукущий узел фигуры";
-            this.btPointFig.UseVisualStyleBackColor = true;
-            this.btPointFig.Click += new System.EventHandler(this.btPointFig_Click);
+            this.listBoxCLine.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.listBoxCLine.FormattingEnabled = true;
+            this.listBoxCLine.ItemHeight = 18;
+            this.listBoxCLine.Location = new System.Drawing.Point(204, 198);
+            this.listBoxCLine.Name = "listBoxCLine";
+            this.listBoxCLine.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.listBoxCLine.Size = new System.Drawing.Size(87, 130);
+            this.listBoxCLine.TabIndex = 138;
             // 
             // renderControl1
             // 
@@ -1819,6 +1834,16 @@
             this.renderControl1.Text = "renderControl1";
             this.renderControl1.Visible = false;
             // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label40.Location = new System.Drawing.Point(207, 176);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(62, 18);
+            this.label40.TabIndex = 139;
+            this.label40.Text = "Створы";
+            // 
             // GDI_EditControlClouds
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1835,8 +1860,6 @@
             this.tabObjects.ResumeLayout(false);
             this.tabBrushes.ResumeLayout(false);
             this.tabBrushes.PerformLayout();
-            this.panel7.ResumeLayout(false);
-            this.panel7.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
             this.tabPens.ResumeLayout(false);
@@ -1856,6 +1879,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nUD_penVectorLine)).EndInit();
             this.tabPOptions.ResumeLayout(false);
             this.tabPOptions.PerformLayout();
+            this.panel7.ResumeLayout(false);
+            this.panel7.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUD_formatText)).EndInit();
@@ -2017,5 +2042,7 @@
         private System.Windows.Forms.TextBox tb_LLS;
         private System.Windows.Forms.Label label39;
         private System.Windows.Forms.Button btPointFig;
+        private System.Windows.Forms.ListBox listBoxCLine;
+        private System.Windows.Forms.Label label40;
     }
 }

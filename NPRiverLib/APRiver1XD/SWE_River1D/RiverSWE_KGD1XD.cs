@@ -10,15 +10,14 @@
 
 namespace NPRiverLib.APRiver_1XD.River1DSW
 {
-    using CommonLib;
-    using CommonLib.IO;
-    using CommonLib.Physics;
-    using MemLogLib;
-    using MeshGeneratorsLib.TapeGenerator;
-    using NPRiverLib.ATask;
-    using NPRiverLib.IO;
     using System;
     using System.Linq;
+
+    using MemLogLib;
+    using CommonLib;
+    using CommonLib.IO;
+    using NPRiverLib.IO;
+    using MeshGeneratorsLib.TapeGenerator;
     /// <summary>
     /// ОО: Нестационарное решение одномерного уравгнения мелкой воды 
     /// на сетке с переменным шагом, явная схема 
@@ -376,53 +375,5 @@ namespace NPRiverLib.APRiver_1XD.River1DSW
         {
             return new TaskReaderSWE_1XD();
         }
-        /// <summary>
-        /// Тесты
-        /// </summary>
-        //public void Examples(int testNamber = 0)
-        //{
-        //    double Lambda = 0.01;
-        //    double Maning = 0.2;
-        //    double Mu = 0.01;
-        //    double J = 0.0001;
-        //    double rho_w = 1000;
-        //    TypeSWETau typeTau = TypeSWETau.Darcy;
-        //    RiverSWE_KGD1XD p = new RiverSWE_KGD1XD(typeTau, Lambda, Maning, Mu, J, rho_w);
-        //    int CountKnots = 20;
-        //    double U0 = 1;
-        //    double H0 = 1;
-        //    int typeBC = 1;
-        //    RiverShallowWaterBC bc = new RiverShallowWaterBC(U0, H0, typeBC);
-        //    RiverSWE_KGD1XD task = new RiverSWE_KGD1XD(CountKnots, bc, p);
-        //    double[] Tau = new double[CountKnots];
-        //    double[] U = new double[CountKnots];
-        //    double[] H = new double[CountKnots];
-        //    double[] zeta = new double[CountKnots];
-        //    double[] x = new double[CountKnots];
-        //    double L = 100;
-        //    double dx = L / (CountKnots - 1);
-        //    double z0 = J * L;
-        //    double dz = z0 / CountKnots;
-        //    for (int i = 0; i < U.Length; i++)
-        //    {
-        //        x[i] = i*dx;
-        //        zeta[i] = z0 - i*dz;
-        //        U[i] = U0;
-        //        H[i] = H0;
-        //    }
-        //    task.Set(U, H);
-        //    // Задача с ровным дном
-        //    for (int time = 0; time < 50; time++)
-        //    {
-        //        Console.WriteLine(time);
-        //        // Задача с ровным дном
-        //        task.SolverStep(ref x, ref zeta, Ks);
-        //        LOG.Print("U", task.U);
-        //        LOG.Print("H", task.H);
-        //        LOG.Print("zeta", zeta);
-        //        task.CalkTau(ref Tau);
-        //        LOG.Print("Tau", Tau);
-        //    }
-        //}
     }
 }

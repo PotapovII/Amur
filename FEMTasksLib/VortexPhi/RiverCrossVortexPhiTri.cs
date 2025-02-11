@@ -39,6 +39,7 @@ namespace FEMTasksLib.FESimpleTask
     using CommonLib.Mesh;
     using CommonLib.Physics;
     using System.Linq;
+    using CommonLib.EddyViscosity;
 
     /// <summary>
     /// ОО: Задача с вынужденной конвекцией, на верхней крышке области заданна скорость
@@ -278,7 +279,7 @@ namespace FEMTasksLib.FESimpleTask
                 //LOG.Print("bcVx", bcVx);
                 //LOG.Print("bAdress", bAdress);
 
-                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWCrossSection)wMesh, typeEddyViscosity, Ux, J);
+                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWRiver)wMesh, typeEddyViscosity, Ux, J);
                 // релаксация функции вязкости
                 for (int i = 0; i < CountKnots; i++)
                     eddyViscosity[i] = (1 - w) * eddyViscosity_old[i] + w * eddyViscosity[i];
@@ -431,10 +432,10 @@ namespace FEMTasksLib.FESimpleTask
                     SPhysics.PHYS.turbViscType == ETurbViscType.PotapobII_2024)
                 {
                     Calk_tensor_deformations(ref tDef, ref E2);
-                    SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, wm, typeEddyViscosity, E2, J);
+                    SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWRiver)wm, typeEddyViscosity, E2, J);
                 }
                 else
-                    SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, wm, typeEddyViscosity, Ux, J);
+                    SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWRiver)wm, typeEddyViscosity, Ux, J);
 
                 if (flagLes == true)
                 {
@@ -447,10 +448,10 @@ namespace FEMTasksLib.FESimpleTask
                         SPhysics.PHYS.turbViscType == ETurbViscType.PotapobII_2024)
                     {
                         Calk_tensor_deformations(ref tDef, ref E2);
-                        SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, wm, typeEddyViscosity, E2, J);
+                        SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWRiver)wm, typeEddyViscosity, E2, J);
                     }
                     else
-                        SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, wm, typeEddyViscosity, Ux, J);
+                        SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWRiver)wm, typeEddyViscosity, Ux, J);
 
                     SPhysics.PHYS.turbViscType = tmp;
                 }
@@ -607,7 +608,7 @@ namespace FEMTasksLib.FESimpleTask
                 //    Console.Write(" {0} : {1:f4} ", bAdress[i],bcVx[i]);
                 //Console.WriteLine();
                 //J = 0.001;
-                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWCrossSection)wMesh, typeEddyViscosity, Ux, J);
+                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWRiver)wMesh, typeEddyViscosity, Ux, J);
                 taskMu.TransportEquationsTaskSUPG_R(ref eddyViscosity, eddyViscosity, R_midle, Ring, Uy, Uz, bAdress, bcVx, Q);
                 // релаксация функции вязкости
                 for (int i = 0; i < CountKnots; i++)
@@ -717,7 +718,7 @@ namespace FEMTasksLib.FESimpleTask
                 Console.WriteLine("Vx:");
                 // расчет потоковой скорости в створе
                 taskUx.TransportEquationsTaskSUPG(ref Ux, eddyViscosity, Uy, Uz, boundaryBedAdress, J);
-                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWCrossSection)wMesh, typeEddyViscosity, Ux, J);
+                SPhysics.PHYS.calkTurbVisc(ref eddyViscosity, typeTask, (IMWRiver)wMesh, typeEddyViscosity, Ux, J);
                 // расчет турбулентных напряжений для вихря
                 if (VetrexTurbTask == 0)
                     Calk_TauYY_TauZZ_TauYZ();

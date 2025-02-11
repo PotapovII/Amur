@@ -31,14 +31,10 @@ OTHER DEALINGS IN THE SOFTWARE.
 //---------------------------------------------------------------------------
 //           кодировка : 01.08.2024 Потапов И.И.
 //---------------------------------------------------------------------------
-using CommonLib.Geometry;
-using GeometryLib.Locators;
-using GeometryLib.Vector;
-using MemLogLib;
-using System;
-
 namespace GeometryLib.Geometry
 {
+    using CommonLib.Geometry;
+    using GeometryLib.Locators;
     /// <summary>
     /// Линия
     /// </summary>
@@ -71,14 +67,14 @@ namespace GeometryLib.Geometry
         /// <returns></returns>
         public bool IsCrossing(IHLine a, IHLine b)
         {
-            return CrossLine.IsIntersectingAlternative(a.A, a.B, b.A, b.B);
+            return CrossLineUtils.IsIntersectingAlternative(a.A, a.B, b.A, b.B);
         }
         /// <summary>
         /// Проверить существование точки пересечения двух линий
         /// </summary>
         public bool IsCrossing(IHPoint a, IHPoint b, IHPoint c, IHPoint d)
         {
-            return CrossLine.IsIntersectingAlternative(a, b, c, d);
+            return CrossLineUtils.IsIntersectingAlternative(a, b, c, d);
         }
         /// <summary>
         /// Проверить существование точки пересечения двух линий и вернуть точку пересечения
@@ -89,21 +85,21 @@ namespace GeometryLib.Geometry
         /// <returns></returns>
         public bool IsCrossing(IHLine a, IHLine b, ref IHPoint p)
         {
-            return CrossLine.IsIntersectingAlternative(a.A, a.B, b.A, b.B, ref p);
+            return CrossLineUtils.IsIntersectingAlternative(a.A, a.B, b.A, b.B, ref p);
         }
         /// <summary>
         /// Проверить существование точки пересечения двух отрезков
         /// </summary>
         public bool IsCrossing(HPoint v11, HPoint v12, HPoint v21, HPoint v22)
         {
-            return CrossLine.IsCrossing(v11, v12, v21, v22);
+            return CrossLineUtils.IsCrossing(v11, v12, v21, v22);
         }
         /// <summary>
         /// Проверить существование точки пересечения двух отрезков и вычислить ее
         /// </summary>
         public bool IsCrossing(HPoint v11, HPoint v12, HPoint v21, HPoint v22, ref IHPoint p)
         {
-            return CrossLine.IsCrossing(v11, v12, v21, v22, ref p);
+            return CrossLineUtils.IsCrossing(v11, v12, v21, v22, ref p);
         }
     }
 

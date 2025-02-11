@@ -478,7 +478,6 @@ namespace CPForm
             IBedLoadTask btask = mbt.Clone(idxBload);
             task = new ChannelProcessPro(rtask, btask);
             SetTaskParams();
-
             IOFormater<IRiver> loader = rtask.GetFormater();
             List<string> TaskNames = loader.GetTestsName();
             // загрузка уровней дна, расходов, ...

@@ -1144,9 +1144,10 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                             // диссипация - граничные условия
                             //double diss = Cmu * Math.Sqrt(tke[ist][j] * tke[ist][j] * tke[ist][j]) / (0.4 * cmu4 * Dx[ist][j]);
                             double diss = Cmu * tke[ist][j] * Math.Sqrt(Math.Abs(tke[ist][j])) / (0.4 * cmu4 * Dx[ist][j]);
-                            // расчет источников для b и Ap
+                            // расчет граничных условий на дне 
                             sc[ist][j] = (double)(WW * diss);
                             sp[ist][j] = (double)-WW;
+                            // расчет источников для b и Ap
                             for (i = ist + 1; i < imax; i++)
                             {
                                 sc[i][j] =   c1 * gen[i][j] * Cmu * rho_w * tke[i][j];

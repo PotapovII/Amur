@@ -1,0 +1,382 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="RenderLib.CloudData" Collapsed="true">
+    <Position X="16" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACBAAABAAABAAEAAAAAAAAAABAAAAQAQAAAA=</HashCode>
+      <FileName>Clouds\CloudData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.CloudsUtils" Collapsed="true">
+    <Position X="17.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Clouds\CloudsUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.CPRenderEditControlClouds" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AaSjcDQDABCBAQA0FtQIkBiQAJkQEQGIghBAAwCgiAA=</HashCode>
+      <FileName>Clouds\CPRenderEditControlClouds.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RenderLib.GDI_EditControlClouds" Collapsed="true">
+    <Position X="14.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>/4krt/WF+jDNNxCQhlOR8vbOk4pU1S+sRzxlGQe5xnU=</HashCode>
+      <FileName>Clouds\GDI_EditControlClouds.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.ProxyRendererEditControl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAhECQDAACBAQAEEIAIkBiQAIkQEQEIgQAAAQCgiAA=</HashCode>
+      <FileName>Clouds\ProxyRendererEditControl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RenderLib.TaskRendererClouds" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAFAAAAADQAAAABEJAAAAAAAAgIAQQAABAgAAAAYAA=</HashCode>
+      <FileName>Clouds\TaskRendererClouds.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.BaseColorScheme" Collapsed="true">
+    <Position X="7.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAQAAAAgBBAAAQASAIAAAAQACAAEAgAAAMIAA=</HashCode>
+      <FileName>ColorScheme.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.ColorScheme" Collapsed="true">
+    <Position X="8.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAEKAAAAAAAAAABAAAAAAAAAIAAAASJAAAQAAAAE=</HashCode>
+      <FileName>ColorScheme.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.ColorSchemeClouds" Collapsed="true">
+    <Position X="5.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IgAKIgZASgCAYAAIBAAEIAQAQIIAAIKCBASCAAREAAA=</HashCode>
+      <FileName>ColorScheme.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.ColorSchemeFields" Collapsed="true">
+    <Position X="7.75" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAIAABACIAAAQiAAAAAACBAgAAgAIABAABAAQAAAAA=</HashCode>
+      <FileName>ColorScheme.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.ColorSchemeEdit" Collapsed="true">
+    <Position X="10" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAABACIAAAACAAAAAACBAgAAgAIABAAAAAQAAAAA=</HashCode>
+      <FileName>ColorScheme.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.CPRenderControlCurves" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AYSDIBAFABAAAQAAAgQIABCAAAgAAQCAAhBQAgAAAAA=</HashCode>
+      <FileName>Curve\CPRenderControlCurves.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RenderLib.GDI_Curves_Control" Collapsed="true">
+    <Position X="12.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>/wLZMGGFMTLD8DipJ4uj9EqqcC1oUa2GVnCGCSArBTU=</HashCode>
+      <FileName>Curve\GDI_Curves_Control.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.ProxyRendererControlCurves" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAFAAAAAQAAAgAIAACAAAgAAQAAAQAAAAAAgAA=</HashCode>
+      <FileName>Curve\ProxyRendererControlCurves.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RenderLib.TaskRendererCurves" Collapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAIBAAAAAAAAAAAIAQAAABAAAAAEAAA=</HashCode>
+      <FileName>Curve\TaskRendererCurves.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.EditRenderOptions" Collapsed="true">
+    <Position X="21.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>EditRenderOptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.CPRenderControlFields" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AaSDIBCBABAAgQAABAQIABCAAAgAAQCAAhBQAgAAAAE=</HashCode>
+      <FileName>Fields\CPRenderControlFields.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RenderLib.GDI_Control" Collapsed="true">
+    <Position X="19.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>/6q9bu39OzvQynSRZcHjdPrKAO17kU1r9Pk/7wQvQHU=</HashCode>
+      <FileName>Fields\GDI_Control.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.CPRenderControlEdit" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AYSDIBABMBAAAQAAABQIABCAAAgAAQCAAhBRAggAAAE=</HashCode>
+      <FileName>Fields\MeshEdit\CPRenderControlEdit.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RenderLib.GDI_ControlEdit" Collapsed="true">
+    <Position X="21.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>/CiJI/S1OSOAyhCQBDbh5I/qAOx7AU1I9HEP7wQJQHU=</HashCode>
+      <FileName>Fields\MeshEdit\GDI_ControlEdit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.ProxyRendererControlEdit" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAABAAAAAQAAAAAIAACAAAgAAQAAAQARAAAAgAE=</HashCode>
+      <FileName>Fields\MeshEdit\ProxyRendererControlEdit.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RenderLib.TaskRendererEdit" Collapsed="true">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAFAAAEADQBAAUJAAAAAAAAAAAJAQQgABAwAAAAYAA=</HashCode>
+      <FileName>Fields\MeshEdit\TaskRendererEdit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.ProxyRendererControlFields" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACABAAABAAAAgQAAAAAIAACAAAgAAQAAAQAAAAAAgAE=</HashCode>
+      <FileName>Fields\ProxyRendererControlFields.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RenderLib.SavePointData" Collapsed="true">
+    <Position X="16" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAACBABABABAAAAEAAAAAABAAABAAAQQAQAAAA=</HashCode>
+      <FileName>Fields\SavePointData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.SolidColorBrush" Collapsed="true">
+    <Position X="21.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Fields\SolidColorBrush.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.TaskRendererFields" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAFBAAECDQBAAcJAIIAAAAAAAgJQQQgABAwAAAAZBA=</HashCode>
+      <FileName>Fields\TaskRendererFields.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.ClientRender" Collapsed="true">
+    <Position X="14.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GDI\Client.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.LoaderSavePoints" Collapsed="true">
+    <Position X="16" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAACAAAAAAAACAQAQCAAA4AAAAADAAgAAAAAA=</HashCode>
+      <FileName>GDI\LoaderSavePoints.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.ViewForm" Collapsed="true">
+    <Position X="12.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>/yCBAGCFMCAQQhCBAYChREjKANx7AQEi1HAfSQQJQHQ=</HashCode>
+      <FileName>GDI\ViewForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.FVCurves" Collapsed="true">
+    <Position X="17.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAEAACAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GDI\ViewGraphicsData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.ViForm" Collapsed="true">
+    <Position X="14.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACEAAAAAAACAEAQGAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GDI\ViForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.FillMethods" Collapsed="true">
+    <Position X="12.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Native\NativeMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.RenderOptions" Collapsed="true">
+    <Position X="2.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABEAAAAAAAgAAAAAAAAAAAACBAAAAAAoAAQAAAAA=</HashCode>
+      <FileName>RenderOptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.RenderOptionsCurves" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAACAgAEAAAAAAAABAAAAAEAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>RenderOptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.RenderOptionsFields" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAgAIQAAAAEBoAQCAAAAAAGCAAACAgAQAgAAAAAAE=</HashCode>
+      <FileName>RenderOptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.RenderOptionsEdit" Collapsed="true">
+    <Position X="5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAEBIAAAAAAAAAEAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>RenderOptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.BMShow" Collapsed="true">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RgSIAiGBICMQEBEAggyFLAQOAYAYCBgIUDAHGQmREpA=</HashCode>
+      <FileName>ShowGraphic\BMShow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.CoScale" Collapsed="true">
+    <Position X="21.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAoAAAACBAAAAAAEgIAgACDAQAAAAABCEAAgEAAEAA=</HashCode>
+      <FileName>ShowGraphic\CoScale.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.ScaleGraph" Collapsed="true">
+    <Position X="17.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAIABAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ShowGraphic\ScaleGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.ScaleValue" Collapsed="true">
+    <Position X="19.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>ShowGraphic\ScaleValue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.TaskRenderer" Collapsed="true">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAABAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TaskRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.Fields.CrossLine" Collapsed="true">
+    <Position X="19.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAwAAAACEAQAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Fields\CrossLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.Fields.FTaskCross" Collapsed="true">
+    <Position X="14.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQAAAAAACIAABAAAACAAABCAAAYAAAAEAAQAQAAAAA=</HashCode>
+      <FileName>UControl\FTaskCross.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.Fields.FunCreator" Collapsed="true">
+    <Position X="16" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EACAIACAACQQgAAAAACAQAASACAgAKokAAQAAwAAAAg=</HashCode>
+      <FileName>UControl\FunCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.GDI.ConvertCurve" Collapsed="true">
+    <Position X="19.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIIAAAAACAAYDEAIACAAAACAAE4AAAAEAAAAAEAAAA=</HashCode>
+      <FileName>GDI\ConvertCurve.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.Properties.Resources" Collapsed="true">
+    <Position X="14.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAkAAAAAAAABAABAIAFUABQASAAACAABJIgAAggAIE=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="RenderLib.IProxyRenderer" Collapsed="true">
+    <Position X="3.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAIAACAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IProxyRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RenderLib.IProxyRendererMesh" Collapsed="true">
+    <Position X="1.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>IProxyRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RenderLib.IProxyRendererFields" Collapsed="true">
+    <Position X="0.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACABAAAAAAAAgAAAAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>IProxyRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RenderLib.IProxyRendererEditMesh" Collapsed="true">
+    <Position X="2.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAABAAAAAAAAAAAAAAAAAAAAAQAAAAARAAAAAAA=</HashCode>
+      <FileName>IProxyRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RenderLib.IProxyRendererCurves" Collapsed="true">
+    <Position X="5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAFAAAAAAAAAgAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>IProxyRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RenderLib.IProxyRendererReaderClouds" Collapsed="true">
+    <Position X="7.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAhECQDAACBAQAEEIAAkBiQAIEQEQEIgAAAAQCgiAA=</HashCode>
+      <FileName>IProxyRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="RenderLib.EditState" Collapsed="true">
+    <Position X="12.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAgAAA=</HashCode>
+      <FileName>EditRenderOptions.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

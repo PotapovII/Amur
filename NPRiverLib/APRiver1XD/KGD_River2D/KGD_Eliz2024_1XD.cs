@@ -34,8 +34,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
     using CommonLib.Delegate;
     using NPRiverLib.APRiver_1XD;
     using NPRiverLib.IO;
-    using NPRiverLib.ATask;
+    using NPRiverLib.ABaseTask;
     using MeshLib.Wrappers;
+    using CommonLib.Function;
 
     /// <summary>
     /// ОО: Решение задачи гидрадинамики МКО в формулировке Елизароваой Е.
@@ -259,9 +260,6 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         /// </summary>
         public KGD_Eliz2024_1XD() : this(new RGDParameters1XD()) 
         { 
-            //wrapper= new KsiWrapper(mesh);
-            //wrapper.TriangleGeometryCalculation(true);
-            //wrapper.MakeWallFuncStructure(true);
         }
         /// <summary>
         /// Конструктор c заданными параметрами
@@ -443,6 +441,11 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
             string message = "Файл данных задачи не обнаружен";
             return WR.LoadParams(LoadData, message, fileName);
         }
+        /// <summary>
+        /// Загрузка задачи иp форматного файла
+        /// </summary>
+        /// <param name="file">имя файла</param>
+        public override void LoadData(IDigFunction[] crossFunctions = null) { }
         /// <summary>
         /// Чтение данных задачи из файла
         /// </summary>

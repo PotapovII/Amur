@@ -15,16 +15,17 @@ namespace NPRiverLib.APRiver1YD
     using GeometryLib;
 
     using CommonLib;
-    using CommonLib.Physics;
     using CommonLib.Function;
     using CommonLib.ChannelProcess;
 
-    using NPRiverLib.ATask;
+    using NPRiverLib.ABaseTask;
     using NPRiverLib.APRiver1YD.Params;
 
     using System;
     using System.IO;
     using System.Collections.Generic;
+    
+
     /// <summary>
     ///             Базовый тип для створовых русловых задач
     ///  ОО: Определение класса  APRiver1YD - расчет полей скорости, вязкости 
@@ -41,14 +42,6 @@ namespace NPRiverLib.APRiver1YD
         /// </summary>
         protected double eddyViscosityConst = 1.1;
         /// <summary>
-        /// кинематическая вязкость воды
-        /// </summary>
-        protected double mu = SPhysics.mu;
-        /// <summary>
-        /// коэффициент Кармана
-        /// </summary>
-        protected double kappa = SPhysics.kappa_w;
-        /// <summary>
         /// коэффициент Прандтля для вязкости
         /// </summary>
         protected double sigma = 1;
@@ -62,7 +55,7 @@ namespace NPRiverLib.APRiver1YD
         /// <summary>
         /// Поле вязкости текущее и с предыдущей итерации
         /// </summary>
-        public double[] eddyViscosity, eddyViscosity0;
+        public double[] eddyViscosity;
         /// <summary>
         /// Поле напряжений T_xz
         /// </summary>
@@ -122,6 +115,10 @@ namespace NPRiverLib.APRiver1YD
         /// </summary>
         protected IDigFunction FlowRate;
         /// <summary>
+        /// Данные о створе
+        /// </summary>
+        public IDigFunction[] crossFunctions = null; 
+        /// <summary>
         /// Параметры задачи зависимые от времени
         /// </summary>
         protected List<TaskEvolution> evolution = new List<TaskEvolution>();
@@ -138,7 +135,7 @@ namespace NPRiverLib.APRiver1YD
             fn.NameCPParams = "NameCPParams.txt";
             fn.NameBLParams = "NameBLParams.txt";
             fn.NameRSParams = "NameRSParamsCross.txt";
-            fn.NameRData = "NameCrossRData.txt";
+            fn.NameRData = "NameCrossRData.rvy";
             return fn;
         }
         #region методы предстартовой подготовки задачи
@@ -166,7 +163,28 @@ namespace NPRiverLib.APRiver1YD
             InitTask();
             // готовность задачи
             eTaskReady = ETaskStatus.LoadAreaData;
+            crossFunctions = new IDigFunction[3]{ Geometry, WaterLevels, FlowRate };
         }
+        /// <summary>
+        /// Загрузка задачи из тестовых данных
+        /// </summary>
+        /// <param name="file">имя файла</param>
+        public override void LoadData(IDigFunction[] crossFunctions)
+        {
+            evolution.Clear();
+            // геометрия дна
+            Geometry = crossFunctions[0];
+            // свободная поверхность
+            WaterLevels = crossFunctions[1];
+            // расход потока
+            FlowRate = crossFunctions[2];
+            // инициализация задачи
+            InitTask();
+            // готовность задачи
+            eTaskReady = ETaskStatus.LoadAreaData;
+            this.crossFunctions = new IDigFunction[3] { Geometry, WaterLevels, FlowRate };
+        }
+
         /// <summary>
         /// Конфигурация задачи по умолчанию (тестовые задачи)
         /// </summary>
@@ -210,7 +228,7 @@ namespace NPRiverLib.APRiver1YD
         public override void SetZeta(double[] zeta, EBedErosion bedErosion)
         {
             Erosion = bedErosion;
-            bottom_y = zeta;
+            MEM.Copy(ref bottom_y, zeta);
         }
         /// <summary>
         ///  Сетка для расчета донных деформаций

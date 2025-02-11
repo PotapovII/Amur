@@ -1,15 +1,17 @@
-J 0.001
+Версия 0.1			файла данных для створовой задачи
+J 0.006
 turbViscTypeA 6
 turbViscTypeB 6
 typeEddyViscosity 2
 сrossAlgebra 0
 taskVariant 1
-bcTypeVortex 2
-crossFormGeometry 0
-axisSymmetry 0
-CountKnots 301
-CountBLKnots 800
-crossSectionNamber 0
-crossSectionType 1
-midleRadius 5.0
+bcTypeVortex 2    : (old) crossFormGeometry 0
+axisSymmetry 1
+CountKnots 200
+CountBLKnots 300  : (old) crossSectionNamber 0 crossSectionType 1 midleRadius 5.0
 velocityOnWL 1
+NLine 100
+SigmaTask 0
+ReTask 0
+RadiusMin 100
+theta 0.5

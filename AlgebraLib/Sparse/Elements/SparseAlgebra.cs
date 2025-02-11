@@ -309,8 +309,22 @@ namespace AlgebraLib
         /// <param name="Right">Значение правой части строки</param>
         public override void AddStringSystem(double[] ColElems, uint[] ColAdress, uint IndexRow, double R)
         {
+            Matrix[(int)IndexRow].Row.Clear();
             Matrix[(int)IndexRow].Add(ColElems, ColAdress);
             Right[IndexRow] += R;
+        }
+        /// <summary>
+        /// Получить строку (не для всех решателей)
+        /// </summary>
+        /// <param name="IndexRow">Индекс получемой строки системы</param>
+        /// <param name="ColElems">Коэффициенты строки системы</param>
+        /// <param name="ColAdress">Адреса коэффицентов</param>
+        /// <param name="R">Значение правой части</param>
+        public override void GetStringSystem(uint IndexRow, ref double[] ColElems, ref double R)
+        {
+            MEM.Alloc(FN, ref ColElems);
+            Matrix[(int)IndexRow].DeCompress(ref ColElems);
+            R = Right[IndexRow];
         }
         /// <summary>
         /// Удовлетворение ГУ
@@ -361,7 +375,7 @@ namespace AlgebraLib
         /// <param name="IsRight">знак операции = +/- 1</param>
         public override void getResidual(ref double[] R, double[] X, int IsRight = 1)
         {
-            MEM.Alloc<double>((int)FN, ref R);
+            MEM.Alloc((int)FN, ref R);
             for (int i = 0; i < Matrix.Count; i++)
             {
                 double sum = 0;
@@ -402,7 +416,9 @@ namespace AlgebraLib
         /// <summary>
         /// Вывод САУ на КОНСОЛЬ
         /// </summary>
-        public override void Print(int flag = 0)
+        /// <param name="flag">количество знаков мантисы</param>
+        /// <param name="color">длина цветового блока</param>
+        public override void Print(int flag = 0, int color = 1)
         {
             if (flag == 0)
             {

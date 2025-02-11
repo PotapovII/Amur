@@ -398,14 +398,14 @@ namespace BLLib
                 //PrintMatrix();
                 // Zeta = solver.SolveSystem();
 
-                double dGxdx =  0.01 / 13500;
-                double tauMax = tau.Max();
-                for (int i = 0; i < Zeta0.Length - 1; i++)
-                {
-                    if (DryWet[i] > 1)
-                        Zeta[i] += - dtime * dGxdx * tau[i] / tauMax / (1 - epsilon);
-                }
-                Zeta[Zeta0.Length - 1] = Zeta[Zeta0.Length - 2];
+                //double dGxdx =  0.01 / 13500;
+                //double tauMax = tau.Max();
+                //for (int i = 0; i < Zeta0.Length - 1; i++)
+                //{
+                //    if (DryWet[i] > 1)
+                //        Zeta[i] += - dtime * dGxdx * tau[i] / tauMax / (1 - epsilon);
+                //}
+                //Zeta[Zeta0.Length - 1] = Zeta[Zeta0.Length - 2];
 
                 // Сглаживание дна по лавинной моделе
                 if (isAvalanche == AvalancheType.AvalancheSimple)

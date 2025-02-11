@@ -50,16 +50,10 @@
             //Задание начальных приближений векторов неизвестных.
             //****************************************************************************************************************************
             CalkMatrixProfile(AreaElems);
-
             MEM.Alloc(FN, ref diMatrix);
             MEM.Alloc(FN, ref Right);
             MEM.Alloc(iLCount[FN], ref LMatrix);
             MEM.Alloc(iLCount[FN], ref UMatrix);
-
-            //LMatrix = new double[iLCount[FN]];
-            //diMatrix = new double[FN];
-            //UMatrix = new double[iLCount[FN]];
-            //Right = new double[FN];
         }
         /// <summary>
         /// Расчет 
@@ -416,8 +410,21 @@
         /// <param name="Right">Значение правой части строки</param>
         public override void AddStringSystem(double[] ColElems, uint[] ColAdress, uint IndexRow, double R)
         {
-
+            result.errorType = ErrorType.methodCannotSolveSuchSLAEs;
+            throw new Exception("метод GetStringSystem еще не реализован для данного типа");
         }
+        /// <summary>
+        /// Получить строку (не для всех решателей)
+        /// </summary>
+        /// <param name="IndexRow">Индекс получемой строки системы</param>
+        /// <param name="ColElems">Коэффициенты строки системы</param>
+        /// <param name="R">Значение правой части</param>
+        public override void GetStringSystem(uint IndexRow, ref double[] ColElems, ref double R)
+        {
+            result.errorType = ErrorType.methodCannotSolveSuchSLAEs;
+            throw new Exception("метод GetStringSystem еще не реализован для данного типа");
+        }
+
         /// <summary>
         /// Формирование матрицы системы
         /// </summary>
@@ -481,10 +488,12 @@
         {
 
         }
-        ///// <summary>
-        ///// Вывод САУ на КОНСОЛЬ
-        ///// </summary>
-        public override void Print(int flag = 0)
+        /// <summary>
+        /// Вывод САУ на КОНСОЛЬ
+        /// </summary>
+        /// <param name="flag">количество знаков мантисы</param>
+        /// <param name="color">длина цветового блока</param>
+        public override void Print(int flag = 0, int color = 1)
         { 
         }
         #endregion

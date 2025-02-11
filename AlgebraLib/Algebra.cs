@@ -174,6 +174,7 @@ namespace AlgebraLib
         /// <summary>
         /// Клонирование объекта
         /// </summary>
+        /// <param name="N">порядок системы</param>
         /// <returns></returns>
         public abstract IAlgebra Clone();
         /// <summary>
@@ -183,7 +184,14 @@ namespace AlgebraLib
         /// <param name="ColAdress">Адреса коэффицентов</param>
         /// <param name="IndexRow">Индекс формируемой строки системы</param>
         /// <param name="Right">Значение правой части строки</param>
-        abstract public void AddStringSystem(double[] ColElems, uint[] ColAdress, uint IndexRow, double R);
+        public abstract void AddStringSystem(double[] ColElems, uint[] ColAdress, uint IndexRow, double R);
+        /// <summary>
+        /// Получить строку (не для всех решателей)
+        /// </summary>
+        /// <param name="IndexRow">Индекс получемой строки системы</param>
+        /// <param name="ColElems">Коэффициенты строки системы</param>
+        /// <param name="R">Значение правой части</param>
+        public abstract void GetStringSystem(uint IndexRow, ref double[] ColElems, ref double R);
         /// <summary>
         /// Формирование матрицы системы
         /// </summary>
@@ -207,10 +215,13 @@ namespace AlgebraLib
         /// <param name="X">умножаемый вектор</param>
         /// <param name="IsRight">знак операции = +/- 1</param>
         abstract public void getResidual(ref double[] R, double[] X, int IsRight = 1);
-        ///// <summary>
-        ///// Вывод САУ на КОНСОЛЬ
-        ///// </summary>
-        abstract public void Print(int flag = 0);
+        /// <summary>
+        /// Вывод САУ на КОНСОЛЬ
+        /// </summary>
+        /// <param name="flag">количество знаков мантисы</param>
+        /// <param name="color">длина цветового блока</param>
+        public abstract void Print(int flag = 0, int color = 1);
+
         #endregion
 
         //---------------------------------------------------------------------------

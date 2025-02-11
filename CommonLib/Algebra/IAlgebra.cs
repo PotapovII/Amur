@@ -81,8 +81,15 @@ namespace CommonLib
         /// <param name="ColElems">Коэффициенты строки системы</param>
         /// <param name="ColAdress">Адреса коэффицентов</param>
         /// <param name="IndexRow">Индекс формируемой строки системы</param>
-        /// <param name="Right">Значение правой части строки</param>
+        /// <param name="Right">Значение правой части</param>
         void AddStringSystem(double[] ColElems, uint[] ColAdress, uint IndexRow, double R);
+        /// <summary>
+        /// Получить строку (не для всех решателей)
+        /// </summary>
+        /// <param name="IndexRow">Индекс получемой строки системы</param>
+        /// <param name="ColElems">Коэффициенты строки системы</param>
+        /// <param name="R">Значение правой части</param>
+        void GetStringSystem(uint IndexRow, ref double[] ColElems, ref double R);
         /// <summary>
         /// Добавление в правую часть
         /// </summary>
@@ -114,12 +121,15 @@ namespace CommonLib
         /// <summary>
         /// Клонирование объекта
         /// </summary>
+        /// <param name="N">порядок системы</param>
         /// <returns></returns>
         IAlgebra Clone();
-        ///// <summary>
-        ///// Вывод САУ на КОНСОЛЬ
-        ///// </summary>
-        void Print(int flag = 0);
+        /// <summary>
+        /// Вывод САУ на КОНСОЛЬ
+        /// </summary>
+        /// <param name="flag">количество знаков мантисы</param>
+        /// <param name="color">длина цветового блока</param>
+        void Print(int flag = 0, int color = 1);
     }
 }
 

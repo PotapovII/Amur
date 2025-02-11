@@ -35,16 +35,19 @@ OTHER DEALINGS IN THE SOFTWARE.
 //             Вычисление функций формы и их производных на КЭ распараллелено
 //                    07.11.2024 Потапов И.И.
 //---------------------------------------------------------------------------
+//             Добавление граничных данных и ленивой функциональности
+//                    07.02.2025 Потапов И.И.
+//---------------------------------------------------------------------------
+
 namespace MeshLib.Wrappers
 {
+    using System;
+    using System.Linq;
+
     using MemLogLib;
     using CommonLib;
-    using CommonLib.Geometry;
     using CommonLib.Mesh;
-    using System.Linq;
-    using System;
-    using System.Threading.Tasks;
-    using System.Collections.Concurrent;
+    using CommonLib.Geometry;
 
     /// <summary>
     /// ОО: Обертка для КЭ сетки - выполняет предварительные вычисления
@@ -61,6 +64,18 @@ namespace MeshLib.Wrappers
         /// массив площадей КЭ
         /// </summary>
         public double[] S = null;
+        /// <summary>
+        /// массив массив длин граничных элементов
+        /// </summary>
+        public double[] Lb = null;
+        /// <summary>
+        /// массив нормалей к граничным элементам
+        /// </summary>
+        public HPoint[] bNormals;
+        /// <summary>
+        /// массив касательфынх к граничным элементам
+        /// </summary>
+        public HPoint[] bTau;
         /// <summary>
         /// массив площадей КО
         /// </summary>
@@ -99,6 +114,9 @@ namespace MeshLib.Wrappers
         {
             this.mesh = m.GetMesh();
             MEM.MemCopy(ref S, m.GetS());
+            MEM.MemCopy(ref Lb, m.GetLb());
+            MEM.MemCopy(ref bNormals, m.GetNormals());
+            MEM.MemCopy(ref bTau, m.GetTau());
             MEM.MemCopy(ref ElemS, m.GetElemS());
             MEM.MemCopy(ref Hx, m.GetHx());
             MEM.MemCopy(ref Hy, m.GetHy());
@@ -115,7 +133,7 @@ namespace MeshLib.Wrappers
         {
             this.mesh = mesh;
             int cu = 3;
-            MEM.Alloc(mesh.CountElements, ref S,"S");
+            MEM.Alloc(mesh.CountElements, ref S, "S");
             MEM.Alloc(mesh.CountElements, ref ElemS, "ElemS");
             MEM.Alloc(mesh.CountElements, ref Hx, "Hx");
             MEM.Alloc(mesh.CountElements, ref Hy, "Hy");
@@ -128,43 +146,54 @@ namespace MeshLib.Wrappers
             double[] X = mesh.GetCoords(0);
             double[] Y = mesh.GetCoords(1);
             // Определение региона распарал.
-            OrderablePartitioner<Tuple<int, int>> OrdPart_CountElements 
-                            = Partitioner.Create(0, mesh.CountElements);
-            // Парал. выполнение кода по регионам
-            Parallel.ForEach(OrdPart_CountElements, (range, loopState) =>
+
+            for (int elem = 0; elem < mesh.CountElements; elem++)
             {
-                for (int elem = range.Item1; elem < range.Item2; elem++)
-                {
-                    uint i0 = knots[elem].Vertex1;
-                    uint i1 = knots[elem].Vertex2;
-                    uint i2 = knots[elem].Vertex3;
-                    //Координаты и площадь
-                    S[elem] = X[i1] * Y[i2] + Y[i0] * X[i2] + X[i0] * Y[i1]
-                              - Y[i1] * X[i2] - X[i0] * Y[i2] - Y[i0] * X[i1];
+                uint i0 = knots[elem].Vertex1;
+                uint i1 = knots[elem].Vertex2;
+                uint i2 = knots[elem].Vertex3;
+                //Координаты и площадь
+                S[elem] = X[i1] * Y[i2] + Y[i0] * X[i2] + X[i0] * Y[i1]
+                          - Y[i1] * X[i2] - X[i0] * Y[i2] - Y[i0] * X[i1];
 
-                    double S3 = S[elem] / 3.0;
-                    ElemS[i0] += S3;
-                    ElemS[i1] += S3;
-                    ElemS[i2] += S3;
+                double S3 = S[elem] / 3.0;
+                ElemS[i0] += S3;
+                ElemS[i1] += S3;
+                ElemS[i2] += S3;
 
-                    double[] dxs = { Math.Abs(X[i2] - X[i1]), Math.Abs(X[i0] - X[i2]), Math.Abs(X[i1] - X[i0]) };
-                    Hx[elem] = dxs.Max() - dxs.Min();
-                    double[] dys = { Math.Abs(Y[i1] - Y[i2]), Math.Abs(Y[i2] - Y[i0]), Math.Abs(Y[i0] - Y[i1]) };
-                    Hy[elem] = dys.Max() - dys.Min();
+                double[] dxs = { Math.Abs(X[i2] - X[i1]), Math.Abs(X[i0] - X[i2]), Math.Abs(X[i1] - X[i0]) };
+                Hx[elem] = dxs.Max() - dxs.Min();
+                double[] dys = { Math.Abs(Y[i1] - Y[i2]), Math.Abs(Y[i2] - Y[i0]), Math.Abs(Y[i0] - Y[i1]) };
+                Hy[elem] = dys.Max() - dys.Min();
 
-                    dNdx[elem][0] = (Y[i1] - Y[i2]) / S[elem];
-                    dNdx[elem][1] = (Y[i2] - Y[i0]) / S[elem];
-                    dNdx[elem][2] = (Y[i0] - Y[i1]) / S[elem];
+                dNdx[elem][0] = (Y[i1] - Y[i2]) / S[elem];
+                dNdx[elem][1] = (Y[i2] - Y[i0]) / S[elem];
+                dNdx[elem][2] = (Y[i0] - Y[i1]) / S[elem];
 
-                    dNdy[elem][0] = (X[i2] - X[i1]) / S[elem];
-                    dNdy[elem][1] = (X[i0] - X[i2]) / S[elem];
-                    dNdy[elem][2] = (X[i1] - X[i0]) / S[elem];
+                dNdy[elem][0] = (X[i2] - X[i1]) / S[elem];
+                dNdy[elem][1] = (X[i0] - X[i2]) / S[elem];
+                dNdy[elem][2] = (X[i1] - X[i0]) / S[elem];
 
-                    aN[elem][0] = (X[i1] * Y[i2] - X[i2] * Y[i1]) / S[elem];
-                    aN[elem][1] = (X[i2] * Y[i0] - X[i0] * Y[i2]) / S[elem];
-                    aN[elem][2] = (X[i0] * Y[i1] - X[i1] * Y[i0]) / S[elem];
-                }
-            });
+                aN[elem][0] = (X[i1] * Y[i2] - X[i2] * Y[i1]) / S[elem];
+                aN[elem][1] = (X[i2] * Y[i0] - X[i0] * Y[i2]) / S[elem];
+                aN[elem][2] = (X[i0] * Y[i1] - X[i1] * Y[i0]) / S[elem];
+            }
+            TwoElement[] BoundElems = mesh.GetBoundElems();
+            MEM.Alloc(mesh.CountBoundElements, ref Lb, "Lb");
+            MEM.Alloc<HPoint>(mesh.CountBoundElements, ref bTau, "bTau");
+            MEM.Alloc<HPoint>(mesh.CountBoundElements, ref bNormals, "bNormals");
+            for (int belem = 0; belem < mesh.CountBoundElements; belem++)
+            {
+                uint i = BoundElems[belem].Vertex1;
+                uint j = BoundElems[belem].Vertex2;
+                HPoint bl = new HPoint(X[j] - X[i], Y[j] - Y[i]);
+                Lb[belem] = bl.Length();
+                bTau[belem] = bl/ Lb[belem];
+                bNormals[belem] = bTau[belem].GetOrtogonalLeft();
+            }
+            Area = -1;
+            Bottom = -1;
+            Width = -1;
         }
 
         /// <summary>
@@ -196,7 +225,6 @@ namespace MeshLib.Wrappers
 
 
         public IMesh GetMesh() => mesh;
-
         /// <summary>
         /// Размер КЭ по х
         /// </summary>
@@ -209,6 +237,18 @@ namespace MeshLib.Wrappers
         /// массив площадей КЭ
         /// </summary>
         public double[] GetS()=>S;
+        /// <summary>
+        /// массив длин граничных элементов
+        /// </summary>
+        public double[] GetLb()=>Lb;
+        /// <summary>
+        /// массив нормалей к граничным элементам
+        /// </summary>
+        public HPoint[] GetNormals()=>bNormals;
+        /// <summary>
+        /// массив касательфынх к граничным элементам
+        /// </summary>
+        public HPoint[] GetTau()=>bTau;
         /// <summary>
         /// массив площадей КО
         /// </summary>
@@ -254,5 +294,134 @@ namespace MeshLib.Wrappers
             N[1] = aN[elem][1] + dNdx[elem][1] * p.X + dNdy[elem][1] * p.Y;
             N[2] = aN[elem][2] + dNdx[elem][2] * p.X + dNdy[elem][2] * p.Y;
         }
+        //                    07.02.2025 Потапов И.И.
+        #region Дополнительная ленивая функциональность
+        /// <summary>
+        /// Вычисление минимального растояния от узла до стенки
+        /// В плпнпх - хеширование узлов на масштабе глубины
+        /// </summary>
+        public void CalkDistance(ref double[] distance, ref double[] Hp)
+        {
+            try
+            {
+                MEM.Alloc(mesh.CountKnots, ref distance, "distance");
+                MEM.Alloc(mesh.CountKnots, ref Hp, "Hp");
+                double[] X = mesh.GetCoords(0);
+                double[] Y = mesh.GetCoords(1);
+                TwoElement[] BoundElems = mesh.GetBoundElems();
+                int[] BoundElementsMark = mesh.GetBElementsBCMark();
+
+                double Y_max = Y.Max();
+                double Y_min = Y.Min();
+                double Hmax = Y_max - Y_min;
+                // перебор по узлам области
+                for (int nod = 0; nod < mesh.CountKnots; nod++)
+                {
+                    int idx = 0;
+                    double r_min = double.MaxValue;
+                    for (int belem = 0; belem < mesh.CountBoundElements; belem++)
+                    {
+                        if (BoundElementsMark[belem] == 0)
+                        {
+                            uint i = BoundElems[belem].Vertex1;
+                            uint j = BoundElems[belem].Vertex2;
+                            var PA = new HPoint(X[nod] - X[i], Y[nod] - Y[i]);
+                            double r_cur = Math.Abs(HPoint.Dot(PA, bNormals[belem]));
+                            double l_cur = Math.Abs(HPoint.Dot(PA, bTau[belem]));
+                            if (r_min > r_cur && l_cur <= Lb[belem])
+                            {
+                                r_min = r_cur;
+                                idx = belem;
+                                if (MEM.Equals(r_min, 0) == true)
+                                    break;
+                            }
+                        }
+                    }
+                    distance[nod] = r_min;
+                    uint iA = BoundElems[idx].Vertex1;
+                    HPoint A = new HPoint(X[iA], Y[iA]);
+                    var AP = new HPoint(X[nod] - X[iA], Y[nod] - Y[iA]);
+                    HPoint C = A + HPoint.Dot(AP,bTau[idx]) * bTau[idx];
+                    double cosGamma = Math.Abs(bNormals[idx].Y) + MEM.Error10;
+                    Hp[nod] = Math.Max(0.01 * Hmax, Math.Min(Hmax, (Y_max - C.Y) / cosGamma));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+        /// <summary>
+        /// Площадь сечения
+        /// </summary>
+        /// <returns></returns>
+        public double GetArea()
+        {
+            if (Area < 0)
+                Area = S.Sum();
+            return Area;
+        }
+        protected double Area = - 1;
+        /// <summary>
+        /// Смоченный периметр живого сечения
+        /// </summary>
+        /// <returns></returns>
+        public double GetBottom()
+        {
+            if (Bottom < 0)
+            {
+                int[] BoundElementsMark = mesh.GetBElementsBCMark();
+                Bottom = 0;
+                for (int belem = 0; belem < mesh.CountBoundElements; belem++)
+                    if (BoundElementsMark[belem] != 2)
+                        Bottom += Lb[belem];
+            }
+            return Bottom;
+        }
+        protected double Bottom = -1;
+        /// <summary>
+        /// Ширина живого сечения
+        /// </summary>
+        /// <returns></returns>
+        public double GetWidth()
+        {
+            if (Width < 0)
+            {
+                int[] BoundElementsMark = mesh.GetBElementsBCMark();
+                Width = 0;
+                for (int belem = 0; belem < mesh.CountBoundElements; belem++)
+                    if (BoundElementsMark[belem] == 2)
+                        Width += Lb[belem];
+            }
+            return Width;
+        }
+        protected double Width = -1;
+        /// <summary>
+        /// Расчет интеграла по площади расчетной области для функции U 
+        /// (например расхода воды через створ, если U - скорость потока в узлах)
+        /// </summary>
+        /// <param name="U">функции</param>
+        /// <param name="Area">площадь расчетной области </param>
+        /// <returns>интеграла по площади расчетной области для функции U</returns>
+        /// <exception cref="Exception"></exception>  
+        public double RiverFlowRate(double[] U, ref double Area)
+        {
+            double bcu = 1.0/3.0;
+            Area = 0;
+            double riverFlowRateCalk = 0;
+            TriElement[] eKnots = mesh.GetAreaElems();
+            for (uint elem = 0; elem < mesh.CountElements; elem++)
+            {
+                double mU = (U[eKnots[elem].Vertex1] +
+                             U[eKnots[elem].Vertex2] +
+                             U[eKnots[elem].Vertex3]) * bcu;
+                // расход по живому сечению
+                riverFlowRateCalk += S[elem] * mU;
+                Area += S[elem];
+            }
+            return riverFlowRateCalk;
+        }
+        #endregion
+
     }
 }

@@ -3,24 +3,15 @@
 //                         проектировщик:
 //                           Потапов И.И.
 //---------------------------------------------------------------------------
-//              кодировка : 09.08.2023 Потапов И.И.
+//              кодировка : 07-09.08.2023 Потапов И.И.
 //---------------------------------------------------------------------------
 #define USE_ATTRIBS
 namespace RiverDB.ConvertorOut
 {
-    using CommonLib;
-    using CommonLib.Mesh;
-    using ConnectLib;
-    using GeometryLib;
-    using GeometryLib.Areas;
-    using MeshLib;
-    using MeshLib.SaveData;
-    using MeshAdapterLib;
-    using RiverDB.ConvertorIn;
-    using RenderLib;
-
     using System;
+    using System.IO;
     using System.Data;
+    using System.Linq;
     using System.Windows.Forms;
     using System.Collections.Generic;
 
@@ -28,14 +19,28 @@ namespace RiverDB.ConvertorOut
     using TriangleNet.Geometry;
     using TriangleNet.Meshing;
     using TriangleNet.Smoothing;
-    using RiverDB.Properties;
-    using TriangleNet.IO;
-    using CommonLib.Areas;
-    using System.IO;
-    using CommonLib.Geometry;
+
     using MemLogLib;
+    using CommonLib;
+    using CommonLib.Mesh;
+    using CommonLib.Areas;
+    using CommonLib.Geometry;
     using GeometryLib.Geometry;
-    using System.Linq;
+
+    using GeometryLib;
+    using GeometryLib.Areas;
+
+    using MeshLib;
+    using MeshLib.SaveData;
+    using MeshAdapterLib;
+
+    using RenderLib;
+
+    using ConnectLib;
+    using RiverDB.ConvertorIn;
+    using GeometryLib.Vector;
+    using System.Drawing;
+    using MeshLib.Locators;
 
     public partial class FCreateCloudMesh : Form
     {
@@ -89,13 +94,11 @@ namespace RiverDB.ConvertorOut
             InitializeComponent();
             tsb_Contur.Checked = false;
             tsb_BeLine.Checked = false;
+            tb_CrossLine.Checked = false;
         }
-
         private void btLoadData_Click(object sender, EventArgs e)
         {
             GetDataFilter();
-            
-            
         }
         #region Работа с БД
         /// <summary>
@@ -585,10 +588,10 @@ namespace RiverDB.ConvertorOut
                             else
                                 Vy[i] = 0;
                         }
-                        double mX1 = Vx.Max();
-                        double mX2 = Vx.Min();
-                        double mY1 = Vy.Max();
-                        double mY2 = Vy.Min();
+                        //double mX1 = Vx.Max();
+                        //double mX2 = Vx.Min();
+                        //double mY1 = Vy.Max();
+                        //double mY2 = Vy.Min();
                         data.Add("Скорость по X", Vx);
                         data.Add("Скорость по Y", Vy);
                         data.Add("Скорость", Vx, Vy);
@@ -607,6 +610,7 @@ namespace RiverDB.ConvertorOut
                 Form form = new ViForm(data);
                 form.Show();
             }
+
         }
 
         /// <summary>
@@ -930,8 +934,10 @@ namespace RiverDB.ConvertorOut
                     ShowMesh(meshRiver);
             }
         }
-
-        public void CreateFileTask()
+        /// <summary>
+        /// Создание файла плановой задачи
+        /// </summary>
+        public void CreateFileTask2D()
         {
             if (rMesh == null)
             {
@@ -951,20 +957,104 @@ namespace RiverDB.ConvertorOut
                     if (seg.type > 1)
                         segInfoF.Add(seg);
 
-                //foreach (SegmentInfo seg in segInfoF)
+                string Data = GetMeshData();
+                //string Data = "";
+                //for (int i = 0; i < cListBoxDates.Items.Count; i++)
                 //{
-                //    Vertex a = new Vertex(seg.pA.X, seg.pA.Y);
-
-                //    Vertex b = new Vertex(seg.pB.X, seg.pB.Y);
-
+                //    CheckState flag = cListBoxDates.GetItemCheckState(i);
+                //    if (flag == CheckState.Checked)
+                //    {
+                //        string d = cListBoxDates.Items[i].ToString();
+                //        DateTime dataA = DateTime.Parse(d);
+                //        Data = dataA.ToString("yyyy-MM-dd ");
+                //        break;
+                //    }
                 //}
-
-
-                ExportMRF form = new ExportMRF(rMesh, segInfoF, placeID);
+                ExportMRF form = new ExportMRF(rMesh, segInfoF, Data);
                 form.Show();
             }
         }
+        /// <summary>
+        /// Получить первую дату выборки
+        /// </summary>
+        /// <returns></returns>
+        public string GetMeshData()
+        {
+            string Data = "";
+            for (int i = 0; i < cListBoxDates.Items.Count; i++)
+            {
+                CheckState flag = cListBoxDates.GetItemCheckState(i);
+                if (flag == CheckState.Checked)
+                {
+                    string d = cListBoxDates.Items[i].ToString();
+                    DateTime dataA = DateTime.Parse(d);
+                    Data = dataA.ToString("yyyy-MM-dd ");
+                    break;
+                }
+            }
+            return Data;
+        }
 
+        /// <summary>
+        /// Создание файла задачи активном створе
+        /// </summary>
+        public void CreateFileTask1D()
+        {
+            if (rMesh == null)
+            {
+                if (sMesh != null)
+                    rMesh = sMesh;
+                else
+                {
+                    IPolygon polygon = CraetePolygon();
+                    if (polygon != null)
+                        rMesh = (MeshNet)polygon.Triangulate(options, quality);
+                }
+            }
+            if (rMesh != null)
+            {
+                IHLine crossLine = gdI_EditControlClouds1.GetCrossLine();
+                IFEMesh bmesh = null;
+                double[][] values = null;
+                MeshAdapter.ConvertFrontRenumberationAndCutting(ref bmesh, ref values, rMesh, Direction.toRight);
+                if (crossLine != null && bmesh != null)
+                {
+                    double[] x = bmesh.GetCoords(0);
+                    double[] y = bmesh.GetCoords(1);
+
+                    ISavePoint spLine = new SavePoint("Тест");
+                    IHPoint[] points = { new HPoint(crossLine.A), new HPoint(crossLine.B) };
+                    LocatorTriMeshFacet tLine = new LocatorTriMeshFacet(bmesh);
+                    tLine.SetCrossLine(points);
+
+                    int indxDeapth = 1;
+                    double[] s = null;
+                    double[] Deapth = null;
+                    tLine.GetCurve(values[indxDeapth], ref s, ref Deapth);
+                    if (s == null || Deapth == null)
+                        Logger.Instance.Error("Створ не определен", "btShowTargetLine_Click");
+
+                    // Скорость
+                    double[] Vx = null;
+                    double[] Vy = null;
+                    double[] Vn = null;
+                    double[] Vt = null;
+
+                    int indxVx = 3;
+                    int indxVy = 3;
+                    tLine.GetCurve(values[indxVx], values[indxVy], ref s, ref Vx, ref Vy, ref Vn, ref Vt);
+
+                    string Data = GetMeshData();
+
+                    FCrossSection form = new FCrossSection(s, Deapth, Vx, Vy, Vn, Vt, Data);
+                    form.Show();
+                }
+                else
+                    Console.WriteLine("Сетка области или створ не заданны!");
+            }
+            else
+                Console.WriteLine("Сетка области не заданна!");
+        }
 
 
         #endregion
@@ -1004,7 +1094,7 @@ namespace RiverDB.ConvertorOut
         }
         private void btMrf_Click(object sender, EventArgs e)
         {
-            CreateFileTask();
+            CreateFileTask2D();
         }
 
         private void btSaveCloud_Click(object sender, EventArgs e)
@@ -1339,7 +1429,7 @@ namespace RiverDB.ConvertorOut
 
         private void sm_GenerWorkFile_Click(object sender, EventArgs e)
         {
-            CreateFileTask();
+            CreateFileTask2D();
         }
         private void sm_SsaveContur_Click(object sender, EventArgs e)
         {
@@ -1398,7 +1488,7 @@ namespace RiverDB.ConvertorOut
 
         private void tsb_GenerWorkFile_Click(object sender, EventArgs e)
         {
-            CreateFileTask();
+            CreateFileTask2D();
         }
 
         #endregion Меню TSB
@@ -1634,13 +1724,28 @@ namespace RiverDB.ConvertorOut
         private void tsb_Contur_Click(object sender, EventArgs e)
         {
             if (tsb_Contur.Checked == true)
+            {
                 tsb_BeLine.Checked = false;
+                tb_CrossLine.Checked = false;
+            }
             SetEditState();
         }
         private void tsb_BeLine_Click(object sender, EventArgs e)
         {
             if (tsb_BeLine.Checked == true)
+            {
                 tsb_Contur.Checked = false;
+                tb_CrossLine.Checked = false;
+            }
+            SetEditState();
+        }
+        private void tb_CrossLine_Click(object sender, EventArgs e)
+        {
+            if (tb_CrossLine.Checked == true)
+            {
+                tsb_Contur.Checked = false;
+                tsb_BeLine.Checked = false;
+            }
             SetEditState();
         }
         protected void SetEditState()
@@ -1649,6 +1754,8 @@ namespace RiverDB.ConvertorOut
                 gdI_EditControlClouds1.SetEditState(EditState.BeLine);
             else if (tsb_Contur.Checked == true)
                 gdI_EditControlClouds1.SetEditState(EditState.Contur);
+            else if (tb_CrossLine.Checked == true)
+                gdI_EditControlClouds1.SetEditState(EditState.CrossLine);
             else
                 gdI_EditControlClouds1.SetEditState(EditState.NoState);
             gdI_EditControlClouds1.SendOption();
@@ -1710,6 +1817,16 @@ namespace RiverDB.ConvertorOut
         private void tsm_CreateBoundaryMesh_Click(object sender, EventArgs e)
         {
             tsb_CreateBoundaryCountsAreaMesh_Click(sender, e);
+        }
+
+        private void tb_DelCrossLine_Click(object sender, EventArgs e)
+        {
+            gdI_EditControlClouds1.DelCrossLine();
+        }
+
+        private void tsb_GenerWorkFile1D_Click(object sender, EventArgs e)
+        {
+            CreateFileTask1D();
         }
     }
 }

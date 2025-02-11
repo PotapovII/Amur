@@ -388,7 +388,7 @@ namespace FEMTasksLib.FESimpleTask
         /// <summary>
         /// Нахождение полей напряжений и их сглаживание по методу Галеркина
         /// </summary>
-        public void SolveTaus(ref double[] TauY, ref double[] TauZ, double[] U, double[] eddyViscosity)
+        public void SolveTaus1(ref double[] TauY, ref double[] TauZ, double[] U, double[] eddyViscosity)
         {
             try
             {
@@ -450,6 +450,83 @@ namespace FEMTasksLib.FESimpleTask
                 Logger.Instance.Exception(ex);
             }
         }
+        /// <summary>
+        /// Нахождение полей напряжений и их сглаживание по методу Галеркина
+        /// </summary>
+        public void SolveTaus(ref double[] TauY, ref double[] TauZ, double[] U, double[] mu)
+        {
+            double S, Mu;
+            double[] x = { 0, 0, 0 };
+            double[] y = { 0, 0, 0 };
+            double[] u = { 0, 0, 0 };
+            double[] tmpTausZ = new double[mesh.CountElements];
+            double[] tmpTausY = new double[mesh.CountElements];
+            for (uint elem = 0; elem < mesh.CountElements; elem++)
+            {
+                mesh.GetElemCoords(elem, ref x, ref y);
+                mesh.ElemValues(U, elem, ref u);
+                // получит вязкость в узлах
+                mesh.ElemValues(mu, elem, ref elem_mu);
+                Mu = (elem_mu[0] + elem_mu[1] + elem_mu[2]) / 3;
+                //Площадь
+                S = mesh.ElemSquare(elem);
+
+                double Ez = (u[0] * (x[2] - x[1]) + u[1] * (x[0] - x[2]) + u[2] * (x[1] - x[0]));
+                double Ey = (u[0] * (y[1] - y[2]) + u[1] * (y[2] - y[0]) + u[2] * (y[0] - y[1]));
+                tmpTausZ[elem] = Mu * Ez / (2 * S);
+                tmpTausY[elem] = Mu * Ey / (2 * S);
+            }
+            uint[] knots = { 0, 0, 0 };
+            algebra.Clear();
+            for (uint elem = 0; elem < mesh.CountElements; elem++)
+            {
+                mesh.ElementKnots(elem, ref knots);
+                // площадь КЭ
+                S = mesh.ElemSquare(elem);
+                //подготовка ЛЖМ
+                for (int ai = 0; ai < cu; ai++)
+                    for (int aj = 0; aj < cu; aj++)
+                    {
+                        if (ai == aj)
+                            LaplMatrix[ai][aj] = 2.0 * S / 12.0;
+                        else
+                            LaplMatrix[ai][aj] = S / 12.0;
+                    }
+                //добавление вновь сформированной ЛЖМ в ГМЖ
+                algebra.AddToMatrix(LaplMatrix, knots);
+                //подготовка ЛПЧ
+                for (int j = 0; j < cu; j++)
+                    LocalRight[j] = tmpTausZ[elem] * S / 3;
+                //добавление вновь сформированной ЛПЧ в ГПЧ
+                algebra.AddToRight(LocalRight, knots);
+            }
+            algebra.Solve(ref TauZ);
+            algebra.Clear();
+            for (uint elem = 0; elem < mesh.CountElements; elem++)
+            {
+                mesh.ElementKnots(elem, ref knots);
+                // площадь КЭ
+                S = mesh.ElemSquare(elem);
+                //подготовка ЛЖМ
+                for (int ai = 0; ai < cu; ai++)
+                    for (int aj = 0; aj < cu; aj++)
+                    {
+                        if (ai == aj)
+                            LaplMatrix[ai][aj] = 2.0 * S / 12.0;
+                        else
+                            LaplMatrix[ai][aj] = S / 12.0;
+                    }
+                //добавление вновь сформированной ЛЖМ в ГМЖ
+                algebra.AddToMatrix(LaplMatrix, knots);
+                //подготовка ЛПЧ
+                for (int j = 0; j < cu; j++)
+                    LocalRight[j] = tmpTausY[elem] * S / 3;
+                //добавление вновь сформированной ЛПЧ в ГПЧ
+                algebra.AddToRight(LocalRight, knots);
+            }
+            algebra.Solve(ref TauY);
+        }
+
         /// <summary>
         /// Решение задачи дискретизации задачи и ее рещателя
         /// </summary>

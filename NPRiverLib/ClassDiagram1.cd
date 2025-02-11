@@ -1,0 +1,623 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="NPRiverLib.AllWallFunctions.WallFunction_Lutskoy" Collapsed="true">
+    <Position X="6.75" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAgAAAAAIAAAAAAgAAAAAABAAAggAAAAAA=</HashCode>
+      <FileName>AllWallFunctions\WallFunction_Lutskoy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.AllWallFunctions.WallFunction_Nguyen" Collapsed="true">
+    <Position X="8.5" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAACIAAAAAAAJEAAAIAKAAkAIAAAABEAAQAAAAJAI=</HashCode>
+      <FileName>AllWallFunctions\WallFunction_Nguyen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.ABaseTask.APRiver&lt;TParam&gt;" Collapsed="true">
+    <Position X="16.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQhAmIFDAAQBAAABgFAQAQEACAdggAoAWQEAAAAgBA=</HashCode>
+      <FileName>APRiver\APRiver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver_1XD.APRiver1XD&lt;TParam&gt;" Collapsed="true">
+    <Position X="14" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>APRiver1XD\APRiver1XD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver1XD.BEM_River2D.ARiverBEM1XD" Collapsed="true">
+    <Position X="17.75" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>MBgCgFlIhEAQxDAAgAQmAOQsIAAsIwBoAhEkFBGhM6A=</HashCode>
+      <FileName>APRiver1XD\BEM_River2D\ARiverBE.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NPRiverLib.APRiver1XD.BEM_River2D.Green" Collapsed="true">
+    <Position X="1.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAABABAAAACAAAAAQAAABAAAAAAAAQgEAA=</HashCode>
+      <FileName>APRiver1XD\BEM_River2D\Green.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver1XD.BEM_River2D.RiverBEMCircle1XD" Collapsed="true">
+    <Position X="17.75" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAEAAAAAAAAAgAEgAIAAAAAAAAAAAAQABACAABA=</HashCode>
+      <FileName>APRiver1XD\BEM_River2D\RiverBEMCircle1XD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver1XD.BEM_River2D.RiverBEMCircleMesh1XD" Collapsed="true">
+    <Position X="17.75" Y="7.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAQEAAAAAAAAAAAAAAAAAAAAAAEAAAAAEAAAAABA=</HashCode>
+      <FileName>APRiver1XD\BEM_River2D\RiverBEMCircleMesh1XD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver1XD.BEM_River2D.RiverBEMCircleMeshAdapt1XD" Collapsed="true">
+    <Position X="17.75" Y="8.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAECAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAABA=</HashCode>
+      <FileName>APRiver1XD\BEM_River2D\RiverBEMCircleMeshAdapt1XD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver1XD.BEM_River2D.RiverBEMParams1XD" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAgAABIABgCCAICAAAADCgACoIghAIECAAAEAEBBA=</HashCode>
+      <FileName>APRiver1XD\BEM_River2D\RiverBEMParams1XD.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NPRiverLib.APRiver_1XD.River2D_FVM_ke.APatankarRiver1XD" Collapsed="true">
+    <Position X="9.75" Y="4.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>YTRP2OGVBLmXBgkQxNFAQQAYBADH2mRLgXZ8knDiQCA=</HashCode>
+      <FileName>APRiver1XD\FVM_ke_River2D\APatankarRiver1XD.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NPRiverLib.APRiver_1XD.River2D_FVM_ke.BedSinLen2" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.25" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>YAERAAACAAAAAAAAAAAAAAQAAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>APRiver1XD\FVM_ke_River2D\BedSin.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NPRiverLib.APRiver_1XD.River2D_FVM_ke.CPatankarStream1XD" Collapsed="true">
+    <Position X="9" Y="6.5" Width="2.25" />
+    <InheritanceLine Type="NPRiverLib.APRiver_1XD.River2D_FVM_ke.APatankarRiver1XD" ManuallyRouted="true">
+      <Path>
+        <Point X="10.875" Y="5.191" />
+        <Point X="10.875" Y="5.499" />
+        <Point X="10.125" Y="5.499" />
+        <Point X="10.125" Y="6.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>ACAIAAAAAAAAAAAIAAAAAAAAAAACAAQAAAAAAAAAABA=</HashCode>
+      <FileName>APRiver1XD\FVM_ke_River2D\CPatankarStream1XD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver_1XD.River2D_FVM_ke.PatankarParams1XD" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>YQEQnIAACKIhDCIAAAAGQAEAABoIoACQYokAAAAUAZY=</HashCode>
+      <FileName>APRiver1XD\FVM_ke_River2D\PatankarParams1XD.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NPRiverLib.APRiver_1XD.River2D_FVM_ke.VPatankarStream1XD" Collapsed="true">
+    <Position X="11.5" Y="6.5" Width="2" />
+    <InheritanceLine Type="NPRiverLib.APRiver_1XD.River2D_FVM_ke.APatankarRiver1XD" ManuallyRouted="true">
+      <Path>
+        <Point X="10.875" Y="5.191" />
+        <Point X="10.875" Y="5.489" />
+        <Point X="11.377" Y="5.489" />
+        <Point X="11.377" Y="6.846" />
+        <Point X="11.5" Y="6.846" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>ACAIAAAAAAAQAAAAAAAAAAAAAAACAAQAAAAAAAAAABA=</HashCode>
+      <FileName>APRiver1XD\FVM_ke_River2D\VPatankarStream1XD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver1XD.KGD_River2D.KGD_Eliz2024_1XD" Collapsed="true">
+    <Position X="12.25" Y="4.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>MJzAIOGQDAZ3g4IhY6GKRY6Nj0wrIpDd9hYVCu7b95Q=</HashCode>
+      <FileName>APRiver1XD\KGD_River2D\KGD_Eliz2024_1XD.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NPRiverLib.APRiver1XD.KGD_River2D.RGDParameters1XD" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QgAEgCAAAAAAIgAIiEQAAEAABAAIgAEAICAAQEAhABA=</HashCode>
+      <FileName>APRiver1XD\KGD_River2D\RGDParameters1XD.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NPRiverLib.APRiver1XD.KGD_River2D.YPLUS" Collapsed="true">
+    <Position X="10.25" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAgAAAAAQAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>APRiver1XD\KGD_River2D\YPLUS.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver_1XD.River1DSW.ARiverSWE1XD" Collapsed="true">
+    <Position X="14.25" Y="6.25" Width="2.25" />
+    <InheritanceLine Type="NPRiverLib.APRiver_1XD.APRiver1XD&lt;TParam&gt;" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="15" Y="3.691" />
+        <Point X="15" Y="4.125" />
+        <Point X="15.188" Y="4.125" />
+        <Point X="15.188" Y="6.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>IAAAgEAABAAQBAAAJAEAAAAAAAAQKgAIkABEAEACgAA=</HashCode>
+      <FileName>APRiver1XD\SWE_River1D\ARiverSWE1XD.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NPRiverLib.APRiver_1XD.River1DSW.RiverSWE_KGD1XD" Collapsed="true">
+    <Position X="13.25" Y="7.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAEIAChCAEQoBgAIAAEAAQAAAACQAQSAAEQUIECIBBQ=</HashCode>
+      <FileName>APRiver1XD\SWE_River1D\RiverSWE_KGD1XD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver_1XD.River1DSW.RiverSWEParams1XD" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.25" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgQgAAAAAAAAAAAAACAAAAAAAAIgEACACAEAAAhQBA=</HashCode>
+      <FileName>APRiver1XD\SWE_River1D\RiverSWEParams1XD.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NPRiverLib.APRiver_1XD.River1DSW.RiverSWEStatic1XD" Collapsed="true">
+    <Position X="15.5" Y="7.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAQEQAAAABA=</HashCode>
+      <FileName>APRiver1XD\SWE_River1D\RiverSWEStatic1XD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver1YD.APRiver1YD&lt;TParam&gt;" Collapsed="true">
+    <Position X="21.5" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IAACAGYBBgAYAAAAhgBCAAAIgJAIAwQ4AAAEIAAIgAA=</HashCode>
+      <FileName>APRiver1YD\APRiver1YD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver1YD.APRiverFEM1YD" Collapsed="true">
+    <Position X="21.5" Y="4.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAwCgAQCAAAAACAAAAAAAAoKAAAAAAAAQABEAQAgAJI=</HashCode>
+      <FileName>APRiver1YD\APRiverFEM1YD.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NPRiverLib.APRiver1YD.TriRoseRiverTask1YD" Collapsed="true">
+    <Position X="20.5" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IAACQAIAEgAQCgAIAwGAQgwAgAAFAggCAAxEAEEIXRA=</HashCode>
+      <FileName>APRiver1YD\TriRoseRiverTask1YD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver1YD.TriSroSecRiverTask1YD" Collapsed="true">
+    <Position X="22.75" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAQAAAAIABA=</HashCode>
+      <FileName>APRiver1YD\TriSroSecRiverTask1YD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver1YD.Params.RSCrossParams" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAgIAAAACABAAACAAIAEAAAAAIwAOBEiAAAACBQDA=</HashCode>
+      <FileName>APRiver1YD\Params\RSCrossParams.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NPRiverLib.APRiver1YD.Params.TaskEvolution" Collapsed="true">
+    <Position X="1.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAIACAAhAACAAgCAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>APRiver1YD\Params\TaskEvolution.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver1YD.Params.ExTaskEvolution" Collapsed="true">
+    <Position X="1.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>APRiver1YD\Params\TaskEvolution.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver_2XYD.APRiver2XYD&lt;TParam&gt;" Collapsed="true">
+    <Position X="4" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAQBgAABAACAAQAgAAABAAIAAAACgAAAAA=</HashCode>
+      <FileName>APRiver2XYD\APRiver2XYD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver2XYD.River2DFST.ARiverSWE_FCT_2XYD" Collapsed="true">
+    <Position X="5.25" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAgAFEAABAAQDgBAAAEIAAAAkEAAACAYQBIkABAABAA=</HashCode>
+      <FileName>APRiver2XYD\River2DFST\ARiverSWE_FCT_2XYD.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NPRiverLib.APRiver2XYD.River2DFST.GasDynamics_FCT" Collapsed="true">
+    <Position X="4" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>KEeGBAAAABAADgnABASAAxICggAIAwABAOSEGCQlABA=</HashCode>
+      <FileName>APRiver2XYD\River2DFST\GasDynamics_FCT.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver2XYD.River2DFST.ParRiverSWE_FCT" Collapsed="true">
+    <Position X="6.25" Y="6.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAgAAAAAAgAAAIQAAAAAABA=</HashCode>
+      <FileName>APRiver2XYD\River2DFST\ParRiverSWE_FCT.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver2XYD.River2DFST.RiverSWE_FCT_2XYD" Collapsed="true">
+    <Position X="6.25" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IASmEABAIIACBqjGBQBQg5kHkAAAIgEAUOwEGIBmETA=</HashCode>
+      <FileName>APRiver2XYD\River2DFST\RiverSWE_FCT_2XYD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver2XYD.River2DFST.SWE_FCTParams_2XYD" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6.75" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABlIAEAAAADgBEEAAIQAAAAggIgAAAQABAAAAAABA=</HashCode>
+      <FileName>APRiver2XYD\River2DFST\SWE_FCTParams_2XYD.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NPRiverLib.APRiver_2XYD.River2DSW.AlgebraRiver" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="1.5" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAVABIAABAAAYAQIKBQBKAAAAEACABRUhBI=</HashCode>
+      <FileName>APRiver2XYD\River2DSW\Algebra\RiverAlgebra.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NPRiverLib.APRiver_2XYD.River2DSW.APRiverFEM2XYD" Collapsed="true">
+    <Position X="1.5" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>CABgAHABgBBARQEAFCQIgAACCBAkIYAADABgACoAFAE=</HashCode>
+      <FileName>APRiver2XYD\River2DSW\APRiverFEM2XYD.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NPRiverLib.APRiver_2XYD.River2DSW.ParamsRiver2XYD" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAABhIAEAAACBAAEEAAIQAAAAAwIkAAAAABAAAAAABA=</HashCode>
+      <FileName>APRiver2XYD\River2DSW\ParamsRiver2XYD.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NPRiverLib.APRiver_2XYD.River2DSW.BoundElementRiver" Collapsed="true">
+    <Position X="5" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAwAAEAAAUAARAgAAACBAAAEAAAkBIIAA=</HashCode>
+      <FileName>APRiver2XYD\River2DSW\RiverMesh\BoundElementRiver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver_2XYD.River2DSW.BoundSegmentRiver" Collapsed="true">
+    <Position X="6.75" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAIAAAAAgAEMBAAAAABAAAAACBAAAAAAAkAAIAA=</HashCode>
+      <FileName>APRiver2XYD\River2DSW\RiverMesh\BoundSegmentRiver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver_2XYD.River2DSW.GaussPoints" Collapsed="true">
+    <Position X="10.25" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>APRiver2XYD\River2DSW\RiverMesh\GaussPoints.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver_2XYD.River2DSW.RiverBankGaussPoints" Collapsed="true">
+    <Position X="8.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABCEAAAABACAAAAAAAQASAQAAAAAAAABAAAAAAAgA=</HashCode>
+      <FileName>APRiver2XYD\River2DSW\RiverMesh\RiverBankGaussPoints.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver_2XYD.River2DSW.TriElementRiver" Collapsed="true">
+    <Position X="3.25" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAQAAAAI4AAEAAgAAAAAAAAAAAAAAAAAAgAAIAA=</HashCode>
+      <FileName>APRiver2XYD\River2DSW\RiverMesh\TriElementRiver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver_2XYD.River2DSW.TriRiverMesh" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAgAiICCBgAB0AAUAggABIAARgAAgEAoICwACAMYRA=</HashCode>
+      <FileName>APRiver2XYD\River2DSW\RiverMesh\TriRiverMesh.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NPRiverLib.APRiver_2XYD.River2DSW.TriRiverSWE2XYD" Collapsed="true">
+    <Position X="1.5" Y="4.75" Width="2.25" />
+    <InheritanceLine Type="NPRiverLib.APRiver_2XYD.River2DSW.APRiverFEM2XYD" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.625" Y="3.941" />
+        <Point X="2.625" Y="4.626" />
+        <Point X="2.766" Y="4.626" />
+        <Point X="2.766" Y="4.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>IAIwAEAAhAAQBKEAAAEAwAAAAIABY4AtAQQFDAAAABA=</HashCode>
+      <FileName>APRiver2XYD\River2DSW\TriRiverSW_2XYD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.IO.TaskReader_Patankar1XD" Collapsed="true">
+    <Position X="8.5" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAAAAAAAAAAAAAgAAAAAAAAACAAAAEAAAA=</HashCode>
+      <FileName>IO\TaskReader_Patankar1XD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.IO.TaskReader1YD_Rose" Collapsed="true">
+    <Position X="10.25" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAAAAAAAABAAAAgAAAQgAAAACAAAAEAAEA=</HashCode>
+      <FileName>IO\TaskReader1YD_Rose.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.IO.TaskReader1YD_RvY" Collapsed="true">
+    <Position X="1.5" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAAAAAACAAAAAAgAAAAgAAAACEAAAEAAAA=</HashCode>
+      <FileName>IO\TaskReader1YD_RvY.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.IO.TaskReader2XYD_CFG" Collapsed="true">
+    <Position X="3.25" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQAgAAABQAAAoAAACAAAAAgAAAAACAAACUAAAEAAAA=</HashCode>
+      <FileName>IO\TaskReader2XYD_CFG.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.IO.TaskReader2XYD_FCT" Collapsed="true">
+    <Position X="5" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAAAgAAACAAAAAgAAAQAAAAACAAAAEAAAA=</HashCode>
+      <FileName>IO\TaskReader2XYD_FCT.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.IO.TaskReaderBEM_1XD" Collapsed="true">
+    <Position X="6.75" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAQAgAAAAAAAAAAAAAAAAAAggAAQgAAAACAAAAEAAAA=</HashCode>
+      <FileName>IO\TaskReaderBEM_1XD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.IO.TaskReaderKGD_1XD" Collapsed="true">
+    <Position X="8.5" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAQAgAAAAAAAAAAAAAAAAAAggAAQgAAAACAAAAEAAAA=</HashCode>
+      <FileName>IO\TaskReaderKGD_1XD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.IO.TaskReaderSWE_1XD" Collapsed="true">
+    <Position X="10.25" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAQAgAAAAAAAAAAAAAAAAAAggAAQgAAAACAAAAEAAAA=</HashCode>
+      <FileName>IO\TaskReaderSWE_1XD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.APRiver1XD.SWE_River1D.TaskTestClass" Collapsed="true">
+    <Position X="1.5" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAQAAAAAAAAAAAACAAAAgAAAAAAAAAAAIA=</HashCode>
+      <FileName>IO\TaskTestClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.RiverEmpty.ARiverBaseEmpty" Collapsed="true">
+    <Position X="7.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAEAABAAQAAAAAAEEAAAAAAAAAgAIAARkAABAADA=</HashCode>
+      <FileName>RiverEmpty\ARiverBaseEmpty.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NPRiverLib.RiverEmpty.ARiverEmpty1XD" Collapsed="true">
+    <Position X="5.5" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>RiverEmpty\ARiverEmpty1XD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.RiverEmpty.ARiverEmpty1YD" Collapsed="true">
+    <Position X="7.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>RiverEmpty\ARiverEmpty1YD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.RiverEmpty.ARiverEmpty2XYD" Collapsed="true">
+    <Position X="10" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>RiverEmpty\ARiverEmpty2XYD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPRiverLib.RiverEmpty.EmptyParams" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.5" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAIgAAAACAAAAAAQBA=</HashCode>
+      <FileName>RiverEmpty\EmptyParams.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NPRiverLib.RiverError" Collapsed="true">
+    <Position X="1.5" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RiverError.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="NPRiverLib.ABaseTask.ETaskStatus" Collapsed="true">
+    <Position X="1.5" Y="19" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAgBAAAAAACAAAAAAAAAAAAAAAAAAAAAAAEAAEAAAA=</HashCode>
+      <FileName>APRiver\ETaskStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver_1XD.River2D_FVM_ke.TypeGeometryForm" Collapsed="true">
+    <Position X="5" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>APRiver1XD\FVM_ke_River2D\PatankarParams1XD.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver_1XD.River2D_FVM_ke.TypeBedForm" Collapsed="true">
+    <Position X="3.25" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>APRiver1XD\FVM_ke_River2D\PatankarParams1XD.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver_1XD.River2D_FVM_ke.TypeMAlgebra" Collapsed="true">
+    <Position X="6.75" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAABAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>APRiver1XD\FVM_ke_River2D\PatankarParams1XD.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver_1XD.River2D_FVM_ke.TypeStreamTask" Collapsed="true">
+    <Position X="10.25" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAASAAAAEAAgAAAAAAAAAA=</HashCode>
+      <FileName>APRiver1XD\FVM_ke_River2D\PatankarParams1XD.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver_1XD.River2D_FVM_ke.RoofCondition" Collapsed="true">
+    <Position X="8.5" Y="19" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>APRiver1XD\FVM_ke_River2D\PatankarParams1XD.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver1XD.KGD_River2D.CheckMultiThreading" Collapsed="true">
+    <Position X="3.25" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>APRiver1XD\KGD_River2D\RGD_EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver1XD.KGD_River2D.TypePU" Collapsed="true">
+    <Position X="8.5" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBEAA=</HashCode>
+      <FileName>APRiver1XD\KGD_River2D\RGD_EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver1XD.KGD_River2D.WallFunctionType" Collapsed="true">
+    <Position X="5" Y="20.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQABAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>APRiver1XD\KGD_River2D\RGD_EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver1XD.KGD_River2D.TurbulentModelType" Collapsed="true">
+    <Position X="1.5" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAGA=</HashCode>
+      <FileName>APRiver1XD\KGD_River2D\RGD_EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver1XD.KGD_River2D.ModeTauCalklType" Collapsed="true">
+    <Position X="5" Y="19" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAADgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>APRiver1XD\KGD_River2D\RGD_EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver1XD.KGD_River2D.VelocityInProfile" Collapsed="true">
+    <Position X="3.25" Y="20.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAIgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>APRiver1XD\KGD_River2D\RGD_EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver_1XD.River1DSW.TypeSWETau" Collapsed="true">
+    <Position X="1.5" Y="20.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>APRiver1XD\SWE_River1D\RiverSWEParams1XD.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver1YD.Params.CrossAlgebra" Collapsed="true">
+    <Position X="5" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>APRiver1YD\Params\RSCrossParams.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver1YD.Params.CrossTypeTask" Collapsed="true">
+    <Position X="8.5" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>APRiver1YD\Params\RSCrossParams.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver1YD.Params.CrossFormGeometry" Collapsed="true">
+    <Position X="6.75" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>APRiver1YD\Params\RSCrossParams.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver1YD.Params.BCTypeVortex" Collapsed="true">
+    <Position X="1.5" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAQAAAAAAAABAAAAEAAAAAA=</HashCode>
+      <FileName>APRiver1YD\Params\RSCrossParams.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver1YD.Params.TaskVariant" Collapsed="true">
+    <Position X="10.25" Y="19" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>APRiver1YD\Params\TaskVariant.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver2XYD.River2DFST.NodeType" Collapsed="true">
+    <Position X="6.75" Y="19" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAQAABABAAAwAAEAAAIAAAIEBAAABAAAAAAAAEAAAA=</HashCode>
+      <FileName>APRiver2XYD\River2DFST\ARiverSWE_FCT_2XYD.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver2XYD.River2DFST.FCTTaskIndex" Collapsed="true">
+    <Position X="3.25" Y="19" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAIAIAAAAAAAAAAAAAAAgABgAAAAAIIAAAgAEAAAA=</HashCode>
+      <FileName>APRiver2XYD\River2DFST\SWE_FCTParams_2XYD.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NPRiverLib.APRiver_2XYD.River2DSW.ECoriolis" Collapsed="true">
+    <Position X="10.25" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>APRiver2XYD\River2DSW\ParamsRiver2XYD.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

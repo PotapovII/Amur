@@ -317,20 +317,20 @@ namespace BLLib
                 flagSet = true;
             //Ks = new double[CountKnots];
             //FeedFractionBedLoad = new double[CountMix];
-            MEM.Alloc<double>(CountKnots, ref Ks);
-            MEM.Alloc<double>(CountMix, ref FeedFractionBedLoad);
+            MEM.Alloc(CountKnots, ref Ks);
+            MEM.Alloc(CountMix, ref FeedFractionBedLoad);
 
-            MEM.Alloc2D<double>(CountKnots, CountMix, ref FractionSurface);
-            MEM.Alloc2D<double>(CountKnots, CountMix, ref FractionBedLoad);
-            MEM.Alloc2D<double>(CountKnots, CountMix, ref FractionSubSurface);
-            MEM.Alloc2D<double>(CountKnots, CountMix, ref PercentFinerSurface);
-            MEM.Alloc2D<double>(CountKnots, CountMix, ref PercentFinerSubSurface);
-            MEM.Alloc2D<double>(CountKnots, CountMix, ref PercentFinerBedLoad);
+            MEM.Alloc2D(CountKnots, CountMix, ref FractionSurface);
+            MEM.Alloc2D(CountKnots, CountMix, ref FractionBedLoad);
+            MEM.Alloc2D(CountKnots, CountMix, ref FractionSubSurface);
+            MEM.Alloc2D(CountKnots, CountMix, ref PercentFinerSurface);
+            MEM.Alloc2D(CountKnots, CountMix, ref PercentFinerSubSurface);
+            MEM.Alloc2D(CountKnots, CountMix, ref PercentFinerBedLoad);
 
-            MEM.Alloc2D<double>(CountElements, CountMix, ref Elems_FractionSurface);
-            MEM.Alloc2D<double>(CountElements, CountMix, ref Elems_FractionSubSurface);
-            MEM.Alloc2D<double>(CountElements, CountMix, ref Elems_FractionBedLoad);
-            MEM.Alloc2D<double>(CountElements, CountMix, ref Elems_PercentFinerSurface);
+            MEM.Alloc2D(CountElements, CountMix, ref Elems_FractionSurface);
+            MEM.Alloc2D(CountElements, CountMix, ref Elems_FractionSubSurface);
+            MEM.Alloc2D(CountElements, CountMix, ref Elems_FractionBedLoad);
+            MEM.Alloc2D(CountElements, CountMix, ref Elems_PercentFinerSurface);
 
             //FractionSurface = new double[CountKnots][];
             //FractionBedLoad = new double[CountKnots][];

@@ -36,6 +36,8 @@ namespace CommonLib.Mesh
 {
     using CommonLib;
     using CommonLib.Geometry;
+    using System.Linq;
+    using System;
 
     /// <summary>
     /// Обертка для сетки
@@ -51,6 +53,18 @@ namespace CommonLib.Mesh
         /// массив площадей КЭ
         /// </summary>
         double[] GetS();
+        /// <summary>
+        /// массив длин граничных элементов
+        /// </summary>
+        double[] GetLb();
+        /// <summary>
+        /// массив нормалей к граничным элементам
+        /// </summary>
+        HPoint[] GetNormals();
+        /// <summary>
+        /// массив касательфынх к граничным элементам
+        /// </summary>
+        HPoint[] GetTau();
         /// <summary>
         /// массив площадей КО
         /// </summary>
@@ -105,5 +119,36 @@ namespace CommonLib.Mesh
         /// <param name="Y">узловые значения</param>
         /// <param name="X">значения на КЭ</param>
         void ConvertField(ref double[] Y, double[] X);
+        #region Дополнительная ленивая функциональность
+        /// <summary>
+        /// Вычисление минимального растояния от узла до стенки
+        /// В плпнпх - хеширование узлов на масштабе глубины
+        /// </summary>
+        void CalkDistance(ref double[] distance, ref double[] Hp);
+        /// <summary>
+        /// Площадь сечения
+        /// </summary>
+        /// <returns></returns>
+        double GetArea();
+        /// <summary>
+        /// Смоченный периметр живого сечения
+        /// </summary>
+        /// <returns></returns>
+        double GetBottom();
+        /// <summary>
+        /// Ширина живого сечения
+        /// </summary>
+        /// <returns></returns>
+        double GetWidth();
+        /// <summary>
+        /// Расчет интеграла по площади расчетной области для функции U 
+        /// (например расхода воды через створ, если U - скорость потока в узлах)
+        /// </summary>
+        /// <param name="U">функции</param>
+        /// <param name="Area">площадь расчетной области </param>
+        /// <returns>интеграла по площади расчетной области для функции U</returns>
+        /// <exception cref="Exception"></exception>  
+        double RiverFlowRate(double[] U, ref double Area);
+        #endregion
     }
 }

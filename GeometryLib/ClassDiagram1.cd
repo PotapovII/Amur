@@ -1,0 +1,982 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access">
+  <Class Name="GeometryLib.Aalgorithms.ConvexHull" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Aalgorithms\ConvexHull.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeometryLib.Aalgorithms.ForkJoinSort&lt;Tp&gt;" Collapsed="true">
+    <Position X="17.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAQAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Aalgorithms\Sorrt\ForkJoinSort.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.Aalgorithms.SortArray" Collapsed="true">
+    <Position X="19.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAQAAAAAAABQQAAAAAAAAAAAAg=</HashCode>
+      <FileName>Aalgorithms\Sorrt\SortArray.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.Aalgorithms.ThreadedQuickSort&lt;Tp&gt;" Collapsed="true">
+    <Position X="24.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Aalgorithms\Sorrt\ThreadedQuickSort.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.Areas.MArea" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>YBIAkCEQAAAAQCFACgAABIQAgIAQAgAAEABAEABAAAA=</HashCode>
+      <FileName>Areas\MArea.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeometryLib.Areas.MBoundary" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAgAQAAAAAAAQAAAEAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Areas\MBoundary.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeometryLib.Areas.Figura" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgIgIACEAgAIgAAFCAAAJAQgACAAAAAKAAAAAAJAAAA=</HashCode>
+      <FileName>Areas\MFigura.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeometryLib.Areas.MHesgGrid" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAgAAAAIADAAABAhAGAQAAgQAAAAAAAAACgABAAA=</HashCode>
+      <FileName>Areas\MHesgGrid.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeometryLib.Areas.MPoint" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgIAAEAAAAgAQAAAAAAAQAAAAAAAAAABAAAAAAYAA=</HashCode>
+      <FileName>Areas\MPoint.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeometryLib.Areas.MSegment" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="24.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgABCEAAAAAAAEAAAAARQAAAAAAEAQAAAAACABQAA=</HashCode>
+      <FileName>Areas\MSegment.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeometryLib.AbDigFunction" Collapsed="true">
+    <Position X="7.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QQIRgKACDAQIAIAAAABAAARAAABkAAAAAAQAgABAABA=</HashCode>
+      <FileName>DigFunction\AbDigFunction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometryLib.DigFunction" Collapsed="true">
+    <Position X="6.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DigFunction\DigFunction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.FunctionCos" Collapsed="true">
+    <Position X="8.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAACAAAAAAAAAABAAAAAAAAAAAAAgAACAEAAAAA=</HashCode>
+      <FileName>DigFunction\FunctionCos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.FunctionCovern" Collapsed="true">
+    <Position X="11" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>DigFunction\FunctionCovern.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.FunctionGauss" Collapsed="true">
+    <Position X="13.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAACAAAAAAAAAABAAAAAAIAAAAAQAAACAEAAAAA=</HashCode>
+      <FileName>DigFunction\FunctionGauss.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.FunctionSin" Collapsed="true">
+    <Position X="2" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAACAAAAAAAAAABAAAAAAAAAAAAAgAACAEAAAAA=</HashCode>
+      <FileName>DigFunction\FunctionSin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.FunctionСhannelRose" Collapsed="true">
+    <Position X="4.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAACAAAAAAAACABACAAAAAAAAAAAAAAAAEAIAAA=</HashCode>
+      <FileName>DigFunction\FunctionСhannelRose.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.Field3D" Collapsed="true">
+    <Position X="22.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAQAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Field3D\Field3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.FieldSquare" Collapsed="true">
+    <Position X="24.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgIAAAAQBAAAAAAIBAQAAABgAhIQIAUkAQAxBAI=</HashCode>
+      <FileName>Field3D\FieldSquare.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.Field&lt;T&gt;" Collapsed="true">
+    <Position X="10.75" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAIAAAAgAACAAAAAQAAAAAQAAAAAAgAAAAAgA=</HashCode>
+      <FileName>Fields\Field.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometryLib.Field1D" Collapsed="true">
+    <Position X="9.5" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Fields\Field1D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.Field2D" Collapsed="true">
+    <Position X="11.75" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Fields\Field2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.AUnknown" Collapsed="true">
+    <Position X="10.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACDAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAMAA=</HashCode>
+      <FileName>Fields\Unknowns\SUnknown.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometryLib.AUnknown2D" Collapsed="true">
+    <Position X="2.75" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACDAAAAAAgAAAAAAAAAAAQAAAAAAAADAAMAA=</HashCode>
+      <FileName>Fields\Unknowns\SUnknown.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometryLib.Unknown" Collapsed="true">
+    <Position X="9.5" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Fields\Unknowns\SUnknown.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.Unknown2D" Collapsed="true">
+    <Position X="1.5" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Fields\Unknowns\SUnknown.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.CalkPapams" Collapsed="true">
+    <Position X="11.75" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Fields\Unknowns\SUnknown.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.CalkPapams2D" Collapsed="true">
+    <Position X="3.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Fields\Unknowns\SUnknown.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.GEO" Collapsed="true">
+    <Position X="21" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABBAAAAAAAEAAABAAAIACAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Geometry\GEO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.LineStretch" Collapsed="true">
+    <Position X="24.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAIAACABgAAA=</HashCode>
+      <FileName>LineStretch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.Locator" Collapsed="true">
+    <Position X="15.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Locators\Locator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.DMath" Collapsed="true">
+    <Position X="21" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAJAAgAABEAAIEAAAgAEAAABAAAAAFAAAAgA=</HashCode>
+      <FileName>Math\DMath.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.CloudKnot" Collapsed="true">
+    <Position X="15.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAhAAAAAAAAgAAEAAAAAAAQAAAAEQACAAAAAAAAgBA=</HashCode>
+      <FileName>Points\CloudKnot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.HKnot" Collapsed="true">
+    <Position X="9" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAACAAAABAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Points\HKnot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.HNumbKnot" Collapsed="true">
+    <Position X="6.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Points\HNumbKnot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.BedRiverNode" Collapsed="true">
+    <Position X="6.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAQEBAAAAAAAAAAACAAAEEBAAAAAYAA=</HashCode>
+      <FileName>Points\RiverNode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometryLib.MeshRiverNode" Collapsed="true">
+    <Position X="6.5" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAgAAAAAAAAAAAEAQAAAAAAAAAAAAAAQAIAAAAAAAA=</HashCode>
+      <FileName>Points\RiverNode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometryLib.RiverNode" Collapsed="true">
+    <Position X="6.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IABgAAAAAAAAABAEkQAAAAQAYAAACAAAMQABAgAINAA=</HashCode>
+      <FileName>Points\RiverNode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometryLib.SKnot" Collapsed="true">
+    <Position X="17.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Points\SKnot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.TargetLinePoint" Collapsed="true">
+    <Position X="21" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAQEAAAAAAAAAAAAAAAAQIAAAAAAAAA=</HashCode>
+      <FileName>Points\TargetLinePoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.VKnot" Collapsed="true">
+    <Position X="21" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAABACAAAAAAAAAAABA=</HashCode>
+      <FileName>Points\VKnot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.VMapKnot" Collapsed="true">
+    <Position X="9" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAgAAEAAAAAAAAAAAAAAACAAAgAAAAARA=</HashCode>
+      <FileName>Points\VMapKnot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.VNode" Collapsed="true">
+    <Position X="11.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAwAAAAAAAAACAAAAAACAAAAAgAAAAABA=</HashCode>
+      <FileName>Points\VNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.TSpline" Collapsed="true">
+    <Position X="19.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgABAABAAAEAAEAAAgAAgAAEC0QQBgEBgAAAA=</HashCode>
+      <FileName>Spline\TSpline.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.Geometry.CEdge" Collapsed="true">
+    <Position X="3.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometry\CEdge.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometryLib.Geometry.HLine" Collapsed="true">
+    <Position X="2.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAIAEAAAA=</HashCode>
+      <FileName>Geometry\CloudKnotLine.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometryLib.Geometry.CloudKnotLine" Collapsed="true">
+    <Position X="2.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometry\CloudKnotLine.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometryLib.Geometry.HSmLine" Collapsed="true">
+    <Position X="1.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAQAAAAAAAAAEAAAAIARAAAAAAAAAAAAAQAAAAAo=</HashCode>
+      <FileName>Geometry\HSmLine.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometryLib.Locators.CrossLine" Collapsed="true">
+    <Position X="19.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAGAAAAAgAAEAAAAAARAAAAIAAAAAgAAAAA=</HashCode>
+      <FileName>Locators\CrossLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.Locators.LineLocator" Collapsed="true">
+    <Position X="22.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAEAAAAAgAAABAAAAAAIAABAAABgAACAAQAAAAAABAA=</HashCode>
+      <FileName>Locators\LineLocator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.Locators.TriLocator" Collapsed="true">
+    <Position X="15.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAgAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Locators\TriLocator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.Locators.TriMeshLocators" Collapsed="true">
+    <Position X="17.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAgAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Locators\TriMeshLocators.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.Vector.GEM" Collapsed="true">
+    <Position X="19.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Vector\GEM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.World.ReperColorScheme" Collapsed="true">
+    <Position X="15.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAQAAAAABBAAAAASAIAAAAQACAAEAgAAAMAAA=</HashCode>
+      <FileName>World\ReperColorScheme.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryLib.World.WorldScaler" Collapsed="true">
+    <Position X="22.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAQIAgCBAGAwAABAAICAAABAAAAAABAABAAAAAAAg=</HashCode>
+      <FileName>World\WorldScaler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderLib.TaskRendererReper" Collapsed="true">
+    <Position X="22.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAABAIAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>World\TaskRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CommonLib.FunFormHelp" Collapsed="true">
+    <Position X="38" Y="6" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommonLib.TaskFileNames" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="32.75" Y="7" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CommonLib.EConverter.MyEnumConverter" Collapsed="true">
+    <Position X="29.25" Y="7" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommonLib.EConverter.BooleanTypeConverter" Collapsed="true">
+    <Position X="29.25" Y="6" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommonLib.EConverter.BooleanTypeConverterSave" Collapsed="true">
+    <Position X="31" Y="6" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommonLib.EConverter.BooleanTypeConverterYN" Collapsed="true">
+    <Position X="32.75" Y="6" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommonLib.Function.DigFunction1D" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="34.5" Y="6" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CommonLib.Geometry.FPoint" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="36.25" Y="6" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CommonLib.Geometry.HPoint" Collapsed="true">
+    <Position X="19.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CommonLib.IO.ATaskFormat&lt;Task&gt;" Collapsed="true">
+    <Position X="12.75" Y="25.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CommonLib.IO.ProxyTaskFormat&lt;Task&gt;" Collapsed="true">
+    <Position X="12.75" Y="27" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommonLib.Physics.SPhysics" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31" Y="7" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Struct Name="GeometryLib.Geometry.HEdge" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.75" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAIAEAAAA=</HashCode>
+      <FileName>Geometry\HEdge.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GeometryLib.Geometry.HTriangle" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometry\HTriangle.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GeometryLib.Geometry.HVoronoiCell" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometry\HVoronoiCell.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GeometryLib.Vector.Vector2" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgIAABCRAAABQE8AUDQIBBCQAAAIBAgAAkAAAAYuA=</HashCode>
+      <FileName>Vector\Vector2.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GeometryLib.Vector.Vector3" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.75" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgIgABCRAAABQE8AUDQABBCQAAAIBAgACkAAAAYuE=</HashCode>
+      <FileName>Vector\Vector3.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GeometryLib.Vector.Vector4" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="24.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAIgABCRAAABAE8AUDQABACQAAAIBAgAAkAAAIYuE=</HashCode>
+      <FileName>Vector\Vector4.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="CommonLib.TriElement" Collapsed="true">
+    <Position X="32.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier />
+  </Struct>
+  <Struct Name="CommonLib.TwoElement" Collapsed="true">
+    <Position X="36.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier />
+  </Struct>
+  <Struct Name="CommonLib.TaskMetka" Collapsed="true">
+    <Position X="31" Y="8.25" Width="1.5" />
+    <TypeIdentifier />
+  </Struct>
+  <Struct Name="CommonLib.Areas.RectangleWorld" Collapsed="true">
+    <Position X="29.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier />
+  </Struct>
+  <Struct Name="CommonLib.DrvGraphics.TriVertex" Collapsed="true">
+    <Position X="34.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier />
+  </Struct>
+  <Interface Name="GeometryLib.Aalgorithms.IConvexHull" Collapsed="true">
+    <Position X="15.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Aalgorithms\ConvexHull.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CommonLib.IAlgebra" Collapsed="true">
+    <Position X="29.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IAlgebraResult" Collapsed="true">
+    <Position X="31" Y="9.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IAvalanche" Collapsed="true">
+    <Position X="32.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IBedLoadTask" Collapsed="true">
+    <Position X="21.5" Y="26" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IBaseFEMTask" Collapsed="true">
+    <Position X="25.25" Y="23.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IComplexFEMTask" Collapsed="true">
+    <Position X="29.25" Y="10.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFEPoissonTask" Collapsed="true">
+    <Position X="24" Y="24.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFEMTask" Collapsed="true">
+    <Position X="26.25" Y="24.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFForm" Collapsed="true">
+    <Position X="38" Y="10.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFunLagrange1D" Collapsed="true">
+    <Position X="34.5" Y="11" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IRectFDMesh" Collapsed="true">
+    <Position X="16.5" Y="20.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFElement" Collapsed="true">
+    <Position X="32.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFEMesh" Collapsed="true">
+    <Position X="19" Y="22" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFENods" Collapsed="true">
+    <Position X="34.5" Y="10.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IAFacet" Collapsed="true">
+    <Position X="19" Y="24.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFVComMesh" Collapsed="true">
+    <Position X="13" Y="24" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFVElement" Collapsed="true">
+    <Position X="36.25" Y="11" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFVFacet" Collapsed="true">
+    <Position X="19" Y="26" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.ISFacet" Collapsed="true">
+    <Position X="19" Y="23.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IFVMesh" Collapsed="true">
+    <Position X="16" Y="22" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IRectFVMesh" Collapsed="true">
+    <Position X="16" Y="24" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.ILink" Collapsed="true">
+    <Position X="32.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IMesh" Collapsed="true">
+    <Position X="18.75" Y="20.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IRenderMeshGL" Collapsed="true">
+    <Position X="36.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IClouds" Collapsed="true">
+    <Position X="38" Y="9.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IGraphicsCurve" Collapsed="true">
+    <Position X="38" Y="11" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IGraphicsData" Collapsed="true">
+    <Position X="29.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IRenderMesh" Collapsed="true">
+    <Position X="13" Y="19.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.ISavePoint" Collapsed="true">
+    <Position X="29.25" Y="13.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IBoundaryConditions" Collapsed="true">
+    <Position X="36.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IRiver" Collapsed="true">
+    <Position X="21.5" Y="28" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.ITaskFileNames" Collapsed="true">
+    <Position X="31" Y="13.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IPropertyTask" Collapsed="true">
+    <Position X="21.5" Y="23.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.ITask" Collapsed="true">
+    <Position X="21.5" Y="24.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.ITProperty&lt;TParam&gt;" Collapsed="true">
+    <Position X="32.75" Y="13.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IUnknown" Collapsed="true">
+    <Position X="34.5" Y="13.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMArea" Collapsed="true">
+    <Position X="34.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMBoundary" Collapsed="true">
+    <Position X="36.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMFigura" Collapsed="true">
+    <Position X="38" Y="11.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMHesgGrid" Collapsed="true">
+    <Position X="29.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMPoint" Collapsed="true">
+    <Position X="22.25" Y="17.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Areas.IMSegment" Collapsed="true">
+    <Position X="31" Y="12.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.DrvGraphics.IDrvGraphic" Collapsed="true">
+    <Position X="31" Y="10.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.FDM.IQuadMesh" Collapsed="true">
+    <Position X="32.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.FDM.IRectangleMesh" Collapsed="true">
+    <Position X="34.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="GeometryLib.IField" Collapsed="true">
+    <Position X="29.25" Y="11" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Function.IDigFunction" Collapsed="true">
+    <Position X="7" Y="27.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Function.IFunction1D" Collapsed="true">
+    <Position X="7" Y="26.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Function.IFunction2D" Collapsed="true">
+    <Position X="32.75" Y="11" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IFPoint" Collapsed="true">
+    <Position X="31" Y="11" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IHEdge" Collapsed="true">
+    <Position X="7" Y="24.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IHFigure" Collapsed="true">
+    <Position X="31" Y="11.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IHLine" Collapsed="true">
+    <Position X="8.25" Y="23.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IHPoint" Collapsed="true">
+    <Position X="24.5" Y="16.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IDPoint" Collapsed="true">
+    <Position X="24.5" Y="17.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IHSmLine" Collapsed="true">
+    <Position X="9.25" Y="24.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IBedRiverNode" Collapsed="true">
+    <Position X="26.75" Y="17.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IMeshRiverNode" Collapsed="true">
+    <Position X="25.5" Y="19.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Geometry.IRiverNode" Collapsed="true">
+    <Position X="25.5" Y="21" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IO.IBaseFormater&lt;Type&gt;" Collapsed="true">
+    <Position X="15" Y="25.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.IO.IOFormater&lt;Type&gt;" Collapsed="true">
+    <Position X="15" Y="26.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IRiverMesh" Collapsed="true">
+    <Position X="13" Y="22" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IMeshWrapper" Collapsed="true">
+    <Position X="8.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IMWCross" Collapsed="true">
+    <Position X="9.25" Y="20" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IMWCrossSection" Collapsed="true">
+    <Position X="9.25" Y="21.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IMWDistance" Collapsed="true">
+    <Position X="10.5" Y="18.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IFERenumberator" Collapsed="true">
+    <Position X="36.25" Y="10.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Mesh.IRenumberator" Collapsed="true">
+    <Position X="38" Y="12.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Tasks.IBCValues" Collapsed="true">
+    <Position X="34.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Tasks.IBaseCalculationDomain" Collapsed="true">
+    <Position X="22" Y="19.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CommonLib.Tasks.ICalculationDomain" Collapsed="true">
+    <Position X="22" Y="20.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Enum Name="GeometryLib.FixedFlag" Collapsed="true">
+    <Position X="15.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAABAgAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Points\RiverNode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CommonLib.ErrorType" Collapsed="true">
+    <Position X="29.25" Y="15" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.TypeBLModel" Collapsed="true">
+    <Position X="31" Y="16.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.TypeFunForm" Collapsed="true">
+    <Position X="34.5" Y="16.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.IntRange" Collapsed="true">
+    <Position X="31" Y="15.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.TypeBoundCond" Collapsed="true">
+    <Position X="32.75" Y="16.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.TypeMesh" Collapsed="true">
+    <Position X="38" Y="16.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.TypeRangeMesh" Collapsed="true">
+    <Position X="29.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.TypeGraphicsCurve" Collapsed="true">
+    <Position X="36.25" Y="16.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.StressesFlag" Collapsed="true">
+    <Position X="38" Y="15.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.TypeTask" Collapsed="true">
+    <Position X="31" Y="17.25" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Areas.FigureType" Collapsed="true">
+    <Position X="38" Y="15" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Areas.FigureStatus" Collapsed="true">
+    <Position X="36.25" Y="15" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.ChannelProcess.EBedErosion" Collapsed="true">
+    <Position X="32.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.DrvGraphics.GradientFillMode" Collapsed="true">
+    <Position X="29.25" Y="15.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Function.SmoothnessFunction" Collapsed="true">
+    <Position X="36.25" Y="15.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Mesh.SСhannelForms" Collapsed="true">
+    <Position X="29.25" Y="16.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Mesh.Direction" Collapsed="true">
+    <Position X="31" Y="14.25" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Mesh.RVData.RVFixedNodeFlag" Collapsed="true">
+    <Position X="34.5" Y="15.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Mesh.RVData.BoundaryNodeFlag" Collapsed="true">
+    <Position X="29.25" Y="14.25" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Physics.ECalkDynamicSpeed" Collapsed="true">
+    <Position X="34.5" Y="14.25" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Physics.ECbType" Collapsed="true">
+    <Position X="36.25" Y="14.25" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Physics.ECritTauType" Collapsed="true">
+    <Position X="38" Y="14.25" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Physics.ETurbViscType" Collapsed="true">
+    <Position X="31" Y="15" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Physics.ETurbViscType_1D" Collapsed="true">
+    <Position X="32.75" Y="15" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Physics.EWsType" Collapsed="true">
+    <Position X="34.5" Y="15" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommonLib.Physics.ParticleForms" Collapsed="true">
+    <Position X="32.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Delegate Name="CommonLib.SendParamCloud" Collapsed="true">
+    <Position X="38" Y="18.25" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.SendParam" Collapsed="true">
+    <Position X="36.25" Y="18.25" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.SendText" Collapsed="true">
+    <Position X="29.25" Y="19" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.SendValue&lt;Tp&gt;" Collapsed="true">
+    <Position X="31" Y="19" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.SendData&lt;TArg&gt;" Collapsed="true">
+    <Position X="34.5" Y="18.25" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.Function&lt;TResult, TArg&gt;" Collapsed="true">
+    <Position X="32.75" Y="18.25" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.SimpleProcedure" Collapsed="true">
+    <Position X="32.75" Y="19" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.WallFunction" Collapsed="true">
+    <Position X="36.25" Y="19" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.TurbulentModel" Collapsed="true">
+    <Position X="34.5" Y="19" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.Delegate.BProc" Collapsed="true">
+    <Position X="29.25" Y="18.25" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommonLib.Physics.CalkTurbVisc" Collapsed="true">
+    <Position X="31" Y="18.25" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

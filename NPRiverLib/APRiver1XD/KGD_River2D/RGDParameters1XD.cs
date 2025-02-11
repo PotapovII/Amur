@@ -215,28 +215,28 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
             calculationType = p.calculationType;
             velocityInProfile = p.velocityInProfile;
         }
-        /// <summary>
-        /// свойств задачи
-        /// </summary>
-        /// <param name="p"></param>
-        public object GetParams() { return this; }
-        /// <summary>
-        /// Установка свойств задачи
-        /// </summary>
-        /// <param name="p"></param>
-        public void SetParams(object p)
-        {
-            SetParams((RGDParameters1XD)p);
-        }
-        /// <summary>
-        /// Чтение параметров задачи из файла
-        /// </summary>
-        /// <param name="file"></param>
-        public void LoadParams(string fileName = "")
-        {
-            string message = "Файл парамеров задачи - доные деформации - не обнаружен";
-            WR.LoadParams(Load, message, fileName);
-        }
+        ///// <summary>
+        ///// свойств задачи
+        ///// </summary>
+        ///// <param name="p"></param>
+        //public object GetParams() { return this; }
+        ///// <summary>
+        ///// Установка свойств задачи
+        ///// </summary>
+        ///// <param name="p"></param>
+        //public void SetParams(object p)
+        //{
+        //    SetParams((RGDParameters1XD)p);
+        //}
+        ///// <summary>
+        ///// Чтение параметров задачи из файла
+        ///// </summary>
+        ///// <param name="file"></param>
+        //public void LoadParams(string fileName = "")
+        //{
+        //    string message = "Файл парамеров задачи - доные деформации - не обнаружен";
+        //    WR.LoadParams(Load, message, fileName);
+        //}
         /// <summary>
         /// Чтение параметров задачи из файла
         /// </summary>

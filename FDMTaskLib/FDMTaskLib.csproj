@@ -42,10 +42,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FDMRiverCrossVortexPhi.cs" />
+    <Compile Include="FVPoissonTask.cs" />
     <Compile Include="PhiVortex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AlgebraLib\AlgebraLib.csproj">
+      <Project>{3620fe4f-9d3e-4fa2-965e-762234334d84}</Project>
+      <Name>AlgebraLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CommonLib\CommonLib.csproj">
       <Project>{a387740f-c4f9-44f3-afa8-0b55ea4487fa}</Project>
       <Name>CommonLib</Name>

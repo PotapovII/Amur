@@ -13,18 +13,8 @@ namespace NPRiverLib.APRiver2XYD.River2DFST
     using System;
     using MemLogLib;
     using CommonLib;
-    using CommonLib.IO;
     using MeshLib;
     using GeometryLib.Vector;
-    using CommonLib.EConverter;
-    using CommonLib.ChannelProcess;
-    using CommonLib.Delegate;
-    using GeometryLib;
-    using NPRiverLib.APRiver_2XYD;
-    using NPRiverLib.IO;
-    using System.IO;
-
-
     /// <summary>
     ///  ОО: Определение класса RiverSWE_FCT_2XYD - для расчета полей расходов, 
     ///  скорости, глубин и напряжений в речном потоке

@@ -228,6 +228,18 @@ namespace AlgebraLib
             throw new Exception("Метод не поддерживается для данной реализации");
         }
         /// <summary>
+        /// Получить строку (не для всех решателей)
+        /// </summary>
+        /// <param name="IndexRow">Индекс получемой строки системы</param>
+        /// <param name="ColElems">Коэффициенты строки системы</param>
+        /// <param name="R">Значение правой части</param>
+        public override void GetStringSystem(uint IndexRow, ref double[] ColElems, ref double R)
+        {
+            result.Message = "Форма хранения матрицы не позволяет выполнять ее по строчное формирование";
+            result.errorType = ErrorType.methodCannotSolveSuchSLAEs;
+            throw new Exception("метод GetStringSystem не реализован для класса");
+        }
+        /// <summary>
         /// Удовлетворение ГУ (с накопительными вызовами)
         /// </summary>
         public override void BoundConditions(double[] Conditions, uint[] Adress)
@@ -344,7 +356,9 @@ namespace AlgebraLib
         /// <summary>
         /// Вывод САУ на КОНСОЛЬ
         /// </summary>
-        public override void Print(int flag = 0)
+        /// <param name="flag">количество знаков мантисы</param>
+        /// <param name="color">длина цветового блока</param>
+        public override void Print(int flag = 0, int color = 1)
         {
             Console.WriteLine("Matrix");
             for (int i = 0; i < N; i++)

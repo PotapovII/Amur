@@ -60,6 +60,7 @@
     <Compile Include="DrvGraphics\GradientFillMode.cs" />
     <Compile Include="DrvGraphics\IDrvGraphic.cs" />
     <Compile Include="DrvGraphics\TriVertex.cs" />
+    <Compile Include="EddyViscosity\Class1.cs" />
     <Compile Include="FDM\IQuadMesh.cs" />
     <Compile Include="FDM\IRectangleMesh.cs" />
     <Compile Include="FEM\IComplexFEMTask.cs" />
@@ -82,10 +83,12 @@
     <Compile Include="Mesh\MWrapper\IMeshWrapper.cs" />
     <Compile Include="Mesh\IRiverMesh.cs" />
     <Compile Include="Mesh\Renumberators\IFERenumberator.cs" />
+    <Compile Include="EddyViscosity\IEddyViscosityTri.cs" />
     <Compile Include="Physics\ECalkDynamicSpeed.cs" />
     <Compile Include="Physics\ETurbViscType_1D.cs" />
-    <Compile Include="Physics\ETurbViscType.cs" />
+    <Compile Include="EddyViscosity\ETurbViscType.cs" />
     <Compile Include="Geometry\IRiverPoint.cs" />
+    <Compile Include="Physics\MWRiverCross.cs" />
     <Compile Include="River\TaskFileNemes.cs" />
     <Compile Include="Physics\ECbType.cs" />
     <Compile Include="Physics\ECritTauType.cs" />
@@ -131,6 +134,7 @@
     <Compile Include="Render\IRenderMesh.cs" />
     <Compile Include="Render\ISaveCloud.cs" />
     <Compile Include="River\IBoundCondition.cs" />
+    <Compile Include="Tasks\ETaskStatus.cs" />
     <Compile Include="Tasks\IBaseCalculationDomain.cs" />
     <Compile Include="Tasks\ITProperty.cs" />
     <Compile Include="Tasks\IUnknown.cs" />
@@ -148,6 +152,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Physics\DOC\SPhysics.doc" />
   </ItemGroup>
   <ItemGroup />

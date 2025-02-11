@@ -200,6 +200,14 @@ namespace RenderLib
             control.DelSmLines();
         }
         /// <summary>
+        ///  удаление линии створа
+        /// </summary>
+        /// <param name="p"></param>
+        public void DelCrossLine()
+        {
+            control.DelCrossLine();
+        }
+        /// <summary>
         /// Удаление линий сглаживания
         /// </summary>
         public void ClearSmLines()
@@ -910,6 +918,14 @@ namespace RenderLib
         public List<IHSmLine> GetSLines()
         {
             return control.SLines;
+        }
+        /// <summary>
+        /// Получить линию створа
+        /// </summary>
+        /// <returns></returns>
+        public IHLine GetCrossLine()
+        {
+            return control.crossLine;
         }
         /// <summary>
         /// Установить новое количество внутренних вершин линии сгласживания 

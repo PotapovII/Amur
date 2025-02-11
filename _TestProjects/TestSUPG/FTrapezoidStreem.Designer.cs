@@ -141,11 +141,12 @@
             this.lb_AreaGeom.Items.AddRange(new object[] {
             "Канал трапеция",
             "Канал трапециидальный -",
-            "Канал трапециидальный +"});
+            "Канал трапециидальный +",
+            "Полуканал"});
             this.lb_AreaGeom.Location = new System.Drawing.Point(12, 237);
             this.lb_AreaGeom.Margin = new System.Windows.Forms.Padding(4);
             this.lb_AreaGeom.Name = "lb_AreaGeom";
-            this.lb_AreaGeom.Size = new System.Drawing.Size(258, 64);
+            this.lb_AreaGeom.Size = new System.Drawing.Size(258, 84);
             this.lb_AreaGeom.TabIndex = 155;
             // 
             // label10

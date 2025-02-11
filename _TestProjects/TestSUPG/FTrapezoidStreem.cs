@@ -18,6 +18,7 @@
     using FEMTasksLib.FESimpleTask;
     using System.Linq;
     using GeometryLib;
+    using CommonLib.EddyViscosity;
 
     public partial class FTrapezoidStreem : Form
     {
@@ -62,7 +63,7 @@
             double WaterLevel = H;
             double PFE = double.Parse(textBoxDiam.Text, MEM.formatter);
             diametrFE = Math.Min(L, H) / 100 * PFE;
-
+            bool AxisOfSymmetry = false;
             switch (lb_AreaGeom.SelectedIndex)
             {
                 case 0:
@@ -70,7 +71,7 @@
                         double[] xx = { 0, L };
                         double[] yy = { WL - HL, WL - HR };
                         int Ny = (int)(L / diametrFE) + 1;
-                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(SСhannelForms.boxСhannelCrossTrapezoidSection);
+                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(AxisOfSymmetry, SСhannelForms.trapezoid);
                         mesh = sg.CreateMesh(ref WetBed, WaterLevel, xx, yy, Ny);
                     }
                     break;
@@ -79,7 +80,7 @@
                         double[] xx = { 0, L / 3, 2 * L / 3, L };
                         double[] yy = { WL - HL, WL - 0.6 * HL, WL - 1.2 * HL, WL - HR };
                         int Ny = (int)(L / diametrFE) + 1;
-                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(SСhannelForms.boxСhannelCrossTrapezoidSection);
+                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(AxisOfSymmetry, SСhannelForms.trapezoid);
                         mesh = sg.CreateMesh(ref WetBed, WaterLevel, xx, yy, Ny);
                     }
                     break;
@@ -88,7 +89,16 @@
                         double[] xx = { 0, L / 3, 2 * L / 3, L };
                         double[] yy = { WL - HL, WL -  1.5*HL, WL - 0.6 * HR, WL - HR };
                         int Ny = (int)(L / diametrFE) + 1;
-                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(SСhannelForms.boxСhannelCrossTrapezoidSection);
+                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(AxisOfSymmetry, SСhannelForms.trapezoid);
+                        mesh = sg.CreateMesh(ref WetBed, WaterLevel, xx, yy, Ny);
+                    }
+                    break;
+                case 3:
+                    {
+                        double[] xx = { 0, L / 3, 2 * L / 3, L };
+                        double[] yy = { -WL, WL - 1.5 * HL, WL - 0.6 * HR, -WL };
+                        int Ny = (int)(L / diametrFE) + 1;
+                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(AxisOfSymmetry, SСhannelForms.trapezoid);
                         mesh = sg.CreateMesh(ref WetBed, WaterLevel, xx, yy, Ny);
                     }
                     break;
@@ -100,7 +110,7 @@
         {
             if (mesh != null && checkBoxView.Checked == true)
             {
-                IMWCross wMesh = new MWCrossTri(mesh, SСhannelForms.boxСhannelCrossTrapezoidSection, 2);
+                IMWCross wMesh = new MWCrossTri(mesh, SСhannelForms.trapezoid, 2);
                 SavePoint data = new SavePoint();
                 data.SetSavePoint(0, mesh);
                 double[] xx = mesh.GetCoords(0);
@@ -292,7 +302,7 @@
             }
             
             IMWCrossSection wMesh = new MWCrossSectionTri(mesh, R_min, Ring,
-                                                      false, SСhannelForms.boxСhannelCrossTrapezoidSection);
+                                                      false, SСhannelForms.trapezoid);
             // Определение наальной вязкости
             SPhysics.PHYS.turbViscType = (ETurbViscType)listBoxAMu.SelectedIndex;
 

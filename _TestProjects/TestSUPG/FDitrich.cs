@@ -19,6 +19,7 @@
     using GeometryLib;
     using FEMTasksLib.FESimpleTask;
     using MeshGeneratorsLib.StripGenerator;
+    using CommonLib.EddyViscosity;
 
     public partial class FDitrich : Form
     {
@@ -105,6 +106,7 @@
             //CrossStripMeshGeneratorTri sg = new CrossStripMeshGeneratorTri();
             //mesh = sg.CreateMesh(ref GR, WL, x, y);
             IStripMeshGenerator sg = null;
+            bool AxisOfSymmetry = false;
             switch (lb_MeshGen.SelectedIndex)
             {
                 case 0:
@@ -114,7 +116,7 @@
                     sg = new CrossStripMeshGeneratorTri();
                     break;
                 case 2:
-                    sg = new CrossStripMeshGenerator(TypeMesh.Triangle);
+                    sg = new CrossStripMeshGenerator(AxisOfSymmetry,TypeMesh.Triangle);
                     break;
             }
             //WL = 3;
@@ -125,7 +127,7 @@
         {
             if (mesh != null && checkBoxView.Checked == true)
             {
-                IMWCross wMesh = new MWCrossTri(mesh, SСhannelForms.porabolicСhannelSection, 2);
+                IMWCross wMesh = new MWCrossTri(mesh, SСhannelForms.porabolic, 2);
                 SavePoint data = new SavePoint();
                 data.SetSavePoint(0, mesh);
                 double[] xx = mesh.GetCoords(0);

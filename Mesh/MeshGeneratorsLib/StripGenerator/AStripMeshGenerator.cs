@@ -8,7 +8,6 @@
 namespace MeshGeneratorsLib.StripGenerator
 {
     using System;
-    using System.Linq;
     using System.Collections.Generic;
 
     using CommonLib;
@@ -21,6 +20,10 @@ namespace MeshGeneratorsLib.StripGenerator
     [Serializable]
     public abstract class AStripMeshGenerator : IStripMeshGenerator
     {
+        /// <summary>
+        /// Ось симметрии
+        /// </summary>
+        public bool AxisOfSymmetry { get; }
         /// <summary>
         /// Левая береговая точка
         /// </summary>
@@ -58,6 +61,26 @@ namespace MeshGeneratorsLib.StripGenerator
 
         protected double[] zb = null;
         protected double[] xb = null;
+
+        protected int beginLeft;
+        protected int beginRight;
+        protected int CountBed = 0;
+
+        public AStripMeshGenerator(bool axisOfSymmetry = false)
+        {
+            AxisOfSymmetry = axisOfSymmetry;
+        }
+        
+        public virtual void CalkBedFunction(ref double WetBed, double WaterLevel, double[] xx, double[] yy)
+        {
+            // Поиск береговых точек створа
+            LookingBoundary(WaterLevel, xx, yy, out beginLeft, out beginRight);
+            // Расчет характеристик живого сечения створа
+            CreateBedWet(ref WetBed, WaterLevel, xx, yy, beginLeft, beginRight);
+            // шаг сетки по свободной поверхности
+            // количество элементов
+            CountBed = beginRight - beginLeft + 1;
+        }
         /// <summary>
         /// Расчет характеристик живого сечения створа
         /// </summary>
@@ -103,7 +126,6 @@ namespace MeshGeneratorsLib.StripGenerator
             if (dryRight == false)
                 WetBed += WaterLevel - right.y;
 
-
             //if (dryLeft == false || dryRight == false)
             //{
             //    double zbMin = zb.Min();
@@ -145,6 +167,7 @@ namespace MeshGeneratorsLib.StripGenerator
             if (yy[0] < WaterLevel) // левый берег затоплен
             {
                 left = new HKnot(xx[0], yy[0], 0);
+                //left = new HKnot(xx[0], WaterLevel, 0);
                 dryLeft = false;
                 beginLeft = 0;
             }
@@ -166,7 +189,8 @@ namespace MeshGeneratorsLib.StripGenerator
             }
             if (yy[N] < WaterLevel) // правый берег затоплен
             {
-                right = new HKnot(xx[N], yy[N], -1);
+                //right = new HKnot(xx[N], yy[N], -1);
+                right = new HKnot(xx[N], WaterLevel, -1);
                 dryRight = false;
                 beginRight = N;
             }

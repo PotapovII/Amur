@@ -11,7 +11,8 @@ namespace ConnectLib
         /// <summary>
         /// Строка соединения с сервером
         /// </summary>
-        public static string connectString = 
+        public static string connectString =
+       // "Data Source = MARS\\SQLEXPRESS;Initial Catalog = RiverDB; Integrated Security = True";
         "Data Source = COMETA\\SQLEXPRESS;Initial Catalog = RiverDB; Integrated Security = True";
         // "Data Source = DESKTOP-LAV2EIN\\SQLEXPRESS;Initial Catalog = RiverDB; Integrated Security = True";
     }

@@ -54,8 +54,10 @@
     <Compile Include="Areas\MFigura.cs" />
     <Compile Include="Areas\MPoint.cs" />
     <Compile Include="Areas\MSegment.cs" />
+    <Compile Include="DigFunction\DigFunctionConst.cs" />
     <Compile Include="DigFunction\FunctionСhannelRose.cs" />
     <Compile Include="Fields\Unknowns\SUnknown.cs" />
+    <Compile Include="Geometry\CrossLine.cs" />
     <Compile Include="Geometry\HEdge.cs" />
     <Compile Include="Geometry\HSmLine.cs" />
     <Compile Include="Geometry\CEdge.cs" />
@@ -84,7 +86,7 @@
     <Compile Include="DigFunction\FunctionSin.cs" />
     <Compile Include="Geometry\GEO.cs" />
     <Compile Include="LineStretch.cs" />
-    <Compile Include="Locators\CrossLine.cs" />
+    <Compile Include="Locators\CrossLineUtils.cs" />
     <Compile Include="Locators\Locator.cs" />
     <Compile Include="Math\DMath.cs" />
     <Compile Include="Points\TargetLinePoint.cs" />
@@ -110,6 +112,8 @@
       <Name>MemLogLib</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

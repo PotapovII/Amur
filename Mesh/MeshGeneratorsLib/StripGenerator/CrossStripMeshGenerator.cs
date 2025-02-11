@@ -16,8 +16,6 @@ namespace MeshGeneratorsLib.StripGenerator
     using MemLogLib;
 
     using CommonLib;
-    using System.Linq;
-
     /// <summary>
     /// ОО: Фронтальный генератор КЭ трехузловой сетки для русла реки в 
     /// створе с заданной геометрией дна и уровнем свободной поверхности
@@ -38,10 +36,16 @@ namespace MeshGeneratorsLib.StripGenerator
         /// </summary>
         /// <param name="MAXElem">максимальное количество КЭ сетки</param>
         /// <param name="MAXKnot">максимальное количество узлов сетки</param>
-        public CrossStripMeshGenerator(TypeMesh typeMesh = TypeMesh.Triangle)
+        public CrossStripMeshGenerator(bool axisOfSymmetry = false, 
+            TypeMesh typeMesh = TypeMesh.Triangle)
+            : base(axisOfSymmetry)
         {
             this.typeMesh = typeMesh;
         }
+        /// <summary>
+        /// // расчет количества конечных элементов
+        /// </summary>
+        /// <returns>количество конечных элементов</returns>
         public uint CalkCountElements()
         {
             CountElements = 0;
@@ -64,16 +68,6 @@ namespace MeshGeneratorsLib.StripGenerator
                 {
                     if (typeMesh == TypeMesh.Triangle)
                     {
-                        //if (Map.map1D[i] == Map.map1D[i + 1])
-                        //{
-                        //    CountElements += 2 * (Map.map1D[i] - 1);
-                        //    CountEl3 += 2 * (Map.map1D[i] - 1);
-                        //}
-                        //else
-                        //{
-                        //    CountElements += 2 * (Map.map1D[i] - 1) + 1;
-                        //    CountEl3 += 2 * (Map.map1D[i] - 1) + 1;
-                        //}
                         uint Nmin = Math.Min(Map.map1D[i], Map.map1D[i + 1]) - 1;
                         CountElements += 2*Nmin;
                         CountEl3 += 2*Nmin;
@@ -118,6 +112,26 @@ namespace MeshGeneratorsLib.StripGenerator
                 uint CountKnots = Map.CountKnots;
                 uint CountElements = CalkCountElements();
                 int CountBoundKnots = 2 * Count - 2;
+               
+                int iL = 0;
+                int iR = Count - 1;
+                uint CountR = map1D[iR];
+                uint CountL = map1D[iL];
+                uint CountInR =  CountR > 2 ? CountR - 2 : 0;
+                uint CountInL = CountL > 2 ? CountL - 2 : 0;
+                if(CountInR > 0)
+                    CountBoundKnots += (int)CountInR + 1;
+                if (CountInL > 0)
+                    CountBoundKnots += (int)CountInL + 1;
+                int CountBoundElems = CountBoundKnots;
+                int WallR = 1;
+                int WallL = 3;
+                if (AxisOfSymmetry == false)
+                {
+                    WallR = 0;
+                    WallL = 0;
+                }
+
                 mesh = new ComplecsMesh();
                 mesh.tRangeMesh = TypeRangeMesh.mRange1;
                 mesh.tMesh = TypeMesh.MixMesh;
@@ -127,8 +141,8 @@ namespace MeshGeneratorsLib.StripGenerator
                 MEM.Alloc(CountElements, ref mesh.AreaElemsFFType);
                 MEM.Alloc(CountBoundKnots, ref mesh.BoundKnots);
                 MEM.Alloc(CountBoundKnots, ref mesh.BoundKnotsMark);
-                MEM.Alloc(CountBoundKnots, ref mesh.BoundElementsMark);
-                MEM.Alloc(CountBoundKnots, ref mesh.BoundElems);
+                MEM.Alloc(CountBoundElems, ref mesh.BoundElementsMark);
+                MEM.Alloc(CountBoundElems, ref mesh.BoundElems);
                 // вычисление массивов координат
                 CountKnots = 0;
                 for (int i = 0; i < Count; i++)
@@ -143,6 +157,7 @@ namespace MeshGeneratorsLib.StripGenerator
                 }
                 // вычисление массивов обхода
                 CountElements = 0;
+
                 for (int i = 0; i < Count - 1; i++)
                 {
                     if (map1D[i] == 1)
@@ -194,7 +209,8 @@ namespace MeshGeneratorsLib.StripGenerator
                                 double dy2 = mesh.CoordsY[map[i + 1][j]] - mesh.CoordsY[map[i][j + 1]];
                                 double L2 = dx2 * dx2 + dy2 * dy2;
 
-                                if (L1 <= 0.99*L2)
+
+                                if (L1 <= 0.99* L2 || i > Count / 2)
                                 {
                                     mesh.AreaElems[CountElements] = new uint[3]
                                     {
@@ -289,6 +305,20 @@ namespace MeshGeneratorsLib.StripGenerator
                     mesh.BoundKnotsMark[CountKnots] = 2;
                     CountKnots++;
                 }
+                // Правая стенка канала
+                for (int j = 0; j < CountR - 1; j++)
+                {
+                    mesh.BoundKnots[CountKnots] = (int)map[iR][j];
+                    mesh.BoundKnotsMark[CountKnots] = WallR;
+                    CountKnots++;
+                }
+                //  Левая стенка канала
+                for (int j = 0; j < CountL - 1; j++)
+                {
+                    mesh.BoundKnots[CountKnots] = (int)map[iL][j];
+                    mesh.BoundKnotsMark[CountKnots] = WallL;
+                    CountKnots++;
+                }
                 // дно канала
                 int belem = 0;
                 for (int i = 0; i < Count - 1; i++)
@@ -308,6 +338,29 @@ namespace MeshGeneratorsLib.StripGenerator
                          map[i][0], map[i+1][0]
                     };
                     mesh.BoundElementsMark[belem] = 2;
+                    belem++;
+                }
+                // Правая стенка канала
+                for (int j = 0; j < CountR - 1; j++)
+                {
+                    mesh.BoundElems[belem] = new uint[2]
+                    {
+                         map[iR][j], map[iR][j+1]
+                    };
+                    if(AxisOfSymmetry == true)
+                        mesh.BoundElementsMark[belem] = WallR;
+                    else
+                        mesh.BoundElementsMark[belem] = 0;
+                    belem++;
+                }
+                //  Левая стенка канала
+                for (int j = 0; j < CountL - 1; j++)
+                {
+                    mesh.BoundElems[belem] = new uint[2]
+                    {
+                         map[iL][j], map[iL][j+1]
+                    };
+                    mesh.BoundElementsMark[belem] = WallL;
                     belem++;
                 }
             }

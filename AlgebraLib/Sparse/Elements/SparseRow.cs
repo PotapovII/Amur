@@ -15,6 +15,7 @@
 //          HPackVector (C++) ==> SparseRow (C#)
 //                       18.04.2021 
 //---------------------------------------------------------------------------
+using MemLogLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -122,7 +123,10 @@ namespace AlgebraLib
         {
             List<SparseElement> row = new List<SparseElement>();
             for (int k = 0; k < knots.Length; k++)
-                row.Add(new SparseElement(mas[k], (int)knots[k]));
+            {
+                if(MEM.Equals(mas[k], 0, MEM.Error10) == false)
+                    row.Add(new SparseElement(mas[k], (int)knots[k]));
+            }
             row.Sort();
             //
             int i = 0, j = 0;
@@ -183,6 +187,14 @@ namespace AlgebraLib
                 if (double.IsNaN(Row[ai].Elem) == true || double.IsInfinity(Row[ai].Elem) == true)
                     throw new Exception("Косяку в SparseRow.Add() index = " + ai.ToString());
             }
+        }
+        /// <summary>
+        ///   Создает плотный вектор.
+        /// </summary>
+        public void DeCompress(ref double[] result)
+        {
+            for (int j = 0; j < Row.Count; j++)
+                result[Row[j].Knot] += Row[j].Elem;
         }
         /// <summary>
         /// Сложение двух строк

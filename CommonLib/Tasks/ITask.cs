@@ -81,6 +81,22 @@ namespace CommonLib
         streamXY2D = 2  
     }
     /// <summary>
+    /// Тип задачи используется для выбора 
+    /// совместимых турбулентных моделей
+    /// </summary>
+    [Serializable]
+    public enum SpaceTypeTask
+    {
+        /// <summary>
+        /// одномерные задачи
+        /// </summary>
+        stream1D = 0,
+        /// <summary>
+        /// двухмерные задачи
+        /// </summary>
+        stream2D = 1
+    }
+    /// <summary>
     /// ОО: Общая информация о задаче
     /// </summary>
     public interface ITask : IPropertyTask

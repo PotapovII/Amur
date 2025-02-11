@@ -1,23 +1,26 @@
-﻿namespace RiverDB.ConvertorOut
+﻿
+namespace RiverDB.ConvertorOut
 {
-    using CommonLib;
-    using CommonLib.Mesh;
+    using System;
+    using System.Linq;
+    using System.Windows.Forms;
+    using System.Collections.Generic;
+
     using MemLogLib;
+    using ConnectLib;
     using GeometryLib;
     using TriangleNet;
     using MeshAdapterLib;
+    using RiverDB.Report;
+    using RiverDB.FormsDB;
 
-    using System;
-    using System.IO;
-    using System.Windows.Forms;
-    using System.Collections.Generic;
-    using System.Linq;
+    using CommonLib;
     using CommonLib.IO;
-    using GeometryLib.Locators;
+    using CommonLib.Mesh;
     using CommonLib.Geometry;
-    using NPRiverLib.APRiver_2XYD.River2DSW;
-    using NPRiverLib.IO;
-    using ConnectLib;
+
+    using GeometryLib.Locators;
+    using NPRiverLib.APRiver2XYD.River2DSW;
 
     public partial class ExportMRF : Form
     {
@@ -30,11 +33,27 @@
         /// Атрибуты узлов
         /// </summary>
         double[][] values = null;
-        
         List<int> selected = new List<int>();
-        public ExportMRF(MeshNet meshRiver, List<SegmentInfo> segInfo,int placeID = 1)
+        Catalogue book = new Catalogue("place", true);
+        /// <summary>
+        /// Уровнень реки по гидропосту
+        /// </summary>
+        double WLRiver = 0;
+        /// <summary>
+        /// Расход
+        /// </summary>
+        double QRiver = 0;
+        /// <summary>
+        /// Дата изменения
+        /// </summary>
+        string Data;
+        
+        int placeID = 1;
+        public ExportMRF(MeshNet meshRiver, List<SegmentInfo> segInfo, string  Data)
         {
             InitializeComponent();
+            this.Data = Data;
+            tb_Data.Text = Data;
             this.segInfo = segInfo;
             this.meshRiver = meshRiver;
             string ext = "*.mrf";
@@ -43,11 +62,58 @@
             saveFileDialog1.Filter = filter;
             Init();
             listBox1.SelectedIndex = 0;
-            // Ноль графика - отметка репера по Балтийской системе
-            double hr = ConnectDB.WaterLevelGP(placeID);
-            tb_BaltikLvl.Text = hr.ToString("F4");
+            ChangGP_WL();
         }
-
+        public void ChangGP_WL()
+        {
+            string Name = "", X = "", Y = "";
+            double Zerro = 0, height = 0;
+            ConnectDB.PlaceInfo(placeID, ref Name, ref X, ref Y, ref Zerro, ref height);
+            tb2.Text = placeID.ToString();
+            tb21.Text = Name;
+            tb_latitudeArea.Text = X;
+            tb_longitude.Text = Y;
+            tb_BaltikLvl.Text = Zerro.ToString("F4");
+            WLRiver = ConnectDB.WaterLevelData(Data, placeID);
+            QRiver = riverFlow(WLRiver);
+            tb_RF.Text = QRiver.ToString("F1");
+            tb_RiverLvl.Text = (Zerro + WLRiver / 100).ToString("F2");
+        }
+        private void bt1_Click(object sender, EventArgs e)
+        {
+            book.ShowDialog();
+            tb2.Text = book.RowID;
+            tb21.Text = book.RowName;
+            placeID = int.Parse(book.RowID.Trim());
+            ChangGP_WL();
+            if (tb2.Text.Trim() == "1")
+                pnRF.Visible = true;
+            else
+                pnRF.Visible = false;
+        }
+        private double riverFlow(double H)
+        {
+            IRiverFlow rf = new RiverFlowZerro();
+            if (tb2.Text.Trim() == "1")
+            {
+                if (rbAmur.Checked == true)
+                    rf = new RiverFlowAmur();
+                else
+                {
+                    if (rbPemza.Checked == true)
+                        rf = new RiverFlowPemza();
+                    else
+                        rf = new RiverFlowMad();
+                }
+            }
+            if (tb2.Text.Trim() == "3")
+                rf = new RiverFlowKomsomolskNaAmure();
+            return rf.GetRiverFlow(H);
+        }
+        private void rbAmur_CheckedChanged(object sender, EventArgs e)
+        {
+            ChangGP_WL();
+        }
         protected void Init()
         {
             MeshAdapter.ConvertFrontRenumberationAndCutting(ref bmesh, ref values, meshRiver, Direction.toRight);
@@ -164,9 +230,9 @@
             Close();
         }
 
-        public ParamsRiver_2XYD GetParams()
+        public ParamsRiver2XYD GetParams()
         {
-            ParamsRiver_2XYD Params = new ParamsRiver_2XYD();
+            ParamsRiver2XYD Params = new ParamsRiver2XYD();
             try
             {
                 int i;
@@ -351,115 +417,12 @@
             }
             try
             {
-                #region Old
-                //int i;
-                //river2D.dtTrend = double.Parse(tb_Version.Text, MEM.formatter);
-                //river2D.time = double.Parse(tb_time.Text, MEM.formatter);
-                //river2D.dtime = double.Parse(tb_dtime.Text, MEM.formatter);
-                //river2D.theta = double.Parse(tb_theta.Text, MEM.formatter);
-                //river2D.UpWindCoeff = double.Parse(tb_UpWindCoeff.Text, MEM.formatter);
-                //river2D.turbulentVisCoeff = double.Parse(tb_turbulentVisCoeff.Text, MEM.formatter);
-                //river2D.latitudeArea = double.Parse(tb_latitudeArea.Text, MEM.formatter);
-                //// русло
-                //river2D.droundWaterCoeff = double.Parse(tb_droundWaterCoeff.Text, MEM.formatter);
-                //river2D.H_minGroundWater = double.Parse(tb_minGroundWater.Text, MEM.formatter);
-                //river2D.filtrСoeff = double.Parse(tb_filtrСoeff.Text, MEM.formatter);
-                //// размерность
-
-                //int Count = bmesh.CountKnots;
-                //int CountElements = bmesh.CountElements;
-                //int CountBoundElements = bmesh.CountBoundElements;
-                //int CountBoundSegments = segInfo.Count;
-                //if (river2D.meshRiver == null)
-                //    river2D.meshRiver = new TriRiverMesh();
-                //// выделение памяти под узловые поля
-                //MEM.Alloc(Count, ref river2D.meshRiver.nodes);
-                //IFElement[] elems = bmesh.AreaElems;
-
-                //double BaltikLvl = double.Parse(tb_BaltikLvl.Text.Trim(), MEM.formatter);
-                //// чтение узловых полей
-                //for (i = 0; i < x.Length; i++)
-                //{
-                //    RiverNode node = new RiverNode();
-                //    node.n = i;
-                //    node.i = i;
-                //    node.X = x[i];
-                //    node.Y = y[i];
-                //    node.zeta = BaltikLvl - values[0][i];
-                //    node.ks = double.Parse(tb_Ks.Text.Trim(), MEM.formatter);
-                //    node.h = values[0][i];
-                //    node.qx = 0;
-                //    node.qy = 0;
-                //    node.fxc = 0; // плавающий узел
-                //    river2D.meshRiver.nodes[i] = node;
-                //}
-                //// выделение памяти под КЭ и поля
-                //MEM.Alloc(CountElements, ref river2D.meshRiver.AreaElems);
-                //// чтение КЭ полей
-                //for (i = 0; i < CountElements; i++)
-                //{
-                //    IFElement el = bmesh.AreaElems[i];
-                //    TriElementRiver elem = new TriElementRiver(i,
-                //        (uint)el.Nods[0].ID, (uint)el.Nods[1].ID, (uint)el.Nods[2].ID);
-                //    river2D.meshRiver.AreaElems[i] = elem;
-                //}
-                //// выделение памяти под граничные КЭ и поля
-                //MEM.Alloc(CountBoundElements, ref river2D.meshRiver.BoundElems);
-                //for (i = 0; i < CountBoundElements; i++)
-                //{
-                //    IFElement el = bmesh.BoundElems[i];
-                //    BoundElementRiver BoundElems = new BoundElementRiver();
-                //    BoundElems.ID = i;
-                //    BoundElems.boundCondType = 0;
-                //    BoundElems.Vertex1 = (uint)el.Nods[0].ID;
-                //    BoundElems.Vertex2 = (uint)el.Nods[1].ID;
-                //    BoundElems.Eta = 0;
-                //    BoundElems.Qn = 0;
-                //    BoundElems.Qt = 0;
-                //    river2D.meshRiver.BoundElems[i] = BoundElems;
-                //}
-                //// Сортировка ГКЭ для получения связности
-                //BoundElementRiver.Sort(ref river2D.meshRiver.BoundElems, Count);
-                //// Привязка
-                //GetBConditionID(ref river2D.meshRiver.BoundElems);
-                //// Привязка ГЭ к КЭ
-                //// выделение памяти под граничные сегменты
-                //MEM.Alloc(CountBoundSegments, ref river2D.meshRiver.boundSegment);
-                //for (i = 0; i < CountBoundSegments; i++)
-                //{
-                //    SegmentInfo si = segInfo[i];
-                //    BoundSegmentRiver segment = new BoundSegmentRiver();
-                //    segment.ID = i;
-                //    segment.startnode = si.startID;
-                //    segment.endnode = si.endID;
-                //    segment.boundCondType = si.boundCondType();
-                //    segment.Hn = si.Eta;
-                //    segment.Qn = si.Qn;
-                //    river2D.meshRiver.boundSegment[i] = segment;
-                //}
-                //// Определение граничных узлов 
-                //for (i = 0; i < river2D.meshRiver.BoundElems.Length; i++)
-                //{
-                //    uint Vertex1 = river2D.meshRiver.BoundElems[i].Vertex1;
-                //    // скользящий узел
-                //    river2D.meshRiver.nodes[Vertex1].fxc = 1;
-                //    IHPoint pA = new HPoint(x[Vertex1], y[Vertex1]);
-                //    for (int j=0; j<segInfo.Count; j++)
-                //    {
-                //        if( MEM.Equals(segInfo[j].pA , pA) == true )
-                //        {
-                //            // фиксированный узел - вершина полигона
-                //            river2D.meshRiver.nodes[Vertex1].fxc = 2;
-                //        }    
-                //    }
-                //}
-                #endregion 
                 // Конвертировать сетку IFEMesh Получить речную сетку в TriRiverMesh
                 TriRiverMesh riverMesh = ConvertIFEMeshToRiver2DMesh(bmesh);
                 // Получить параметры задачи
-                ParamsRiver_2XYD Params = GetParams();
+                ParamsRiver2XYD Params = GetParams();
                 // Создать задачу
-                TriRiverSWE_2XYD river2D = new TriRiverSWE_2XYD(Params);
+                TriRiverSWE2XYD river2D = new TriRiverSWE2XYD(Params);
                 //river2D.Set(riverMesh);
                 //river2D.FindNeighbour();
                 river2D.SetNeighbour(riverMesh);
@@ -517,11 +480,6 @@
                 segInfo[saveIdx].Eta = double.Parse(tb_Eta.Text, MEM.formatter);
                 segInfo[saveIdx].CriticalFlowRegime = cbCritic.Checked;
             }
-        }
-
-        private void cbCritic_CheckedChanged(object sender, EventArgs e)
-        {
-          //  listBox1_SelectedIndexChanged(sender, e);
         }
     }
 }

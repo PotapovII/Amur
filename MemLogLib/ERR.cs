@@ -13,6 +13,21 @@ namespace MemLogLib
     using System;
     public static class ERR
     {
+        public static bool INF_NAN(string Name, double[] M, double range = 3)
+        {
+            for (int i = 0; i < M.Length; i++)
+            {
+                if (double.IsInfinity(M[i]) == true || double.IsNaN(M[i]) == true)
+                {
+                    string mes = "Inf/NaN ошибка в массиве по индексам i = " + i.ToString();
+                    string emes = "Inf/NaN ошибка в массиве " + Name +
+                                  " по индексам i = " + i.ToString();
+                    Logger.Instance.Error(mes, Name);
+                    throw new Exception(emes);
+                }
+            }
+            return true;
+        }
         public static bool INF_NAN(string Name, double[][] M, double range = 3)
         {
             for (int i = 0; i < M.Length; i++)

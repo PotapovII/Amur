@@ -162,12 +162,25 @@ namespace AlgebraLib
         /// <param name="ColElems">Коэффициенты системы</param>
         /// <param name="ColAdress">Адреса коэффицентов</param>
         /// <param name="IndexRow">Индекс формируемой строки системы</param>
-        /// <param name="Right">Значение правой части строки</param>
+        /// <param name="R">Значение правой части строки</param>
         public override void AddStringSystem(double[] ColElems, uint[] ColAdress, uint IndexRow, double R)
         {
             for (int i = 0; i < ColAdress.Length; i++)
                 Matrix[IndexRow][ColAdress[i]] = ColElems[i];
             Right[IndexRow] = R;
+        }
+        /// <summary>
+        /// Получить строку (не для всех решателей)
+        /// </summary>
+        /// <param name="IndexRow">Индекс получемой строки системы</param>
+        /// <param name="ColElems">Коэффициенты строки системы</param>
+        /// <param name="R">Значение правой части</param>
+        public override void GetStringSystem(uint IndexRow, ref double[] ColElems, ref double R)
+        {
+            MEM.Alloc(FN, ref ColElems);
+            for (int j = 0; j < FN; j++)
+                ColElems[j] = Matrix[IndexRow][j];
+            R = Right[IndexRow];
         }
         /// <summary>
         /// Умножение вектора на матрицу
@@ -220,9 +233,11 @@ namespace AlgebraLib
         /// <summary>
         /// Вывод САУ на КОНСОЛЬ
         /// </summary>
-        public override void Print(int flag = 0)
+        /// <param name="flag">количество знаков мантисы</param>
+        /// <param name="color">длина цветового блока</param>
+        public override void Print(int flag = 0, int color = 1)
         {
-            LOG.Print("Matrix", Matrix, flag);
+            LOG.Print("Matrix", Matrix, flag, color);
             LOG.Print("Right", Right, flag);
         }
     }

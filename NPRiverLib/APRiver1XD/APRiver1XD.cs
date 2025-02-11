@@ -13,7 +13,7 @@ namespace NPRiverLib.APRiver_1XD
     using System;
     using System.Collections.Generic;
     using CommonLib;
-    using NPRiverLib.ATask;
+    using NPRiverLib.ABaseTask;
 
     [Serializable]
     public abstract class APRiver1XD<TParam> : APRiver<TParam> where TParam : class, ITProperty<TParam>

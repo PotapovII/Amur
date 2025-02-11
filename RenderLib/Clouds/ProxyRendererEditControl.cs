@@ -69,6 +69,14 @@ namespace RenderLib
             set => renderer.SLines = value;
         }
         /// <summary>
+        /// Линии сглаживания
+        /// </summary>
+        public IHLine crossLine 
+        { 
+            get => renderer.crossLine; 
+            set => renderer.crossLine = value; 
+        }
+        /// <summary>
         ///  обновление данных в точке контура
         /// </summary>
         /// <param name="p"></param>
@@ -88,6 +96,15 @@ namespace RenderLib
         {
             renderer.DelCloudKnot();
         }
+        /// <summary>
+        ///  обновление данных в точке контура
+        /// </summary>
+        /// <param name="p"></param>
+        public void DelCrossLine()
+        {
+            renderer.DelCrossLine();
+        }
+        
         /// <summary>
         /// Очистка текущего контура
         /// </summary>

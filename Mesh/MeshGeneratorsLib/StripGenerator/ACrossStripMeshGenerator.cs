@@ -19,31 +19,15 @@ namespace MeshGeneratorsLib.StripGenerator
     [Serializable]
     public abstract class ACrossStripMeshGenerator : AStripMeshGenerator
     {
-        protected int beginLeft = 0;
-        protected int beginRight = 0;
-        protected int CountBed = 0;
-
         public CrossStripMap Map = null;
 
         protected uint CountElements = 0;
         /// <summary>
         /// Конструктор
         /// </summary>
-        /// <param name="MAXElem">максимальное количество КЭ сетки</param>
-        /// <param name="MAXKnot">максимальное количество узлов сетки</param>
-        public ACrossStripMeshGenerator():base(){ }
-        
-        public virtual void CalkBedFunction(ref double WetBed, double WaterLevel, double[] xx, double[] yy)
+        public ACrossStripMeshGenerator(bool axisOfSymmetry = false) 
+            : base(axisOfSymmetry) 
         {
-            int beginLeft;
-            int beginRight;
-            // Поиск береговых точек створа
-            LookingBoundary(WaterLevel, xx, yy, out beginLeft, out beginRight);
-            // Расчет характеристик живого сечения створа
-            CreateBedWet(ref WetBed, WaterLevel, xx, yy, beginLeft, beginRight);
-            // шаг сетки по свободной поверхности
-            // количество элементов
-            CountBed = beginRight - beginLeft + 1;
         }
         /// <summary>
         /// Вычисляет карту КЭ сетки канала
@@ -57,15 +41,9 @@ namespace MeshGeneratorsLib.StripGenerator
             CalkBedFunction(ref WetBed, WaterLevel, xx, yy);
             if (Count == 0)
                 Count = CountBed;
-            double dy = width / (Count - 1);
-            double y0 = left.X;
-            // глубина максимальная
-            double H = WaterLevel - yy.Min();
-            int CountH = (int)(H / dy) + 1;
-            if (CountH < 5)
-                throw new Exception("Сетка вырождена по напрявлению Z");
+            double ymin = yy.Min();
             Map = new CrossStripMap();
-            Map.CreateMap(spline, WaterLevel, dy, y0, Count, CountH);
+            Map.CreateMap(spline, WaterLevel, ymin, Count, width, left, right);
         }
     }
 }

@@ -17,7 +17,9 @@ namespace NPRiverLib.RiverEmpty
     using CommonLib.IO;
     using CommonLib.ChannelProcess;
     
-    using NPRiverLib.ATask;
+    using NPRiverLib.ABaseTask;
+    using CommonLib.Function;
+
     /// <summary>
     ///  ОО: Определение класса ARiverBaseEmpty - заглушки для задачи 
     ///  расчета полей скорости и напряжений в речном потоке
@@ -100,12 +102,15 @@ namespace NPRiverLib.RiverEmpty
         /// <param name="file">имя файла</param>
         public override void LoadData(StreamReader file) { }
         /// <summary>
+        /// Загрузка задачи иp форматного файла
+        /// </summary>
+        /// <param name="file">имя файла</param>
+        public override void LoadData(IDigFunction[] crossFunctions = null) { }
+        /// <summary>
         /// Конфигурация задачи по умолчанию (тестовые задачи)
         /// </summary>
         /// <param name="testTaskID">номер задачи по умолчанию</param>
-        public override void DefaultCalculationDomain(uint testTaskID = 0) 
-        {
-        }
+        public override void DefaultCalculationDomain(uint testTaskID = 0) {}
         #endregion 
         /// <summary>
         /// Установка новых отметок дна
