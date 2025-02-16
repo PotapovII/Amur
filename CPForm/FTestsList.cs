@@ -18,5 +18,11 @@
         {
             Close();
         }
+
+        private void lb_DefaultTasks_DoubleClick(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
+            Close();
+        }
     }
 }

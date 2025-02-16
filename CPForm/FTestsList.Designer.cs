@@ -38,7 +38,7 @@
             this.bt_Select.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.bt_Select.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.bt_Select.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bt_Select.Location = new System.Drawing.Point(297, 271);
+            this.bt_Select.Location = new System.Drawing.Point(296, 453);
             this.bt_Select.Name = "bt_Select";
             this.bt_Select.Size = new System.Drawing.Size(120, 29);
             this.bt_Select.TabIndex = 0;
@@ -66,15 +66,16 @@
             this.lb_DefaultTasks.ItemHeight = 20;
             this.lb_DefaultTasks.Location = new System.Drawing.Point(8, 49);
             this.lb_DefaultTasks.Name = "lb_DefaultTasks";
-            this.lb_DefaultTasks.Size = new System.Drawing.Size(409, 204);
+            this.lb_DefaultTasks.Size = new System.Drawing.Size(408, 384);
             this.lb_DefaultTasks.TabIndex = 2;
+            this.lb_DefaultTasks.DoubleClick += new System.EventHandler(this.lb_DefaultTasks_DoubleClick);
             // 
             // FTestsList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.ClientSize = new System.Drawing.Size(423, 312);
+            this.ClientSize = new System.Drawing.Size(422, 494);
             this.Controls.Add(this.lb_DefaultTasks);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.bt_Select);

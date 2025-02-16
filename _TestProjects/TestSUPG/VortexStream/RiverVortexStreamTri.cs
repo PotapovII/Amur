@@ -43,6 +43,7 @@ namespace TestSUPG
     using CommonLib.Mesh;
     using CommonLib.Function;
     using FEMTasksLib.FEMTasks.VortexStream;
+    using NPRiverLib.APRiver2XYD.River2DSW;
 
     [Serializable]
     public delegate void CalkTask(ref double[] X);
@@ -92,10 +93,6 @@ namespace TestSUPG
         /// вихревая вязкость
         /// </summary>
         public double[] eddyViscosity = null;
-        /// <summary>
-        /// Скорость на WL
-        /// </summary>
-        protected double V;
         /// <summary>
         /// Количество неизвестных в ЛМЖ
         /// </summary>
@@ -368,7 +365,6 @@ namespace TestSUPG
                 }
                 else
                 {
-
                     // итераций по нелинейности на текущем шаге по времени
                     for (int nIdx = 0; nIdx < NLine; nIdx++)
                     {
@@ -394,19 +390,6 @@ namespace TestSUPG
                             // получить узлы КЭ
                             uint[] knots = { i0, i1, i2 };
                             double Se = S[elem];
-
-                            //double eVx = (Vy[i0] + Vy[i1] + Vy[i2]) / 3;
-                            //double eVy = (Vz[i0] + Vz[i1] + Vz[i2]) / 3;
-                            //double mV = Math.Sqrt(eVx * eVx + eVy * eVy);
-                            //double Hk = Math.Sqrt(Se) / 1.4;
-                            //double Pe = SPhysics.rho_w * mV * Hk / (2 * mu);
-                            //double Ax = 0;
-                            //double Ay = 0;
-                            //if (MEM.Equals(mV, 0) != true)
-                            //{
-                            //    Ax = eVx / mV;
-                            //    Ay = eVy / mV;
-                            //}
                             // Скорости через phi 
                             double eVx = c[0] * Phi[i0] + c[1] * Phi[i1] + c[2] * Phi[i2];
                             double eVy = -(b[0] * Phi[i0] + b[1] * Phi[i1] + b[2] * Phi[i2]);
@@ -421,18 +404,14 @@ namespace TestSUPG
                                 Ay = eVy / mV;
                             }
                             double eMu = (eddyViscosity[i0] + eddyViscosity[i1] + eddyViscosity[i2]) / 3.0;
-
-                            // вычисление ЛЖМ для задачи Навье - Стокса/Стокса
+                            // вычисление ЛЖМ для задачи Рейнольдса
+                            
                             for (int ai = 0; ai < cu; ai++)
                             {
-                                //double N_NVx = (Vy[i0] * MM[ai][0] + Vy[i1] * MM[ai][1] + Vy[i2] * MM[ai][2]) * S[elem];
-                                //double N_NVy = (Vz[i0] * MM[ai][0] + Vz[i1] * MM[ai][1] + Vz[i2] * MM[ai][2]) * S[elem];
-
                                 double L_SUPG = omega * (Hx[elem] * Ax * b[ai] + Hy[elem] * Ay * c[ai]);
                                 li = cs * ai;
                                 double Lb = (1 / 3.0 + L_SUPG);
                                 double La = rho_w * Lb;
-
                                 for (int aj = 0; aj < cu; aj++)
                                 {
                                     lj = cs * aj;
@@ -461,6 +440,7 @@ namespace TestSUPG
                                     RMatrix[li + 1][lj + 1] = rho_w * M_ab + dt * theta * (C_agb - D_agb + eMu * K_ab);
                                 }
                             }
+
                             // получем значения адресов неизвестных
                             GetAdress(knots, ref adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
@@ -471,29 +451,6 @@ namespace TestSUPG
                         // Расчет
                         Ralgebra.getResidual(ref MRight, result_old, 0);
                         algebra.CopyRight(MRight);
-                        //double Right;
-                        //uint idx;
-                        //for (uint belem = 0; belem < mesh.CountBoundElements; belem++)
-                        //{
-                        //    int mark = mesh.GetBoundElementMarker(belem);
-
-                        //    if (mark == 2)
-                        //    {
-                        //        uint i1 = beKnots[belem].Vertex1;
-                        //        uint i2 = beKnots[belem].Vertex2;
-                        //        double Le = Math.Sqrt((X[i1] - X[i2]) * (X[i1] - X[i2]) + (Y[i1] - Y[i2]) * (Y[i1] - Y[i2]));
-                        //        Right = V * Le;
-                        //    }
-                        //    else
-                        //        Right = 0;
-                        //    if (belem == 0)
-                        //    {
-                        //        idx = beKnots[belem].Vertex1;
-                        //        VortexBC((uint)(cs * idx), ColAdress, Right);
-                        //    }
-                        //    idx = beKnots[belem].Vertex2;
-                        //    VortexBC((uint)(cs * idx), ColAdress, Right);
-                        //}
                         // Выполнение граничных условий для функции вихря
                         VortexBC();
                         // Выполнение граничных условий для функции тока
@@ -630,29 +587,6 @@ namespace TestSUPG
                         // Расчет
                         Ralgebra.getResidual(ref MRight, result_old, 0);
                         algebra.CopyRight(MRight);
-                        //double Right;
-                        //uint idx;
-                        //for (uint belem = 0; belem < mesh.CountBoundElements; belem++)
-                        //{
-                        //    int mark = mesh.GetBoundElementMarker(belem);
-
-                        //    if (mark == 2)
-                        //    {
-                        //        uint i1 = beKnots[belem].Vertex1;
-                        //        uint i2 = beKnots[belem].Vertex2;
-                        //        double Le = Math.Sqrt((X[i1] - X[i2]) * (X[i1] - X[i2]) + (Y[i1] - Y[i2]) * (Y[i1] - Y[i2]));
-                        //        Right = V * Le;
-                        //    }
-                        //    else
-                        //        Right = 0;
-                        //    if (belem == 0)
-                        //    {
-                        //        idx = beKnots[belem].Vertex1;
-                        //        VortexBC((uint)(cs * idx), ColAdress, Right);
-                        //    }
-                        //    idx = beKnots[belem].Vertex2;
-                        //    VortexBC((uint)(cs * idx), ColAdress, Right);
-                        //}
                         // Выполнение граничных условий для функции вихря
                         VortexBC();
                         // Выполнение граничных условий для функции тока
@@ -759,21 +693,16 @@ namespace TestSUPG
         {
             double Right;
             uint idx;
+            var bLength =  wMesh.GetLb();
             for (uint belem = 0; belem < mesh.CountBoundElements; belem++)
             {
                 int mark = mesh.GetBoundElementMarker(belem);
-                if (mark == 2)
+                if (mark == 2) // свободная поверхность
                 {
                     uint i1 = beKnots[belem].Vertex1;
                     uint i2 = beKnots[belem].Vertex2;
-                    double Le = Math.Sqrt((X[i1] - X[i2]) * (X[i1] - X[i2]) + (Y[i1] - Y[i2]) * (Y[i1] - Y[i2]));
-                    if (VelosityUy == null)
-                        Right = V * Le;
-                    else
-                    {
-                        double y = 0.5 * (X[i1] + X[i2]);
-                        Right = Le * VelosityUy.FunctionValue(y);
-                    }
+                    double y = 0.5 * (X[i1] + X[i2]);
+                    Right = VelosityUy.FunctionValue(y) * bLength[belem]; 
                 }
                 else
                     Right = 0;
@@ -802,9 +731,7 @@ namespace TestSUPG
             for (int i = 0; i < ColElems.Length; i++)
             {
                 if (i % cs == 1)
-                {
                     sumVortex += ColElems[i]; ColElems[i] = 0;
-                }
             }
             ColElems[IndexRow + 1] = sumVortex;
             IndexRow++;

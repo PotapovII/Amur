@@ -24,7 +24,9 @@ namespace NPRiverLib.APRiver1YD
     using System;
     using System.IO;
     using System.Collections.Generic;
-    
+    using CommonLib.Mesh;
+    using MeshLib.Wrappers;
+
 
     /// <summary>
     ///             Базовый тип для створовых русловых задач
@@ -103,6 +105,10 @@ namespace NPRiverLib.APRiver1YD
 
         #region Инструменты и функции
         /// <summary>
+        /// Обертка для КЭ сетки
+        /// </summary>
+        protected IMeshWrapper wMesh;
+        /// <summary>
         ///  начальная геометрия русла
         /// </summary>
         protected IDigFunction Geometry;
@@ -139,6 +145,16 @@ namespace NPRiverLib.APRiver1YD
             return fn;
         }
         #region методы предстартовой подготовки задачи
+        /// <summary>
+        /// Установка адаптеров для КЭ сетки и алгебры
+        /// </summary>
+        /// <param name="_mesh">сетка</param>
+        /// <param name="algebra">решатель</param>
+        public override void Set(IMesh mesh, IAlgebra algebra = null)
+        {
+            base.Set(mesh, algebra);
+            wMesh = new MeshWrapperTri(mesh);
+        }
         /// <summary>
         /// Чтение данных задачи из файла
         /// </summary>

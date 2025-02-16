@@ -403,8 +403,10 @@ namespace RenderLib
                 PointF pb;
                 for (int i = 0; i < elems.Length; i++)
                 {
-                    pa = new PointF((float)X[elems[i].Vertex1], (float)Y[elems[i].Vertex1]);
-                    pb = new PointF((float)X[elems[i].Vertex2], (float)Y[elems[i].Vertex2]);
+                    var i1 = elems[i].Vertex1;
+                    var i2 = elems[i].Vertex2;
+                    pa = new PointF((float)X[i1], (float)Y[i1]);
+                    pb = new PointF((float)X[i2], (float)Y[i2]);
                     zoom.WorldToScreen(ref pa);
                     zoom.WorldToScreen(ref pb);
                     g.FillEllipse(colorScheme.BrushPoint, pa.X - 1.5f, pa.Y - 1.5f, 3, 3);
@@ -421,6 +423,10 @@ namespace RenderLib
                     {
                         PointF pp = new PointF(pc.X + 30f, pc.Y);
                         g.DrawString(i.ToString(), colorScheme.FontKnot, colorScheme.BrushTextKnot, pp);
+                        PointF p1 = new PointF(pc.X + 30f, pc.Y-10);
+                        g.DrawString(i1.ToString(), colorScheme.FontKnot, colorScheme.BrushTextKnot, p1);
+                        PointF p2 = new PointF(pc.X + 30f, pc.Y+10);
+                        g.DrawString(i2.ToString(), colorScheme.FontKnot, colorScheme.BrushTextKnot, p2);
                     }
                 }
             }

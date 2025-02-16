@@ -97,7 +97,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         [Description("Нормальные конечные разности")]
         method1,
         [Description("Через ленту придонных КЭ для тензора Tau")]
-        method2
+        method2,
+        [Description("Через приненочную функцию")]
+        method3
     }
 
     /// <summary>

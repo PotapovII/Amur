@@ -66,13 +66,12 @@
     <Compile Include="APRiver1XD\FVM_ke_River2D\CPatankarStream1XD.cs" />
     <Compile Include="APRiver1XD\FVM_ke_River2D\VPatankarStream1XD.cs" />
     <Compile Include="APRiver1XD\FVM_ke_River2D\PatankarParams1XD.cs" />
-    <Compile Include="APRiver1YD\FDMRiverSectionaChannel.cs" />
+    <Compile Include="APRiver1YD\MFD\FDMRiverSectionaChannel.cs" />
     <Compile Include="APRiver1YD\Params\RiverStreamQuadParams.cs" />
     <Compile Include="APRiver1YD\Params\TurbulentViscosityQuadModel.cs" />
-    <Compile Include="APRiver1YD\TriRoseRiverTask1YD.cs" />
     <Compile Include="APRiver1YD\TriSecRiver_1YD.cs" />
-    <Compile Include="APRiver1YD\TriSecRiverTask1YD.cs" />
-    <Compile Include="APRiver1YD\TriSecRiverTask1YBase.cs" />
+    <Compile Include="APRiver1YD\OnlyUx\TriSecRiverTask1YD.cs" />
+    <Compile Include="APRiver1YD\OnlyUx\TriSecRiverTask1YBase.cs" />
     <Compile Include="APRiver2XYD\APRiver2XYD.cs" />
     <Compile Include="APRiver2XYD\River2DFST\ARiverSWE_FCT_2XYD.cs" />
     <Compile Include="APRiver2XYD\River2DFST\GasDynamics_FCT.cs" />
@@ -107,7 +106,7 @@
     <Compile Include="APRiver1YD\Params\TaskVariant.cs" />
     <Compile Include="APRiver1YD\APRiverFEM1YD.cs" />
     <Compile Include="APRiver1YD\APRiver1YD.cs" />
-    <Compile Include="APRiver1YD\TriSroSecRiverTask1YD.cs" />
+    <Compile Include="APRiver1YD\OnlyUx\TriSroSecRiverTask1YD.cs" />
     <Compile Include="IO\1YD\TaskReader1YD_RvY.cs" />
     <Compile Include="RiverEmpty\ARiverEmpty2XYD.cs" />
     <Compile Include="RiverEmpty\ARiverEmpty1YD.cs" />
@@ -192,5 +191,6 @@
     <None Include="APRiver2XYD\River2DSW\_DOC\Дополнения.doc" />
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

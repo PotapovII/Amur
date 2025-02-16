@@ -16,8 +16,6 @@ namespace GeometryLib.Areas
     {
         public MArea()
         {
-            //AreaLinks = new List<ILink>();
-            //BoundaryLinks = new List<IBoundaryLink>();
         }
         /// <summary>
         /// установить статус фигур

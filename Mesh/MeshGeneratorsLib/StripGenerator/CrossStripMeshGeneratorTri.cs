@@ -261,7 +261,6 @@ namespace MeshGeneratorsLib.StripGenerator
                         }
                     }
                 }
-
                 CountKnots = 0;
                 // дно канала
                 for (int i = 0; i < Count; i++)
@@ -294,6 +293,7 @@ namespace MeshGeneratorsLib.StripGenerator
                         CountKnots++;
                     }
                 }
+
                 // дно канала
                 int belem = 0;
                 for (int i = 0; i < Count - 1; i++)
@@ -311,6 +311,7 @@ namespace MeshGeneratorsLib.StripGenerator
                     mesh.BoundElementsMark[belem] = 2;
                     belem++;
                 }
+
                 if (channelSectionForms == SСhannelForms.trapezoid)
                 {
                     // левая сторона

@@ -170,7 +170,7 @@ namespace NPRiverLib.APRiver1YD
             MEM.Alloc(bounds.Length, ref tau_xy);
             MEM.Alloc(bounds.Length, ref tau_xz);
             MEM.Alloc(bounds.Length, ref Coord);
-            // пробегаем по граничным узлам и записываем для них Ty, Tz T
+            // пробегаем по граничным узлам и записываем для них Ty, Tz 
             double[] xx = mesh.GetCoords(0);
             for (int i = 0; i < bounds.Length - 1; i++)
             {
@@ -197,7 +197,11 @@ namespace NPRiverLib.APRiver1YD
                     tau[i] = tauSplineZ.Value(xtau) * CosG +
                              tauSplineY.Value(xtau) * SinG;
                     if (double.IsNaN(tau[i]) == true)
-                        throw new Exception("Mesh for RiverStreamTask");
+                    {
+                        tau[i] = 0;
+                        //throw new Exception("Mesh for RiverStreamTask");
+                    }
+                        
                 }
             }
             // Сдвиговые напряжения максимум

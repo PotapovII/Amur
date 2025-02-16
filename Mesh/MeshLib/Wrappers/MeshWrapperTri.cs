@@ -317,11 +317,12 @@ namespace MeshLib.Wrappers
                 // перебор по узлам области
                 for (int nod = 0; nod < mesh.CountKnots; nod++)
                 {
-                    int idx = 0;
+                    int idx = -1;
                     double r_min = double.MaxValue;
+
                     for (int belem = 0; belem < mesh.CountBoundElements; belem++)
                     {
-                        if (BoundElementsMark[belem] == 0)
+                        if (BoundElementsMark[belem] != 2)
                         {
                             uint i = BoundElems[belem].Vertex1;
                             uint j = BoundElems[belem].Vertex2;
@@ -337,13 +338,70 @@ namespace MeshLib.Wrappers
                             }
                         }
                     }
+                    if (r_min > Hmax)
+                    {
+                        //double r_minC = double.MaxValue;
+                        //for (int belem = 0; belem < mesh.CountBoundElements; belem++)
+                        //{
+                        //    if (BoundElementsMark[belem] != 2)
+                        //    {
+                        //        uint i = BoundElems[belem].Vertex1;
+                        //        uint j = BoundElems[belem].Vertex2;
+                        //        var Pl = new HPoint(X[nod] - X[i], Y[nod] - Y[i]);
+                        //        var Pp = new HPoint(X[nod] - X[j], Y[nod] - Y[j]);
+                        //        var minE = Math.Min(Pl.Length(), Pp.Length());
+                        //        if (r_minC > minE)
+                        //        {
+                        //            r_minC = minE;
+                        //            idx = belem;
+                        //            if (MEM.Equals(r_minC, 0) == true)
+                        //                break;
+                        //        }
+                        //    }
+                        //}
+                        //uint ii = BoundElems[idx].Vertex1;
+                        //var PA = new HPoint(X[nod] - X[ii], Y[nod] - Y[ii]);
+                        //r_min = Math.Abs(HPoint.Dot(PA, bNormals[idx]));
+                        double r_minC = double.MaxValue;
+                        int belemLast = 0;
+                        for (int belem = 0; belem < mesh.CountBoundElements; belem++)
+                        {
+                            if (BoundElementsMark[belem] != 2)
+                            {
+                                uint i = BoundElems[belem].Vertex1;
+                                var Pl = new HPoint(X[nod] - X[i], Y[nod] - Y[i]);
+                                var minE = Pl.Length();
+                                belemLast = belem;
+                                if (r_minC > minE)
+                                {
+                                    r_minC = minE;
+                                    idx = belem;
+                                    if (MEM.Equals(r_minC, 0) == true)
+                                        break;
+                                }
+                            }
+                        }
+                        {
+                            uint i = BoundElems[belemLast].Vertex1;
+                            var Pl = new HPoint(X[nod] - X[i], Y[nod] - Y[i]);
+                            var minE = Pl.Length();
+                            if (r_minC > minE)
+                            {
+                                r_minC = minE;
+                                idx = belemLast;
+                                if (MEM.Equals(r_minC, 0) == true)
+                                    break;
+                            }
+                        }
+                        r_min = r_minC;
+                    }
                     distance[nod] = r_min;
                     uint iA = BoundElems[idx].Vertex1;
                     HPoint A = new HPoint(X[iA], Y[iA]);
                     var AP = new HPoint(X[nod] - X[iA], Y[nod] - Y[iA]);
                     HPoint C = A + HPoint.Dot(AP,bTau[idx]) * bTau[idx];
-                    double cosGamma = Math.Abs(bNormals[idx].Y) + MEM.Error10;
-                    Hp[nod] = Math.Max(0.01 * Hmax, Math.Min(Hmax, (Y_max - C.Y) / cosGamma));
+                    double cosGamma = Math.Abs(bNormals[idx].Y) + MEM.Error14;
+                    Hp[nod] = Math.Max(0.01 * Hmax, Math.Min(Hmax, (Y_max - C.Y + MEM.Error8) / cosGamma));
                 }
             }
             catch (Exception ex)

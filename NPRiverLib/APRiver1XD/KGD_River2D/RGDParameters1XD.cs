@@ -21,6 +21,10 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
     [Serializable]
     public class RGDParameters1XD : ITProperty<RGDParameters1XD>
     {
+        /// <summary>
+        /// переменная для отображения скорости
+        /// </summary>
+        public double H = 1;
         #region  Параметры русла
         /// <summary>
         /// Расход жидкости на входе
@@ -32,7 +36,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         /// <summary>
         /// Средний уклон русла
         /// </summary>
-        [DisplayName("Средний уклон русла")] 
+        [DisplayName("Средний уклон русла")]
         [Description("Средний уклон русла")]
         [Category("Параметры русла")]
         public double J { get; set; }
@@ -42,7 +46,29 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         [DisplayName("Число Рейнольдса")]
         [Description("Число Рейнольдса")]
         [Category("Параметры русла")]
-        public double Re { get; set; }
+        public double Re { get { return Q / Nu; } }
+        //
+        /// <summary>
+        /// Максимальная скорость
+        /// </summary>
+        [DisplayName("Максимальная скорость")]
+        [Description("Максимальная скорость")]
+        [Category("Параметры русла")]
+        public double Umax
+        {
+            get
+            {
+                return Convert.ToDouble(3.0 / 2.0 * Q / H);
+            }
+        }
+        //
+        /// <summary>
+        /// вязкость
+        /// </summary>
+        [DisplayName("Вязкость жидксоти")]
+        [Description("Вязкость жидксоти")]
+        [Category("Параметры русла")]
+        public double Nu { get; set; }
 
         #endregion  
         #region  Параметры КГД метода
@@ -60,13 +86,26 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         [Description("Релаксация регуляризации")]
         [Category("Параметры КГД метода")]
         public double alpha_r { get; set; }
+        double _tau = 0.0001;
         /// <summary>
         /// Параметр регуляризации
         /// </summary>
         [DisplayName("tau")]
-        [Description("Параметр регуляризации, с")]
+        [Description("Параметр регуляризации, с. \nЕсли ввести в поле -dx, то посчитается значение по формуле alpha*dx/cs, где alpha=1, сs - скорость звука в воде 1500 м/с")]
         [Category("Параметры КГД метода")]
-        public double tau { get; set; }
+        public double tau
+        {
+            get { return _tau; }
+            set
+            {
+                if (value < 0)
+                {
+                    _tau = -value / 1500.0;
+                }
+                else
+                    _tau = value;
+            }
+        }
 
         [DisplayName("HydroIteration")]
         [Description("Количество внутренних итераций по гидродинамики")]
@@ -166,28 +205,37 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         /// Время размыва дна = время расчета подзадачи гидродинамики
         /// </summary>
         public double time_b;
-
+        [DisplayName("BedIterationTime")]
+        [Description("Временной шаг по размыву дна")]
+        [Category("Прочее")]
+        public double Time_b
+        {
+            get
+            {
+                return time_b;
+            }
+            set { time_b = value; }
+        }
         #endregion
 
         public RGDParameters1XD()
         {
-            Re = 723.5f;
-            alpha_n = 0.005f;
-            alpha_r = 0.005f;
-            dt_local = 0.001f;
-            time_b = 0.25f;
-            tau = 0.0001f;
-            Q = 0.0369f;
+            Nu = 0.000001;
+            alpha_n = 1;
+            alpha_r = 1;
+            dt_local = 0.001;
+            time_b = 0.25;
+            tau = 0.0001;
+            Q = 0.1;
             relaxP = 1;
-            errP = 0.001f;
+            errP = 0.0001;
             surf_flag = false;
-            IndexMethod =  ModeTauCalklType.method2;
-            wallFunctionType = WallFunctionType.smoothWall_Volkov;
+            IndexMethod =  ModeTauCalklType.method3;
+            wallFunctionType = WallFunctionType.smoothWall_Lutsk;
             turbulentModelType = TurbulentModelType.Model_k_w;
             delta = 0.05;
             typePU = TypePU.Cpu;
-            J = 0.00132;
-            velocityInProfile = VelocityInProfile.PorabolicProfile;
+            velocityInProfile = VelocityInProfile.PowerProfile;
         }
         public RGDParameters1XD(RGDParameters1XD p)
         {
@@ -196,7 +244,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         public void SetParams(RGDParameters1XD p)
         {
             if (p == null) p = new RGDParameters1XD();
-            Re = p.Re;
+            Nu = p.Nu;
             alpha_n = p.alpha_n;
             alpha_r = p.alpha_r;
             dt_local = p.dt_local;
@@ -215,28 +263,28 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
             calculationType = p.calculationType;
             velocityInProfile = p.velocityInProfile;
         }
-        ///// <summary>
-        ///// свойств задачи
-        ///// </summary>
-        ///// <param name="p"></param>
-        //public object GetParams() { return this; }
-        ///// <summary>
-        ///// Установка свойств задачи
-        ///// </summary>
-        ///// <param name="p"></param>
-        //public void SetParams(object p)
-        //{
-        //    SetParams((RGDParameters1XD)p);
-        //}
-        ///// <summary>
-        ///// Чтение параметров задачи из файла
-        ///// </summary>
-        ///// <param name="file"></param>
-        //public void LoadParams(string fileName = "")
-        //{
-        //    string message = "Файл парамеров задачи - доные деформации - не обнаружен";
-        //    WR.LoadParams(Load, message, fileName);
-        //}
+        /// <summary>
+        /// свойств задачи
+        /// </summary>
+        /// <param name="p"></param>
+        public object GetParams() { return this; }
+        /// <summary>
+        /// Установка свойств задачи
+        /// </summary>
+        /// <param name="p"></param>
+        public void SetParams(object p)
+        {
+            SetParams((RGDParameters1XD)p);
+        }
+        /// <summary>
+        /// Чтение параметров задачи из файла
+        /// </summary>
+        /// <param name="file"></param>
+        public void LoadParams(string fileName = "")
+        {
+            string message = "Файл парамеров задачи - доные деформации - не обнаружен";
+            WR.LoadParams(Load, message, fileName);
+        }
         /// <summary>
         /// Чтение параметров задачи из файла
         /// </summary>
@@ -245,7 +293,7 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         {
             try
             {
-                Re = LOG.GetDouble(file.ReadLine());
+                Nu = LOG.GetDouble(file.ReadLine());
                 alpha_n = LOG.GetDouble(file.ReadLine());
                 alpha_r = LOG.GetDouble(file.ReadLine());
                 dt_local = LOG.GetDouble(file.ReadLine());

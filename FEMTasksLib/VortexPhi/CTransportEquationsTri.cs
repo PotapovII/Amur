@@ -876,6 +876,7 @@ namespace FEMTasksLib.FESimpleTask
                     double Gamma = 0;
                     if (Pe > 2)
                         Gamma = Hk / (2 * mV);
+                    double rho_w = SPhysics.rho_w;
                     // Вычисление ЛЖМ
                     for (int i = 0; i < cu; i++)
                     {
@@ -887,17 +888,17 @@ namespace FEMTasksLib.FESimpleTask
                             // конверктивные члены плоские
                             double additionC = N_NVx * b[j] + N_NVy * c[j];
                             // вязкие конверктивные члены плоские
-                            double additionC_Mu = - (dMu_dy * b[j] + dMu_dz * c[j]) * S[elem] / 3 / SPhysics.rho_w;
+                            double additionC_Mu = - (dMu_dy * b[j] + dMu_dz * c[j]) * S[elem] / 3 / rho_w;
                             // конверктивные члены плоские SUPG
                             double additionSUPG =      L_SUPG * (eVx * b[j] + eVy * c[j]) * S[elem] / 3;
                             // вязкие конверктивные члены плоские SUPG
-                            double additionSUPG_mu = - L_SUPG * (dMu_dy * b[j] + dMu_dz * c[j]) * S[elem] / SPhysics.rho_w;
+                            double additionSUPG_mu = - L_SUPG * (dMu_dy * b[j] + dMu_dz * c[j]) * S[elem] / rho_w;
                             //  вязкие члены плоские
                             double additionD   = mU * (b[i] * b[j] + c[i] * c[j]) * S[elem];
                             //  вязкие члены цилиндрические 
                             double additionD_R = Ring * mU / R * c[i] * S[elem] / 3;
                             LaplMatrix[i][j] = additionD + additionD_R + 
-                                (additionC + additionC_Mu + additionSUPG + additionSUPG_mu) * SPhysics.rho_w;
+                                (additionC + additionC_Mu + additionSUPG + additionSUPG_mu) * rho_w;
                         }
                     }
                     algebra.AddToMatrix(LaplMatrix, knots);

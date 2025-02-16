@@ -27,14 +27,12 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
     using AlgebraLib;
     using GeometryLib;
     using MeshGeneratorsLib;
-    using CommonLib.EConverter;
     using CommonLib.ChannelProcess;
     using CommonLib.Physics;
     using CommonLib.Geometry;
     using CommonLib.Delegate;
     using NPRiverLib.APRiver_1XD;
     using NPRiverLib.IO;
-    using NPRiverLib.ABaseTask;
     using MeshLib.Wrappers;
     using CommonLib.Function;
 
@@ -260,6 +258,9 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         /// </summary>
         public KGD_Eliz2024_1XD() : this(new RGDParameters1XD()) 
         { 
+            //wrapper= new KsiWrapper(mesh);
+            //wrapper.TriangleGeometryCalculation(true);
+            //wrapper.MakeWallFuncStructure(true);
         }
         /// <summary>
         /// Конструктор c заданными параметрами
@@ -327,12 +328,18 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                 case ModeTauCalklType.method2:
                     CalkBottomTauXY = CalkTau2;
                     break;
+                case ModeTauCalklType.method3:
+                    CalkBottomTauXY = CalcTauWallFunc;
+                    break;
             }
             YPlus = new YPLUS();
 
             //if (mesh != null && algebra != null)
             //    Set(mesh, algebra);
         }
+
+       
+
         /// ----------------------------------------------------------------------
         #region IRiver
 
@@ -436,8 +443,6 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
         /// <param name="p"></param>
         public bool LoadData(string fileName)
         {
-            SinJ = SinJ;
-            CosJ = CosJ;
             string message = "Файл данных задачи не обнаружен";
             return WR.LoadParams(LoadData, message, fileName);
         }
@@ -606,7 +611,15 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
             }
             MEM.MemCopy(ref tauX, BTau);
         }
-
+        private void CalcTauWallFunc()
+        {           
+            for (int i = 0; i < mesh.CountBottom; i++)
+            {
+                int knot = mesh.BottomKnots[i] + 1;
+                //
+                BTauC[i] = WFunc(knot, wrapper.BWallDistance[i]);         
+            }
+        }
         protected void CalkTau0()
         {
             // через ленту tau_l

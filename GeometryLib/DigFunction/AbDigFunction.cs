@@ -7,12 +7,13 @@
 //---------------------------------------------------------------------------
 namespace GeometryLib
 {
-    using CommonLib.Function;
-    using MemLogLib;
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Collections.Generic;
+
+    using MemLogLib;
+    using CommonLib.Function;
     /// <summary>
     /// ОО: Класс - для загрузки начальной геометрии русла в створе реки
     /// </summary>
@@ -239,7 +240,6 @@ namespace GeometryLib
         public void GetMark(double[] x, ref int[] Mark)
         {
             MEM.Alloc(x.Length, ref Mark);
-
             for (int i = 0; i < x.Length; i++)
                 for (int i0 = 1; i0 < x0.Count; i0++)
                     if (x0[i0] >= x[i])

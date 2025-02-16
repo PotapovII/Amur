@@ -37,6 +37,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="RederEditLib">
+      <HintPath>..\..\RederEditLib\obj\Debug\RederEditLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -247,10 +250,6 @@
     <ProjectReference Include="..\..\NPRiverLib\NPRiverLib.csproj">
       <Project>{954912e8-f132-4779-8300-520f1c534665}</Project>
       <Name>NPRiverLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\RederEditLib\RenderEditLib.csproj">
-      <Project>{7bac4499-c834-4cd8-92fe-614027046dab}</Project>
-      <Name>RenderEditLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\RenderLib\RenderLib.csproj">
       <Project>{3330d65d-e283-47a3-b43c-ce8c4eb2b201}</Project>

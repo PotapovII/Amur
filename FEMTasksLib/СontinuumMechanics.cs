@@ -36,7 +36,10 @@ namespace FEMTasksLib
     using MemLogLib;
     using CommonLib;
     using CommonLib.Mesh;
-
+    /// <summary>
+    /// Сплошная среда
+    /// </summary>
+    [Serializable]
     public class СontinuumMechanicsTri
     {
         /// <summary>
@@ -68,6 +71,7 @@ namespace FEMTasksLib
         { 
             this.Sigma = Sigma;
             this.R_min = R_min;
+            this.wMesh = wMesh;
             mesh = wMesh.GetMesh();
 
             MEM.Alloc(mesh.CountKnots, ref E_xx);
@@ -96,6 +100,7 @@ namespace FEMTasksLib
         {
             try
             {
+                MEM.Alloc(mesh.CountKnots, 6, ref tDef, "tDef");
                 var eKnots = mesh.GetAreaElems();
                 var dNdx = wMesh.GetdNdx();
                 var dNdy = wMesh.GetdNdy();

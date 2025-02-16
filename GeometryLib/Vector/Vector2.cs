@@ -10,12 +10,12 @@
 namespace GeometryLib.Vector
 {
     using System;
+    using System.Linq;
     using System.Text;
     using System.Globalization;
     using System.Runtime.CompilerServices;
-    using CommonLib.Geometry;
-    using System.Linq;
 
+    using CommonLib.Geometry;
     /// <summary>
     /// Представляет двухмерный вещественный вектор с полями двойной точности.
     /// </summary>

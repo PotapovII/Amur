@@ -31,8 +31,8 @@ namespace BLLib
         /// <summary>
         /// Параметр Шильдса
         /// </summary>
-        double[] Theta = null;
-        double normaTheta;
+        //double[] Theta;
+        //double normaTheta;
         public override IBedLoadTask Clone()
         {
             return new SrossSectionalBedLoadTask1D(new BedLoadParams());
@@ -43,7 +43,7 @@ namespace BLLib
         public SrossSectionalBedLoadTask1D(BedLoadParams p) : base(p)
         {
             InitBedLoad();
-            normaTheta = SPhysics.PHYS.normaTheta;
+            //normaTheta = SPhysics.PHYS.normaTheta;
             name = "деформация поперечного одно-фракционного дна (МКЭ).";
             tTask = TypeTask.streamY1D;
         }
@@ -53,7 +53,7 @@ namespace BLLib
             base.InitBedLoad();
             double d50 = SPhysics.PHYS.d50;
 
-            normaTheta = SPhysics.PHYS.normaTheta;
+            //normaTheta = SPhysics.PHYS.normaTheta;
         }
         /// <summary>
         /// Вычисление текущего поперечного расхода 

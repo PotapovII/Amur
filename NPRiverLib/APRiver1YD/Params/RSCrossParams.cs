@@ -20,6 +20,8 @@ namespace NPRiverLib.APRiver1YD.Params
     using CommonLib.EConverter;
     using CommonLib.Physics;
     using CommonLib.EddyViscosity;
+    using MeshGeneratorsLib.StripGenerator;
+    using MeshGeneratorsLib.TapeGenerator;
 
     /// <summary>
     /// Тип решателя
@@ -101,7 +103,6 @@ namespace NPRiverLib.APRiver1YD.Params
         [Description("вихрь на поверхность потока равен нулю, на дне нет")]
         VortexZeroBed = 3
     }
-
     /// <summary>
     ///  ОО: Параметры для класса RiverStreamTask 
     /// </summary>
@@ -168,9 +169,15 @@ namespace NPRiverLib.APRiver1YD.Params
         [Category("Сетка")]
         public int CountBLKnots { get; set; }
         /// <summary>
+        /// Тип ленточного герератора КЭ сетки для створовых задач
+        /// </summary>
+        [DisplayName("тип ленточного герератора КЭ сетки для створовых задач")]
+        [Category("Сетка")]
+        public StripGenMeshType typeMeshGenerator { get; set; }
+        /// <summary>
         /// Скорость Ux на поверхности потока задана
         /// </summary>
-        [DisplayName("Скорость Ux на поверхности потока задана")]
+        [DisplayName("Скорость Ux и Vy на поверхности потока задана")]
         [Category("Задача")]
         [TypeConverter(typeof(BooleanTypeConverterYN))]
         public bool velocityOnWL { get; set; }
@@ -179,7 +186,7 @@ namespace NPRiverLib.APRiver1YD.Params
         /// </summary>
         [DisplayName("Метод расчета динамической скорости на стенках канала")]
         [Category("Задача")]
-        [TypeConverter(typeof(BooleanTypeConverterYN))]
+        [TypeConverter(typeof(MyEnumConverter))]
         public ECalkDynamicSpeed typeEddyViscosity { get; set; }
 
         #region + 03 02 2025 ОО: Параметры для класса TriSecRiver_1YD 
@@ -202,10 +209,10 @@ namespace NPRiverLib.APRiver1YD.Params
         [Category("Задача")]
         public double RadiusMin { get; set; }
         /// <summary>
-        /// Тип решаемых уравнений Стокса, Навье-Стокса, Рейнольдс а также
+        /// Тип гидродинамики 0 - нестационарные 1 - стационарные у-я Рейнольдса 2 - Стокс
         /// нестационар/стационар
         /// </summary>
-        [DisplayName("Тип решаемых уравнений Стокса, Рейнольдса ...")]
+        [DisplayName("Тип гидродинамики 0 - нестационарные 1 - стационарные у-я Рейнольдса 2 - Стокс")]
         [Category("Задача")]
         public int ReTask { get; set; }
         
@@ -227,7 +234,7 @@ namespace NPRiverLib.APRiver1YD.Params
             int CountBLKnots, bool velocityOnWL, int NLine, int SigmaTask, int ReTask, 
             ECalkDynamicSpeed typeEddyViscosity, ETurbViscType turbViscTypeA,
             ETurbViscType turbViscTypeB, CrossAlgebra сrossAlgebra, 
-            TaskVariant taskVariant, BCTypeVortex bcTypeVortex)
+            TaskVariant taskVariant, BCTypeVortex bcTypeVortex, StripGenMeshType typeMeshGenerator)
         {
             this.J = J;
             this.RadiusMin = RadiusMin;
@@ -245,6 +252,7 @@ namespace NPRiverLib.APRiver1YD.Params
             this.сrossAlgebra = сrossAlgebra;
             this.taskVariant = taskVariant;
             this.bcTypeVortex = bcTypeVortex;
+            this.typeMeshGenerator = typeMeshGenerator; 
         }
         protected virtual void SetDef()
         {
@@ -255,6 +263,7 @@ namespace NPRiverLib.APRiver1YD.Params
             taskVariant = TaskVariant.WaterLevelFun;
             bcTypeVortex = BCTypeVortex.VortexAllCalk;
             typeEddyViscosity = ECalkDynamicSpeed.u_start_U;
+            typeMeshGenerator = StripGenMeshType.StripMeshGenerator_3;
             velocityOnWL = true;
             axisSymmetry = 0;
             CountKnots = 400;
@@ -282,6 +291,7 @@ namespace NPRiverLib.APRiver1YD.Params
             bcTypeVortex = p.bcTypeVortex;
             velocityOnWL = p.velocityOnWL;
             typeEddyViscosity = p.typeEddyViscosity;
+            typeMeshGenerator = p.typeMeshGenerator;
             // + 03 02 2025
             NLine = p.NLine;
             SigmaTask = p.SigmaTask;
@@ -305,7 +315,8 @@ namespace NPRiverLib.APRiver1YD.Params
                 typeEddyViscosity = (ECalkDynamicSpeed)LOG.GetInt(file.ReadLine());
                 сrossAlgebra = (CrossAlgebra)LOG.GetInt(file.ReadLine());
                 taskVariant = (TaskVariant)LOG.GetInt(file.ReadLine());
-                bcTypeVortex = (BCTypeVortex)LOG.GetDouble(file.ReadLine());
+                bcTypeVortex = (BCTypeVortex)LOG.GetInt(file.ReadLine());
+                typeMeshGenerator =(StripGenMeshType)LOG.GetInt(file.ReadLine());
                 axisSymmetry = LOG.GetInt(file.ReadLine());
                 CountKnots = LOG.GetInt(file.ReadLine());
                 CountBLKnots = LOG.GetInt(file.ReadLine());

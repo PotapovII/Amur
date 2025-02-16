@@ -261,12 +261,15 @@ namespace FEMTasksLib.FEMTasks.VortexStream
             {
                 int mark = bknotsMark[bknot];
                 uint knot = (uint)bknots[bknot];
-                if (mark == 2 && velosity != null) // свободная поверхность
+                if (mark == 2) // свободная поверхность
                 {
-                    double y = X[knot];
-                    double bUx = velosity.FunctionValue(y);
-                    LUx.Add(bUx);
-                    LIdx.Add(knot);
+                    if (velosity != null)
+                    {
+                        double y = X[knot];
+                        double bUx = velosity.FunctionValue(y);
+                        LUx.Add(bUx);
+                        LIdx.Add(knot);
+                    }
                 }
                 else
                 {

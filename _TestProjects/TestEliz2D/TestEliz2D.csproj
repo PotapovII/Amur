@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5D40943C-D9EF-4142-BBC6-4DE8E1356780}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>TestEliz2D</RootNamespace>
+    <AssemblyName>TestEliz2D</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MGenerators\AlgGenerator.cs" />
+    <Compile Include="MGenerators\AlgParameter.cs" />
+    <Compile Include="Area\AreasProfile2D.cs" />
+    <Compile Include="MGenerators\DiffGenerator.cs" />
+    <Compile Include="MGenerators\DiffParameter.cs" />
+    <Compile Include="MGenerators\FletcherGenerator.cs" />
+    <Compile Include="MGenerators\FletcherParameter.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Area\ManagerOfChildsAreaBed.cs" />
+    <Compile Include="MGenerators\ManagerOfChildsGenerators.cs" />
+    <Compile Include="MGenerators\MeshBiulderProfile2D.cs" />
+    <Compile Include="PointsGeneratorEliz.cs" />
+    <Compile Include="MGenerators\OrthoGenerator.cs" />
+    <Compile Include="MGenerators\OrthoParameter.cs" />
+    <Compile Include="Parameter.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AreaProfileControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AreaProfileControl.Designer.cs">
+      <DependentUpon>AreaProfileControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewForm.Designer.cs">
+      <DependentUpon>ViewForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="AreaProfileControl.resx">
+      <DependentUpon>AreaProfileControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewForm.resx">
+      <DependentUpon>ViewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CommonLib\CommonLib.csproj">
+      <Project>{A387740F-C4F9-44F3-AFA8-0B55EA4487FA}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GeometryLib\GeometryLib.csproj">
+      <Project>{cb805006-1b1b-412b-9fde-4c8e8ad7ce13}</Project>
+      <Name>GeometryLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MemLogLib\MemLogLib.csproj">
+      <Project>{4d84c29a-57f3-44d0-9520-0294dc35763e}</Project>
+      <Name>MemLogLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RenderLib\RenderLib.csproj">
+      <Project>{3330d65d-e283-47a3-b43c-ce8c4eb2b201}</Project>
+      <Name>RenderLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_ExternalLibraries\Cloo\Cloo\Cloo.csproj">
+      <Project>{48885e8c-19eb-4408-8a06-3792586ef500}</Project>
+      <Name>Cloo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_ExternalLibraries\InterpolationLib\InterpolationLib.csproj">
+      <Project>{0d7aa6fb-b70d-4ff1-9a05-12e3dd485ac4}</Project>
+      <Name>InterpolationLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_ExternalLibraries\ManagedCUDA\ManagedCuda.csproj">
+      <Project>{f5a866cc-151e-472a-8020-75f62d74d687}</Project>
+      <Name>ManagedCuda</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mesh\MeshAdapterLib\MeshAdapterLib.csproj">
+      <Project>{2e2053d5-a41d-487f-8b7b-12f8673edf65}</Project>
+      <Name>MeshAdapterLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mesh\MeshLib\MeshLib.csproj">
+      <Project>{b8062e08-76ac-4ec2-a7aa-2d7a4c601351}</Project>
+      <Name>MeshLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NPRiverLib\NPRiverLib.csproj">
+      <Project>{954912E8-F132-4779-8300-520F1C534665}</Project>
+      <Name>NPRiverLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\AreaEliz2DScheme.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

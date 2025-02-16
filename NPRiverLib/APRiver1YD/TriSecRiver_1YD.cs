@@ -16,9 +16,6 @@ namespace NPRiverLib.APRiver1YD
     using NPRiverLib.IO;
     using NPRiverLib.APRiver1YD.Params;
 
-    using MeshLib.Wrappers;
-    using MeshGeneratorsLib.StripGenerator;
-
     using CommonLib;
     using CommonLib.IO;
     using CommonLib.Mesh;
@@ -27,6 +24,7 @@ namespace NPRiverLib.APRiver1YD
     using CommonLib.ChannelProcess;
 
     using EddyViscosityLib;
+    using MeshGeneratorsLib.StripGenerator;
     using FEMTasksLib.FEMTasks.VortexStream;
 
     /// <summary>
@@ -86,10 +84,6 @@ namespace NPRiverLib.APRiver1YD
         /// </summary>
         public IDigFunction VelosityUy = null;
         /// <summary>
-        /// Обертка для КЭ сетки
-        /// </summary>
-        protected IMeshWrapper wMesh;
-        /// <summary>
         /// Задача для расчета нормальной скорости потока
         /// </summary>
         protected ReynoldsTransportTri taskUx;
@@ -136,7 +130,18 @@ namespace NPRiverLib.APRiver1YD
                     taskUx.SolveTaskUx(ref Ux, eddyViscosity, Phi);
                     flagErr++;
                     // расчет вторичных потоков в створе
-                    taskPV.SolveTaskRe(ref Phi, ref Vortex, eddyViscosity, Ux, dtime);
+                    switch(Params.ReTask)
+                    {
+                        case 0:
+                            taskPV.SolveReynoldsTask(ref Phi, ref Vortex, eddyViscosity, Ux, dtime);
+                            break;
+                        case 1:
+                            taskPV.SolveReynoldsTask(ref Phi, ref Vortex, eddyViscosity, Ux);
+                            break;
+                        case 2:
+                            taskPV.SolveStokesTask(ref Phi, ref Vortex, eddyViscosity, Ux);
+                            break;
+                    }
                     FlagStartMu = true;
                     flagErr++;
                     // расчет  придонных касательных напряжений на дне
@@ -210,13 +215,10 @@ namespace NPRiverLib.APRiver1YD
             // генерация сетки
             bool axisOfSymmetry = Params.axisSymmetry == 1 ? true : false;
             if (meshGenerator == null)
-                meshGenerator = new HStripMeshGenerator(axisOfSymmetry);
-            //meshGenerator = new HStripMeshGenerator();
+                meshGenerator = SMGManager.GetMeshGenerator(Params.typeMeshGenerator, axisOfSymmetry);
             mesh = meshGenerator.CreateMesh(ref WetBed, waterLevel, bottom_x, bottom_y);
-            //TestMesh.Show(mesh);
             right = meshGenerator.Right();
             left = meshGenerator.Left();
-            wMesh = new MeshWrapperTri(mesh);
             MEM.Alloc(mesh.CountKnots, ref eddyViscosity, "eddyViscosity");
             MEM.Alloc(mesh.CountKnots, ref Ux, "Ux");
             MEM.Alloc(mesh.CountKnots, ref Phi, "Phi");
@@ -225,11 +227,26 @@ namespace NPRiverLib.APRiver1YD
             MEM.Alloc(mesh.CountKnots, ref TauY, "TauY");
             MEM.Alloc(mesh.CountKnots, ref TauZ, "TauZ");
             MEM.Alloc(Params.CountKnots, ref tau, "tau");
-
+            // получение ширины ленты для алгебры
+            int WidthMatrix = (int)mesh.GetWidthMatrix();
+            // TO DO подумать о реклонировании algebra если размер матрицы не поменялся 
+            algebra = new AlgebraLUTape((uint)mesh.CountKnots, WidthMatrix, WidthMatrix);
+            algebra2 = new AlgebraLUTape((uint)(2 * mesh.CountKnots), 2 * WidthMatrix, 2 * WidthMatrix);
+            // создание общего враппера сетки для задачи
+            Set(mesh, algebra);
+            
             if (taskUx == null)
             {
-                taskUx = new ReynoldsTransportTri(Params.J, Params.RadiusMin, Params.SigmaTask, VelosityUx);
-                taskPV = new ReynoldsVortexStreamTri(Params.NLine, Params.SigmaTask, Params.RadiusMin, VelosityUy, Params.theta);
+                if (Params.velocityOnWL == true)
+                {
+                    taskUx = new ReynoldsTransportTri(Params.J, Params.RadiusMin, Params.SigmaTask, VelosityUx);
+                    taskPV = new ReynoldsVortexStreamTri(Params.NLine, Params.SigmaTask, Params.RadiusMin, VelosityUy, Params.theta);
+                }
+                else
+                {
+                    taskUx = new ReynoldsTransportTri(Params.J, Params.RadiusMin, Params.SigmaTask, null);
+                    taskPV = new ReynoldsVortexStreamTri(Params.NLine, Params.SigmaTask, Params.RadiusMin, null, Params.theta);
+                }
                 BEddyViscosityParam p = new BEddyViscosityParam(1, Params.SigmaTask, Params.J, Params.RadiusMin, SСhannelForms.halfPorabolic);
                 // вычисление начальной вихревой вязкости потока по алгебраической модели Leo_C_van_Rijn1984
                 if (MEM.Equals(eddyViscosity.Sum(), 0) == true)
@@ -241,12 +258,6 @@ namespace NPRiverLib.APRiver1YD
                 // вычисление начальной вихревой вязкости потока
                 taskViscosity = MuManager.Get(Params.turbViscTypeA, p);
             }
-            // получение ширины ленты для алгебры
-            int WidthMatrix = (int)mesh.GetWidthMatrix();
-            // TO DO подумать о реклонировании algebra если размер матрицы не поменялся 
-            algebra = new AlgebraLUTape((uint)mesh.CountKnots, WidthMatrix, WidthMatrix);
-            algebra2 = new AlgebraLUTape((uint)(2 * mesh.CountKnots), 2 * WidthMatrix, 2 * WidthMatrix);
-
             if (taskViscosity.Cet_cs() == 1)
                 taskViscosity.SetTask(mesh, algebra, wMesh);
             else
@@ -285,16 +296,17 @@ namespace NPRiverLib.APRiver1YD
             bool axisOfSymmetry = Params.axisSymmetry == 1 ? true : false;
             if (meshGenerator == null)
                 meshGenerator = new HStripMeshGenerator(axisOfSymmetry);
-            //meshGenerator = new HStripMeshGenerator();
+            
             mesh = meshGenerator.CreateMesh(ref WetBed, waterLevel, bottom_x, bottom_y);
             right = meshGenerator.Right();
             left = meshGenerator.Left();
-            wMesh = new MeshWrapperTri(mesh);
             // получение ширины ленты для алгебры
             int WidthMatrix = (int)mesh.GetWidthMatrix();
             // TO DO подумать о реклонировании algebra если размер матрицы не поменялся 
             algebra = new AlgebraLUTape((uint)mesh.CountKnots, WidthMatrix, WidthMatrix);
             algebra2 = new AlgebraLUTape((uint)(2 * mesh.CountKnots), 2 * WidthMatrix, 2 * WidthMatrix);
+            // создание общего враппера сетки для задачи
+            Set(mesh, algebra);
 
             if (taskViscosity.Cet_cs() == 1)
                 taskViscosity.SetTask(mesh, algebra, wMesh);

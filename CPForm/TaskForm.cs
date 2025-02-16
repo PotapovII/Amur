@@ -422,6 +422,11 @@ namespace CPForm
                 Logger.Instance.Exception(ex);
             }
         }
+        /// <summary>
+        /// Импорт задачи из файла
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void smImportData_Click(object sender, EventArgs e)
         {
             try
@@ -437,7 +442,9 @@ namespace CPForm
                     if (task.channelProcessError != ChannelProcessError.notError)
                         throw new Exception(task.GetError());
                     this.Text = Name + " " + openFileDialog2.FileName;
+                    // установка параметров загруженной задачи в гриды окна управления
                     SetGrid();
+                    // отображение данных загруженной задачи
                     SavePoint sp = (SavePoint)task.GetSavePoint();
                     if (sp != null)
                     { 
@@ -467,30 +474,46 @@ namespace CPForm
             saveFileDialog1.Filter = tmp;
         }
         #endregion
+        /// <summary>
+        /// Пауза в расчетах
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void smPauseTask_Click(object sender, EventArgs e)
         {
             PauseTask();
         }
+        /// <summary>
+        /// Старт задачи
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void smStartTask_Click(object sender, EventArgs e)
         {
             taskState = TaskState.startTask;
             IRiver rtask = mrt.Clone(idxRiver);
             IBedLoadTask btask = mbt.Clone(idxBload);
             task = new ChannelProcessPro(rtask, btask);
+            // загрузка параметров по умолчанию в созданную задачу
             SetTaskParams();
+            // получение загрузчика задачи
             IOFormater<IRiver> loader = rtask.GetFormater();
+            // получение от загрузчика задачи списка тестовых кейсов
             List<string> TaskNames = loader.GetTestsName();
-            // загрузка уровней дна, расходов, ...
+            // загрузка задачи из файла / или класса чтения
             uint testTaskID = 0;
+            // при наличии тестовых кейсов запуск окна выбора
             if (TaskNames.Count > 1)
             {
                 FTestsList ff = new FTestsList(TaskNames);
                 if (ff.ShowDialog() == DialogResult.OK)
-                {
                     testTaskID = (uint)ff.GetTaskID();
-                }
             }
+            // загрузка задачи по умолчанию или тестовых кейсов
             task.LoadComputationalDomainDefault(testTaskID);
+            // установка параметров загруженной задачи в гриды окна управления
+            SetGrid();
+            // запуск задачи на выполнение
             RunTask();
             logger.Info("Запуск задачи на выполнение");
         }

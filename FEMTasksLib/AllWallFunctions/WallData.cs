@@ -164,8 +164,8 @@ namespace FEMTasksLib.AllWallFunctions
                 double zeta  = Math.Abs( Vector2.Dot(normal[f], V) );
                 //if (zeta < 0)
                 //    zeta = zeta;
-                if (alpha < 0)
-                    alpha = alpha;
+                //if (alpha < 0)
+                //    alpha = alpha;
 
                 double sss = mWDLink.FacetsLen[f];
 

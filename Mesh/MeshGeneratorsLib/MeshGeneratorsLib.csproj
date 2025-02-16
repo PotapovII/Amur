@@ -72,6 +72,8 @@
     <Compile Include="Renumberation\FERenumberator.cs" />
     <Compile Include="StripGenerator\AStripMeshGenerator.cs" />
     <Compile Include="StripGenerator\ACrossStripMeshGenerator.cs" />
+    <Compile Include="StripGenerator\BoundaryCrossSectionType.cs" />
+    <Compile Include="StripGenerator\SMGManager.cs" />
     <Compile Include="StripGenerator\CrossStripMap.cs" />
     <Compile Include="StripGenerator\CrossStripMeshGeneratorQuad.cs" />
     <Compile Include="StripGenerator\CrossStripMeshGeneratorTri.cs" />

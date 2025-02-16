@@ -13,14 +13,16 @@
 
 namespace NPRiverLib.APRiver1XD.BEM_River2D
 {
-    using AlgebraLib;
-    using CommonLib;
-    using MemLogLib;
-    using GeometryLib;
     using System;
-    using CommonLib.Physics;
-    using CommonLib.IO;
+
+    using MemLogLib;
+    using AlgebraLib;
+    using GeometryLib;
     using NPRiverLib.IO;
+
+    using CommonLib;
+    using CommonLib.IO;
+    using CommonLib.Physics;
 
     [Serializable]
     public class RiverBEMCircle1XD : ARiverBEM1XD

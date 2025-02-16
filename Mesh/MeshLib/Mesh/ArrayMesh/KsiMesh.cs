@@ -76,7 +76,6 @@ namespace MeshLib
         #endregion
 
         #region Конструкторы
-
         public KsiMesh() : base() { }
         public KsiMesh(KsiMesh m) : base(m)
         {
@@ -123,7 +122,169 @@ namespace MeshLib
             CountLeft = LeftKnots.Length;
             //            
         }
+        public KsiMesh(int NX, int NY, double[] X, double[] Y)
+        {
+            try
+            {
+                // количество элементов
+                int NE = (NY - 1) * (NX - 1) * 2;
+                // создание карты
+                uint[][] map = new uint[NY][];
+                uint e = 0;
+                for (int i = 0; i < NY; i++)
+                {
+                    map[i] = new uint[NX];
+                    for (int j = 0; j < NX; j++)
+                        map[i][j] = e++;
+                }
+                AreaElemsFFType = new TypeFunForm[NE];
+                // генерация треугольной сетки
+               AreaElems = new uint[NE][]; // [NE, 3];
+                for (int i = 0; i < NE; i++)
+                {
+                    AreaElems[i] = new uint[3];
+                    AreaElemsFFType[i] = TypeFunForm.Form_2D_Triangle_L1;
+                }
+                this.X = X;
+                this.Y = Y;
+                
+                e = 0;
+                uint a, b, c, d;
+                //for (int i = 0; i < NY - 3; i++)
+                //!! не забыть закомменить флаг неизменности структуры сетки в Form BackgroundWork
+                for (int i = 0; i < NY - 1; i++)
+                    for (int j = 0; j < NX - 1; j++)
+                    {
+                        a = map[i][j];
+                        b = map[i][j + 1];
+                        c = map[i + 1][j + 1];
+                        d = map[i + 1][j];
 
+                        //double Lac = (X[a] - X[c]) * (X[a] - X[c]) +
+                        //                (Y[a] - Y[c]) * (Y[a] - Y[c]);
+
+                        //double Lbd = (X[b] - X[d]) * (X[b] - X[d]) +
+                        //                (Y[b] - Y[d]) * (Y[b] - Y[d]);
+                        ////
+                        //if ((Lac / Lbd > 0.9999) && (Lac / Lbd < 1.0001))
+                        //{
+                        //    if (j % 2 == j % 2 * 2)
+                        //    {
+                        //        m.AreaElems[e][0] = a;
+                        //        m.AreaElems[e][1] = c;
+                        //        m.AreaElems[e][2] = b;
+                        //        e++;
+                        //        //
+                        //        m.AreaElems[e][0] = a;
+                        //        m.AreaElems[e][1] = d;
+                        //        m.AreaElems[e][2] = c;
+                        //        e++;
+                        //    }
+                        //    else
+                        //    {
+                        //        m.AreaElems[e][0] = a;
+                        //        m.AreaElems[e][1] = d;
+                        //        m.AreaElems[e][2] = b;
+                        //        e++;
+                        //        //
+                        //        m.AreaElems[e][0] = b;
+                        //        m.AreaElems[e][1] = d;
+                        //        m.AreaElems[e][2] = c;
+                        //        e++;
+                        //    }
+                        //}
+                        //else if (Lac < Lbd)
+                        //{
+                        //    m.AreaElems[e][0] = a;
+                        //    m.AreaElems[e][1] = c;
+                        //    m.AreaElems[e][2] = b;
+                        //    e++;
+                        //    //
+                        //    m.AreaElems[e][0] = a;
+                        //    m.AreaElems[e][1] = d;
+                        //    m.AreaElems[e][2] = c;
+                        //    e++;
+                        //}
+                        //else
+                        //{
+                            AreaElems[e][0] = a;
+                            AreaElems[e][1] = d;
+                            AreaElems[e][2] = b;
+                            e++;
+                            //
+                            AreaElems[e][0] = b;
+                            AreaElems[e][1] = d;
+                            AreaElems[e][2] = c;
+                            e++;
+                        //}
+                    }
+                //// сетка с регулярными КО по дну
+                //for (int i = NY - 3; i < NY - 2; i++)
+                //    for (int j = 0; j < NX - 1; j++)
+                //    {
+                //        a = map[i][j];
+                //        b = map[i][j + 1]; ;
+                //        c = map[i + 1][j + 1];
+                //        d = map[i + 1][j];
+                //        //
+                //        m.AreaElems[e][0] = a;
+                //        m.AreaElems[e][1] = c;
+                //        m.AreaElems[e][2] = b;
+                //        e++;
+                //        //
+                //        m.AreaElems[e][0] = a;
+                //        m.AreaElems[e][1] = d;
+                //        m.AreaElems[e][2] = c;
+                //        e++;
+
+                //    }
+                //for (int i = NY - 2; i < NY - 1; i++)
+                //    for (int j = 0; j < NX - 1; j++)
+                //    {
+                //        a = map[i][j];
+                //        b = map[i][j + 1]; ;
+                //        c = map[i + 1][j + 1];
+                //        d = map[i + 1][j];
+                //        //
+                //        m.AreaElems[e][0] = a;
+                //        m.AreaElems[e][1] = d;
+                //        m.AreaElems[e][2] = b;
+                //        e++;
+                //        //
+                //        m.AreaElems[e][0] = b;
+                //        m.AreaElems[e][1] = d;
+                //        m.AreaElems[e][2] = c;
+                //        e++;
+
+                //    }
+                // генерация массивов граничных узлов
+                LeftKnots = new int[NY];
+                RightKnots = new int[NY];
+                TopKnots = new int[NX];
+                BottomKnots = new int[NX];
+                CountLeft = NY;
+                CountRight = NY;
+                CountTop = NX;
+                CountBottom = NX;
+                for (int i = 0; i < NY; i++)
+                {
+                    LeftKnots[i] = (int)map[i][0];
+                    RightKnots[NY - i - 1] = (int)map[i][NX - 1];
+                }
+                for (int j = 0; j < NX; j++)
+                {
+                    TopKnots[NX - j - 1] = (int)map[0][j];
+                    BottomKnots[j] = (int)map[NY - 1][j];
+                }
+                //
+                map = null;
+            }
+            catch (Exception ex)
+            {
+                error += ex.Message.ToString();
+            }
+
+        }
         #endregion
         /// <summary>
         /// Клонирование объекта сетки
@@ -132,14 +293,78 @@ namespace MeshLib
         {
             return new KsiMesh(this);
         }
-        #region Методы
         /// <summary>
-        /// 
+        /// конвертация сетки в TriMesh, по умолчанию первый порядок точности аппроксимации на элементе
         /// </summary>
-        protected void Initializing()
+        /// <returns></returns>
+        public TriMesh ConvertToTriMesh()
         {
-            
+            int ch = 0, i = 0;
+            TriMesh triMesh = new TriMesh();
+            //
+            triMesh.tRangeMesh = TypeRangeMesh.mRange1;
+            triMesh.tMesh = TypeMesh.Triangle;
+            // копирование координат
+            MEM.MemCopy(ref triMesh.CoordsX, X);
+            MEM.MemCopy(ref triMesh.CoordsY, Y);
+            // копирование элементов
+            triMesh.AreaElems = new TriElement[AreaElems.Length];
+            for (i = 0; i < AreaElems.Length; i++)
+                triMesh.AreaElems[i] = new TriElement(AreaElems[i][0], AreaElems[i][1], AreaElems[i][2]);
+            //копирование граничных элементов
+            triMesh.BoundElems = new TwoElement[2 * (CountBottom + CountLeft - 2)];
+            triMesh.BoundElementsMark = new int[2 * (CountBottom + CountLeft - 2)];
+            ch = 0;
+            //
+            for (i = 0; i < CountLeft - 1; i++)
+            {
+                triMesh.BoundElems[ch] = new TwoElement(i, i + 1);
+                triMesh.BoundElementsMark[ch++] = 3;
+            }
+            for (i = 0; i < CountTop - 1; i++)
+            {
+                triMesh.BoundElems[ch] = new TwoElement(CountLeft + i * CountLeft - 1, CountLeft + (i + 1) * CountLeft - 1);
+                triMesh.BoundElementsMark[ch++] = 2;
+            }
+            for (i = 0; i < CountRight - 1; i++)
+            {
+                triMesh.BoundElems[ch] = new TwoElement(CountKnots - CountLeft + i, CountKnots - CountLeft + i + 1);
+                triMesh.BoundElementsMark[ch++] = 1;
+            }
+            for (i = 0; i < CountBottom - 1; i++)
+            {
+                triMesh.BoundElems[ch] = new TwoElement(i * CountLeft, (i + 1) * CountLeft);
+                triMesh.BoundElementsMark[ch++] = 0;
+            }
+            //копирование граничных узлов
+            triMesh.BoundKnots = new int[2 * (CountLeft + CountBottom)];
+            triMesh.BoundKnotsMark = new int[2 * (CountLeft + CountBottom)];
+            ch = 0;
+            for (i = 0; i < CountLeft; i++)
+            {
+                triMesh.BoundKnots[ch] = i;
+                triMesh.BoundKnotsMark[ch++] = 3;
+            }
+            for (i = 0; i < CountTop; i++)
+            {
+                triMesh.BoundKnots[ch] = i * CountLeft - 1;
+                triMesh.BoundKnotsMark[ch++] = 2;
+            }
+            for (i = 0; i < CountRight; i++)
+            {
+                triMesh.BoundKnots[ch] = CountKnots - CountLeft + i;
+                triMesh.BoundKnotsMark[ch++] = 1;
+            }
+            for (i = 0; i < CountBottom; i++)
+            {
+                triMesh.BoundKnots[ch] = i * CountLeft;
+                triMesh.BoundKnotsMark[ch++] = 0;
+            }
+            //
+            return triMesh;
         }
+        #region Методы
+
         /// <summary>
         /// выдет номер треугольника, в который попадает заданная точка
         /// </summary>
@@ -225,6 +450,7 @@ namespace MeshLib
         }
         private void StructureChanging(int[] NewNumb)
         {
+            
             // **************** Создание нового массива обхода ******************
             // перебор по всем КЭ второй сетки
             for (int i = 0; i < AreaElems.Length; i++)
@@ -236,20 +462,20 @@ namespace MeshLib
                     AreaElems[i][j] = (uint) NewNumb[old];
                 }
             }
-            for (int i = 0; i < BoundElems.Length; i++)
-            {
-                // перенумерация
-                for (int j = 0; j < BoundElems[i].Length; j++)
-                {
-                    uint old = BoundElems[i][j];
-                    BoundElems[i][j] = (uint)NewNumb[old];
-                }
-            }
-            for (int j = 0; j < BoundKnots.Length; j++)
-            {
-                int old = BoundKnots[j];
-                BoundKnots[j] = NewNumb[old];
-            }
+            //for (int i = 0; i < BoundElems.Length; i++)
+            //{
+            //    // перенумерация
+            //    for (int j = 0; j < BoundElems[i].Length; j++)
+            //    {
+            //        uint old = BoundElems[i][j];
+            //        BoundElems[i][j] = (uint)NewNumb[old];
+            //    }
+            //}
+            //for (int j = 0; j < BoundKnots.Length; j++)
+            //{
+            //    int old = BoundKnots[j];
+            //    BoundKnots[j] = NewNumb[old];
+            //}
             //****************  Граничные узлы  ***********************
             if (LeftKnots != null)
                 for (int i = 0; i < LeftKnots.Length; i++)
@@ -617,6 +843,8 @@ namespace MeshLib
             for (int i = 0; i < NMesh.CountTop; i++)
                 NMesh.TopKnots[i] = Conform[NMesh.TopKnots[i]];
         }
+        //
+
         
         #endregion
     }

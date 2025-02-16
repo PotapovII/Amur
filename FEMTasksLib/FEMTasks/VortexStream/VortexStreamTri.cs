@@ -292,7 +292,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                                 double M_ab = MM[ai][aj] * Se;
 
                                 LaplMatrix[li][lj] = K_ab + Se3 * b[aj] / Radius;
-                                LaplMatrix[li][lj + 1] = - M_ab;
+                                LaplMatrix[li][lj + 1] = - M_ab * Radius;
                                 LaplMatrix[li + 1][lj] = 0;
                                 LaplMatrix[li + 1][lj + 1] = D_ab_Mu + eMu * K_ab + RD_ab;
                             }
