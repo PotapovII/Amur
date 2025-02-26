@@ -12,6 +12,7 @@ namespace TriangleNet.Tools
 
     /// <summary>
     /// Sort an array of points using quicksort.
+    /// Сортировать массив точек с помощью быстрой сортировки.
     /// </summary>
     public class VertexSorter
     {
@@ -41,9 +42,10 @@ namespace TriangleNet.Tools
 
         /// <summary>
         /// Impose alternating cuts on given vertex array.
+        /// Наложить чередующиеся разрезы на заданный массив вершин.
         /// </summary>
-        /// <param name="array">The vertex array.</param>
-        /// <param name="length">The number of vertices to sort.</param>
+        /// <param name="array">The vertex array. Массив вершин.</param>
+        /// <param name="length">The number of vertices to sort.Количество вершин для сортировки.</param>
         /// <param name="seed">Random seed used for pivoting.</param>
         public static void Alternate(Vertex[] array, int length, int seed = RANDOM_SEED)
         {
@@ -52,6 +54,7 @@ namespace TriangleNet.Tools
             int divider = length >> 1;
 
             // Re-sort the array of vertices to accommodate alternating cuts.
+            // Пересортируйте массив вершин, чтобы учесть чередующиеся разрезы.
             if (length - divider >= 2)
             {
                 if (divider >= 2)

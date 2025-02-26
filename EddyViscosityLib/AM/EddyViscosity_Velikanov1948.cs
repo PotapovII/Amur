@@ -9,9 +9,6 @@ namespace EddyViscosityLib
 {
     using System;
     using System.Linq;
-
-    using CommonLib;
-    using CommonLib.Mesh;
     using CommonLib.Physics;
     using CommonLib.EddyViscosity;
     

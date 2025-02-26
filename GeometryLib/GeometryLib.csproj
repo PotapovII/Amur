@@ -48,6 +48,7 @@
     <Compile Include="Aalgorithms\Sorrt\SortArray.cs" />
     <Compile Include="Aalgorithms\ConvexHull.cs" />
     <Compile Include="Aalgorithms\Sorrt\ThreadedQuickSort.cs" />
+    <Compile Include="Aalgorithms\Sorrt\SorterForIHPoint.cs" />
     <Compile Include="Areas\MHesgGrid.cs" />
     <Compile Include="Areas\MArea.cs" />
     <Compile Include="Areas\MBoundary.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Geometry\CloudKnotLine.cs" />
     <Compile Include="Geometry\HTriangle.cs" />
     <Compile Include="Geometry\HVoronoiCell.cs" />
+    <Compile Include="Locators\LocPolygon2D.cs" />
     <Compile Include="Locators\TriMeshLocators.cs" />
     <Compile Include="Locators\LineLocator.cs" />
     <Compile Include="Locators\TriLocator.cs" />

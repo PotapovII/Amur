@@ -110,8 +110,8 @@ namespace NPRiverLib.IO
                                     typeEddyViscosity = ECalkDynamicSpeed.u_start_U,
                                     velocityOnWL = true,
                                     axisSymmetry = 0,
-                                    CountKnots = 250,
-                                    CountBLKnots = 300,
+                                    CountKnots = 500,
+                                    CountBLKnots = 600,
                                     NLine = 100,
                                     SigmaTask = SigmaTask,
                                     RadiusMin = 4.2,
@@ -193,7 +193,8 @@ namespace NPRiverLib.IO
                                     SigmaTask = SigmaTask,
                                     RadiusMin = 3.85,
                                     ReTask = 0,
-                                    theta = 0.5
+                                    theta = 0.5,
+                                    mu_const = 0.01
                                 };
                                 river_1YD.SetParams(p);
                                 // Дно Канал Вим ван Балена
@@ -334,12 +335,11 @@ namespace NPRiverLib.IO
                                 }
                             }
                             break;
-                        case 13: // Каверна
+                        case 13: // Каверна для Гиа, У. Гиа, К. Н.
                         case 14:
                         case 15:
                             {
-                                //turbViscType = ETurbViscType.Boussinesq1865;
-                                turbViscType = ETurbViscType.Karaushev1977;
+                                turbViscType = ETurbViscType.EddyViscosityConst;
                                 // создание и чтение свойств задачи                
                                 RSCrossParams p = new RSCrossParams()
                                 {
@@ -353,8 +353,8 @@ namespace NPRiverLib.IO
                                     typeEddyViscosity = ECalkDynamicSpeed.u_start_U,
                                     velocityOnWL = true,
                                     axisSymmetry = 1,
-                                    CountKnots = 30,
-                                    CountBLKnots = 40,
+                                    CountKnots = 100,
+                                    CountBLKnots = 110,
                                     NLine = 20,
                                     SigmaTask = 0, //SigmaTask,
                                     RadiusMin = 3.85,
@@ -366,9 +366,8 @@ namespace NPRiverLib.IO
                                 if (testID == 15)
                                     p.ReTask = 2;
                                 river_1YD.SetParams(p);
-                                // Дно Канал Вим ван Балена
                                 double WL = 1; // два дюйма
-                                double H = 0.5; // ширина канал
+                                double H =  0.5; // ширина канал
                                 double[] ox = { 0, WL };
                                 double[] oy = { -H, -H };
                                 Geometry = new DigFunction(ox, oy, "Дно");
@@ -384,14 +383,19 @@ namespace NPRiverLib.IO
                                 double[] Y29 = { 0, WL };
                                 double[] U29 = { 0, 0 };
                                 VelosityUx = new DigFunction(Y29, U29, "Створ U29");
-                                double[] V29 = { 0, 0.1 };
+                                double[] V29 = { 1.0, 1.0 };
                                 VelosityUy = new DigFunction(Y29, V29, "Створ V29");
                             }
                             break;
-                        case 16:
-                        case 17:
+                        case 16: // Парабола Розовского
+                        case 17: 
+                        case 18: // Парабола Розовского плоский поток
+                        case 19:
                             {
-                                turbViscType = ETurbViscType.Karaushev1977;
+                                if (testID == 16 || testID == 17)
+                                    turbViscType = ETurbViscType.Karaushev1977;
+                                else
+                                    turbViscType = ETurbViscType.EddyViscosityConst;
                                 // создание и чтение свойств задачи                
                                 RSCrossParams p = new RSCrossParams()
                                 {
@@ -405,18 +409,25 @@ namespace NPRiverLib.IO
                                     typeEddyViscosity = ECalkDynamicSpeed.u_start_U,
                                     velocityOnWL = true,
                                     axisSymmetry = 1,
-                                    CountKnots = 400,
-                                    CountBLKnots = 450,
+                                    CountKnots = 500,
+                                    CountBLKnots = 550,
                                     NLine = 20,
-                                    SigmaTask = 0, //SigmaTask,
+                                    SigmaTask = 1, //SigmaTask,
                                     RadiusMin = 3.85,
                                     ReTask = 0,
-                                    theta = 0.5
+                                    theta = 0.5,
+                                    mu_const = 0.0175
                                 };
-                                if (testID == 14)
+                                if (testID == 16 || testID == 18)
+                                    p.ReTask = 0;
+                                else
                                     p.ReTask = 1;
-                                if (testID == 15)
-                                    p.ReTask = 2;
+
+                                if (testID == 16 || testID == 17)
+                                    SigmaTask = 1;
+                                else
+                                    SigmaTask = 0;
+
                                 river_1YD.SetParams(p);
                                 int Ny = 20;
                                 double[] xx = null;
@@ -435,15 +446,28 @@ namespace NPRiverLib.IO
                                 double[] timeArg = { 0, 1000 };
                                 double[] q = { Q, Q };
                                 FlowRate = new DigFunction(timeArg, q, "расход");
-                                // Створ 15
-                                double[] Y_U15 = { 0, 0.1, 0.3, 0.55, 0.8, 1.05, 1.2, 1.5, 1.6 };
-                                double[] U15 = { 0, 0.243, 0.365, 0.38, 0.38, 0.365, 0.345, 0.186, 0 };
-                                VelosityUx = new DigFunction(Y_U15, U15, "Створ");
-                                double[] Y_V15 = { 0, 0.55, 0.8, 1.05, 1.2, 1.6 };
-                                double[] V15 = { 0, 0.03, 0.028, 0.028, 0.038, 0 };
-                                VelosityUy = new DigFunction(Y_V15, V15, "Створ");
+                                if (testID == 16 || testID == 17)
+                                {
+                                    // Створ 15
+                                    double[] Y_U15 = { 0, 0.1, 0.3, 0.55, 0.8, 1.05, 1.2, 1.5, 1.6 };
+                                    double[] U15 = { 0, 0.243, 0.365, 0.38, 0.38, 0.365, 0.345, 0.186, 0 };
+                                    VelosityUx = new DigFunction(Y_U15, U15, "Створ");
+                                    double[] Y_V15 = { 0, 0.55, 0.8, 1.05, 1.2, 1.6 };
+                                    double[] V15 = { 0, 0.03, 0.028, 0.028, 0.038, 0 };
+                                    VelosityUy = new DigFunction(Y_V15, V15, "Створ");
+                                }
+                                else
+                                {
+                                    double[] U26 = null;
+                                    double[] V26 = null;
+                                    MEM.VAlloc(Ny, 0.5, ref U26);
+                                    MEM.VAlloc(Ny, 0.05, ref V26);
+                                    VelosityUx = new DigFunction(xx, U26, "Створ");
+                                    VelosityUy = new DigFunction(xx, V26, "Створ");
+                                }
                             }
                             break;
+
                     }
                     IDigFunction[] crossFunctions = new IDigFunction[5]
                     {
@@ -643,11 +667,13 @@ namespace NPRiverLib.IO
             list.Add("Река Десна, створ 4 (нс Рейнольдс)");
             list.Add("Река Десна, створ 4 (ст Рейнольдс)");
             list.Add("Река Десна, створ 4 (ст Стокс)");
-            list.Add("Прямоугольная каверна (нс Рейнольдс)"); // 13
-            list.Add("Прямоугольная каверна (ст Рейнольдс)"); // 
-            list.Add("Прямоугольная каверна (ст Стокс)"); // 
+            list.Add("Каверна Гиа, У. Гиа, К. Н.(нс Рейнольдс)"); // 13
+            list.Add("Каверна Гиа, У. Гиа, К. Н.(ст Рейнольдс)"); // 
+            list.Add("Каверна Гиа, У. Гиа, К. Н.(ст Стокс)"); // 
             list.Add("Канал Розовского п., 15 створ (нс Рейнольдс)");  // 16
-            list.Add("Канал Розовского п., 15 створ (ст Рейнольдс)");  
+            list.Add("Канал Розовского п., 15 створ (ст Рейнольдс)");
+            list.Add("Канал Розовского п., плский поток (нс Рейнольдс)");  
+            list.Add("Канал Розовского п., плский поток (ст Рейнольдс)");
             return list;
         }
     }

@@ -12,7 +12,7 @@ namespace AlgebraLib
         /// </summary>
         public List<SparseElementIndex> Col;
         /// <summary>
-        /// Размер упакованной строки
+        /// Размер упакованной столбеца
         /// </summary>
         public int Count { get => Col.Count; }
         public SparseColIndex(int N = 1)

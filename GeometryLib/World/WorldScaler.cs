@@ -20,13 +20,17 @@ namespace GeometryLib.World
         /// Экранный прямоугольник
         /// </summary>
         Rectangle Screen { get; set; }
+        /// <summary>
+        /// Сохранение экранный прямоугольника во время обновления
+        /// </summary>
         Rectangle oldScreen = new Rectangle();
         /// <summary>
         /// Текущий видовой экран (видимое изображение). 
         /// - новое окно просмотра
         /// </summary>
         RectangleF viewport;
-        public RectangleF Viewport { get => viewport;
+        public RectangleF Viewport { 
+            get => viewport;
             set 
             {
                 RectangleF old = viewport;
@@ -41,6 +45,9 @@ namespace GeometryLib.World
         /// Прямоугольник для мировых координат
         /// </summary>
         RectangleF World { get; set; }
+        /// <summary>
+        /// Сохранение мировых координат во время обновления
+        /// </summary>
         RectangleWorld oldWorld { get; set; }
         /// <summary>
         /// Добавление полей сдвига рисунка от стенок (5%)

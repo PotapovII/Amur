@@ -92,6 +92,9 @@ namespace EddyViscosityLib
                 case ETurbViscType.SAModelN:
                     eddyViscosityTri = new EddyViscosity_nSA_lTri(type, p);
                     break;
+                case ETurbViscType.EddyViscosityConst:
+                    eddyViscosityTri = new EddyViscosityConst(type, p);
+                    break;
                 default:
                     throw new Exception("Выбранная модель турбулентности пока не реализована");
             }

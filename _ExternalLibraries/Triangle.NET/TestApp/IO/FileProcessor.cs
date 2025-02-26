@@ -67,7 +67,6 @@ namespace MeshExplorer.IO
         public static MeshNet Import(string path)
         {
             var provider = GetProviderInstance(path);
-
             return (MeshNet)provider.Import(path);
         }
 

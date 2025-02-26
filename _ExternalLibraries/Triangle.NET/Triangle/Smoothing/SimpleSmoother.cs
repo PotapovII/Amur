@@ -6,6 +6,7 @@
 
 namespace TriangleNet.Smoothing
 {
+    using System;
     using TriangleNet.Geometry;
     using TriangleNet.Meshing;
     using TriangleNet.Topology.DCEL;
@@ -22,11 +23,8 @@ namespace TriangleNet.Smoothing
     {
         TrianglePool pool;
         Configuration config;
-
         IVoronoiFactory factory;
-
         ConstraintOptions options;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleSmoother" /> class.
         /// </summary>
@@ -62,54 +60,64 @@ namespace TriangleNet.Smoothing
 
             this.options = new ConstraintOptions() { ConformingDelaunay = true };
         }
-
+        /// <summary>
+        /// Сглаживание
+        /// </summary>
+        /// <param name="mesh"></param>
         public void Smooth(IMeshNet mesh)
         {
             Smooth(mesh, 10);
         }
-
+        /// <summary>
+        /// Сглаживание 1 шаг
+        /// </summary>
         public void Smooth(IMeshNet mesh, int limit)
         {
             var smoothedMesh = (MeshNet)mesh;
-
             var mesher = new GenericMesher(config);
             var predicates = config.Predicates();
-
             // The smoother should respect the mesh segment splitting behavior.
             // Сглаживание должно учитывать поведение разделения сегментов сетки.
             this.options.SegmentSplitting = smoothedMesh.behavior.NoBisect;
-
             // Take a few smoothing rounds (Lloyd's algorithm).
             // Сделайте несколько раундов сглаживания (алгоритм Ллойда).
             for (int i = 0; i < limit; i++)
             {
+                // один шаг сглаживания
                 Step(smoothedMesh, factory, predicates);
-
                 // На самом деле, мы хотим перестроиться только в том случае, если сетка уже не Делоне.
                 // Переворачивание ребер может быть правильным выбором вместо повторной триангуляции.
                 smoothedMesh = (MeshNet)mesher.Triangulate(Rebuild(smoothedMesh), options);
-
                 factory.Reset();
             }
-
+            // копирование в исходны объект
             smoothedMesh.CopyTo((MeshNet)mesh);
         }
 
         private void Step(MeshNet mesh, IVoronoiFactory factory, IPredicates predicates)
         {
-            var voronoi = new BoundedVoronoi(mesh, factory, predicates);
 
             double x, y;
-
-            foreach (var face in voronoi.Faces)
+            int i = 0;
+            try
             {
-                if (face.generator.label == 0)
+                var voronoi = new BoundedVoronoi(mesh, factory, predicates);
+                foreach (var face in voronoi.Faces)
                 {
-                    Centroid(face, out x, out y);
-
-                    face.generator.x = x;
-                    face.generator.y = y;
+                    if (face.generator.label == 0)
+                    {
+                        if (Centroid(face, out x, out y) == true)
+                        {
+                            face.generator.x = x;
+                            face.generator.y = y;
+                            i++;
+                        }
+                    }
                 }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Проблемы при сглаживании " + i.ToString() + " фасетки : " + ex.Message);
             }
         }
 
@@ -117,29 +125,39 @@ namespace TriangleNet.Smoothing
         /// Calculate the Centroid of a polygon.
         /// Вычислить центроид многоугольника.
         /// </summary>
-        private void Centroid(Face face, out double x, out double y)
+        private bool Centroid(Face face, out double x, out double y)
         {
             double ai, atmp = 0, xtmp = 0, ytmp = 0;
             var edge = face.Edge;
-            var first = edge.Next.ID;
-            Point p, q;
-            do
+            if (edge != null)
             {
-                p = edge.Origin;
-                q = edge.Twin.Origin;
+                var first = edge.Next.ID;
+                Point p, q;
+                do
+                {
+                    p = edge.Origin;
+                    q = edge.Twin.Origin;
 
-                ai = p.x * q.y - q.x * p.y;
-                atmp += ai;
-                xtmp += (q.x + p.x) * ai;
-                ytmp += (q.y + p.y) * ai;
+                    ai = p.x * q.y - q.x * p.y;
+                    atmp += ai;
+                    xtmp += (q.x + p.x) * ai;
+                    ytmp += (q.y + p.y) * ai;
 
-                edge = edge.Next;
+                    edge = edge.Next;
 
-            } while (edge.Next.ID != first);
+                } while (edge.Next.ID != first);
 
-            x = xtmp / (3 * atmp);
-            y = ytmp / (3 * atmp);
-
+                x = xtmp / (3 * atmp);
+                y = ytmp / (3 * atmp);
+                
+                return true;
+            }
+            else
+            {
+                x = 0;
+                y = 0;
+                return false;
+            }
             //area = atmp / 2;
         }
 

@@ -32,16 +32,21 @@ namespace TriangleNet
         QualityMesher qualityMesher;
 
         // Stack that maintains a list of recently flipped triangles.
+        /// <summary>
+        /// Стек, в котором хранится список недавно перевернутых треугольников.
+        /// </summary>
         Stack<Otri> flipstack;
 
         // TODO: Check if custom hashmap implementation could be faster.
-
+        // Проверьте, можно ли ускорить реализацию пользовательской хэш-карты.
         // Using hashsets for memory management should quite fast.
+        // Использование хэш-наборов для управления памятью должно быть довольно быстрым.
         internal TrianglePool triangles;
         internal Dictionary<int, SubSegment> subsegs;
         internal Dictionary<int, Vertex> vertices;
 
         // Hash seeds (should belong to mesh instance)
+        // Семена хеша (должны принадлежать экземпляру сетки)
         internal int hash_vtx = 0;
         internal int hash_seg = 0;
         internal int hash_tri = 0;
@@ -52,16 +57,46 @@ namespace TriangleNet
         // TODO: remove mesh_dim, invertices and insegments
 
         // Other variables.
+        /// <summary>
+        /// x and y bounds. Границы x и y.
+        /// </summary>
         internal Rectangle bounds; // x and y bounds.
+        /// <summary>
+        /// Количество входных вершин.
+        /// </summary>
         internal int invertices;     // Number of input vertices.
+        /// <summary>
+        /// Количество входных сегментов.
+        /// </summary>
         internal int insegments;     // Number of input segments.
+        /// <summary>
+        /// Количество входных вершин, которые не отображаются в сетке.
+        /// </summary>
         internal int undeads;        // Number of input vertices that don't appear in the mesh.
+        /// <summary>
+        /// Размерность (должна быть 2).
+        /// </summary>
         internal int mesh_dim;       // Dimension (ought to be 2).
+        /// <summary>
+        ///  Количество атрибутов на вершину.
+        /// </summary>
         internal int nextras;        // Number of attributes per vertex.
         //internal int eextras;        // Number of attributes per triangle.
+        /// <summary>
+        /// Число ребер в выпуклой оболочке.
+        /// </summary>
         internal int hullsize;       // Number of edges in convex hull.
+        /// <summary>
+        /// Количество еще не использованных очков Штайнера.
+        /// </summary>
         internal int steinerleft;    // Number of Steiner points not yet used.
+        /// <summary>
+        /// Есть ли уже сегменты в триангуляции?
+        /// </summary>
         internal bool checksegments; // Are there segments in the triangulation yet?
+        /// <summary>
+        /// Качественная триангуляция уже началась?
+        /// </summary>
         internal bool checkquality;  // Has quality triangulation begun yet?
 
         // Triangular bounding box vertices.
@@ -1736,6 +1771,8 @@ namespace TriangleNet
         {
             // Mark the triangle as dead. This makes it possible to detect dead 
             // triangles when traversing the list of all triangles.
+            // Отметить треугольник как мертвый. Это позволяет обнаружить мертвые
+            // треугольники при обходе списка всех треугольников.
             Otri.Kill(dyingtriangle);
             triangles.Release(dyingtriangle);
         }

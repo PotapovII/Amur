@@ -46,8 +46,11 @@ namespace RenderLib
         /// Индекс поля
         /// </summary>
         public int indexValues = 0;
-  
-
+        /// <summary>
+        /// Инверсия системы координат X<=>Y
+        /// </summary>
+        public bool coordInv = false;
+        
         public RenderOptions() { }
         public RenderOptions(RenderOptions o)
         {
@@ -59,6 +62,7 @@ namespace RenderLib
             showKnotNamber = o.showKnotNamber;
             opValuesKnot = o.opValuesKnot;
             scaleFields = o.scaleFields;
+            coordInv = o.coordInv;
         }
         /// <summary>
         /// 15 07 24 изменяемый масштаб полей

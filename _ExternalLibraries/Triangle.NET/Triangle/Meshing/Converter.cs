@@ -19,6 +19,7 @@ namespace TriangleNet.Meshing
 
     /// <summary>
     /// The Converter class provides methods for mesh reconstruction and conversion.
+    /// Класс Converter предоставляет методы для реконструкции и преобразования сетки.
     /// </summary>
     public static class Converter
     {
@@ -26,6 +27,7 @@ namespace TriangleNet.Meshing
 
         /// <summary>
         /// Reconstruct a triangulation from its raw data representation.
+        /// Реконструировать триангуляцию на основе ее необработанного представления данных.
         /// </summary>
         public static MeshNet ToMesh(Polygon polygon, IList<ITriangle> triangles)
         {
@@ -34,6 +36,7 @@ namespace TriangleNet.Meshing
 
         /// <summary>
         /// Reconstruct a triangulation from its raw data representation.
+        /// Реконструировать триангуляцию на основе ее необработанного представления данных.
         /// </summary>
         public static MeshNet ToMesh(Polygon polygon, ITriangle[] triangles)
         {

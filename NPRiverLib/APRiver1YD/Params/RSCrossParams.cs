@@ -116,6 +116,12 @@ namespace NPRiverLib.APRiver1YD.Params
         [Category("Задача")]
         public double J { get; set; }
         /// <summary>
+        /// Постоянная вихревая вязкость
+        /// </summary>
+        [DisplayName("Постоянная вихревая вязкость")]
+        [Category("Задача")]
+        public double mu_const { get; set; }
+        /// <summary>
         /// модель турбулентной вязкости
         /// </summary>
         [DisplayName("Y модель турбулентной вязкости")]
@@ -234,9 +240,10 @@ namespace NPRiverLib.APRiver1YD.Params
             int CountBLKnots, bool velocityOnWL, int NLine, int SigmaTask, int ReTask, 
             ECalkDynamicSpeed typeEddyViscosity, ETurbViscType turbViscTypeA,
             ETurbViscType turbViscTypeB, CrossAlgebra сrossAlgebra, 
-            TaskVariant taskVariant, BCTypeVortex bcTypeVortex, StripGenMeshType typeMeshGenerator)
+            TaskVariant taskVariant, BCTypeVortex bcTypeVortex, StripGenMeshType typeMeshGenerator,double  mu_const)
         {
             this.J = J;
+            this.mu_const = mu_const;
             this.RadiusMin = RadiusMin;
             this.theta = theta;
             this.axisSymmetry = axisSymmetry;
@@ -257,6 +264,7 @@ namespace NPRiverLib.APRiver1YD.Params
         protected virtual void SetDef()
         {
             J = 0.001;
+            mu_const = 1;
             turbViscTypeA = ETurbViscType.Leo_C_van_Rijn1984;
             turbViscTypeB = ETurbViscType.Leo_C_van_Rijn1984;
             сrossAlgebra = CrossAlgebra.TapeGauss;
@@ -281,6 +289,7 @@ namespace NPRiverLib.APRiver1YD.Params
         public RSCrossParams(RSCrossParams p)
         {
             J = p.J;
+            mu_const = p.mu_const;
             CountKnots = p.CountKnots;
             CountBLKnots = p.CountBLKnots;
             axisSymmetry = p.axisSymmetry;
@@ -327,6 +336,8 @@ namespace NPRiverLib.APRiver1YD.Params
                 ReTask = LOG.GetInt(file.ReadLine());
                 RadiusMin = LOG.GetDouble(file.ReadLine());
                 theta = LOG.GetDouble(file.ReadLine());
+                // +  25 02 2025
+                mu_const = LOG.GetDouble(file.ReadLine());
             }
             catch (Exception)
             {

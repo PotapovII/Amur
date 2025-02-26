@@ -19,6 +19,7 @@ namespace TriangleNet
     {
         /// <summary>
         /// Log detailed information.
+        /// Запишите подробную информацию.
         /// </summary>
         public static bool Verbose { get; set; }
 

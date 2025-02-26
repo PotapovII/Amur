@@ -118,7 +118,7 @@ namespace MeshLib
         /// Получить регион для кривых 
         /// </summary>
         /// <returns></returns>
-        public RectangleWorld GetRegion()
+        public RectangleWorld GetRegion(bool coordInv = false)
         {
             if (curves.Count == 0)
                 return new RectangleWorld(0, 0, 0, 0);
@@ -129,7 +129,7 @@ namespace MeshLib
                 {
                     if (curves[i].Check == true)
                     {
-                        RectangleWorld b = GetRegion(curves[i]);
+                        RectangleWorld b = GetRegion(curves[i], coordInv);
                         a = RectangleWorld.Extension(ref a, ref b);
                     }
                 }
@@ -141,7 +141,7 @@ namespace MeshLib
         /// </summary>
         /// <param name="curve"></param>
         /// <returns></returns>
-        public RectangleWorld GetRegion(GraphicsCurve curve)
+        public RectangleWorld GetRegion(GraphicsCurve curve, bool coordInv = false)
         {
             double xmin = curve[0].x;
             double ymin = curve[0].y;
@@ -161,7 +161,10 @@ namespace MeshLib
                 xmax = Math.Max(x, xmax);
                 ymax = Math.Max(y, ymax);
             }
-            return new RectangleWorld(xmin, xmax, ymin, ymax);
+            if(coordInv == false)
+                return new RectangleWorld(xmin, xmax, ymin, ymax);
+            else
+                return new RectangleWorld(ymin, ymax, xmin, xmax);
         }
         /// <summary>
         /// получить список названий кривых

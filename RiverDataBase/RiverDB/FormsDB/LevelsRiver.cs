@@ -9,6 +9,7 @@ namespace RiverDB.FormsDB
     using System;
     using System.Data;
     using System.Linq;
+    using System.Reflection;
     //using Excel = Microsoft.Office.Interop.Excel;
     using System.Windows.Forms;
     using ConnectLib;
@@ -107,11 +108,36 @@ namespace RiverDB.FormsDB
         {
             char[] charsToTrim = { ' ' };
             string pole = textBox1.Text.Trim(charsToTrim);
-            string strAccessSelect =
+            string strAccessSelect = "";
+            string strAccessSelectPN =
              "select [experiment_ID] as [код], [place_name] as [участок]," +
              "[experiment_datetime] as [дата и время], [experiment_waterlevel] as" +
              " [уровень воды],[experiment_middlewaterlevel] as [норма] " +
              " from dbo.view_experiment where place_name LIKE @POLE ";
+            string strAccessSelectDT =
+             "select [experiment_ID] as [код], [place_name] as [участок]," +
+             "[experiment_datetime] as [дата и время], [experiment_waterlevel] as" +
+             " [уровень воды],[experiment_middlewaterlevel] as [норма] " +
+             " from dbo.view_experiment where [experiment_datetime] LIKE @POLE ";
+            string strAccessSelectID =
+             "select [experiment_ID] as [код], [place_name] as [участок]," +
+             "[experiment_datetime] as [дата и время], [experiment_waterlevel] as" +
+             " [уровень воды],[experiment_middlewaterlevel] as [норма] " +
+             " from dbo.view_experiment where [experiment_ID] LIKE @POLE ";
+            
+            switch (dataGridView1.FirstDisplayedScrollingColumnIndex)
+            {
+                case 1:
+                    strAccessSelect = strAccessSelectPN;
+                    break;
+                case 2:
+                    strAccessSelect = strAccessSelectDT;
+                    break;
+                case 0:
+                default:
+                    strAccessSelect = strAccessSelectID;
+                    break;
+            }
             DataTable mapTable = ConnectDB.SelectTableBystrKey(strAccessSelect, TName, pole);
             dataGridView1.DataSource = mapTable;
             LevelsRiver_Resize(sender, e);

@@ -83,7 +83,11 @@ namespace RenderLib
                     continue;
                 for (int i = 0; i < curve.Count; i++)
                 {
-                    pt = new PointF((float)curve[i].x, (float)curve[i].y);
+                    if (renderOptions.coordInv == false)
+                        pt = new PointF((float)curve[i].x, (float)curve[i].y);
+                    else
+                        pt = new PointF((float)curve[i].y, (float)curve[i].x);
+                    
                     zoom.WorldToScreen(ref pt);
                     // узлы сетки
                     if (renderOptions.showMesh == true)
@@ -93,7 +97,7 @@ namespace RenderLib
                     // номера узлов сетки
                     if (renderOptions.showKnotNamber == true)
                     {
-                        PointF pp = new PointF(pt.X + 10f, pt.Y);
+                        PointF pp = new PointF(pt.X + 10f, pt.Y);  
                         g.DrawString(i.ToString(), colorScheme.FontReper, colorScheme.BrushPoint, pp);
                     }
                     // числовые величины
@@ -140,8 +144,16 @@ namespace RenderLib
                         pen = colorScheme.PenMeshLine;
                     for (i = 0; i < curve.Count - 1; i++)
                     {
-                        p0 = new PointF((float)curve[i].x, (float)curve[i].y);
-                        p1 = new PointF((float)curve[i + 1].x, (float)curve[i + 1].y);
+                        if(renderOptions.coordInv == false)
+                        {
+                            p0 = new PointF((float)curve[i].x, (float)curve[i].y);
+                            p1 = new PointF((float)curve[i + 1].x, (float)curve[i + 1].y);
+                        }
+                        else
+                        {
+                            p0 = new PointF((float)curve[i].y, (float)curve[i].x);
+                            p1 = new PointF((float)curve[i + 1].y, (float)curve[i + 1].x);
+                        }
                         zoom.WorldToScreen(ref p0);
                         zoom.WorldToScreen(ref p1);
                         g.DrawLine(pen, p0, p1);

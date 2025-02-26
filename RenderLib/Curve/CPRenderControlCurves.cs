@@ -144,7 +144,7 @@ namespace RenderLib
             else
                 taskRenderer.SetTaskRendererCurves(data);
             // Установить масштаб для новых данных
-            World = data.GetRegion();
+            World = data.GetRegion(оptions.coordInv);
             bool flagUpdate = оptions.ckScaleUpdate;
             // При первом запуске flagUpdate всегда true
             if (startFlag == false)

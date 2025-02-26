@@ -12,27 +12,34 @@ namespace TriangleNet.Tools
     /// <summary>
     /// Applies the Cuthill and McKee renumbering algorithm to reduce the bandwidth of
     /// the adjacency matrix associated with the mesh.
+    /// Применяет алгоритм перенумерации Катхилла и Макки для уменьшения полосы 
+    /// пропускания матрицы смежности, связанной с сеткой.
     /// </summary>
     public class CuthillMcKee
     {
-        // The adjacency matrix of the mesh.
+        /// <summary>
+        /// The adjacency matrix of the mesh.
+        /// Матрица смежности сетки.
+        /// </summary>
         AdjacencyMatrix matrix;
 
         /// <summary>
         /// Gets the permutation vector for the Reverse Cuthill-McKee numbering.
+        /// Возвращает вектор перестановки для обратной нумерации Катхилла-Макки.
         /// </summary>
         /// <param name="mesh">The mesh.</param>
         /// <returns>Permutation vector.</returns>
         public int[] Renumber(MeshNet mesh)
         {
             // Algorithm needs linear numbering of the nodes.
+            // Алгоритму необходима линейная нумерация узлов.
             mesh.Renumber(NodeNumbering.Linear);
-
             return Renumber(new AdjacencyMatrix(mesh));
         }
 
         /// <summary>
         /// Gets the permutation vector for the Reverse Cuthill-McKee numbering.
+        /// Возвращает вектор перестановки для обратной нумерации Катхилла-Макки.
         /// </summary>
         /// <param name="mesh">The mesh.</param>
         /// <returns>Permutation vector.</returns>

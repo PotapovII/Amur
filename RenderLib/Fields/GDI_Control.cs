@@ -243,23 +243,24 @@ namespace RenderLib
             double[] ValuesY = null;
             if (spData == null)
                 return;
-            if (spData.GetPoleMinMax(indexPole, ref MinV, ref MaxV, ref SumV, ref SAreaV, ref Values, ref ValuesX, ref ValuesY, ref Dim) == false)
-                return;
-            tSS_Max.Text = MaxV.ToString("F4");
-            tSS_Min.Text = MinV.ToString("F4");
-            tSS_Sum.Text = SumV.ToString("F4");
-            tSS_Area.Text = SAreaV.ToString("F4");
-            tSS_Int.Text = (SumV * SAreaV).ToString("F5");
-            // 30 08 2024 шкала для градиентной заливки с контролем пределов
-            renderOptions.cb_GradScaleLimit = cb_GradScaleLimit.Checked;
-            if (cb_GradScaleLimit.Checked == false)
+            if (spData.GetPoleMinMax(indexPole, ref MinV, ref MaxV, ref SumV, ref SAreaV, ref Values, ref ValuesX, ref ValuesY, ref Dim) == true)
             {
-                tbMax.Text = MaxV.ToString("F4");
-                tbMin.Text = MinV.ToString("F4");
-            }
-            CValue(ref renderOptions.MinValue, tbMin);
-            CValue(ref renderOptions.MaxValue, tbMax);
+                tSS_Max.Text = MaxV.ToString("F4");
+                tSS_Min.Text = MinV.ToString("F4");
+                tSS_Sum.Text = SumV.ToString("F4");
+                tSS_Area.Text = SAreaV.ToString("F4");
+                tSS_Int.Text = (SumV * SAreaV).ToString("F5");
+                // 30 08 2024 шкала для градиентной заливки с контролем пределов
+                renderOptions.cb_GradScaleLimit = cb_GradScaleLimit.Checked;
+                if (cb_GradScaleLimit.Checked == false)
+                {
+                    tbMax.Text = MaxV.ToString("F4");
+                    tbMin.Text = MinV.ToString("F4");
+                }
 
+                CValue(ref renderOptions.MinValue, tbMin);
+                CValue(ref renderOptions.MaxValue, tbMax);
+            }
             proxyRendererControl.renderOptions = renderOptions;
             proxyRendererControl.colorScheme = colorScheme;
             

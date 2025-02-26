@@ -32,9 +32,17 @@ namespace TriangleNet
     /// симпозиума по вычислительной геометрии, ACM, Май 1996 года.
     public class TriangleLocator
     {
+        /// <summary>
+        /// Сглаживатель сетки
+        /// </summary>
         TriangleSampler sampler;
+        /// <summary>
+        /// Сетка
+        /// </summary>
         MeshNet mesh;
-
+        /// <summary>
+        /// точные методы для работы с сетками Делоне
+        /// </summary>
         IPredicates predicates;
 
         // Pointer to a recently visited triangle. Improves point location if
@@ -74,6 +82,7 @@ namespace TriangleNet
 
         /// <summary>
         /// Find a triangle or edge containing a given point.
+        /// Найдите треугольник или ребро, содержащее заданную точку.
         /// </summary>
         /// <param name="searchpoint">The point to locate.</param>
         /// <param name="searchtri">The triangle to start the search at.</param>
@@ -246,6 +255,7 @@ namespace TriangleNet
 
         /// <summary>
         /// Find a triangle or edge containing a given point.
+        /// Найдите треугольник или ребро, содержащее заданную точку.
         /// </summary>
         /// <param name="searchpoint">The point to locate.</param>
         /// <param name="searchtri">The triangle to start the search at.</param>

@@ -7,7 +7,9 @@
 namespace TriangleNet.Tools
 {
     using TriangleNet.Geometry;
-
+    /// <summary>
+    /// Анализатор пересечений
+    /// </summary>
     public static class IntersectionHelper
     {
         /// <summary>
@@ -121,6 +123,7 @@ namespace TriangleNet.Tools
 
         /// <summary>
         /// Intersect a ray with a bounding box.
+        /// Пересечение луча с ограничивающей рамкой.
         /// </summary>
         /// <param name="rect">The clip rectangle.</param>
         /// <param name="p">The ray startpoint (inside the box).</param>

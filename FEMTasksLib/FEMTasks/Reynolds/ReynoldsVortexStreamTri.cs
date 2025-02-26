@@ -63,7 +63,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
         /// <summary>
         /// Релаксация при шаге по нелинейности
         /// </summary>
-        protected double relax = 0.3;
+        protected double relax = 0.9;
         /// <summary>
         /// Итераций по нелинейности
         /// </summary>
@@ -139,7 +139,6 @@ namespace FEMTasksLib.FEMTasks.VortexStream
         /// Предыдущее решение по нелинейности
         /// </summary>
         protected double[] result_cur = null;
-
         /// <summary>
         /// горизонтальая скорость в створе
         /// </summary>
@@ -526,7 +525,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                         }
                         double residual = Math.Sqrt(epsVortex / normVortex);
                         Console.WriteLine("n {0} residual {1}", nIdx, residual);
-                        if (residual < MEM.Error4)
+                        if (residual < MEM.Error5)
                             break;
                         MEM.MemCopy(ref result_cur, result);
                     }
@@ -895,7 +894,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
         {
             double R = 0;
             double[] ColElems = null;
-            MEM.Alloc(algebra.N, ref ColElems);
+            MEM.VAlloc((int)algebra.N, 0, ref ColElems);
             algebra.GetStringSystem(IndexRow, ref ColElems, ref R);
             double sumVortex = 0;
             for (int i = 0; i < ColElems.Length; i++)

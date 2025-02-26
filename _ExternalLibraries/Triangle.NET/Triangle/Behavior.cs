@@ -12,6 +12,7 @@ namespace TriangleNet
 
     /// <summary>
     /// Controls the behavior of the meshing software.
+    /// Управляет поведением программного обеспечения для создания сетки.
     /// </summary>
     class Behavior
     {
@@ -41,6 +42,7 @@ namespace TriangleNet
 
         /// <summary>
         /// Creates an instance of the Behavior class.
+        /// Создает экземпляр класса Behavior.
         /// </summary>
         public Behavior(bool quality = false, double minAngle = 20.0)
         {
@@ -55,6 +57,7 @@ namespace TriangleNet
 
         /// <summary>
         /// Update quality options dependencies.
+        /// Обновление зависимостей параметров качества.
         /// </summary>
         private void Update()
         {
@@ -96,6 +99,7 @@ namespace TriangleNet
 
         /// <summary>
         /// No exact arithmetic.
+        /// Никакой точной арифметики.
         /// </summary>
         public static bool NoExact { get; set; }
 
@@ -105,6 +109,7 @@ namespace TriangleNet
 
         /// <summary>
         /// Quality mesh generation.
+        /// Генерация качественной сетки.
         /// </summary>
         public bool Quality
         {
@@ -161,6 +166,7 @@ namespace TriangleNet
 
         /// <summary>
         /// Input is a Planar Straight Line Graph.
+        /// Входные данные — плоский прямолинейный график.
         /// </summary>
         public bool Poly
         {
@@ -170,6 +176,7 @@ namespace TriangleNet
 
         /// <summary>
         /// Apply a user-defined triangle constraint.
+        /// Применить заданное пользователем ограничение треугольника.
         /// </summary>
         public Func<ITriangle, double, bool> UserTest
         {
@@ -179,6 +186,7 @@ namespace TriangleNet
 
         /// <summary>
         /// Enclose the convex hull with segments.
+        /// Окружим выпуклую оболочку сегментами.
         /// </summary>
         public bool Convex
         {
@@ -188,6 +196,8 @@ namespace TriangleNet
 
         /// <summary>
         /// Conforming Delaunay (all triangles are truly Delaunay).
+        /// Соответствие Делоне (все треугольники являются 
+        /// истинными треугольниками Делоне).
         /// </summary>
         public bool ConformingDelaunay
         {
@@ -202,6 +212,9 @@ namespace TriangleNet
         /// 0 = split segments
         /// 1 = no new vertices on the boundary
         /// 2 = prevent all segment splitting, including internal boundaries
+        /// 0 = разделить сегменты
+        /// 1 = нет новых вершин на границе
+        /// 2 = предотвратить все разделения сегментов, включая внутренние границы
         /// </remarks>
         public int NoBisect
         {
@@ -227,6 +240,7 @@ namespace TriangleNet
 
         /// <summary>
         /// Ignores holes in polygons.
+        /// Игнорирует отверстия в полигонах.
         /// </summary>
         public bool NoHoles
         {

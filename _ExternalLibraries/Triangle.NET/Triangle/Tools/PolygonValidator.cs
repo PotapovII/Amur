@@ -9,7 +9,9 @@ namespace TriangleNet.Tools
     using System;
     using System.Collections.Generic;
     using TriangleNet.Geometry;
-
+    /// <summary>
+    /// Валидация полигонов
+    /// </summary>
     public static class PolygonValidator
     {
         /// <summary>
@@ -94,6 +96,7 @@ namespace TriangleNet.Tools
 
         /// <summary>
         /// Test the polygon for duplicate vertices.
+        /// Проверьте многоугольник на наличие повторяющихся вершин.
         /// </summary>
         public static bool HasDuplicateVertices(IPolygon poly)
         {
@@ -120,6 +123,7 @@ namespace TriangleNet.Tools
 
         /// <summary>
         /// Test the polygon for 360 degree angles.
+        /// Проверьте многоугольник на наличие углов в 360 градусов.
         /// </summary>
         /// <param name="poly">The polygon.</param>
         /// <param name="threshold">The angle threshold.</param>
@@ -177,17 +181,22 @@ namespace TriangleNet.Tools
             return Math.Abs(Math.Atan2(y, x)) <= threshold;
         }
 
-        //  Returns the dot product <AB, BC>.
-        private static double DotProduct(Point a, Point b, Point c)
-        {
-            //  Calculate the dot product.
-            return (a.x - b.x) * (c.x - b.x) + (a.y - b.y) * (c.y - b.y);
-        }
-
 
         /// <summary>
-        /// Возвращает длину векторного произведения AB x BC.
+        /// Returns the dot product <AB, BC>.
+        /// Возвращает скалярное произведение <AB, BC>.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        private static double DotProduct(Point a, Point b, Point c)
+        {
+            return (a.x - b.x) * (c.x - b.x) + (a.y - b.y) * (c.y - b.y);
+        }
+        /// <summary>
         /// Returns the length of cross product AB x BC.
+        /// Возвращает длину векторного произведения AB x BC.
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>

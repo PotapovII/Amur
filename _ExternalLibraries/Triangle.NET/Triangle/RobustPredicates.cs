@@ -49,6 +49,7 @@ namespace TriangleNet
 
         /// <summary>
         /// Gets the default configuration instance.
+        /// Получает экземпляр конфигурации по умолчанию.
         /// </summary>
         public static RobustPredicates Default
         {
@@ -296,6 +297,7 @@ namespace TriangleNet
         /// zero if the four points are cocircular/coplanar. The points pa, pb, and 
         /// pc must be in counterclockwise order, or the sign of the result will be 
         /// reversed.
+        ///
         /// </summary>
         /// <param name="pa">Point a.</param>
         /// <param name="pb">Point b.</param>
@@ -437,6 +439,14 @@ namespace TriangleNet
         /// xi axis; and the apex of the triangle is one unit along the eta axis.
         /// This procedure also returns the square of the length of the triangle's
         /// shortest edge.
+        /// 
+        /// Результат возвращается как в координатах x-y, 
+        /// так и в координатах xi-eta (барицентрических). 
+        /// Система координат xi-eta определяется в терминах треугольника: 
+        /// начало треугольника является началом системы координат; пункт 
+        /// назначения треугольника — одна единица по оси xi; а вершина 
+        /// треугольника — одна единица по оси eta. 
+        /// Эта процедура также возвращает квадрат длины самого короткого ребра треугольника.
         /// </remarks>
         public Point FindCircumcenter(Point org, Point dest, Point apex,
             ref double xi, ref double eta)

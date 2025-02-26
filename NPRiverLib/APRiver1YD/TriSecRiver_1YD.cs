@@ -26,6 +26,7 @@ namespace NPRiverLib.APRiver1YD
     using EddyViscosityLib;
     using MeshGeneratorsLib.StripGenerator;
     using FEMTasksLib.FEMTasks.VortexStream;
+    using CommonLib.Physics;
 
     /// <summary>
     ///  ОО: Определение класса TriSroSecRiverTask1YD - расчет полей скорости, вязкости 
@@ -232,8 +233,13 @@ namespace NPRiverLib.APRiver1YD
             // TO DO подумать о реклонировании algebra если размер матрицы не поменялся 
             algebra = new AlgebraLUTape((uint)mesh.CountKnots, WidthMatrix, WidthMatrix);
             algebra2 = new AlgebraLUTape((uint)(2 * mesh.CountKnots), 2 * WidthMatrix, 2 * WidthMatrix);
-            // создание общего враппера сетки для задачи
-            Set(mesh, algebra);
+
+            //algebra = new SparseAlgebraCG(N, true);
+            //algebra = new SparseAlgebraGMRES_P((uint)(mesh.CountKnots), 30, true);
+            //algebra2 = new SparseAlgebraGMRES_P((uint)(2 * mesh.CountKnots), 30, true);
+
+                // создание общего враппера сетки для задачи
+                Set(mesh, algebra);
             
             if (taskUx == null)
             {
@@ -247,11 +253,12 @@ namespace NPRiverLib.APRiver1YD
                     taskUx = new ReynoldsTransportTri(Params.J, Params.RadiusMin, Params.SigmaTask, null);
                     taskPV = new ReynoldsVortexStreamTri(Params.NLine, Params.SigmaTask, Params.RadiusMin, null, Params.theta);
                 }
-                BEddyViscosityParam p = new BEddyViscosityParam(1, Params.SigmaTask, Params.J, Params.RadiusMin, SСhannelForms.halfPorabolic);
+                BEddyViscosityParam p = new BEddyViscosityParam(1, Params.SigmaTask, Params.J, Params.RadiusMin, 
+                                    SСhannelForms.halfPorabolic, ECalkDynamicSpeed.u_start_J, Params.mu_const);
                 // вычисление начальной вихревой вязкости потока по алгебраической модели Leo_C_van_Rijn1984
                 if (MEM.Equals(eddyViscosity.Sum(), 0) == true)
                 {
-                    taskViscosity = MuManager.Get(ETurbViscType.Boussinesq1865, p);
+                    taskViscosity = MuManager.Get(ETurbViscType.EddyViscosityConst, p);
                     taskViscosity.SetTask(mesh, algebra, wMesh);
                     taskViscosity.SolveTask(ref eddyViscosity, Ux, null, null, Phi, Vortex, dtime);
                 }

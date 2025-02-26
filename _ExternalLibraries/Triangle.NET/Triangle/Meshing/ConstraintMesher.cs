@@ -16,14 +16,28 @@ namespace TriangleNet.Meshing
 
     internal class ConstraintMesher
     {
+        /// <summary>
+        /// Методы триангуляции
+        /// </summary>
         IPredicates predicates;
-
+        /// <summary>
+        /// Сетка
+        /// </summary>
         MeshNet mesh;
+        /// <summary>
+        /// Управляет поведением программного обеспечения для создания сетки.
+        /// флаги для генерациисетки
+        /// </summary>
         Behavior behavior;
+        /// <summary>
+        /// Локатор
+        /// </summary>
         TriangleLocator locator;
 
         List<Triangle> viri;
-
+        /// <summary>
+        /// Логгер
+        /// </summary>
         ILog<LogItem> logger;
 
         public ConstraintMesher(MeshNet mesh, Configuration config)
@@ -81,6 +95,7 @@ namespace TriangleNet.Meshing
                 mesh.checksegments = true;
 
                 // Insert PSLG segments and/or convex hull segments.
+                // Вставьте сегменты PSLG и/или сегменты выпуклой оболочки.
                 FormSkeleton(input);
             }
 
@@ -99,6 +114,11 @@ namespace TriangleNet.Meshing
         /// Find the holes and infect them. Find the area constraints and infect 
         /// them. Infect the convex hull. Spread the infection and kill triangles. 
         /// Spread the area constraints.
+        /// Найти дыры и заразить их. 
+        /// Найти ограничения площади и заразить их. 
+        /// Заразить выпуклую оболочку. 
+        /// Распространить инфекцию и убить треугольники. 
+        /// Распространить ограничения площади.
         /// </summary>
         private void CarveHoles()
         {
@@ -114,24 +134,33 @@ namespace TriangleNet.Meshing
             {
                 // Mark as infected any unprotected triangles on the boundary.
                 // This is one way by which concavities are created.
+                // Отметить как зараженные любые незащищенные
+                // треугольники на границе. Это один из способов
+                // создания вогнутостей.
                 InfectHull();
             }
 
             if (!mesh.behavior.NoHoles)
             {
                 // Infect each triangle in which a hole lies.
+                // Заразить каждый треугольник, который находится в дырах.
                 foreach (var hole in mesh.holes)
                 {
                     // Ignore holes that aren't within the bounds of the mesh.
+                    // Игнорировать отверстия, которые не находятся в пределах сетки.
                     if (mesh.bounds.Contains(hole))
                     {
                         // Start searching from some triangle on the outer boundary.
+                        // Начинаем поиск с некоторого треугольника на внешней границе.
                         searchtri.tri = dummytri;
                         searchtri.orient = 0;
                         searchtri.Sym();
                         // Ensure that the hole is to the left of this boundary edge;
                         // otherwise, locate() will falsely report that the hole
                         // falls within the starting triangle.
+                        // Убедитесь, что отверстие находится слева от этого граничного края;
+                        // в противном случае locate() ложно сообщит,
+                        // что отверстие попадает в начальный треугольник.
                         searchorg = searchtri.Org();
                         searchdest = searchtri.Dest();
                         if (predicates.CounterClockwise(searchorg, searchdest, hole) > 0.0)
@@ -227,11 +256,14 @@ namespace TriangleNet.Meshing
         /// <summary>
         /// Create the segments of a triangulation, including PSLG segments and edges 
         /// on the convex hull.
+        /// Создаем сегменты триангуляции, включая сегменты PSLG 
+        /// и ребра на выпуклой оболочке.
         /// </summary>
         private void FormSkeleton(IPolygon input)
         {
             // The segment endpoints.
-            Vertex p, q;
+            // Конечные точки сегмента.
+            Vertex p = null, q = null;
 
             mesh.insegments = 0;
 
@@ -239,43 +271,56 @@ namespace TriangleNet.Meshing
             {
                 // If the input vertices are collinear, there is no triangulation,
                 // so don't try to insert segments.
+                // Если входные вершины коллинеарны, триангуляции нет, поэтому не
+                // пытайтесь вставлять сегменты.
                 if (mesh.triangles.Count == 0)
                 {
                     return;
                 }
-
-                // If segments are to be inserted, compute a mapping
-                // from vertices to triangles.
+                // If segments are to be inserted,
+                // compute a mapping from vertices to triangles.
+                // Если необходимо вставить сегменты,
+                // вычислите отображение вершин в треугольники.
                 if (input.Segments.Count > 0)
                 {
                     mesh.MakeVertexMap();
                 }
 
                 // Read and insert the segments.
+                // Прочитать и вставить сегменты.
                 foreach (var seg in input.Segments)
                 {
-                    mesh.insegments++;
+                    //try
+                    //{
+                        mesh.insegments++;
 
-                    p = seg.GetVertex(0);
-                    q = seg.GetVertex(1);
+                        p = seg.GetVertex(0);
+                        q = seg.GetVertex(1);
 
-                    if ((p.x == q.x) && (p.y == q.y))
-                    {
-                        if (Log.Verbose)
+                        if ((p.x == q.x) && (p.y == q.y))
                         {
-                            logger.Warning("Endpoints of segment (IDs " + p.id + "/" + q.id + ") are coincident.",
-                                "MeshNet.FormSkeleton()");
+                            if (Log.Verbose)
+                            {
+                                logger.Warning("Endpoints of segment (IDs " + p.id + "/" + q.id + ") are coincident.",
+                                    "MeshNet.FormSkeleton()");
+                            }
                         }
-                    }
-                    else
-                    {
-                        InsertSegment(p, q, seg.Label);
-                    }
+                        else
+                        {
+                            InsertSegment(p, q, seg.Label);
+                        }
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    string str = "Сегмент с вершинами (IDs " + p?.id + "/" + q?.id + ") не добавлены.";
+                    //    logger.Warning(str,"MeshNet.FormSkeleton()");
+                    //    Console.WriteLine(str);
+                    //}
                 }
             }
-
             if (behavior.Convex || !behavior.Poly)
             {
+                // Окружим выпуклую оболочку подсегментами.
                 // Enclose the convex hull with subsegments.
                 MarkHull();
             }
@@ -1109,53 +1154,65 @@ namespace TriangleNet.Meshing
         }
 
         /// <summary>
-        /// Insert a PSLG segment into a triangulation.
+        /// Вставьте сегмент PSLG в триангуляцию.
         /// </summary>
         /// <param name="endpoint1"></param>
         /// <param name="endpoint2"></param>
         /// <param name="newmark"></param>
         private void InsertSegment(Vertex endpoint1, Vertex endpoint2, int newmark)
         {
-            Otri searchtri1 = default(Otri), searchtri2 = default(Otri);
+            Otri searchtri1 = default(Otri);
+            Otri searchtri2 = default(Otri);
             Vertex checkvertex = null;
-
             var dummytri = mesh.dummytri;
-
             // Find a triangle whose origin is the segment's first endpoint.
+            // Найдите треугольник, начало координат которого
+            // является первой конечной точкой отрезка.
             searchtri1 = endpoint1.tri;
             if (searchtri1.tri != null)
             {
                 checkvertex = searchtri1.Org();
             }
-
             if (checkvertex != endpoint1)
             {
                 // Find a boundary triangle to search from.
+                // Найти граничный треугольник для поиска.
                 searchtri1.tri = dummytri;
                 searchtri1.orient = 0;
                 searchtri1.Sym();
                 // Search for the segment's first endpoint by point location.
+                // Найдите граничный треугольник, от которого будет вестись поиск.
                 if (locator.Locate(endpoint1, ref searchtri1) != LocateResult.OnVertex)
                 {
-                    logger.Error("Unable to locate PSLG vertex in triangulation.", "MeshNet.InsertSegment().1");
-                    throw new Exception("Unable to locate PSLG vertex in triangulation.");
+                    logger.Error("Невозможно найти вершину PSLG в триангуляции.", "MeshNet.InsertSegment().1");
+                    //logger.Error("Unable to locate PSLG vertex in triangulation.", "MeshNet.InsertSegment().1");
+                   throw new Exception("Не удалось найти вершину PSLG в триангуляции.");
+                    //throw new Exception("Unable to locate PSLG vertex in triangulation.");
                 }
             }
             // Remember this triangle to improve subsequent point location.
+            // Запомните этот треугольник, чтобы улучшить последующее расположение точек.
             locator.Update(ref searchtri1);
 
             // Scout the beginnings of a path from the first endpoint
             // toward the second.
+            // Разведайте начало пути от первой конечной точки ко второй.
             if (ScoutSegment(ref searchtri1, endpoint2, newmark))
             {
                 // The segment was easily inserted.
+                // Сегмент был легко вставлен.
                 return;
             }
             // The first endpoint may have changed if a collision with an intervening
             // vertex on the segment occurred.
+            // Первая конечная точка могла измениться,
+            // если произошло столкновение с промежуточной
+            // вершиной на сегменте.
             endpoint1 = searchtri1.Org();
 
             // Find a triangle whose origin is the segment's second endpoint.
+            // Найдите треугольник, начало координат которого является
+            // второй конечной точкой отрезка.
             checkvertex = null;
             searchtri2 = endpoint2.tri;
             if (searchtri2.tri != null)
@@ -1165,30 +1222,39 @@ namespace TriangleNet.Meshing
             if (checkvertex != endpoint2)
             {
                 // Find a boundary triangle to search from.
+                // Найти граничный треугольник для поиска.
                 searchtri2.tri = dummytri;
                 searchtri2.orient = 0;
                 searchtri2.Sym();
                 // Search for the segment's second endpoint by point location.
+                // Поиск второй конечной точки сегмента по местоположению точки.
                 if (locator.Locate(endpoint2, ref searchtri2) != LocateResult.OnVertex)
                 {
-                    logger.Error("Unable to locate PSLG vertex in triangulation.", "MeshNet.InsertSegment().2");
-                    throw new Exception("Unable to locate PSLG vertex in triangulation.");
+                    string msg = "Не удалось найти вершину PSLG в триангуляции.";
+                    logger.Error(msg, "MeshNet.InsertSegment().2");
+                    throw new Exception(msg);
                 }
             }
             // Remember this triangle to improve subsequent point location.
+            // Запомните этот треугольник, чтобы улучшить последующее местоположение точки.
             locator.Update(ref searchtri2);
             // Scout the beginnings of a path from the second endpoint
             // toward the first.
+            // Разведайте начало пути от второй конечной точки к первой.
             if (ScoutSegment(ref searchtri2, endpoint1, newmark))
             {
                 // The segment was easily inserted.
+                // Сегмент был легко вставлен.
                 return;
             }
             // The second endpoint may have changed if a collision with an intervening
             // vertex on the segment occurred.
+            // Вторая конечная точка могла измениться,
+            // если произошло столкновение с промежуточной вершиной на сегменте.
             endpoint2 = searchtri2.Org();
 
             // Insert the segment directly into the triangulation.
+            // Вставляем сегмент непосредственно в триангуляцию.
             ConstrainedEdge(ref searchtri1, endpoint2, newmark);
         }
 

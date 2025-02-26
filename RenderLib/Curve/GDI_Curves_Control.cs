@@ -97,6 +97,7 @@ namespace RenderLib
         public void SetRenderOptions()
         {
             cb_coordReper.Checked = renderOptions.coordReper;
+            cb_coordInv.Checked = renderOptions.coordInv;
             cbAutoScaleX.Checked = renderOptions.opAutoScaleX;
             cbAutoScaleY.Checked = renderOptions.opAutoScaleY;
             cb_AutoColorCurves.Checked = renderOptions.opAutoColorCurves;
@@ -170,6 +171,8 @@ namespace RenderLib
             renderOptions.opAutoColorCurves = cb_AutoColorCurves.Checked;
             renderOptions.indexValues = checkedListBoxCurve.SelectedIndex;
             renderOptions.coordReper = cb_coordReper.Checked;
+            renderOptions.coordInv = cb_coordInv.Checked;
+
             renderOptions.opAutoScaleX = cbAutoScaleX.Checked;
             renderOptions.opAutoScaleY = cbAutoScaleY.Checked;
 
@@ -239,7 +242,11 @@ namespace RenderLib
         private void SetColorBrush()
         {
             btBrushCurve.BackColor = colorScheme.BrushPoint.Color;
-            btBrushCoords.BackColor = colorScheme.BrushTextValues.Color;
+            //btBrushCurve.ForeColor = ExtensionsColor.GetContrast(btBrushCurve.BackColor);
+            btBrushCoords.BackColor = colorScheme.BrushTextReper.Color;
+            //btBrushCoords.ForeColor = ExtensionsColor.GetContrast(btBrushCoords.BackColor);
+            btBrushFields.BackColor = colorScheme.BrushTextValues.Color;
+            //btBrushCoords.ForeColor = ExtensionsColor.GetContrast(btBrushCoords.BackColor);
         }
         public SolidBrush GetBraush(SolidBrush b, object sender)
         {
@@ -247,6 +254,7 @@ namespace RenderLib
             {
                 b = new SolidBrush(colorDialog1.Color);
                 (sender as Button).BackColor = colorDialog1.Color;
+                (sender as Button).ForeColor = ExtensionsColor.GetContrast(colorDialog1.Color, true);
             }
             return b;
         }
@@ -268,7 +276,7 @@ namespace RenderLib
         }
         private void SetColorPen()
         {
-            btColorCoord.BackColor = colorScheme.PenGraphLine.Color;
+           // btColorCoord.BackColor = colorScheme.PenGraphLine.Color;
             nUD_penGraphLine.Value = (int)colorScheme.PenGraphLine.Width;
         }
         #endregion
@@ -475,6 +483,7 @@ namespace RenderLib
         {
             colorScheme.PenMeshLine = GetPen(colorScheme.PenMeshLine,
                                         (int)nUD_penGraphCurve.Value, sender);
+            SetColorBrush();
         }
         private void nUD_penGraphCurve_ValueChanged(object sender, EventArgs e)
         {
@@ -484,7 +493,7 @@ namespace RenderLib
         // координаты 
         private void btColorCoord_Click(object sender, EventArgs e)
         {
-            colorScheme.PenGraphLine = GetPen(colorScheme.PenGraphLine,
+            colorScheme.PenReper = GetPen(colorScheme.PenReper,
                             (int)nUD_penGraphLine.Value, sender);
         }
         private void nUD_penGraphLine_ChangeUICues(object sender, UICuesEventArgs e)
@@ -499,16 +508,35 @@ namespace RenderLib
         }
         #endregion
         #region Brush
-        // кривые
+        
+        /// <summary>
+        /// координаты 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btBrushCurve_Click(object sender, EventArgs e)
         {
-            colorScheme.BrushTextValues = GetBraush(colorScheme.BrushTextValues, sender);
+            colorScheme.BrushTextReper = GetBraush(colorScheme.BrushTextReper, sender);
         }
-        // координаты 
+        /// <summary>
+        /// номера узлов
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btBrushCoords_Click(object sender, EventArgs e)
         {
             colorScheme.BrushPoint = GetBraush(colorScheme.BrushPoint, sender);
         }
+        /// <summary>
+        /// полей в узлах
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btBrushFields_Click(object sender, EventArgs e)
+        {
+            colorScheme.BrushTextValues = GetBraush(colorScheme.BrushTextValues, sender);
+        }
+
         #endregion
         #region Font
         // кривые
@@ -652,8 +680,11 @@ namespace RenderLib
                             }
                             int T = (int)isp.time;
                             string ext = Path.GetExtension(saveFileDialog1.FileName);
-                            string filename = ci.ToString() + "#" + curve.Name + ext;
+                            string path = Path.GetDirectoryName(saveFileDialog1.FileName);
+                            string name = Path.GetFileName(saveFileDialog1.FileName);
+                            string filename = path +"\\"+ ci.ToString() + "_" + name;
                             wraiter.Write(curve, filename);
+                            //wraiter.Write(curve, saveFileDialog1.FileName);
                         }
                     }
                 }
@@ -863,6 +894,7 @@ namespace RenderLib
         {
             GV(nud_Y, tbScaleY,ref oldY);
         }
+
 
         private void GV(NumericUpDown nud, TextBox tb, ref int old)
         {

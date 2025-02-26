@@ -79,23 +79,6 @@
             this.label25 = new System.Windows.Forms.Label();
             this.tbBY = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
-            this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.label29 = new System.Windows.Forms.Label();
-            this.panel12 = new System.Windows.Forms.Panel();
-            this.btCreateCrossTask = new System.Windows.Forms.Button();
-            this.button14 = new System.Windows.Forms.Button();
-            this.panel11 = new System.Windows.Forms.Panel();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.tsb_AddNode = new System.Windows.Forms.ToolStripButton();
-            this.tsb_DelLastNode = new System.Windows.Forms.ToolStripButton();
-            this.tsb_DelAllNodes = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsb_ReGenMesh = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.buttonSaveSP = new System.Windows.Forms.Button();
             this.buttonLoadSP = new System.Windows.Forms.Button();
             this.btCurves = new System.Windows.Forms.Button();
@@ -208,10 +191,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarMin)).BeginInit();
             this.tabPage5.SuspendLayout();
-            this.tabPage7.SuspendLayout();
-            this.panel12.SuspendLayout();
-            this.panel11.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
             this.tabControlOption.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage4.SuspendLayout();
@@ -293,7 +272,6 @@
             // 
             this.tbc_Task.Controls.Add(this.tabPage6);
             this.tbc_Task.Controls.Add(this.tabPage5);
-            this.tbc_Task.Controls.Add(this.tabPage7);
             this.tbc_Task.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbc_Task.Location = new System.Drawing.Point(4, 173);
             this.tbc_Task.Name = "tbc_Task";
@@ -834,172 +812,6 @@
             this.label26.Size = new System.Drawing.Size(34, 17);
             this.label26.TabIndex = 98;
             this.label26.Text = "A X:";
-            // 
-            // tabPage7
-            // 
-            this.tabPage7.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage7.Controls.Add(this.label29);
-            this.tabPage7.Controls.Add(this.panel12);
-            this.tabPage7.Controls.Add(this.panel11);
-            this.tabPage7.Location = new System.Drawing.Point(4, 29);
-            this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(268, 211);
-            this.tabPage7.TabIndex = 2;
-            this.tabPage7.Text = "Задача";
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(28, 4);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(210, 20);
-            this.label29.TabIndex = 2;
-            this.label29.Text = "Редактирование КЭ сетки";
-            // 
-            // panel12
-            // 
-            this.panel12.BackColor = System.Drawing.SystemColors.Window;
-            this.panel12.Controls.Add(this.btCreateCrossTask);
-            this.panel12.Controls.Add(this.button14);
-            this.panel12.Location = new System.Drawing.Point(6, 138);
-            this.panel12.Name = "panel12";
-            this.panel12.Size = new System.Drawing.Size(254, 68);
-            this.panel12.TabIndex = 1;
-            // 
-            // btCreateCrossTask
-            // 
-            this.btCreateCrossTask.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btCreateCrossTask.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btCreateCrossTask.Location = new System.Drawing.Point(8, 34);
-            this.btCreateCrossTask.Name = "btCreateCrossTask";
-            this.btCreateCrossTask.Size = new System.Drawing.Size(157, 27);
-            this.btCreateCrossTask.TabIndex = 101;
-            this.btCreateCrossTask.Text = "Создать задачу";
-            this.btCreateCrossTask.UseVisualStyleBackColor = true;
-            this.btCreateCrossTask.Click += new System.EventHandler(this.btCreateCrossTask_Click);
-            // 
-            // button14
-            // 
-            this.button14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button14.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button14.Location = new System.Drawing.Point(8, 5);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(156, 27);
-            this.button14.TabIndex = 102;
-            this.button14.Text = "Выгрузка данных";
-            this.button14.UseVisualStyleBackColor = true;
-            this.button14.Click += new System.EventHandler(this.button14_Click_1);
-            // 
-            // panel11
-            // 
-            this.panel11.BackColor = System.Drawing.SystemColors.Window;
-            this.panel11.Controls.Add(this.toolStrip1);
-            this.panel11.Location = new System.Drawing.Point(6, 27);
-            this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(255, 39);
-            this.panel11.TabIndex = 0;
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.BackColor = System.Drawing.SystemColors.Control;
-            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
-            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsb_AddNode,
-            this.tsb_DelLastNode,
-            this.tsb_DelAllNodes,
-            this.toolStripSeparator1,
-            this.toolStripSeparator2,
-            this.tsb_ReGenMesh,
-            this.toolStripSeparator3,
-            this.toolStripButton2,
-            this.toolStripButton1,
-            this.toolStripButton3});
-            this.toolStrip1.Location = new System.Drawing.Point(6, 4);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(226, 31);
-            this.toolStrip1.TabIndex = 0;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
-            // tsb_AddNode
-            // 
-            this.tsb_AddNode.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_AddNode.Image = global::RenderLib.Properties.Resources.BNodes;
-            this.tsb_AddNode.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_AddNode.Name = "tsb_AddNode";
-            this.tsb_AddNode.Size = new System.Drawing.Size(28, 28);
-            this.tsb_AddNode.Text = "Добавить новый узел";
-            // 
-            // tsb_DelLastNode
-            // 
-            this.tsb_DelLastNode.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_DelLastNode.Image = global::RenderLib.Properties.Resources.DelNodes;
-            this.tsb_DelLastNode.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_DelLastNode.Name = "tsb_DelLastNode";
-            this.tsb_DelLastNode.Size = new System.Drawing.Size(28, 28);
-            this.tsb_DelLastNode.Text = "Удалить последний узел";
-            // 
-            // tsb_DelAllNodes
-            // 
-            this.tsb_DelAllNodes.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_DelAllNodes.Image = global::RenderLib.Properties.Resources.DelNodes1;
-            this.tsb_DelAllNodes.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_DelAllNodes.Name = "tsb_DelAllNodes";
-            this.tsb_DelAllNodes.Size = new System.Drawing.Size(28, 28);
-            this.tsb_DelAllNodes.Text = "Удалить все узлы";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 31);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 31);
-            // 
-            // tsb_ReGenMesh
-            // 
-            this.tsb_ReGenMesh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_ReGenMesh.Image = global::RenderLib.Properties.Resources.MeshCloud;
-            this.tsb_ReGenMesh.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsb_ReGenMesh.Name = "tsb_ReGenMesh";
-            this.tsb_ReGenMesh.Size = new System.Drawing.Size(28, 28);
-            this.tsb_ReGenMesh.Text = "Создать сетку с новыми узлами";
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 31);
-            // 
-            // toolStripButton2
-            // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = global::RenderLib.Properties.Resources.LoadB;
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(28, 28);
-            this.toolStripButton2.Text = "toolStripButton2";
-            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::RenderLib.Properties.Resources.SaveA;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(28, 28);
-            this.toolStripButton1.Text = "toolStripButton1";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
-            // 
-            // toolStripButton3
-            // 
-            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton3.Image = global::RenderLib.Properties.Resources.Convert;
-            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(28, 28);
-            this.toolStripButton3.Text = "toolStripButton3";
             // 
             // buttonSaveSP
             // 
@@ -2159,13 +1971,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarMin)).EndInit();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
-            this.tabPage7.ResumeLayout(false);
-            this.tabPage7.PerformLayout();
-            this.panel12.ResumeLayout(false);
-            this.panel11.ResumeLayout(false);
-            this.panel11.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
             this.tabControlOption.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
@@ -2328,8 +2133,6 @@
         private System.Windows.Forms.CheckBox cb_TargetLine;
         private System.Windows.Forms.NumericUpDown nUD_formatReper;
         private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.TabPage tabPage7;
-        private System.Windows.Forms.Button btCreateCrossTask;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel8;
         private System.Windows.Forms.ToolStripStatusLabel tSS_Int;
         private System.Windows.Forms.Button bt_DelOne;
@@ -2351,21 +2154,6 @@
         private System.Windows.Forms.NumericUpDown nUD_formatCoordMan;
         private System.Windows.Forms.Button button13;
         private System.Windows.Forms.Label label28;
-        private System.Windows.Forms.Button button14;
-        private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.Panel panel12;
-        private System.Windows.Forms.Panel panel11;
-        private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton tsb_AddNode;
-        private System.Windows.Forms.ToolStripButton tsb_DelLastNode;
-        private System.Windows.Forms.ToolStripButton tsb_ReGenMesh;
-        private System.Windows.Forms.ToolStripButton tsb_DelAllNodes;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.CheckBox cb_GradScaleLimit;
         private System.Windows.Forms.TextBox tbMax;
         private System.Windows.Forms.TextBox tbMin;

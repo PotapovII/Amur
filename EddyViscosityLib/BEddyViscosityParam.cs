@@ -42,15 +42,27 @@ namespace EddyViscosityLib
         /// <summary>
         /// Уклон русла в створе
         /// </summary>
+        [DisplayName("Уклон свободной поверхности потока")]
+        [Category("Задача")]
         public double J { get; set; }
         /// <summary>
         /// Форма канала
         /// </summary>
+        [DisplayName("Форма канала")]
+        [Category("Задача")]
         public SСhannelForms channelForms { get; set; }
         /// <summary>
         /// Метод определения динамической скорости
         /// </summary>
+        [DisplayName("Метод определения динамической скорости")]
+        [Category("Задача")]
         public ECalkDynamicSpeed u_start {  get; set; }
+        /// <summary>
+        /// Постоянная вихревая вязкость
+        /// </summary>
+        [DisplayName("Метод определения динамической скорости")]
+        [Category("Задача")]
+        public double mu_const { get; set; }
 
         public BEddyViscosityParam()
         {
@@ -59,11 +71,21 @@ namespace EddyViscosityLib
             this.NLine = 10;
             this.J = 0.001;
             this.u_start = ECalkDynamicSpeed.u_start_J;
-            //  this.channelForms =  SСhannelForms.boxСhannelSection;
             this.channelForms = SСhannelForms.porabolic;
+            //this.mu_const = 10;
+            //this.mu_const = 1;
+            //this.mu_const = 5/16.0;
+            //this.mu_const = 0.1;
+            this.mu_const = 0.01;
         }
-        public BEddyViscosityParam(int NLine, int SigmaTask, double J, double RadiusMin, SСhannelForms channelForms, 
-                            ECalkDynamicSpeed u_start = ECalkDynamicSpeed.u_start_J)
+        public BEddyViscosityParam(int NLine, int SigmaTask, double J, 
+            double RadiusMin, SСhannelForms channelForms,
+            ECalkDynamicSpeed u_start = ECalkDynamicSpeed.u_start_J,
+            //double mu_const = 10)
+        //double mu_const = 1) 
+        //double mu_const = 5 / 16.0)
+        //double mu_const = 0.1)
+        double mu_const = 0.01)
         {
             this.NLine = NLine;
             this.SigmaTask = SigmaTask;
@@ -71,6 +93,7 @@ namespace EddyViscosityLib
             this.J = J;
             this.u_start = u_start;
             this.channelForms = channelForms;
+            this.mu_const = mu_const;
         }
         public BEddyViscosityParam(BEddyViscosityParam p)
         {
@@ -84,6 +107,7 @@ namespace EddyViscosityLib
             this.J = p.J;
             this.channelForms = p.channelForms;
             this.u_start = p.u_start;
+            this.mu_const = p.mu_const;
         }
         /// <summary>
         /// свойств задачи

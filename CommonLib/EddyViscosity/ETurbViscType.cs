@@ -95,40 +95,45 @@ namespace CommonLib.EddyViscosity
         [Description("Модель Потапова И.И, 2024")]
         PotapobII_2024 = 11,
         /// <summary>
+        /// Модель с постоянной заданной вязкостью
+        /// </summary>
+        [Description("Модель с постоянной заданной вязкостью")]
+        EddyViscosityConst = 12,
+        /// <summary>
         /// Не используем алгебраическую модель
         /// </summary>
         [Description("Не используем алгебраическую модель")]
-        NotUsingAlgebaraModel = 12,
+        NotUsingAlgebaraModel = 13,
         /// <summary>
         /// Модель k - e  не стационарная
         /// </summary>
         [Description("Модель k - e стандарт (n)")]
-        КЕModelN = 13,
+        КЕModelN = 30,
         /// <summary>
         /// Модель k - e  квази стационарная
         /// </summary>
         [Description("Модель k - e стандарт (s)")]
-        КЕModelS = 14,
+        КЕModelS = 31,
         /// <summary>
         /// Модель SA стандарт не стационарная
         /// </summary>
         [Description("Модель Спаоарта - Алмараса (n)")]
-        SAModelN = 15,
+        SAModelN = 32,
         /// <summary>
         /// Модель SA (Спаоарта -Алмараса) стандарт квази стационарная
         /// </summary>
         [Description("Модель Спаоарта - Алмараса (s)")]
-        SAModelS = 16,
+        SAModelS = 33,
         /// <summary>
         /// Модель WA Рея - Aгарвала не стационарная
         /// </summary>
         [Description("Модель Рея - Aгарвала (n)")]
-        WAModelN = 17,
+        WAModelN = 34,
         /// <summary>
         /// Модель WA Рея - Aгарвала квази стационарная
         /// </summary>
         [Description("Модель Рея - Aгарвала (s)")]
-        WAModelS = 18
+        WAModelS = 35
     }
 
 

@@ -96,7 +96,6 @@ namespace TriangleNet
         public void Release(Triangle triangle)
         {
             stack.Push(triangle);
-
             // Отмечаем треугольник как свободный (используется перечислителем).
             triangle.hash = -triangle.hash - 1;
         }

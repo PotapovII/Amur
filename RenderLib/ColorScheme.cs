@@ -11,6 +11,7 @@
 //---------------------------------------------------------------------------
 namespace RenderLib
 {
+    using CommonLib.Delegate;
     using System;
     using System.Drawing;
     /// <summary>
@@ -18,6 +19,27 @@ namespace RenderLib
     /// </summary>
     public class BaseColorScheme
     {
+        const int RGBMAX = 255;
+        /// <summary>
+        /// Инвертор цвета
+        /// </summary>
+        /// <param name="ColourToInvert"></param>
+        /// <returns></returns>
+        public static Color InvertColour1(Color ColourToInvert)
+        {
+            return Color.FromArgb(RGBMAX - ColourToInvert.R, RGBMAX - ColourToInvert.G, RGBMAX - ColourToInvert.B);
+        }
+        public static Color InvertColour(Color bg)
+        {
+            //const rgb = parseInt(bgColor.slice(1), 16);
+            //const r = (rgb >> 16) & 0xff;
+            //const g = (rgb >> 8) & 0xff;
+            //const b = (rgb >> 0) & 0xff;
+            //return ((r * 0.299 + g * 0.587 + b * 0.114) > 186) ? '#000000' : '#FFFFFF';
+            return Color.FromArgb((int)(bg.R * 0.299), (int)(bg.G * 0.587),(int) (bg.B * 0.114));
+        }
+
+
         #region Кисти
         /// <summary>
         /// Кисти для отрисовки значений у узлах координат
@@ -367,22 +389,6 @@ namespace RenderLib
     /// </summary>
     public class ColorSchemeClouds : BaseColorScheme
     {
-        ///// <summary>
-        ///// Цветовая заливка узлов облака
-        ///// </summary>
-        //public bool ColorBrushCloud { get; set; }
-        ///// <summary>
-        ///// Отрисовка новеров узлов облака
-        ///// </summary>
-        //public bool NodesCloud { get; set; }
-        ///// <summary>
-        ///// Отрисовка числовых полей
-        ///// </summary>
-        //public bool NodeCloudValues { get; set; }
-        ///// <summary>
-        ///// Отрисовка векторных полей
-        ///// </summary>
-        //public bool NodeCloudVector { get; set; }
         /// <summary>
         /// Разраядность мантисы при выводе числовых данных
         /// </summary>

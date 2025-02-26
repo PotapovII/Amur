@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AbsEddyViscosityTri.cs" />
     <Compile Include="AM\EddyViscosity_Absi_2019.cs" />
+    <Compile Include="AM\EddyViscosityConst.cs" />
     <Compile Include="AM\EddyViscosity_Karaushev1977.cs" />
     <Compile Include="AM\AEddyViscosityDistance.cs" />
     <Compile Include="AM\EddyViscosity_VanDriest1956.cs" />

@@ -12,11 +12,15 @@ namespace TriangleNet.Topology
 
     /// <summary>
     /// An oriented subsegment.
+    /// Ориентированный подсегмент.
     /// </summary>
     /// <remarks>
     /// Includes a pointer to a subsegment and an orientation. The orientation denotes a
     /// side of the edge. Hence, there are two possible orientations. By convention, the
     /// edge is always directed so that the "side" denoted is the right side of the edge.
+    /// Содержит указатель на подсегмент и ориентацию. Ориентация обозначает сторону ребра.
+    /// Следовательно, возможны две ориентации. По общему правилу, ребро всегда направлено 
+    /// так, что обозначаемая "сторона" является правой стороной ребра.
     /// </remarks>
     public struct Osub
     {
