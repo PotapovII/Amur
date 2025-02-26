@@ -388,7 +388,62 @@ namespace NPRiverLib.IO
                                 VelosityUy = new DigFunction(Y29, V29, "Створ V29");
                             }
                             break;
-
+                        case 16:
+                        case 17:
+                            {
+                                turbViscType = ETurbViscType.Karaushev1977;
+                                // создание и чтение свойств задачи                
+                                RSCrossParams p = new RSCrossParams()
+                                {
+                                    J = 0.0000274,
+                                    turbViscTypeA = turbViscType,
+                                    turbViscTypeB = turbViscType,
+                                    сrossAlgebra = CrossAlgebra.TapeGauss,
+                                    taskVariant = TaskVariant.WaterLevelFun,
+                                    bcTypeVortex = BCTypeVortex.VortexAllCalk,
+                                    typeMeshGenerator = StripGenMeshType.StripMeshGenerator_3,
+                                    typeEddyViscosity = ECalkDynamicSpeed.u_start_U,
+                                    velocityOnWL = true,
+                                    axisSymmetry = 1,
+                                    CountKnots = 400,
+                                    CountBLKnots = 450,
+                                    NLine = 20,
+                                    SigmaTask = 0, //SigmaTask,
+                                    RadiusMin = 3.85,
+                                    ReTask = 0,
+                                    theta = 0.5
+                                };
+                                if (testID == 14)
+                                    p.ReTask = 1;
+                                if (testID == 15)
+                                    p.ReTask = 2;
+                                river_1YD.SetParams(p);
+                                int Ny = 20;
+                                double[] xx = null;
+                                double[] yy = null;
+                                //// Дно створа 15 Розовского
+                                //Geometry = new DigFunction(xx, yy, "Дно створа 15");
+                                Geometry = new FunctionСhannelRose();
+                                Geometry.GetFunctionData(ref xx, ref yy, Ny);
+                                // свободная поверхность
+                                double WL = 0.140;
+                                double[] WLy = { xx[0], xx[xx.Length - 1] };
+                                double[] WLz = { WL, WL };
+                                WaterLevels = new DigFunction(WLy, WLz, "свободная поверхность");
+                                // расход
+                                double Q = 0.1; ;
+                                double[] timeArg = { 0, 1000 };
+                                double[] q = { Q, Q };
+                                FlowRate = new DigFunction(timeArg, q, "расход");
+                                // Створ 15
+                                double[] Y_U15 = { 0, 0.1, 0.3, 0.55, 0.8, 1.05, 1.2, 1.5, 1.6 };
+                                double[] U15 = { 0, 0.243, 0.365, 0.38, 0.38, 0.365, 0.345, 0.186, 0 };
+                                VelosityUx = new DigFunction(Y_U15, U15, "Створ");
+                                double[] Y_V15 = { 0, 0.55, 0.8, 1.05, 1.2, 1.6 };
+                                double[] V15 = { 0, 0.03, 0.028, 0.028, 0.038, 0 };
+                                VelosityUy = new DigFunction(Y_V15, V15, "Створ");
+                            }
+                            break;
                     }
                     IDigFunction[] crossFunctions = new IDigFunction[5]
                     {
@@ -591,6 +646,8 @@ namespace NPRiverLib.IO
             list.Add("Прямоугольная каверна (нс Рейнольдс)"); // 13
             list.Add("Прямоугольная каверна (ст Рейнольдс)"); // 
             list.Add("Прямоугольная каверна (ст Стокс)"); // 
+            list.Add("Канал Розовского п., 15 створ (нс Рейнольдс)");  // 16
+            list.Add("Канал Розовского п., 15 створ (ст Рейнольдс)");  
             return list;
         }
     }

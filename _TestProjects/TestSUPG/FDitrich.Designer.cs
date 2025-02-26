@@ -83,7 +83,7 @@
             "Створ 5",
             "Тест"});
             this.lb_CrossNamber.Location = new System.Drawing.Point(16, 183);
-            this.lb_CrossNamber.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lb_CrossNamber.Margin = new System.Windows.Forms.Padding(4);
             this.lb_CrossNamber.Name = "lb_CrossNamber";
             this.lb_CrossNamber.Size = new System.Drawing.Size(211, 104);
             this.lb_CrossNamber.TabIndex = 95;
@@ -139,7 +139,7 @@
             // 
             this.tb_Q.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tb_Q.Location = new System.Drawing.Point(162, 86);
-            this.tb_Q.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_Q.Margin = new System.Windows.Forms.Padding(4);
             this.tb_Q.Name = "tb_Q";
             this.tb_Q.Size = new System.Drawing.Size(35, 23);
             this.tb_Q.TabIndex = 143;
@@ -160,7 +160,7 @@
             // 
             this.tb_R.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tb_R.Location = new System.Drawing.Point(162, 59);
-            this.tb_R.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_R.Margin = new System.Windows.Forms.Padding(4);
             this.tb_R.Name = "tb_R";
             this.tb_R.Size = new System.Drawing.Size(35, 23);
             this.tb_R.TabIndex = 141;
@@ -218,7 +218,7 @@
             "Модель Дерек Г. и К.",
             "Модель Потапова И.И."});
             this.listBoxAMu.Location = new System.Drawing.Point(16, 332);
-            this.listBoxAMu.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listBoxAMu.Margin = new System.Windows.Forms.Padding(4);
             this.listBoxAMu.Name = "listBoxAMu";
             this.listBoxAMu.Size = new System.Drawing.Size(211, 202);
             this.listBoxAMu.TabIndex = 132;
@@ -239,7 +239,7 @@
             // 
             this.tb_w.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tb_w.Location = new System.Drawing.Point(164, 184);
-            this.tb_w.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_w.Margin = new System.Windows.Forms.Padding(4);
             this.tb_w.Name = "tb_w";
             this.tb_w.Size = new System.Drawing.Size(81, 23);
             this.tb_w.TabIndex = 139;
@@ -266,9 +266,9 @@
             "Карта треугольный",
             "Карта комплекс"});
             this.lb_MeshGen.Location = new System.Drawing.Point(15, 266);
-            this.lb_MeshGen.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lb_MeshGen.Margin = new System.Windows.Forms.Padding(4);
             this.lb_MeshGen.Name = "lb_MeshGen";
-            this.lb_MeshGen.Size = new System.Drawing.Size(233, 44);
+            this.lb_MeshGen.Size = new System.Drawing.Size(233, 64);
             this.lb_MeshGen.TabIndex = 136;
             // 
             // cbBoundaryG2_Ux
@@ -316,7 +316,7 @@
             "Ленточный Гаусс",
             "Би сопряженные градиенты"});
             this.lb_Algebra.Location = new System.Drawing.Point(18, 440);
-            this.lb_Algebra.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lb_Algebra.Margin = new System.Windows.Forms.Padding(4);
             this.lb_Algebra.Name = "lb_Algebra";
             this.lb_Algebra.Size = new System.Drawing.Size(233, 24);
             this.lb_Algebra.TabIndex = 130;
@@ -375,7 +375,7 @@
             "GS По гидростатике канала ",
             "LU По придонной скорости"});
             this.ls_Type__U_star.Location = new System.Drawing.Point(16, 578);
-            this.ls_Type__U_star.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ls_Type__U_star.Margin = new System.Windows.Forms.Padding(4);
             this.ls_Type__U_star.Name = "ls_Type__U_star";
             this.ls_Type__U_star.Size = new System.Drawing.Size(430, 44);
             this.ls_Type__U_star.TabIndex = 149;
@@ -395,7 +395,7 @@
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button2.Location = new System.Drawing.Point(235, 206);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(211, 29);
             this.button2.TabIndex = 120;
@@ -407,7 +407,7 @@
             // 
             this.textBoxDiam.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBoxDiam.Location = new System.Drawing.Point(164, 153);
-            this.textBoxDiam.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxDiam.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxDiam.Name = "textBoxDiam";
             this.textBoxDiam.Size = new System.Drawing.Size(81, 23);
             this.textBoxDiam.TabIndex = 52;
@@ -432,7 +432,7 @@
             "Модель Дерек Г. и К.",
             "Модель Потапова И.И."});
             this.listBoxAMu2.Location = new System.Drawing.Point(235, 332);
-            this.listBoxAMu2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listBoxAMu2.Margin = new System.Windows.Forms.Padding(4);
             this.listBoxAMu2.Name = "listBoxAMu2";
             this.listBoxAMu2.Size = new System.Drawing.Size(211, 202);
             this.listBoxAMu2.TabIndex = 155;
@@ -481,7 +481,7 @@
             "Задана скорость Uy на WL",
             "Vortex = 0 на дне и Uy на WL"});
             this.lb_VortexBC_G2.Location = new System.Drawing.Point(16, 75);
-            this.lb_VortexBC_G2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lb_VortexBC_G2.Margin = new System.Windows.Forms.Padding(4);
             this.lb_VortexBC_G2.Name = "lb_VortexBC_G2";
             this.lb_VortexBC_G2.Size = new System.Drawing.Size(430, 64);
             this.lb_VortexBC_G2.TabIndex = 125;
@@ -495,7 +495,7 @@
             "плоский",
             "поворот"});
             this.lb_Ring.Location = new System.Drawing.Point(22, 517);
-            this.lb_Ring.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lb_Ring.Margin = new System.Windows.Forms.Padding(4);
             this.lb_Ring.Name = "lb_Ring";
             this.lb_Ring.Size = new System.Drawing.Size(227, 24);
             this.lb_Ring.TabIndex = 96;
@@ -505,7 +505,7 @@
             // 
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button3.Location = new System.Drawing.Point(18, 352);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(179, 29);
             this.button3.TabIndex = 45;
@@ -540,7 +540,7 @@
             // 
             this.tb_J.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tb_J.Location = new System.Drawing.Point(162, 33);
-            this.tb_J.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_J.Margin = new System.Windows.Forms.Padding(4);
             this.tb_J.Name = "tb_J";
             this.tb_J.Size = new System.Drawing.Size(83, 23);
             this.tb_J.TabIndex = 63;
@@ -573,7 +573,7 @@
             this.panel2.Controls.Add(this.label32);
             this.panel2.Controls.Add(this.tb_J);
             this.panel2.Location = new System.Drawing.Point(13, 8);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(263, 646);
             this.panel2.TabIndex = 63;
@@ -585,7 +585,7 @@
             this.ClientSize = new System.Drawing.Size(764, 674);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
-            this.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.Margin = new System.Windows.Forms.Padding(1);
             this.Name = "FDitrich";
             this.Text = "FDitrich";
             this.panel3.ResumeLayout(false);
