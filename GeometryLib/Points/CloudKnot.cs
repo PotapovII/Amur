@@ -134,5 +134,19 @@ namespace GeometryLib
                 V.Attributes[k] = A.Attributes[k] * N1 + B.Attributes[k] * N2;
             return V;
         }
+        /// <summary>
+        /// Чтение обласночй точки из массива
+        /// </summary>
+        /// <param name="mas">источник</param>
+        /// <param name="position">кратно 8 элементам массива</param>
+        /// <returns>облачная точка</returns>
+        public static CloudKnot ReadCloudKnot(string[] mas, int position)
+        {
+            string p1 = mas[position];
+            for (int i = 0; i < 8; i++)
+                p1 += " " + mas[position + 1 + i];
+            CloudKnot A = Parse(p1);
+            return A;
+        }
     }
 }

@@ -180,6 +180,7 @@ namespace MemLogLib
             else
                 sendToFile(s);
         }
+
         public static void Print(string Name, double value)
         {
             string s = String.Format(Name + " = " + value.ToString());
@@ -239,6 +240,50 @@ namespace MemLogLib
                         writer.Write(DoubleToString(mas[i], Format) + " ");
                     writer.WriteLine();
                     writer.Close();
+                }
+            }
+        }
+        /// <summary>
+        /// ф-я контрольной печати одномерного массива (си 1D формат)
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="di"></param>
+        /// <param name="dm"></param>
+        /// <param name="j"></param>
+        public static void Print(string Name, int[] di, int dm, int j)
+        { 
+            int i, k; i = k = 0;
+            Console.WriteLine(Name);
+            for (i = 0; i < dm; i++)
+            {
+                Console.Write(" {0}", di[i]); 
+                k++;
+                if (k > j - 1) 
+                { 
+                    k = 0;
+                    Console.WriteLine();
+                }
+            }
+        }
+        /// <summary>
+        /// ф-я контрольной печати одномерного массива (си 1D формат)
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="di"></param>
+        /// <param name="dm"></param>
+        /// <param name="j"></param>
+        public static void Print(string Name, float[] di, int dm, int j)
+        {
+            int i, k; i = k = 0;
+            Console.WriteLine(Name);
+            for (i = 0; i < dm; i++)
+            {
+                Console.Write(" {0}", di[i]);
+                k++;
+                if (k > j - 1)
+                {
+                    k = 0;
+                    Console.WriteLine();
                 }
             }
         }
@@ -410,7 +455,7 @@ namespace MemLogLib
                 Console.WriteLine(Name);
                 for (int i = 0; i < M.Length; i++)
                 {
-                    Console.Write("{0} ", i);
+                    if(color==0) Console.Write("{0} ", i);
                     for (int j = 0; j < M[i].Length; j++)
                         Console.Write(M[i][j].ToString() + " ");
                     Console.WriteLine();
@@ -423,7 +468,7 @@ namespace MemLogLib
                     writer.WriteLine(Name);
                     for (int i = 0; i < M.Length; i++)
                     {
-                        writer.Write("{0} ", i);
+                        if (color == 0) writer.Write("{0} ", i);
                         for (int j = 0; j < M[i].Length; j++)
                             writer.Write(M[i][j].ToString() + " ");
                         writer.WriteLine();

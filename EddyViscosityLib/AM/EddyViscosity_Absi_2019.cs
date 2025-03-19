@@ -25,8 +25,8 @@ namespace EddyViscosityLib
         /// <summary>
         /// Конструктор 
         /// </summary>
-        public EddyViscosity_Absi_2019(ETurbViscType eTurbViscType, BEddyViscosityParam p)
-            : base(eTurbViscType, p)
+        public EddyViscosity_Absi_2019(ETurbViscType eTurbViscType, BEddyViscosityParam p, TypeTask tt)
+            : base(eTurbViscType, p, tt)
         {
         }
         /// <summary>

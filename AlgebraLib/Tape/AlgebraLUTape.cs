@@ -397,22 +397,41 @@ namespace AlgebraLib
         {
             double V = 0;
             int dFH = FH;
-            Console.WriteLine("Matrix");
+            Console.Clear();
+            Console.WriteLine("Matrix: FN = {0}  FH = {1} FHL = {2}", FN, FH, FHL);
             for (int i = 0; i < FN; i++)
             {
                 for (int j = 0; j < FN; j++)
                 {
-                    int jp = j - i + FHL;
-                    if (jp < FH && jp > -1)
-                        Console.Write(" " + Matrix[i][jp].ToString("F4"));
+                    if (flag == 0)
+                    {
+                        int jp = j - i + FHL;
+                        if (jp < FH && jp > -1)
+                            Console.Write(" " + Matrix[i][jp].ToString("F4"));
+                        else
+                            Console.Write(" " + V.ToString("F4"));
+                    }
                     else
-                        Console.Write(" " + V.ToString("F4"));
+                    {
+                        int jp = j - i + FHL;
+                        if (jp < FH && jp > -1)
+                        {
+                            if(MEM.Equals(Matrix[i][jp], 0)==false)
+                                 Console.Write(i.ToString()+"_"+jp.ToString() +": " + Matrix[i][jp].ToString("F4")+" | ");
+                        }
+                    }
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("Right");
+            Console.WriteLine("Right: FN = {0}  FH = {1} FHL = {2}", FN, FH, FHL);
             for (int i = 0; i < FN; i++)
-                Console.Write(" " + Right[i].ToString("F4"));
+                if (flag == 0)
+                    Console.Write(" " + Right[i].ToString("F4"));
+                else
+                {
+                    if (MEM.Equals(Right[i], 0) == false)
+                        Console.Write("   |" + i.ToString() + ": " + Right[i].ToString("F4"));
+                }
             Console.WriteLine();
         }
     }

@@ -55,7 +55,7 @@ namespace BLLib
         //double[] p1D = null;
         //double[] x1D = null;
         //IMesh mesh1D = null;
-        //CBedLoadTask1D bltask = null;
+        //CBedLoadTask_1XD bltask = null;
         #endregion 
         /// <summary>
         /// Конструктор 
@@ -75,7 +75,7 @@ namespace BLLib
         /// <param name="theta">Параметр схемы по времени</param>
         /// <param name="dtime">шаг по времени</param>
         /// <param name="isAvalanche">флаг использования лавинной модели</param>
-        public override void SetTask(IMesh mesh, double[] Zeta0, IBoundaryConditions BConditions)
+        public override void SetTask(IMesh mesh, double[] Zeta0, double[] Roughness, IBoundaryConditions BConditions)
         {
             if (mesh == null)
             {
@@ -89,7 +89,7 @@ namespace BLLib
                 return;
             }
             uint NN = (uint)Math.Sqrt(mesh.CountKnots);
-            base.SetTask(mesh, Zeta0, BConditions);
+            base.SetTask(mesh, Zeta0, Roughness, BConditions);
             InitLocal(cu);
 
             Locator = new Locator_TriMeshToQuad(mesh);

@@ -729,7 +729,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                                 double Ax = 0;
                                 double Ay = 0;
                                 double Radius = 1;
-                                if (SigmaTask == 0) // Плоский створ
+                                if (SigmaTask == 1) // Плоский створ
                                     Radius = RadiusMin + (X[i0] + X[i1] + X[i2]) / 3;
 
                                 double eUx = (Ux[i0] + Ux[i1] + Ux[i2]) / 3;

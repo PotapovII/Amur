@@ -114,20 +114,20 @@ namespace BLLib
             MEM.Alloc2DClear(Count, ref LaplMatrix);
             MEM.Alloc2DClear(Count, ref RMatrix);
         }
-        protected void BaseSetTask(IMesh mesh, double[] Zeta0, IBoundaryConditions BConditions)
+        protected void BaseSetTask(IMesh mesh, double[] Zeta0, double[] Roughness, IBoundaryConditions BConditions)
         {
-            base.SetTask(mesh, Zeta0, BConditions);
+            base.SetTask(mesh, Zeta0, Roughness, BConditions);
         }
         /// <summary>
         /// Установка текущей геометрии расчетной области
         /// </summary>
         /// <param name="mesh">Сетка расчетной области</param>
         /// <param name="Zeta0">начальный уровень дна</param>
-        public override void SetTask(IMesh mesh, double[] Zeta0, IBoundaryConditions BConditions)
+        public override void SetTask(IMesh mesh, double[] Zeta0, double[] Roughness, IBoundaryConditions BConditions)
         {
             double tanphi = SPhysics.PHYS.tanphi;
             taskReady = false;
-            base.SetTask(mesh, Zeta0, BConditions);
+            base.SetTask(mesh, Zeta0, Roughness, BConditions);
 
             algebra = new SparseAlgebraCG((uint)mesh.CountKnots);
             Ralgebra = algebra.Clone();

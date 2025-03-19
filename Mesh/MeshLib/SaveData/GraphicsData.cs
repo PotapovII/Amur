@@ -210,10 +210,10 @@ namespace MeshLib
             foreach (var p in curves)
             {
                 var Name = GroupNameFilter(p.Name);
-                if(filter.Contains(Name) == true &&
-                    (   p.TGraphicsCurve == TGraphicsCurve || 
-                        TGraphicsCurve == TypeGraphicsCurve.AllCurve ) )
-                    sub.Add(p);
+                if (filter.Contains(Name) == true &&
+                   (p.TGraphicsCurve == TGraphicsCurve || 
+                    TGraphicsCurve == TypeGraphicsCurve.AllCurve))
+                        sub.Add(p);
             }
             return sub;
         }
@@ -226,11 +226,11 @@ namespace MeshLib
         {
             try
             {
-                string[] lines = Name.Split('#');
+                string[] lines = Name.Split('#',':');
                 if (lines.Length == 1)
-                    return Name;
+                    return Name.Trim();
                 else
-                    return lines[1];
+                    return lines[1].Trim();
             }
             catch
             {

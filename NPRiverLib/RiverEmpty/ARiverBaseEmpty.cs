@@ -155,5 +155,10 @@ namespace NPRiverLib.RiverEmpty
             tauY = this.tauY;
             P = this.P;
         }
+        /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        public abstract void GetRoughness(ref double[] Roughness);
     }
 }

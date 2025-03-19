@@ -17,6 +17,7 @@ namespace RenderLib
     using CommonLib.IO;
     using GeometryLib;
     using System.IO;
+    using System.Xml.Linq;
 
     public partial class GDI_Curves_Control : UserControl
     {
@@ -36,6 +37,7 @@ namespace RenderLib
         /// Настройка цветов для объектов рендеренга
         /// </summary>
         ColorScheme colorScheme;
+        ColorScheme colorSchemeOld = null;
         /// <summary>
         /// Данные для обработки
         /// </summary>
@@ -48,6 +50,10 @@ namespace RenderLib
         /// Фильтр групп
         /// </summary>
         List<string> GNames = new List<string>();
+        /// <summary>
+        /// Фильтр групп
+        /// </summary>
+        List<string> CurGNames = new List<string>();
         public GDI_Curves_Control()
         {
             InitializeComponent();
@@ -98,6 +104,7 @@ namespace RenderLib
         {
             cb_coordReper.Checked = renderOptions.coordReper;
             cb_coordInv.Checked = renderOptions.coordInv;
+            cb_PrintOp.Checked = renderOptions.printOp;
             cbAutoScaleX.Checked = renderOptions.opAutoScaleX;
             cbAutoScaleY.Checked = renderOptions.opAutoScaleY;
             cb_AutoColorCurves.Checked = renderOptions.opAutoColorCurves;
@@ -154,16 +161,79 @@ namespace RenderLib
             SendOption();
             ResizeHandler(sender, e);
         }
-        public void SendOption()
+        protected void RefListNames()
         {
+            bool flagChangeGroup = false;
+            for (int i = 0; i < checkedListBoxGroup.Items.Count; i++)
+                if (checkedListBoxGroup.GetItemCheckState(i) == CheckState.Checked)
+                {
+                    if (CurGNames.Contains(GNames[i]) == false)
+                    {
+                        CurGNames.Add(GNames[i]);
+                        flagChangeGroup = true;
+                    }
+                }
+                else
+                {
+                    if (CurGNames.Contains(GNames[i]) == true)
+                    {
+                        CurGNames.Remove(GNames[i]);
+                        flagChangeGroup = true;
+                    }
+                }
+            if (flagChangeGroup == true)
+            {
+                // при изменении списка групп новая загрузка кривых
+                GraphicsData gd = isp.graphicsData.GetSubIGraphicsData(tGraphicsCurve, CurGNames) as GraphicsData;
+                if (gd != null)
+                {
+                    // Запись данных в списки компонента
+                    List<string> Names = graphicsData.GraphicNames();
+                    checkedListBoxCurve.Items.Clear();
+                    if (Names.Count > 0)
+                    {
+                        // Записать
+                        foreach (var name in Names)
+                        {
+                            string cname = gd.GroupNameFilter(name);
+                            if (CurGNames.Contains(cname) == true)
+                                checkedListBoxCurve.Items.Add(name);
+                        }
+                        if (checkedListBoxCurve.Items.Count > 0)
+                            checkedListBoxCurve.SelectedIndex = 0;
+
+                        cb_opGraphicCurve.Checked = true;
+                        for (int i = 0; i < checkedListBoxCurve.Items.Count; i++)
+                            checkedListBoxCurve.SetItemChecked(i, cb_opGraphicCurve.Checked);
+                    }
+                    else
+                        checkedListBoxCurve.SelectedIndex = -1;
+                    tSSL_Time.Text = isp.time.ToString("F4");
+                    tSSL_Curves.Text = gd.curves.Count.ToString();
+                }
+            }
+            for (int i = 0; i < graphicsData.curves.Count; i++)
+                graphicsData.curves[i].Check = false;
 
             for (int i = 0; i < checkedListBoxCurve.Items.Count; i++)
             {
-                if (checkedListBoxCurve.GetItemCheckState(i) == CheckState.Unchecked)
-                    graphicsData.curves[i].Check = false;
-                else
-                    graphicsData.curves[i].Check = true;
+                if (checkedListBoxCurve.GetItemCheckState(i) == CheckState.Checked)
+                {
+                    string cname = checkedListBoxCurve.Items[i].ToString();
+                    for (int k = 0; k < graphicsData.curves.Count; k++)
+                    {
+                        if (cname == graphicsData.curves[k].Name)
+                        {
+                            graphicsData.curves[k].Check = true;
+                            break;
+                        }
+                    }
+                }
             }
+        }
+        public void SendOption()
+        {
+            RefListNames();
 
             colorScheme.formatText = (uint)nUD_formatText.Value;
             colorScheme.formatTextReper = (uint)nUD_formatReper.Value;
@@ -172,6 +242,7 @@ namespace RenderLib
             renderOptions.indexValues = checkedListBoxCurve.SelectedIndex;
             renderOptions.coordReper = cb_coordReper.Checked;
             renderOptions.coordInv = cb_coordInv.Checked;
+            renderOptions.printOp = cb_PrintOp.Checked;
 
             renderOptions.opAutoScaleX = cbAutoScaleX.Checked;
             renderOptions.opAutoScaleY = cbAutoScaleY.Checked;
@@ -179,6 +250,42 @@ namespace RenderLib
             renderOptions.showMesh = cb_showMesh.Checked;
             renderOptions.showKnotNamber = cb_showKnotNamber.Checked;
             renderOptions.opValuesKnot = cb_opValuesKnot.Checked;
+            try
+            {
+                if (renderOptions.printOp == true)
+                {
+                    if (colorSchemeOld == null)
+                        colorSchemeOld = new ColorScheme(colorScheme);
+                    colorScheme.BrushTextReper = new SolidBrush(Color.Black);
+                    colorScheme.BrushReper = new SolidBrush(Color.Black);
+                    colorScheme.PenReper = new Pen(Color.Black, 3);
+                    colorScheme.FontReper = new Font("Times New Roman", 28);
+                    colorScheme.PenGraphLine = new Pen(Color.Black, 2);
+                    //colorScheme.formatTextReper = 2;
+                    
+                    btBrushCurve.BackColor = colorScheme.BrushTextReper.Color;
+                    btBrushCurve.ForeColor = ExtensionsColor.GetContrast(colorScheme.BrushTextReper.Color, true);
+                }
+                else
+                {
+                    if (colorSchemeOld != null)
+                    {
+                        colorScheme.BrushTextReper = new SolidBrush(Color.Blue);
+                        colorScheme.BrushReper = new SolidBrush(Color.Green);
+                        colorScheme.PenReper = new Pen(Color.Blue, 1);
+                        colorScheme.FontReper = new Font("Arial", 14);
+                        colorScheme.PenGraphLine = new Pen(Color.Black); 
+
+                        //colorScheme.formatTextReper = colorSchemeOld.formatTextReper;
+                        btBrushCurve.BackColor = colorScheme.BrushTextReper.Color;
+                        btBrushCurve.ForeColor = ExtensionsColor.GetContrast(colorScheme.BrushTextReper.Color, true);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Logger.Instance.Exception(ex);
+            }
             // Определение renderOptions.opCurveScale
             SetRB();
 
@@ -328,6 +435,9 @@ namespace RenderLib
         /// <param name="sp"></param>
         public void SendSavePoint(ISavePoint isp)
         {
+            GNames = isp.graphicsData.GraphicGroupNames();
+            CurGNames.Clear();
+            CurGNames.AddRange(GNames.ToArray());
             Refrech(isp);
         }
         protected void Refrech(ISavePoint isp)
@@ -335,11 +445,7 @@ namespace RenderLib
             if (isp != null)
             {
                 this.isp = isp;
-
-                //if(checkedListBoxGroup.Items.Count>0)
-                GNames = isp.graphicsData.GraphicGroupNames();
-
-                GraphicsData gd = isp.graphicsData.GetSubIGraphicsData(tGraphicsCurve, GNames) as GraphicsData;
+                GraphicsData gd = isp.graphicsData.GetSubIGraphicsData(tGraphicsCurve, CurGNames) as GraphicsData;
                 if (gd != null)
                 {
                     // Запись данных в списки компонента
@@ -371,7 +477,6 @@ namespace RenderLib
         {
             this.graphicsData = spData;
             List<string> Names = graphicsData.GraphicNames();
-            //GNames = graphicsData.GraphicGroupNames();
             checkedListBoxCurve.Items.Clear();
             if (Names.Count > 0)
             {
@@ -390,11 +495,12 @@ namespace RenderLib
             }
             else
                 checkedListBoxCurve.SelectedIndex = -1;
+
             
-            if (GNames.Count > 0)
+            if (CurGNames.Count > 0)
             {
                 bool flag = false;
-                foreach (var name in GNames)
+                foreach (var name in CurGNames)
                     if(checkedListBoxGroup.Items.Contains(name) == false)
                     {
                         checkedListBoxGroup.Items.Add(name);
@@ -414,60 +520,8 @@ namespace RenderLib
 
             cb_opGraphicCurve.Checked = true;
         }
-        /// <summary>
-        /// Симафор для изменения cb_opGraphicCurve.Checked без вызова обработчика событий
-        /// </summary>
-        bool Look = true;
-        /// <summary>
-        /// Групповое выделение/сброс чекита кривых
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cb_opGraphicCurve_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Look == true)
-                for (int i = 0; i < checkedListBoxCurve.Items.Count; i++)
-                {
-                    checkedListBoxCurve.SetItemChecked(i, cb_opGraphicCurve.Checked);
-                    graphicsData.curves[i].Check = cb_opGraphicCurve.Checked;
-                }
-        }
-        /// <summary>
-        /// Симафор для изменения cb_GroupCurve.Checked без вызова обработчика событий
-        /// </summary>
-        private void checkedListBoxGroup_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int i = checkedListBoxGroup.SelectedIndex;
-            if (i == -1) return;
-            GNames.Clear();
-            for (i = 0; i < checkedListBoxGroup.Items.Count; i++)
-            {
-                if (checkedListBoxGroup.GetItemCheckState(i) == CheckState.Checked)
-                {
-                    GNames.Add(checkedListBoxGroup.Items[i].ToString());
-                }
-            }
-            Refrech(isp);
-        }
-
   
-        private void checkedListBoxCurve_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            bool flag = false;
-            int i = checkedListBoxCurve.SelectedIndex;
-            if (i == -1) return;
-            for (; i < checkedListBoxCurve.Items.Count; i++)
-            {
-                if (checkedListBoxCurve.GetItemCheckState(i) == CheckState.Checked)
-                {
-                    flag = true;
-                    break;
-                }
-            }
-            Look = false;
-            cb_opGraphicCurve.Checked = flag;
-            Look = true;
-        }
+
         string GetName(string name)
         {
             string[] names = name.Split('#', ' ');
@@ -481,13 +535,13 @@ namespace RenderLib
         // кривые
         private void btColorCurve_Click(object sender, EventArgs e)
         {
-            colorScheme.PenMeshLine = GetPen(colorScheme.PenMeshLine,
+            colorScheme.PenGraphLine = GetPen(colorScheme.PenGraphLine,
                                         (int)nUD_penGraphCurve.Value, sender);
             SetColorBrush();
         }
         private void nUD_penGraphCurve_ValueChanged(object sender, EventArgs e)
         {
-            colorScheme.PenMeshLine = new Pen(colorScheme.PenMeshLine.Color,
+            colorScheme.PenGraphLine = new Pen(colorScheme.PenGraphLine.Color,
               (int)nUD_penGraphCurve.Value);
         }
         // координаты 
@@ -613,7 +667,7 @@ namespace RenderLib
                     if (isp == null)
                         isp = new SavePoint();
                     isp.AddCurve(curve);
-                    Refrech(isp);
+                    SendSavePoint(isp);
                 }
                 else
                 {
@@ -630,7 +684,7 @@ namespace RenderLib
                         isp.AddCurve(curve);
                     }
                     Logger.Instance.Info("Всего файлов загружено " + (files.Length).ToString());
-                    Refrech(isp);
+                    SendSavePoint(isp);
                 }
             }
         }
@@ -895,6 +949,79 @@ namespace RenderLib
             GV(nud_Y, tbScaleY,ref oldY);
         }
 
+        /// <summary>
+        /// Симафор для изменения cb_opGraphicCurve.Checked без вызова обработчика событий
+        /// </summary>
+        bool Look = true;
+        /// <summary>
+        /// Групповое выделение/сброс чекита кривых
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cb_opGraphicCurve_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Look == true)
+                for (int i = 0; i < checkedListBoxCurve.Items.Count; i++)
+                {
+                    checkedListBoxCurve.SetItemChecked(i, cb_opGraphicCurve.Checked);
+                    graphicsData.curves[i].Check = cb_opGraphicCurve.Checked;
+                }
+        }
+
+        private void checkedListBoxCurve_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            bool flag = false;
+            int i = checkedListBoxCurve.SelectedIndex;
+            if (i == -1) return;
+            for (; i < checkedListBoxCurve.Items.Count; i++)
+            {
+                if (checkedListBoxCurve.GetItemCheckState(i) == CheckState.Checked)
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            Look = false;
+            cb_opGraphicCurve.Checked = flag;
+            Look = true;
+        }
+
+        /// <summary>
+        /// Симафор для изменения cb_opGraphicCurve.Checked без вызова обработчика событий
+        /// </summary>
+        bool LookGroup = true;
+
+        private void cbFNames_CheckedChanged(object sender, EventArgs e)
+        {
+            if (LookGroup == true)
+            {
+                for (int i = 0; i < checkedListBoxGroup.Items.Count; i++)
+                    checkedListBoxGroup.SetItemChecked(i, cbFNames.Checked);
+            }
+        }
+
+        private void checkedListBoxGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            bool flag = false;
+            int i = checkedListBoxGroup.SelectedIndex;
+            if (i == -1) return;
+            for (; i < checkedListBoxGroup.Items.Count; i++)
+            {
+                if (checkedListBoxGroup.GetItemCheckState(i) == CheckState.Checked)
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            LookGroup = false;
+            cbFNames.Checked = flag;
+            LookGroup = true;
+        }
+
+        private void panel8_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
 
         private void GV(NumericUpDown nud, TextBox tb, ref int old)
         {

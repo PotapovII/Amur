@@ -327,6 +327,15 @@ namespace RiverLib
 
         #region IRiver
         /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        public void GetRoughness(ref double[] Roughness)
+        {
+            Roughness = null;
+        }
+
+        /// <summary>
         /// Наименование задачи
         /// </summary>
         public virtual string Name { get => "Расчет полного потока в створе русла"; }

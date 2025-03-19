@@ -201,7 +201,7 @@ namespace TestSUPG
         {
             BEddyViscosityParam p = new BEddyViscosityParam(NLine, SigmaTask, J, RadiusMin,  SСhannelForms.halfPorabolic);
             //taskViscosity = new AlgebraEddyViscosityTri(eTurbViscType, p);
-            taskViscosity = MuManager.Get(eTurbViscType, p);
+            taskViscosity = MuManager.Get(eTurbViscType, p, TypeTask.streamY1D);
         }
         /// <summary>
         /// Установка сетки и решателей
@@ -294,7 +294,7 @@ namespace TestSUPG
              : base(V, J, mu, eddyViscosity, dt, Time, NLine, NoLineMax, SigmaTask, RadiusMin)
         {
             BEddyViscosityParam p = new BEddyViscosityParam(NLine, SigmaTask, J, RadiusMin, SСhannelForms.halfPorabolic);
-            taskViscosity = MuManager.Get(eTurbViscType, p);
+            taskViscosity = MuManager.Get(eTurbViscType, p, TypeTask.streamY1D);
         }
         /// <summary>
         /// Установка сетки и решателей

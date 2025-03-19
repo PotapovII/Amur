@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            RenderLib.ColorSchemeFields colorSchemeFields1 = new RenderLib.ColorSchemeFields();
+            RenderLib.ColorSchemeFields colorSchemeFields2 = new RenderLib.ColorSchemeFields();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GDI_Control));
-            RenderLib.RenderOptionsFields renderOptionsFields1 = new RenderLib.RenderOptionsFields();
+            RenderLib.RenderOptionsFields renderOptionsFields2 = new RenderLib.RenderOptionsFields();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btCrossSection = new System.Windows.Forms.Button();
             this.btCurve = new System.Windows.Forms.Button();
@@ -232,7 +232,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel2.Location = new System.Drawing.Point(701, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(290, 650);
+            this.panel2.Size = new System.Drawing.Size(290, 884);
             this.panel2.TabIndex = 11;
             // 
             // btCrossSection
@@ -858,7 +858,7 @@
             this.tabControlOption.Location = new System.Drawing.Point(6, 507);
             this.tabControlOption.Name = "tabControlOption";
             this.tabControlOption.SelectedIndex = 0;
-            this.tabControlOption.Size = new System.Drawing.Size(273, 137);
+            this.tabControlOption.Size = new System.Drawing.Size(273, 371);
             this.tabControlOption.TabIndex = 80;
             // 
             // tabPage1
@@ -870,7 +870,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(265, 108);
+            this.tabPage1.Size = new System.Drawing.Size(265, 342);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Объекты";
             // 
@@ -881,14 +881,14 @@
             this.listBoxPoles.ItemHeight = 20;
             this.listBoxPoles.Location = new System.Drawing.Point(6, 3);
             this.listBoxPoles.Name = "listBoxPoles";
-            this.listBoxPoles.Size = new System.Drawing.Size(256, 102);
+            this.listBoxPoles.Size = new System.Drawing.Size(256, 336);
             this.listBoxPoles.TabIndex = 12;
             // 
             // splitter1
             // 
             this.splitter1.Location = new System.Drawing.Point(3, 3);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 102);
+            this.splitter1.Size = new System.Drawing.Size(3, 336);
             this.splitter1.TabIndex = 10;
             this.splitter1.TabStop = false;
             // 
@@ -899,7 +899,7 @@
             this.tabPage4.Controls.Add(this.panel9);
             this.tabPage4.Location = new System.Drawing.Point(4, 25);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(265, 108);
+            this.tabPage4.Size = new System.Drawing.Size(265, 342);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Кривые";
             // 
@@ -980,7 +980,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(265, 108);
+            this.tabPage3.Size = new System.Drawing.Size(265, 342);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Перья";
             // 
@@ -1293,7 +1293,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(265, 108);
+            this.tabPage2.Size = new System.Drawing.Size(265, 342);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Кисти";
             // 
@@ -1673,19 +1673,19 @@
             // renderControl1
             // 
             this.renderControl1.BackColor = System.Drawing.Color.White;
-            colorSchemeFields1.Background = System.Drawing.Color.White;
-            colorSchemeFields1.FontKnot = new System.Drawing.Font("Arial", 8F);
-            colorSchemeFields1.FontReper = new System.Drawing.Font("Arial", 8F);
-            colorSchemeFields1.FontValue = null;
-            colorSchemeFields1.formatTextReper = ((uint)(2u));
-            this.renderControl1.colorScheme = colorSchemeFields1;
+            colorSchemeFields2.Background = System.Drawing.Color.White;
+            colorSchemeFields2.FontKnot = new System.Drawing.Font("Arial", 8F);
+            colorSchemeFields2.FontReper = new System.Drawing.Font("Arial", 8F);
+            colorSchemeFields2.FontValue = null;
+            colorSchemeFields2.formatTextReper = ((uint)(2u));
+            this.renderControl1.colorScheme = colorSchemeFields2;
             this.renderControl1.IndexTask = 0;
             this.renderControl1.Location = new System.Drawing.Point(209, 3);
             this.renderControl1.Name = "renderControl1";
             this.renderControl1.Points = new System.Drawing.PointF[] {
         ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points"))),
         ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points1")))};
-            this.renderControl1.renderOptions = renderOptionsFields1;
+            this.renderControl1.renderOptions = renderOptionsFields2;
             this.renderControl1.Size = new System.Drawing.Size(32, 22);
             this.renderControl1.TabIndex = 0;
             this.renderControl1.Text = "renderControl1";
@@ -1797,7 +1797,7 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Location = new System.Drawing.Point(8, 7);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(685, 610);
+            this.panel1.Size = new System.Drawing.Size(685, 844);
             this.panel1.TabIndex = 10;
             // 
             // openFileDialog1
@@ -1827,7 +1827,7 @@
             this.toolStripStatusLabel9,
             this.toolStripStatusLabel10,
             this.tss_TaskName});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 624);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 858);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(701, 26);
             this.statusStrip1.TabIndex = 12;
@@ -1956,7 +1956,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "GDI_Control";
-            this.Size = new System.Drawing.Size(991, 650);
+            this.Size = new System.Drawing.Size(991, 884);
             this.Resize += new System.EventHandler(this.ResizeHandler);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();

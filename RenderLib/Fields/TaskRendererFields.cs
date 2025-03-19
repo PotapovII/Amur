@@ -133,7 +133,7 @@ namespace RenderLib
             catch (Exception exc)
             {
                 //Logger.Instance.Info(exc.Message);
-                Logger.Instance.Info(exc.Message + "TaskRendererFields Render");
+                    Logger.Instance.Info(exc.Message + "TaskRendererFields Render");
             }
         }
         /// <summary>

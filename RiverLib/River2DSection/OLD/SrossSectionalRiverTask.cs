@@ -333,6 +333,15 @@ namespace RiverLib
             flowRate.Load(file);
             InitTask();
         }
+        /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        public void GetRoughness(ref double[] Roughness)
+        {
+            Roughness = null;
+        }
+
         public void InitTask()
         {
             double g = SPhysics.GRAV;

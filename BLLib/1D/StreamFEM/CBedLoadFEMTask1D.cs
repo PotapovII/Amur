@@ -130,7 +130,7 @@ namespace BLLib
         /// <param name="theta">Параметр схемы по времени</param>
         /// <param name="dtime">шаг по времени</param>
         /// <param name="isAvalanche">флаг использования лавинной модели</param>
-        public override void SetTask(IMesh mesh, double[] Zeta0, IBoundaryConditions BConditions)
+        public override void SetTask(IMesh mesh, double[] Zeta0, double[] Roughness, IBoundaryConditions BConditions)
         {
             double tanphi = SPhysics.PHYS.tanphi;
             if (mesh == null)
@@ -147,7 +147,7 @@ namespace BLLib
             }
             double Relax = 0.5;
             uint NN = (uint)Math.Sqrt(mesh.CountKnots);
-            base.SetTask(mesh, Zeta0, BConditions);
+            base.SetTask(mesh, Zeta0, Roughness, BConditions);
 
             avalanche = new Avalanche1DX(mesh, tanphi, Relax);
 
@@ -521,7 +521,7 @@ namespace BLLib
         {
             double tau0 = SPhysics.PHYS.tau0;
             BedLoadParams blp = new BedLoadParams();
-            CBedLoadTask1D bltask = new CBedLoadTask1D(blp);
+            CBedLoadTask_1XD bltask = new CBedLoadTask_1XD(blp);
             //CBedLoadTask bltask = new CBedLoadTask(rho_w, rho_s, phi, d50, epsilon, kappa, cx, f);
             // задача Дирихле
 

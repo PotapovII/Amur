@@ -117,6 +117,15 @@ namespace NPRiverLib.ABaseTask
             }
         }
         /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        public void GetRoughness(ref double[] Roughness)
+        {
+            Roughness = null;
+        }
+
+        /// <summary>
         /// Создает экземпляр класса
         /// </summary>
         /// <returns></returns>

@@ -23,8 +23,8 @@ namespace EddyViscosityLib
         /// <summary>
         /// Конструктор 
         /// </summary>
-        public AEddyViscosityDistance(ETurbViscType eTurbViscType, BEddyViscosityParam p)
-            : base(eTurbViscType, p) {}
+        public AEddyViscosityDistance(ETurbViscType eTurbViscType, BEddyViscosityParam p, TypeTask tt)
+            : base(eTurbViscType, p, tt) {}
         public override void SetTask(IMesh mesh, IAlgebra algebra, IMeshWrapper wMesh = null)
         {
             base.SetTask(mesh, algebra, wMesh);

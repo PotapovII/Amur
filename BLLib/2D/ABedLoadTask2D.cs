@@ -60,10 +60,10 @@ namespace BLLib
         /// </summary>
         /// <param name="mesh">Сетка расчетной области</param>
         /// <param name="Zeta0">начальный уровень дна</param>
-        public override void SetTask(IMesh mesh, double[] Zeta0, IBoundaryConditions BConditions)
+        public override void SetTask(IMesh mesh, double[] Zeta0, double[] Roughness, IBoundaryConditions BConditions)
         {
             taskReady = false;
-            base.SetTask(mesh, Zeta0, BConditions);
+            base.SetTask(mesh, Zeta0, Roughness, BConditions);
             MEM.Alloc<double>(mesh.CountKnots, ref Zeta);
             taskReady = true;
         }

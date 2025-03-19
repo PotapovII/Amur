@@ -580,6 +580,7 @@ namespace TestSUPG
                 case 4:
                 case 5:
                 case 6:
+                case 7:
                     lb_WL.Visible = true;
                     lb_H.Visible = true;
                     lb_BL.Visible = false;
@@ -587,7 +588,7 @@ namespace TestSUPG
                     tb_H.Visible = true;
                     tb_BL.Visible = false;
                     break;
-                case 7:
+                case 8:
                     lb_WL.Visible = false;
                     lb_H.Visible = false;
                     lb_BL.Visible = false;
@@ -788,6 +789,12 @@ namespace TestSUPG
                         }
                         break;
                     case 7:
+                        {
+                            Geometry = new FunctionСhannel(Ny, H, WL);
+                            Geometry.GetFunctionData(ref xx, ref yy, Ny);
+                        }
+                        break;
+                    case 8:
                         {
                             if (Geometry == null)
                                 rb_SigmaTask_CheckedChanged(null, null);

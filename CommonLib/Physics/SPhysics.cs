@@ -537,6 +537,45 @@ namespace CommonLib.Physics
             }
             SetTurbViscModel();
         }
+
+        /// Пересчет зависимых параметров задачи
+        /// </summary>
+        public void GetLocalBedLoadParams(double roughness, ref double u_cr, ref double tau0,
+                                    ref double tanphi, ref double Fa0, ref double theta0)
+        {
+            double d50 = 0.05 * roughness;
+            // Критическая динамическая скорость
+            u_cr = rho_b * d50 * d50 * GRAV / (18 * nu);
+            // тангенс угла внешнего откоса
+            if (avtoPhi == true)
+                tanphi = 1.15 * Math.Pow(d50, 1.0 / 7);
+            else
+                tanphi = Math.Tan(phi / 180 * Math.PI);
+            // сухое трение
+            Fa0 = tanphi * (rho_s - rho_w) * GRAV;
+            // 
+            tau0 = 9.0 / 8.0 * kappa * kappa * d50 * Fa0 / cx;
+            normaTheta = (rho_s - rho_w) * GRAV * d50;
+            theta0 = tau0 / normaTheta;
+        }
+
+        /// Пересчет зависимых параметров задачи
+        /// </summary>
+        public void GetLocalBedLoadParams(double roughness, ref double tau0, ref double tanphi, ref double G1)
+        {
+            double d50 = 0.05 * roughness;
+            // тангенс угла внешнего откоса
+            if (avtoPhi == true)
+                tanphi = 1.15 * Math.Pow(d50, 1.0 / 7);
+            else
+                tanphi = Math.Tan(phi / 180 * Math.PI);
+            tau0 = 9.0 / 8.0 * kappa * kappa * d50 * Fa0 / cx;
+            Fa0 = tanphi * (rho_s - rho_w) * GRAV;
+            // константа расхода влекомых наносов
+            G1 = 4.0 / (3.0 * kappa * Math.Sqrt(rho_w) * Fa0 * C0);
+        }
+
+
         /// <summary>
         /// модели алгебраической турбулентной вязкости
         /// </summary>

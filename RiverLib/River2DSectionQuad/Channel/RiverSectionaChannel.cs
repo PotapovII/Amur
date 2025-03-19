@@ -557,7 +557,16 @@ namespace RiverLib
         }
 
 
-       #region IRiver 
+        #region IRiver 
+        /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        public void GetRoughness(ref double[] Roughness)
+        {
+            Roughness = null;
+        }
+
         /// <summary>
         /// Наименование задачи
         /// </summary>

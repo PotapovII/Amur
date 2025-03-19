@@ -254,4 +254,56 @@ namespace MeshGeneratorsLib
         }
     }
 
+    /// <summary>
+    ///  ОО: Вычисляем координаты по итерационному псевдоортогональному методу
+    /// </summary>
+    class HAlgCalcCoords : ACalcCoords
+    {
+        public HAlgCalcCoords(int MNodeX, int MNodeY,
+        List<int> _L, List<int> _R, VMapKnot[][] _pMap, double RelaxMeshOrthogonality) :
+            base(MNodeX, MNodeY, _L, _R, _pMap)
+        {
+        }
+        /// <summary>
+        /// создание матрицы системы
+        /// </summary>
+        /// <param name="TypeAlgebra"></param>
+        public override void Solve()
+        {
+            try
+            {
+                base.Solve();
+                // Вычисляем координаты по итерационному псевдоортогональному методу
+                CalcCoords();
+            }
+            catch
+            {
+                Console.WriteLine("Проблемы с генерацией КЭ сетки : HCalcCoords::Solve");
+            }
+        }
+        /// <summary>
+        /// Поиск параметра или координаты
+        /// </summary>
+        public override void CalcCoords()
+        {
+            // цикл по узлам
+            for (int i = 1; i < MaxNodeY - 1; i++)
+            {
+                double x0 = pMap[i][Left[i]].x;
+                double xL = pMap[i][Right[i]].x;
+                double L = xL - x0;
+                double dx = L / (Right[i] - Left[i]);
+                double y0 = pMap[i][Left[i]].y;
+                double yL = pMap[i][Right[i]].y;
+                double H = yL - y0;
+                double dy = H / (Right[i] - Left[i]);
+                for (int j = Left[i] + 1; j < Right[i] - 1; j++)
+                {
+                    pMap[i][j].x = x0 + dx * (j - Left[i]);
+                    pMap[i][j].y = y0 + dy * (j - Left[i]);
+                }
+            }
+        }
+    }
+
 }

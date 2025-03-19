@@ -60,6 +60,17 @@ namespace RiverLib
         /// </summary>
         public TypeTask typeTask { get => _typeTask; }
         protected TypeTask _typeTask;
+
+        /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        public void GetRoughness(ref double[] Roughness)
+        {
+            Roughness = null;
+        }
+
+
         /// <summary>
         /// Создает экземпляр класса
         /// </summary>

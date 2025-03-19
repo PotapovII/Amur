@@ -24,8 +24,8 @@ namespace EddyViscosityLib
         /// <summary>
         /// Конструктор 
         /// </summary>
-        public EddyViscosity_Smagorinsky_Lilly_1996(ETurbViscType eTurbViscType, BEddyViscosityParam p)
-            : base(eTurbViscType, p)
+        public EddyViscosity_Smagorinsky_Lilly_1996(ETurbViscType eTurbViscType, BEddyViscosityParam p, TypeTask tt)
+            : base(eTurbViscType, p, tt)
         {
         }
         public override void SetTask(IMesh mesh, IAlgebra algebra, IMeshWrapper wMesh = null)

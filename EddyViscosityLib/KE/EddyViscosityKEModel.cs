@@ -47,8 +47,8 @@ namespace EddyViscosityLib
         /// </summary>
         protected double[] result = null;
 
-        public EddyViscosityKEModelTri(ETurbViscType eTurbViscType, BEddyViscosityParam p)
-            : base(eTurbViscType, p.NLine) 
+        public EddyViscosityKEModelTri(ETurbViscType eTurbViscType, BEddyViscosityParam p, TypeTask tt)
+            : base(eTurbViscType, tt, p.NLine) 
         {
             cs = 2;
         }
@@ -274,8 +274,8 @@ namespace EddyViscosityLib
         /// Предыдущее решение по нелинейности
         /// </summary>
         protected double[] result = null;
-        public EddyViscosityVKEModelTri(ETurbViscType eTurbViscType, BEddyViscosityParam p)
-            : base(eTurbViscType, p.NLine)
+        public EddyViscosityVKEModelTri(ETurbViscType eTurbViscType, BEddyViscosityParam p, TypeTask tt)
+            : base(eTurbViscType,tt, p.NLine)
         {
             cs = 2;
         }
@@ -457,8 +457,8 @@ namespace EddyViscosityLib
     [Serializable]
     public class EddyViscositySSKEModelTri : AEddyViscosityKETri
     {
-        public EddyViscositySSKEModelTri(ETurbViscType eTurbViscType, BEddyViscosityParam p)
-            : base(eTurbViscType, p.NLine)
+        public EddyViscositySSKEModelTri(ETurbViscType eTurbViscType, BEddyViscosityParam p, TypeTask tt)
+            : base(eTurbViscType,tt, p.NLine)
         {
             cs = 1;
         }
@@ -785,8 +785,8 @@ namespace EddyViscosityLib
         /// локальная матрица часть СЛАУ
         /// </summary>
         private double[][] RMatrix = null;
-        public EddyViscositySKEModelTri(ETurbViscType eTurbViscType, BEddyViscosityParam p)
-            : base(eTurbViscType, p.NLine)
+        public EddyViscositySKEModelTri(ETurbViscType eTurbViscType, BEddyViscosityParam p, TypeTask tt)
+            : base(eTurbViscType, tt, p.NLine)
         {
             cs = 1;
         }

@@ -155,9 +155,18 @@ namespace RiverLib
         /// шаг сетки по х и у
         /// </summary>
         protected double dx, dy;
-        #endregion 
+        #endregion
 
         #region IRiver
+        /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        public void GetRoughness(ref double[] Roughness)
+        {
+            Roughness = null;
+        }
+
         /// <summary>
         /// Наименование задачи
         /// </summary>

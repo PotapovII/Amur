@@ -235,6 +235,10 @@
       <Project>{cb805006-1b1b-412b-9fde-4c8e8ad7ce13}</Project>
       <Name>GeometryLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\HelpLib\HelpLib.csproj">
+      <Project>{604a7d0d-b00a-4f5f-a79c-bbbd3a497d5e}</Project>
+      <Name>HelpLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\MemLogLib\MemLogLib.csproj">
       <Project>{4d84c29a-57f3-44d0-9520-0294dc35763e}</Project>
       <Name>MemLogLib</Name>
@@ -242,6 +246,10 @@
     <ProjectReference Include="..\..\Mesh\MeshAdapterLib\MeshAdapterLib.csproj">
       <Project>{2e2053d5-a41d-487f-8b7b-12f8673edf65}</Project>
       <Name>MeshAdapterLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mesh\MeshGeneratorsLib\MeshGeneratorsLib.csproj">
+      <Project>{5f4da40d-74c6-4e31-8973-1860378b3234}</Project>
+      <Name>MeshGeneratorsLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Mesh\MeshLib\MeshLib.csproj">
       <Project>{b8062e08-76ac-4ec2-a7aa-2d7a4c601351}</Project>
@@ -275,6 +283,11 @@
     <Content Include="LinkStr\pathconfig.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\SaveCrossLineB.bmp" />
+    <None Include="Resources\LoadCrossLineB.bmp" />
+    <None Include="Resources\LoadCrossLine.bmp" />
+    <None Include="Resources\LoadCL.bmp" />
+    <None Include="Resources\SaveCL.bmp" />
     <None Include="Resources\DelCrossLine.bmp" />
     <None Include="Resources\CrossLine.bmp" />
     <None Include="Resources\АмурСтвор.bmp" />
@@ -301,7 +314,6 @@
     <None Include="Resources\Save.bmp" />
     <None Include="Resources\LoadB.bmp" />
     <None Include="Resources\LoadA.bmp" />
-    <None Include="Resources\Load.bmp" />
     <None Include="Resources\FLCloud.bmp" />
     <None Include="Resources\FCloud.bmp" />
     <None Include="Resources\SNodes.bmp" />

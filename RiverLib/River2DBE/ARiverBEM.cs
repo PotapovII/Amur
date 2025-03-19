@@ -299,6 +299,14 @@ namespace RiverLib
             InitBattomGeomenry();
             InitBodyGeomenry(scale);
         }
+        /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        public void GetRoughness(ref double[] Roughness)
+        {
+            Roughness = null;
+        }
 
         /// <summary>
         ///  вычисление геометрии дна

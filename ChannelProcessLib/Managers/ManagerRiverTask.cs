@@ -26,6 +26,7 @@ namespace ChannelProcessLib
     using NPRiverLib.ABaseTask;
     using NPRiverLib.APRiver2XYD.River2DSW;
     using RiverLib;
+    using NPRiverLib.APRiver_1XD;
 
     /// <summary>
     /// Менеджер решателей для задач расчета речного потока
@@ -45,6 +46,7 @@ namespace ChannelProcessLib
             tasks.Add(new RiverSWE_KGD1XD(new RiverSWEParams1XD()));
             // КГД (КО/KE)- канал - k -е/w модели (симплексы)
             tasks.Add(new KGD_Eliz2024_1XD());
+            tasks.Add(new TriFEMRiver_1XD());
             #endregion
 
             #region 2XD течения 

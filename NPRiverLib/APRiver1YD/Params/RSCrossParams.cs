@@ -21,8 +21,6 @@ namespace NPRiverLib.APRiver1YD.Params
     using CommonLib.Physics;
     using CommonLib.EddyViscosity;
     using MeshGeneratorsLib.StripGenerator;
-    using MeshGeneratorsLib.TapeGenerator;
-
     /// <summary>
     /// Тип решателя
     /// </summary>
@@ -226,6 +224,19 @@ namespace NPRiverLib.APRiver1YD.Params
         [Category("Задача")]
         public double theta { get; set; }
         #endregion
+
+        #region + 19 03 2025 ОО: Параметры для обратного контроля файла задачи 
+        /// <summary>
+        /// + 19 03 2025 ОО: Параметры для обратного контроля 
+        /// файла задачи в окне создания редактирования файла
+        /// </summary>
+        [DisplayName("Начальная дата расчета")]
+        [Category("Задача")]
+        public string DataStart { get; set; } = "01.01.2000";
+        [DisplayName("Конечная дата расчета")]
+        [Category("Задача")]
+        public string DataEnd { get; set; } = "01.01.2000";
+        #endregion
         /// <summary>
         /// Нужен для менеджера задач / настройки по умолчанию
         /// </summary>
@@ -240,7 +251,8 @@ namespace NPRiverLib.APRiver1YD.Params
             int CountBLKnots, bool velocityOnWL, int NLine, int SigmaTask, int ReTask, 
             ECalkDynamicSpeed typeEddyViscosity, ETurbViscType turbViscTypeA,
             ETurbViscType turbViscTypeB, CrossAlgebra сrossAlgebra, 
-            TaskVariant taskVariant, BCTypeVortex bcTypeVortex, StripGenMeshType typeMeshGenerator,double  mu_const)
+            TaskVariant taskVariant, BCTypeVortex bcTypeVortex, StripGenMeshType typeMeshGenerator,double  mu_const,
+            string DataStart = "", string DataEnd="")
         {
             this.J = J;
             this.mu_const = mu_const;
@@ -260,6 +272,8 @@ namespace NPRiverLib.APRiver1YD.Params
             this.taskVariant = taskVariant;
             this.bcTypeVortex = bcTypeVortex;
             this.typeMeshGenerator = typeMeshGenerator; 
+            this.DataStart = DataStart;
+            this.DataEnd = DataEnd;
         }
         protected virtual void SetDef()
         {
@@ -307,6 +321,8 @@ namespace NPRiverLib.APRiver1YD.Params
             RadiusMin = p.RadiusMin;
             ReTask = p.ReTask;
             theta = p.theta;
+            this.DataStart = p.DataStart;
+            this.DataEnd = p.DataEnd;
         }
         /// <summary>
         /// Нужен для чтение параметров задачи из файла
@@ -338,6 +354,8 @@ namespace NPRiverLib.APRiver1YD.Params
                 theta = LOG.GetDouble(file.ReadLine());
                 // +  25 02 2025
                 mu_const = LOG.GetDouble(file.ReadLine());
+                DataStart = LOG.GetString(file.ReadLine());
+                DataEnd = LOG.GetString(file.ReadLine());
             }
             catch (Exception)
             {
@@ -345,6 +363,49 @@ namespace NPRiverLib.APRiver1YD.Params
                 SetDef();
             }
         }
+
+ 
+        /// <summary>
+        /// Нужен для чтение параметров задачи из файла
+        /// </summary>
+        /// <param name="file"></param>
+        public virtual void SaveA(StreamWriter file)
+        {
+            string ver = "";
+            try
+            {
+                file.WriteLine("Версия 0.1\t\t\tфайла данных для створовой задачи");
+                file.WriteLine("J {0}             : уклон свободной поверхности", J);
+                file.WriteLine("turbViscTypeA {0}     : тип окружной турбулентной модели",(int)turbViscTypeA);
+                file.WriteLine("turbViscTypeB {0}     : тип турбулентной модели в створе", (int)turbViscTypeB);
+                file.WriteLine("typeEddyViscosity {0} : метод расчета динамической скорости на стенках канала", (int)typeEddyViscosity);
+                file.WriteLine("сrossAlgebra {0}      : алгебра задачи", (int)сrossAlgebra);
+                file.WriteLine("taskVariant {0}       : вариант задачи", (int)taskVariant);
+                file.WriteLine("bcTypeVortex {0}      : тип граничного условия на свободной поверхности створа", (int)bcTypeVortex);
+                file.WriteLine("typeMeshGenerator {0} : тип ленточного герератора КЭ сетки для створовых задач", (int)typeMeshGenerator);
+                file.WriteLine("axisSymmetry {0}      : ось симметрии 1 стенка 0", axisSymmetry);
+                file.WriteLine("CountKnots {0}      : количество узлов по смоченному периметру", CountKnots);
+                file.WriteLine("CountBLKnots {0}    : количество узлов по контуру дна", CountBLKnots);
+                file.WriteLine("velocityOnWL {0}      : cкорость Ux на поверхности потока задана", velocityOnWL==true?1:0);
+                // + 03 02 2025
+                file.WriteLine("NLine {0}           : количество итераций по нелинейности на текущем шаге по времени", NLine);
+                file.WriteLine("SigmaTask {0}         : тип задачи 0 - плоская 1 - цилиндрическая", SigmaTask);
+                file.WriteLine("ReTask {0}            : тип решаемых уравнений Стокса, Рейнольдса ...", ReTask);
+                file.WriteLine("RadiusMin {0}       : радиус закругления канала по выпуклому берегу", RadiusMin);
+                file.WriteLine("theta {0}           : параметр неявности схемы при шаге по времени", theta);
+                // +  25 02 2025
+                file.WriteLine("mu_const {0}           : постоянная вихревая вязкость", mu_const);
+                // +  19 03 2025
+                file.WriteLine("DataStart " + DataStart);
+                file.WriteLine("DataEnd " + DataEnd);
+            }
+            catch (Exception)
+            {
+                Logger.Instance.Info("Файл параметров не синхронизирован, использована версия " + ver);
+                SetDef();
+            }
+        }
+
         /// <summary>
         /// Нужен для работы конструктора копирования при работе с интерфецсом шаблона свойств
         /// </summary>

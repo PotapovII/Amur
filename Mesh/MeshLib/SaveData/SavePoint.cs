@@ -16,6 +16,8 @@ namespace MeshLib
     using GeometryLib;
     using CommonLib.Geometry;
     using GeometryLib.Locators;
+    using CommonLib.Function;
+    using System.Xml.Linq;
 
     /// <summary>
     /// ОО: Точка сохранения задачи для визуализации ее полей
@@ -152,6 +154,22 @@ namespace MeshLib
         public void ClearСurve(TypeGraphicsCurve TGraphicsCurve = TypeGraphicsCurve.TimeCurve)
         {
             gdata.Clear(TGraphicsCurve);
+        }
+
+        /// <summary>
+        /// Добавить кривую в контейнер кривых IDigFunction
+        /// </summary>
+        /// <param name="curve"></param>
+        public void AddCurve(IDigFunction df)
+        {
+            string name = "";
+            double[] x = null;
+            double[] y = null;
+            df.GetFunctionData(ref name, ref x, ref y);
+            GraphicsCurve curve = new GraphicsCurve(name, TypeGraphicsCurve.AllCurve);
+            for (uint i = 0; i < x.Length; i++)
+                curve.Add(x[i], y[i]);
+            gdata.Add(curve);
         }
         /// <summary>
         /// Добавить кривую в контейнер кривых IGraphicsData 

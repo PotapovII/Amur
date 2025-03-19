@@ -29,6 +29,7 @@ namespace ChannelProcessLib
     using CommonLib;
     using CommonLib.ChannelProcess;
     using CommonLib.IO;
+    using NPRiverLib.APRiver1YD;
 
     [Serializable]
     public enum ChannelProcessError
@@ -194,6 +195,10 @@ namespace ChannelProcessLib
         /// </summary>
         public double[][] CS = null;
         /// <summary>
+        /// шероховатость дна
+        /// </summary>
+        double[] Roughness = null;
+        /// <summary>
         /// Эволюция кривых
         /// </summary>
         [NonSerialized]
@@ -344,7 +349,8 @@ namespace ChannelProcessLib
             riverTask.GetZeta(ref Zeta);
             // передача данных о сетке и дне
             IMesh BedMesh = riverTask.BedMesh();
-            bedLoadTask.SetTask(BedMesh, Zeta, riverTask.BoundCondition());
+            riverTask.GetRoughness(ref Roughness);
+            bedLoadTask.SetTask(BedMesh, Zeta, Roughness, riverTask.BoundCondition());
             if (bedLoadTask.TaskReady() == true)
                 logger.Info("Метод загрузки данных завершен успешно");
         }
@@ -390,7 +396,8 @@ namespace ChannelProcessLib
                     {
                         riverTask.GetZeta(ref Zeta);
                         bedMesh = riverTask.BedMesh();
-                        bedLoadTask.SetTask(riverTask.BedMesh(), Zeta, riverTask.BoundCondition());
+                        riverTask.GetRoughness(ref Roughness);
+                        bedLoadTask.SetTask(riverTask.BedMesh(), Zeta, Roughness, riverTask.BoundCondition());
                     }
                     if (bedLoadTask.TaskReady() == true)
                     {

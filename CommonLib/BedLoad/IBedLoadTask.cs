@@ -36,6 +36,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 //---------------------------------------------------------------------------
 namespace CommonLib
 {
+    using CommonLib.Function;
     using System;
     using System.ComponentModel;
 
@@ -83,11 +84,10 @@ namespace CommonLib
         /// Лавинное обрушение
         /// </summary>
         IAvalanche GetAvalanche();
-
         /// <summary>
         /// Текщий уровень дна
         /// </summary>
-         // double[] CZeta { get; }
+        // double[] CZeta { get; }
         /// <summary>
         /// Вычисление текущих расходов и их градиентов для построения графиков
         /// </summary>
@@ -101,9 +101,11 @@ namespace CommonLib
         /// </summary>
         /// <param name="mesh">Сетка расчетной области</param>
         /// <param name="Zeta0">начальный уровень дна</param>
-        /// <param name="BConditions">граничные условия, количество в обзем случае 
-        /// определяется через маркеры границ сетеи</param>
-        void SetTask(IMesh mesh, double[] Zeta0, IBoundaryConditions BConditions);
+        /// <param name="Roughness">шероховатость дна</param>
+        /// <param name="BConditions">граничные условия, 
+        /// количество в обзем случае определяется через маркеры 
+        /// границ сетеи</param>
+        void SetTask(IMesh mesh, double[] Zeta0, double[] Roughness, IBoundaryConditions BConditions);
         /// <summary>
         /// Вычисление изменений формы донной поверхности 
         /// на одном шаге по времени по модели 

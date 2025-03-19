@@ -24,15 +24,15 @@ namespace RiverDB.FormsDB
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            if (tb1.Text != null && tb3.Text != null && tb4.Text != null && tb7.Text != null && tb8.Text != null)
+            if (tbName.Text != null && tb_X.Text != null && tb_Y.Text != null && tb_floodplain.Text != null && tb_Zerro.Text != null)
             {
                 string strCom = "";
                 if (id == -1)
-                    strCom = "exec SP_" + TName + "_ADD '" + tb1.Text + "','" + tb3.Text + "','" + tb4.Text +
-                        "','" + tb7.Text + "','" + tb8.Text + "';";
+                    strCom = "exec SP_" + TName + "_ADD '" + tbName.Text + "','" + tb_X.Text + "','" + tb_Y.Text +
+                        "','" + tb_floodplain.Text + "','" + tb_Zerro.Text + "';";
                 else
-                    strCom = "exec SP_" + TName + "_UPD '" + id.ToString() + "','" + tb1.Text + "','" + tb3.Text + "','" + tb4.Text +
-                        "','"  + tb7.Text + "','" + tb8.Text + "';";
+                    strCom = "exec SP_" + TName + "_UPD '" + id.ToString() + "','" + tbName.Text + "','" + tb_X.Text + "','" + tb_Y.Text +
+                        "','"  + tb_floodplain.Text + "','" + tb_Zerro.Text + "';";
                 ConnectDB.SQLCommandDo(strCom);
             }
         }
@@ -47,11 +47,11 @@ namespace RiverDB.FormsDB
             if (id != -1)
             {
                 DataRow row = ConnectDB.GetDataRow(TName, id);
-                tb1.Text = row["place_name"].ToString();
-                tb3.Text = row["place_x"].ToString();
-                tb4.Text = row["place_y"].ToString();
-                tb7.Text = row["place_height"].ToString();
-                tb8.Text = row["place_nullheight"].ToString();
+                tbName.Text = row["place_name"].ToString();
+                tb_X.Text = row["place_x"].ToString();
+                tb_Y.Text = row["place_y"].ToString();
+                tb_floodplain.Text = row["place_height"].ToString();
+                tb_Zerro.Text = row["place_nullheight"].ToString();
             }
             this.Text = "Форма редактирования списка участков";
         }

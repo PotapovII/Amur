@@ -43,7 +43,7 @@ namespace MeshGeneratorsLib.StripGenerator
                 Count = CountBed;
             double ymin = yy.Min();
             Map = new CrossStripMap();
-            Map.CreateMap(spline, WaterLevel, ymin, Count, width, left, right);
+            Map.CreateMap(spline, WaterLevel, ymin, Count, width, left, right, dryLeft, dryRight);
         }
     }
 }

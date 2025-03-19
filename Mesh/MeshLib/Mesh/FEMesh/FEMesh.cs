@@ -205,6 +205,7 @@ namespace MeshLib
                         // метод многократной прописки в буффер
                         // if(BKnots[BoundElems[i].Nods[k].ID]==null)
                         BKnots[BoundElems[i].Nods[k].ID] =  BoundElems[i].Nods[k];
+                        BKnots[BoundElems[i].Nods[k].ID].MarkBC = BoundElems[i].MarkBC;
                     }
                 List<IFENods> BoundKnots = new List<IFENods>(CountBoundKnots + mesh.CountBoundKnots);
                 // количество граничных узлов в рез. сетке

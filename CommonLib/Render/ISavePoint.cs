@@ -35,6 +35,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 //---------------------------------------------------------------------------
 namespace CommonLib
 {
+    using CommonLib.Function;
     using System;
     using System.ComponentModel;
     /// <summary>
@@ -139,6 +140,14 @@ namespace CommonLib
         /// <param name="Value">Значение функции поля</param>
         void AddCurve(string Name, double[] X, double[] Y, 
             TypeGraphicsCurve TGraphicsCurve = TypeGraphicsCurve.AreaCurve);
+
+
+        /// <summary>
+        /// Добавить кривую в контейнер кривых IDigFunction
+        /// </summary>
+        /// <param name="curve"></param>
+        void AddCurve(IDigFunction curve);
+
         /// <summary>
         /// Добавить кривую в контейнер кривых IGraphicsData 
         /// </summary>

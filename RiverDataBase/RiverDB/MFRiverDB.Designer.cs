@@ -31,17 +31,17 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.конвертерToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gpxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsm_CreareCloudMesh = new System.Windows.Forms.ToolStripMenuItem();
-            this.работаСВычислительнойСеткойToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.ExittTSM = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmListData = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_ExperimentData = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_Knots = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_GPost = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.отчетыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmWaterLevel = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.генерацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.экспортДанныхToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,12 +51,13 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.конвертерToolStripMenuItem,
             this.tsmListData,
+            this.генерацияToolStripMenuItem,
             this.отчетыToolStripMenuItem,
             this.tsmOptions});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(580, 31);
+            this.menuStrip1.Size = new System.Drawing.Size(644, 31);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -64,8 +65,7 @@
             // 
             this.конвертерToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.gpxToolStripMenuItem,
-            this.tsm_CreareCloudMesh,
-            this.работаСВычислительнойСеткойToolStripMenuItem,
+            this.экспортДанныхToolStripMenuItem,
             this.toolStripMenuItem1,
             this.ExittTSM});
             this.конвертерToolStripMenuItem.Name = "конвертерToolStripMenuItem";
@@ -75,23 +75,9 @@
             // gpxToolStripMenuItem
             // 
             this.gpxToolStripMenuItem.Name = "gpxToolStripMenuItem";
-            this.gpxToolStripMenuItem.Size = new System.Drawing.Size(299, 26);
-            this.gpxToolStripMenuItem.Text = "Импорт данных в базу данных";
+            this.gpxToolStripMenuItem.Size = new System.Drawing.Size(242, 26);
+            this.gpxToolStripMenuItem.Text = "Импорт в базу данных";
             this.gpxToolStripMenuItem.Click += new System.EventHandler(this.gpxToolStripMenuItem_Click);
-            // 
-            // tsm_CreareCloudMesh
-            // 
-            this.tsm_CreareCloudMesh.Name = "tsm_CreareCloudMesh";
-            this.tsm_CreareCloudMesh.Size = new System.Drawing.Size(299, 26);
-            this.tsm_CreareCloudMesh.Text = "Генерация облачной сетки";
-            this.tsm_CreareCloudMesh.Click += new System.EventHandler(this.tsm_CreareCloudMesh_Click);
-            // 
-            // работаСВычислительнойСеткойToolStripMenuItem
-            // 
-            this.работаСВычислительнойСеткойToolStripMenuItem.Name = "работаСВычислительнойСеткойToolStripMenuItem";
-            this.работаСВычислительнойСеткойToolStripMenuItem.Size = new System.Drawing.Size(299, 26);
-            this.работаСВычислительнойСеткойToolStripMenuItem.Text = "Работа с облачной сеткой";
-            this.работаСВычислительнойСеткойToolStripMenuItem.Click += new System.EventHandler(this.работаСВычислительнойСеткойToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -136,13 +122,6 @@
             this.tsm_GPost.Text = "Гидропосты";
             this.tsm_GPost.Click += new System.EventHandler(this.tsm_GPost_Click);
             // 
-            // tsmOptions
-            // 
-            this.tsmOptions.Name = "tsmOptions";
-            this.tsmOptions.Size = new System.Drawing.Size(99, 25);
-            this.tsmOptions.Text = "Настройки";
-            this.tsmOptions.Click += new System.EventHandler(this.tsmOptions_Click);
-            // 
             // отчетыToolStripMenuItem
             // 
             this.отчетыToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -158,11 +137,32 @@
             this.tsmWaterLevel.Text = "Уровни";
             this.tsmWaterLevel.Click += new System.EventHandler(this.tsmWaterLevel_Click);
             // 
+            // tsmOptions
+            // 
+            this.tsmOptions.Name = "tsmOptions";
+            this.tsmOptions.Size = new System.Drawing.Size(99, 25);
+            this.tsmOptions.Text = "Настройки";
+            this.tsmOptions.Click += new System.EventHandler(this.tsmOptions_Click);
+            // 
+            // генерацияToolStripMenuItem
+            // 
+            this.генерацияToolStripMenuItem.Name = "генерацияToolStripMenuItem";
+            this.генерацияToolStripMenuItem.Size = new System.Drawing.Size(99, 25);
+            this.генерацияToolStripMenuItem.Text = "Генерация";
+            this.генерацияToolStripMenuItem.Click += new System.EventHandler(this.tsm_CreareCloudMesh_Click);
+            // 
+            // экспортДанныхToolStripMenuItem
+            // 
+            this.экспортДанныхToolStripMenuItem.Name = "экспортДанныхToolStripMenuItem";
+            this.экспортДанныхToolStripMenuItem.Size = new System.Drawing.Size(242, 26);
+            this.экспортДанныхToolStripMenuItem.Text = "Экспорт данных";
+            this.экспортДанныхToolStripMenuItem.Visible = false;
+            // 
             // MFRiverDB
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(580, 360);
+            this.ClientSize = new System.Drawing.Size(644, 360);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -187,9 +187,9 @@
         private System.Windows.Forms.ToolStripMenuItem tsmOptions;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem ExittTSM;
-        private System.Windows.Forms.ToolStripMenuItem tsm_CreareCloudMesh;
-        private System.Windows.Forms.ToolStripMenuItem работаСВычислительнойСеткойToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem отчетыToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmWaterLevel;
+        private System.Windows.Forms.ToolStripMenuItem генерацияToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem экспортДанныхToolStripMenuItem;
     }
 }

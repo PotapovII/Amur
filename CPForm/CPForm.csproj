@@ -62,7 +62,6 @@
     <Compile Include="FTestsList.Designer.cs">
       <DependentUpon>FTestsList.cs</DependentUpon>
     </Compile>
-    <Compile Include="PropertyGridExtensions.cs" />
     <Compile Include="FormInfo.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -120,10 +120,10 @@ namespace MeshGeneratorsLib
             HMapSegment other = obj as HMapSegment;
             return ID.CompareTo(other.ID);
         }
-        int CompareTo(HMapSegment other)
-        {
-            return ID.CompareTo(other.ID);
-        }
+        //int CompareTo(HMapSegment other)
+        //{
+        //    return ID.CompareTo(other.ID);
+        //}
         #endregion
         /// <summary>
         /// Длина сегмента
@@ -353,7 +353,6 @@ namespace MeshGeneratorsLib
             else
                 return this == ((HMapSegment)obj);
         }
-
         /// <summary>
         /// Сложение сегментов
         /// </summary>

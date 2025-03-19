@@ -196,7 +196,7 @@ namespace BLLib
         /// </summary>
         /// <param name="mesh">Сетка расчетной области</param>
         /// <param name="Zeta0">начальный уровень дна</param>
-        public virtual void SetTask(IMesh imesh, double[] Zeta0, IBoundaryConditions BConditions){ }
+        public virtual void SetTask(IMesh imesh, double[] Zeta0, double[] Roughness, IBoundaryConditions BConditions){ }
 
         public virtual void SetTask(RectFVMesh mesh, double[][] Zeta0, IBoundaryConditions BConditions)
         {

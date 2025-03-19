@@ -40,9 +40,6 @@
     <Reference Include="OpenTK">
       <HintPath>OpenTK\OpenTK.dll</HintPath>
     </Reference>
-    <Reference Include="OpenTK.Utilities">
-      <HintPath>OpenTK\OpenTK.Utilities.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />

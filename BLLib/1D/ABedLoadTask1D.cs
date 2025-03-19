@@ -148,11 +148,11 @@ namespace BLLib
         /// </summary>
         /// <param name="mesh">Сетка расчетной области</param>
         /// <param name="Zeta0">начальный уровень дна</param>
-        public override void SetTask(IMesh mesh, double[] Zeta0, IBoundaryConditions BConditions)
+        public override void SetTask(IMesh mesh, double[] Zeta0, double[] Roughness, IBoundaryConditions BConditions)
         {
             double tanphi = SPhysics.PHYS.tanphi;
             if (mesh.CountElements==0) return;
-            base.SetTask(mesh, Zeta0, BConditions);
+            base.SetTask(mesh, Zeta0, Roughness, BConditions);
             this.x = mesh.GetCoords(0);
             if(mesh.GetCoords(1)!=null)
                 this.Zeta0 = mesh.GetCoords(1);

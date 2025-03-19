@@ -55,6 +55,7 @@
     <Compile Include="Areas\MFigura.cs" />
     <Compile Include="Areas\MPoint.cs" />
     <Compile Include="Areas\MSegment.cs" />
+    <Compile Include="DigFunction\DigFunctionPolynom.cs" />
     <Compile Include="DigFunction\DigFunctionConst.cs" />
     <Compile Include="DigFunction\FunctionСhannelRose.cs" />
     <Compile Include="Fields\Unknowns\SUnknown.cs" />

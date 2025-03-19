@@ -63,7 +63,15 @@ namespace RenderLib
         /// <summary>
         /// Линия створа
         /// </summary>
-        public IHLine crossLine { get; set; }
+        public IHLine crossLine
+        {
+            get => _crossLine;
+            set { _crossLine = value;
+                if (sendCrossLine != null && _crossLine != null)
+                    sendCrossLine(_crossLine);
+            }
+        }
+        protected IHLine _crossLine;
         /// <summary>
         /// Линии сглаживания
         /// </summary>
@@ -431,10 +439,10 @@ namespace RenderLib
                 case EditState.CrossLine:
                     {
                         // отрисовка линий сглаживания
-                        if (crossLine != null)
+                        if (_crossLine != null)
                         {
-                            var pA = new PointF((float)crossLine.A.X, (float)crossLine.A.Y);
-                            var pB = new PointF((float)crossLine.B.X, (float)crossLine.B.Y);
+                            var pA = new PointF((float)_crossLine.A.X, (float)_crossLine.A.Y);
+                            var pB = new PointF((float)_crossLine.B.X, (float)_crossLine.B.Y);
                             zoom.WorldToScreen(ref pA);
                             zoom.WorldToScreen(ref pB);
                             g.FillEllipse(colorScheme.BrushTextNodes, pA.X - 1.5f, pA.Y - 1.5f, 3, 3);
@@ -615,13 +623,10 @@ namespace RenderLib
                             else
                             {
                                 CloudKnot end = new CloudKnot(c.X, c.Y, new double[5], 1);
-                                crossLine = new CloudKnotLine(start, end);
-                                //CrossLine
+                                _crossLine = new CloudKnotLine(start, end);
 
                                 p = end;
                                 start = null;
-                                if (sendCrossLine != null)
-                                    sendCrossLine(crossLine);
                             }
                             break;
 

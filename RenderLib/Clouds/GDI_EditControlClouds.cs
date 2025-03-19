@@ -927,6 +927,16 @@ namespace RenderLib
         {
             return control.crossLine;
         }
+
+        /// <summary>
+        ///  установка линии створа
+        /// </summary>
+        /// <param name="p"></param>
+        public void SetCrossLine(IHLine crossLine)
+        {
+            control.crossLine = crossLine;
+        }
+
         /// <summary>
         /// Установить новое количество внутренних вершин линии сгласживания 
         /// </summary>

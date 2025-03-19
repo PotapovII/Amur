@@ -70,6 +70,9 @@
     <Compile Include="Renumberation\ARenumberator.cs" />
     <Compile Include="Renumberation\FERenumberatorHesh.cs" />
     <Compile Include="Renumberation\FERenumberator.cs" />
+    <Compile Include="SPIN\StepGenerator.cs" />
+    <Compile Include="SPIN\SpinMeshGeneratot.cs" />
+    <Compile Include="SPIN\SPIN.cs" />
     <Compile Include="StripGenerator\AStripMeshGenerator.cs" />
     <Compile Include="StripGenerator\ACrossStripMeshGenerator.cs" />
     <Compile Include="StripGenerator\BoundaryCrossSectionType.cs" />

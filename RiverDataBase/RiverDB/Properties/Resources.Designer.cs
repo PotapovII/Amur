@@ -593,6 +593,36 @@ namespace RiverDB.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap LoadCL {
+            get {
+                object obj = ResourceManager.GetObject("LoadCL", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap LoadCrossLine {
+            get {
+                object obj = ResourceManager.GetObject("LoadCrossLine", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap LoadCrossLineB {
+            get {
+                object obj = ResourceManager.GetObject("LoadCrossLineB", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap LoadNodes {
             get {
                 object obj = ResourceManager.GetObject("LoadNodes", resourceCulture);
@@ -903,6 +933,26 @@ namespace RiverDB.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap SaveCL {
+            get {
+                object obj = ResourceManager.GetObject("SaveCL", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SaveCrossLineB {
+            get {
+                object obj = ResourceManager.GetObject("SaveCrossLineB", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap SaveFig {
             get {
                 object obj = ResourceManager.GetObject("SaveFig", resourceCulture);
@@ -1026,6 +1076,16 @@ namespace RiverDB.Properties {
         internal static System.Drawing.Bitmap АмурСтвор {
             get {
                 object obj = ResourceManager.GetObject("АмурСтвор", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap АмурСтвор1 {
+            get {
+                object obj = ResourceManager.GetObject("АмурСтвор1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -121,6 +121,11 @@ namespace NPRiverLib.APRiver1YD
         /// </summary>
         protected IDigFunction FlowRate;
         /// <summary>
+        /// шероховатость дна
+        /// </summary>
+        protected IDigFunction Roughness;
+        protected double[] roughness;
+        /// <summary>
         /// Данные о створе
         /// </summary>
         public IDigFunction[] crossFunctions = null; 
@@ -154,6 +159,23 @@ namespace NPRiverLib.APRiver1YD
         {
             base.Set(mesh, algebra);
             wMesh = new MeshWrapperTri(mesh);
+        }
+        /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        public void GetRoughness(ref double[] roug)
+        {
+            if (roughness == null)
+            {
+                IMesh bmesh = BedMesh();
+                MEM.Alloc(bottom_x.Length, ref roughness);
+                for(int i = 0; i < bottom_x.Length; i++) 
+                {
+                    roughness[i] = Roughness.FunctionValue(bottom_x[i]);
+                }
+            }
+            MEM.Copy(ref roug, roughness);
         }
         /// <summary>
         /// Чтение данных задачи из файла

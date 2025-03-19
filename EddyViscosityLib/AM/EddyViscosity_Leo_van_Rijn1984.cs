@@ -14,6 +14,8 @@ namespace EddyViscosityLib
 
     using CommonLib.Physics;
     using CommonLib.EddyViscosity;
+    using CommonLib;
+
     /// <summary>
     /// Определение турбулентной вязкости по модели Leo_van_Rijn1984
     /// </summary>
@@ -23,8 +25,8 @@ namespace EddyViscosityLib
         /// <summary>
         /// Конструктор 
         /// </summary>
-        public EddyViscosity_Leo_van_Rijn1984(ETurbViscType eTurbViscType, BEddyViscosityParam p)
-            : base(eTurbViscType, p)
+        public EddyViscosity_Leo_van_Rijn1984(ETurbViscType eTurbViscType, BEddyViscosityParam p, TypeTask tt)
+            : base(eTurbViscType, p, tt)
         {
         }
         /// <summary>

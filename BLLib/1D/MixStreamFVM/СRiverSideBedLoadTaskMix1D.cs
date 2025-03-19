@@ -295,7 +295,7 @@ namespace BLLib
             double dtime = 1; // 0.01;
             bltask.dtime = dtime;
             BoundaryConditionsVar BConditions = new BoundaryConditionsVar(1);
-            bltask.SetTask(new TwoMesh(x, Zeta0), Zeta0, BConditions);
+            bltask.SetTask(new TwoMesh(x, Zeta0), Zeta0, null, BConditions);
             
             double T = 2 * tau0;
             double dT = 0;// 0.5*T / (Zeta0.Length);

@@ -40,5 +40,11 @@ namespace RenderLib
         {
             CloseDO = true;
         }
+
+        public void Start1(string txt)
+        {
+            Text = txt;
+            Show();
+        }
     }
 }

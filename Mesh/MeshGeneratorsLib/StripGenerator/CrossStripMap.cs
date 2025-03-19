@@ -78,7 +78,111 @@ namespace MeshGeneratorsLib.StripGenerator
         /// <param name="left">Левая береговая точка</param>
         /// <param name="right">Правая береговая точка</param>
         /// <exception cref="Exception"></exception>
+
         public void CreateMap(TSpline spline, double WaterLevel, double ymin,
+            int Count, double width, HKnot left, HKnot right, bool dryLeft, bool dryRight)
+        {
+            // шаг сетки по створу
+            double dy = width / (Count - 1);
+            // левая координата створа
+            double y0 = left.X;
+            // глубина максимальная
+            double H = WaterLevel - ymin;
+            // максимальное количество узлов по глубине
+            int CountH = (int)(H / dy) + 1;
+            if (CountH < 5)
+                throw new Exception("Сетка вырождена по напрявлению Z");
+            this.dy = dy;
+            this.y0 = y0;
+            this.Count = Count;
+            this.CountH = CountH;
+            this.WaterLevel = WaterLevel;
+            MEM.Alloc(Count, ref map1D);
+            MEM.Alloc(Count, CountH, ref map);
+            MEM.Alloc(Count, CountH, ref mapZ);
+            CountKnots = 0;
+
+            for (int i = 0; i < Count; i++)
+            {
+                // координата текущего столбца
+                double y = y0 + dy * i;
+                // вычисляем уровень дна
+                double zeta = spline.Value(y);
+                // находим глубину 
+                double h = WaterLevel - zeta;
+                if(dryLeft == true && i == 0)
+                    map1D[i] = 1;
+                else
+                if (dryRight == true && i == Count - 1)
+                    map1D[i] = 1;
+                else
+                {
+                    // находим количество узлов на вертикали
+                    uint n = (uint)Math.Abs(h / dy) + 1;
+                    if (n == 1) n = 2;
+                    if (i == 0)
+                        map1D[i] = n;
+                    else
+                    {
+                        if (map1D[i - 1] == n)
+                            map1D[i] = n;
+                        else
+                            if (map1D[i - 1] > n)
+                            map1D[i] = map1D[i - 1] - 1;
+                        else
+                            map1D[i] = map1D[i - 1] + 1;
+                    }
+                }
+            }
+            if (Math.Abs(map1D[Count - 1] - map1D[Count - 2]) > 1)
+            {
+                // цикл коррекции
+                for (int i = Count - 1; i > 0; i--)
+                {
+                    int dn = (int)map1D[i] - (int)map1D[i - 1];
+                    if (Math.Abs(dn) > 1)
+                    {
+                        if (dn > 0)
+                            map1D[i - 1] = map1D[i] - 1;
+                        else
+                            map1D[i - 1] = map1D[i] + 1;
+                    }
+
+                }
+            }
+
+            for (int i = 0; i < Count; i++)
+            {
+                // координата текущего столбца
+                double y = y0 + dy * i;
+                // вычисляем уровень дна
+                double zeta = spline.Value(y);
+                // находим глубину 
+                double h = WaterLevel - zeta;
+
+                // находим количество узлов на вертикали
+                uint n = map1D[i];
+                if (n == 1)
+                {
+                    mapZ[i][0] = WaterLevel;
+                    map[i][0] = CountKnots;
+                    CountKnots++;
+                }
+                else
+                {
+                    double dh = h / (n - 1);
+                    for (int j = 0; j < n; j++)
+                    {
+                        mapZ[i][j] = WaterLevel - dh * j;
+                        map[i][j] = CountKnots;
+                        CountKnots++;
+                    }
+                }
+            }
+        }
+
+
+        public void CreateMapOld(TSpline spline, double WaterLevel, double ymin,
             int Count, double width, HKnot left, HKnot right)
         {
             // шаг сетки по створу

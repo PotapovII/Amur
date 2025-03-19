@@ -32,7 +32,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 //           кодировка : 03.08.2024 Потапов И.И.
 //---------------------------------------------------------------------------
 using CommonLib.Geometry;
-using MemLogLib;
 
 namespace GeometryLib.Geometry
 {
@@ -119,17 +118,8 @@ namespace GeometryLib.Geometry
             bool LinkA = (int.Parse(mas[1]) == 1) ? true : false;
             bool LinkB = (int.Parse(mas[2]) == 1) ? true : false;
             int Selected = int.Parse(mas[3]);
-
-            string p1 = mas[4];
-            for (int i = 0; i < 8; i++)
-                p1 += " " + mas[5 + i];
-            CloudKnot A = CloudKnot.Parse(p1);
-
-            string p2 = mas[13];
-            for (int i = 0; i < 8; i++)
-                p2 += " " + mas[14 + i];
-            CloudKnot B = CloudKnot.Parse(p2);
-
+            CloudKnot A = CloudKnot.ReadCloudKnot(mas, 5);
+            CloudKnot B = CloudKnot.ReadCloudKnot(mas, 15);
             HSmLine sLine = new HSmLine(A, B, Count, LinkA, LinkB, Selected);
             return sLine;
         }

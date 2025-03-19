@@ -28,14 +28,14 @@ namespace ChannelProcessLib
         List<IBedLoadTask> tasks = new List<IBedLoadTask>();
         public ManagerBedLoadTask()
         {
-            tasks.Add(new CBedLoadTask1D(new BedLoadParams()));
+            tasks.Add(new CBedLoadTask_1XD(new BedLoadParams()));
             tasks.Add(new CBedLoadTask1D_UTTc(new BedLoadParams()));
             tasks.Add(new CBedLoadTask1DZ(new BedLoadParams()));
             tasks.Add(new CBedLoadTask1D_Pow(new BedLoadParams()));
             tasks.Add(new CBedLoadTask1D_Engelund(new BedLoadParams()));
             tasks.Add(new CBedLoadTask1DBagnold(new BedLoadParams()));
             
-            tasks.Add(new SrossSectionalBedLoadTask1D(new BedLoadParams()));
+            tasks.Add(new BedLoadTask_1YD(new BedLoadParams()));
             tasks.Add(new CBedLoadMixTask1D(new BedMixModelParams()));
             tasks.Add(new СRiverSideBedLoadTaskMix1D(new BedMixModelParams()));
             tasks.Add(new CBedLoadFEMTask1DTri(new BedLoadParams()));

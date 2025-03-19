@@ -165,10 +165,10 @@ namespace RenderLib
         public BaseColorScheme(BaseColorScheme p)
         {
             Background = p.Background;
-            brushReper = p.brushReper;
-            brushTextReper = p.brushTextReper;
-            penReper = p.penReper;
-            fontReper = p.fontReper;
+            BrushReper = p.BrushReper;
+            BrushTextReper = p.BrushTextReper;
+            PenReper = p.PenReper;
+            FontReper = p.FontReper;
             formatTextReper = p.formatTextReper;
         }
         #region Публичные методы
@@ -358,28 +358,24 @@ namespace RenderLib
                 return "{0:f" + formatText.ToString() + "}";
             }
         }
-        public ColorScheme()
+        public ColorScheme() : base()
         {
             background = Color.White;
-            //
             brushPoint = new SolidBrush(Color.Green);
             brushTextValues = new SolidBrush(Color.Blue);
             penGraphLine = new Pen(Color.Black);
             penMeshLine = new Pen(Color.Black, 2);
             FontReper = new Font("Arial", 14);
-            fontValue = new Font("Arial", 8);
+            fontValue = new Font("Arial", 12);
             formatText = 3;
         }
-        public ColorScheme(ColorScheme p)
+        public ColorScheme(ColorScheme p) : base(p)
         {
-            background = p.background;
-            //
-            brushPoint = p.brushPoint;
-            brushTextValues = p.brushTextValues;
-            penGraphLine = p.penGraphLine;
-            penMeshLine = p.penMeshLine;
-            FontReper = p.FontReper;
-            fontValue = p.fontValue;
+            BrushPoint = p.brushPoint;
+            BrushTextValues = p.brushTextValues;
+            PenGraphLine = p.penGraphLine;
+            PenMeshLine = p.penMeshLine;
+            FontValue = p.fontValue;
             formatText = p.formatText;
         }
     }

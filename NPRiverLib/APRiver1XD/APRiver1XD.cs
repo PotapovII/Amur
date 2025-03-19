@@ -11,13 +11,22 @@
 namespace NPRiverLib.APRiver_1XD
 {
     using System;
-    using System.Collections.Generic;
     using CommonLib;
     using NPRiverLib.ABaseTask;
 
     [Serializable]
-    public abstract class APRiver1XD<TParam> : APRiver<TParam> where TParam : class, ITProperty<TParam>
+    public abstract class APRiver1XD<TParam> : 
+        APRiver<TParam> where TParam : class, ITProperty<TParam>
     {
         public APRiver1XD(TParam p) : base(p, TypeTask.streamX1D) { }
+        /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        public void GetRoughness(ref double[] Roughness)
+        {
+            Roughness = null;
+        }
+
     }
 }

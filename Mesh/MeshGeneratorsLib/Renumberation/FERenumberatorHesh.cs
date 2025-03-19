@@ -40,7 +40,6 @@ namespace MeshGeneratorsLib.Renumberation
     using System;
     public class FERenumberatorHash : ARenumberator
     {
-        public FERenumberatorHash(IFEMesh mesh):base(mesh){}
         public FERenumberatorHash() : base() { }
         /// <summary>
         /// Фронтальный перенумератор сетки по координатам 
@@ -49,12 +48,15 @@ namespace MeshGeneratorsLib.Renumberation
         {
             try
             {
+                SKnot.direction = direction;
                 Set(mesh);
                 SKnot[] knots = null;
                 MEM.Alloc(X.Length, ref knots, "knots");
                 for (int i = 0; i < X.Length; i++)
                     knots[i] = new SKnot(X[i], Y[i], i);
+                
                 Array.Sort(knots);
+                
                 int[] NewNumber = null;
                 MEM.VAlloc(knots.Length, -1, ref NewNumber);
                 int NewIndex = 0;

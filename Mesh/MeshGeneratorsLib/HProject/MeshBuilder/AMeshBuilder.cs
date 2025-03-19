@@ -515,7 +515,6 @@ namespace MeshGeneratorsLib
             T.Clear();
             L.Clear();
             uint nf;
-            
             try
             {
                 // количество граничных узлов

@@ -25,7 +25,7 @@ namespace NPRiverLib.IO
     using NPRiverLib.APRiver1YD;
     using NPRiverLib.APRiver1YD.Params;
     using MeshGeneratorsLib.StripGenerator;
-    
+    using System.Windows.Forms;
 
     [Serializable]
     public class TaskReader1YD_RvY : ATaskFormat<IRiver>
@@ -89,10 +89,20 @@ namespace NPRiverLib.IO
                     IDigFunction FlowRate = null;
                     IDigFunction VelosityUx = null;
                     IDigFunction VelosityUy = null;
+                    IDigFunction Roughness = null;
                     switch (testID)
                     {
-                        case 1: // Канал Розовского
-                        case 2:
+                        case 1: // Канал из файла
+                            {
+                                OpenFileDialog ofd = new OpenFileDialog();
+                                string filter = "(*" + Ext_Crf + ")|*" + Ext_Crf + "| ";
+                                filter += " All files (*.*)|*.*";
+                                ofd.Filter = filter;
+                                if (ofd.ShowDialog() == DialogResult.OK)
+                                    Read_Crf(ofd.FileName,ref river);
+                                return;
+                            }
+                        case 2: // Канал Розовского
                         case 3:
                         case 4:
                         case 5:
@@ -133,14 +143,18 @@ namespace NPRiverLib.IO
                                 double[] WLy = { YRose2[0], YRose2[YRose2.Length - 1] };
                                 double[] WLz = { WL, WL };
                                 WaterLevels = new DigFunction(WLy, WLz, "свободная поверхность");
+                                // шероховатость дна
+                                double ks0 = 0.1;
+                                double[] Roug = { ks0, ks0 };
+                                Roughness = new DigFunction(WLy, Roug, "Шероховатость дна");
+
                                 // расход
                                 double Q = 0.1; ;
                                 double[] timeArg = { 0, 1000 };
                                 double[] q = { Q, Q };
                                 FlowRate = new DigFunction(timeArg, q, "расход");
-                                if (testID == 1 || testID == 2 || testID == 3) // Створ 15
+                                if (testID == 2 || testID == 3) // Створ 15
                                 {
-                                    
                                     double[] Y_U15 = { 0, 0.1, 0.3, 0.55, 0.8, 1.05, 1.2, 1.5, 1.6 };
                                     double[] U15 = { 0, 0.243, 0.365, 0.38, 0.38, 0.365, 0.345, 0.186, 0 };
                                     VelosityUx = new DigFunction(Y_U15, U15, "Створ");
@@ -222,6 +236,12 @@ namespace NPRiverLib.IO
                                 double[] WLy = { 0, W };
                                 double[] WLz = { WL, WL };
                                 WaterLevels = new DigFunction(WLy, WLz, "свободная поверхность");
+                                
+                                // шероховатость дна
+                                double ks0 = 0.1;
+                                double[] Roug = { ks0, ks0 };
+                                Roughness = new DigFunction(WLy, Roug, "Шероховатость дна");
+                                
                                 // расход
                                 double Q = 0.1; ;
                                 double[] timeArg = { 0, 1000 };
@@ -298,6 +318,10 @@ namespace NPRiverLib.IO
                                     double[] WLy = { YDesna1[0], YDesna1[YDesna1.Length - 1] };
                                     double[] WLz = { WL, WL };
                                     WaterLevels = new DigFunction(WLy, WLz, "свободная поверхность");
+                                    // шероховатость дна
+                                    double ks0 = 0.1;
+                                    double[] Roug = { ks0, ks0 };
+                                    Roughness = new DigFunction(WLy, Roug, "Шероховатость дна");
                                     // расход
                                     double Q = 184.0; ;
                                     double[] timeArg = { 0, 1000 };
@@ -321,6 +345,11 @@ namespace NPRiverLib.IO
                                     double[] WLy = { YDesna4[0], YDesna4[YDesna4.Length - 1] };
                                     double[] WLz = { WL, WL };
                                     WaterLevels = new DigFunction(WLy, WLz, "свободная поверхность");
+                                    // шероховатость дна
+                                    double ks0 = 0.1;
+                                    double[] Roug = { ks0, ks0 };
+                                    Roughness = new DigFunction(WLy, Roug, "Шероховатость дна");
+
                                     // расход
                                     double Q = 0.1; ;
                                     double[] timeArg = { 0, 1000 };
@@ -375,6 +404,11 @@ namespace NPRiverLib.IO
                                 double[] WLy = { 0, WL };
                                 double[] WLz = { H, H };
                                 WaterLevels = new DigFunction(WLy, WLz, "свободная поверхность");
+                                // шероховатость дна
+                                double ks0 = 0.1;
+                                double[] Roug = { ks0, ks0 };
+                                Roughness = new DigFunction(WLy, Roug, "Шероховатость дна");
+
                                 // расход
                                 double Q = 0.1; ;
                                 double[] timeArg = { 0, 1000 };
@@ -405,42 +439,57 @@ namespace NPRiverLib.IO
                                     сrossAlgebra = CrossAlgebra.TapeGauss,
                                     taskVariant = TaskVariant.WaterLevelFun,
                                     bcTypeVortex = BCTypeVortex.VortexAllCalk,
-                                    typeMeshGenerator = StripGenMeshType.StripMeshGenerator_3,
+                                    //typeMeshGenerator = StripGenMeshType.StripMeshGenerator_3,
                                     typeEddyViscosity = ECalkDynamicSpeed.u_start_U,
                                     velocityOnWL = true,
                                     axisSymmetry = 1,
-                                    CountKnots = 500,
-                                    CountBLKnots = 550,
+                                    CountKnots = 300,
+                                    CountBLKnots = 350,
                                     NLine = 20,
                                     SigmaTask = 1, //SigmaTask,
                                     RadiusMin = 3.85,
                                     ReTask = 0,
                                     theta = 0.5,
-                                    mu_const = 0.0175
+                                    mu_const = 0.01
                                 };
                                 if (testID == 16 || testID == 18)
                                     p.ReTask = 0;
                                 else
                                     p.ReTask = 1;
-
+                                double WL = 0.140;
+                                double Ux = 0.5;
+                                double Uy = 0.1;
                                 if (testID == 16 || testID == 17)
+                                {
+                                    WL = 0.140;
                                     SigmaTask = 1;
+                                }
                                 else
+                                {
+                                    WL = 0.2;
                                     SigmaTask = 0;
-
+                                }
                                 river_1YD.SetParams(p);
                                 int Ny = 20;
                                 double[] xx = null;
                                 double[] yy = null;
                                 //// Дно створа 15 Розовского
                                 //Geometry = new DigFunction(xx, yy, "Дно створа 15");
-                                Geometry = new FunctionСhannelRose();
+                                if (testID == 16 || testID == 17)
+                                    Geometry = new FunctionСhannelRose();
+                                else
+                                    Geometry = new FunctionСhannel(Ny,0.5,1.0);
+
                                 Geometry.GetFunctionData(ref xx, ref yy, Ny);
                                 // свободная поверхность
-                                double WL = 0.140;
                                 double[] WLy = { xx[0], xx[xx.Length - 1] };
                                 double[] WLz = { WL, WL };
                                 WaterLevels = new DigFunction(WLy, WLz, "свободная поверхность");
+                                // шероховатость дна
+                                double ks0 = 0.1;
+                                double[] Roug = { ks0, ks0 };
+                                Roughness = new DigFunction(WLy, Roug, "Шероховатость дна");
+
                                 // расход
                                 double Q = 0.1; ;
                                 double[] timeArg = { 0, 1000 };
@@ -460,8 +509,8 @@ namespace NPRiverLib.IO
                                 {
                                     double[] U26 = null;
                                     double[] V26 = null;
-                                    MEM.VAlloc(Ny, 0.5, ref U26);
-                                    MEM.VAlloc(Ny, 0.05, ref V26);
+                                    MEM.VAlloc(Ny, Ux, ref U26);
+                                    MEM.VAlloc(Ny, Uy, ref V26);
                                     VelosityUx = new DigFunction(xx, U26, "Створ");
                                     VelosityUy = new DigFunction(xx, V26, "Створ");
                                 }
@@ -469,9 +518,9 @@ namespace NPRiverLib.IO
                             break;
 
                     }
-                    IDigFunction[] crossFunctions = new IDigFunction[5]
+                    IDigFunction[] crossFunctions = new IDigFunction[6]
                     {
-                        Geometry, WaterLevels, FlowRate, VelosityUx, VelosityUy
+                        Geometry, WaterLevels, FlowRate, VelosityUx, VelosityUy, Roughness
                     };
                     river_1YD.LoadData(crossFunctions);
                 }
@@ -620,6 +669,8 @@ namespace NPRiverLib.IO
                         IDigFunction VelosityUx = new DigFunction();
                         // Радиальная скорость на WL
                         IDigFunction VelosityUy = new DigFunction();
+                        // шероховатость дна
+                        IDigFunction Roughness = new DigFunction();
                         // геометрия дна
                         Geometry.Load(file);
                         // свободная поверхность
@@ -630,9 +681,11 @@ namespace NPRiverLib.IO
                         VelosityUx.Load(file);
                         // Радиальная скорость на WL
                         VelosityUy.Load(file);
-                        IDigFunction[] crossFunctions = new IDigFunction[5]
+                        // шероховатость дна
+                        Roughness.Load(file);
+                        IDigFunction[] crossFunctions = new IDigFunction[6]
                         {
-                            Geometry, WaterLevels, FlowRate, VelosityUx, VelosityUy
+                            Geometry, WaterLevels, FlowRate, VelosityUx, VelosityUy, Roughness
                         };
                         river_1YD.LoadData(crossFunctions);
                         file.Close();
@@ -655,9 +708,9 @@ namespace NPRiverLib.IO
         {
             List<string> list = new List<string>();
             list.Add("Загрузка по умолчанию");       // 0
+            list.Add("Канал с выбранной нативной геометрией"); // 3
             list.Add("Канал Розовского, 15 створ (нс Рейнольдс)");  // 1
-            list.Add("Канал Розовского, 15 створ (ст Рейнольдс)");  
-            list.Add("Канал Розовского, 15 створ (ст Стокс)");  
+            list.Add("Канал Розовского, 15 створ (ст Рейнольдс)"); // 2 
             list.Add("Канал Розовского, 18 створ");
             list.Add("Канал Розовского, 21 створ");
             list.Add("Канал Вим ван Балена, створ 29 гр."); // 6

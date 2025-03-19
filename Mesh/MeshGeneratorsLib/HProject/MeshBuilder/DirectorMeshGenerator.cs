@@ -151,7 +151,7 @@ namespace MeshGeneratorsLib
                     Mesh.Add(SMesh);
                 }
                 // Перенумерация сетки
-                if (meshData.reNumberation == 1)
+                if (meshData.reNumberation == 1 && renumberator != null)
                 {
                     IFEMesh NewMesh = null;
                     renumberator.FrontRenumberation(ref NewMesh, Mesh, meshData.direction);

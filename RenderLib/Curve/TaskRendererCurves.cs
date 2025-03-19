@@ -141,7 +141,7 @@ namespace RenderLib
                     if (renderOptions.opAutoColorCurves == true)
                         pen = colorScheme.GetPenGraphLine(SelectIndex, 0, SelectCount, width);
                     else
-                        pen = colorScheme.PenMeshLine;
+                        pen = colorScheme.PenGraphLine;
                     for (i = 0; i < curve.Count - 1; i++)
                     {
                         if(renderOptions.coordInv == false)

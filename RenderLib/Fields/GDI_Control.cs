@@ -682,7 +682,7 @@ namespace RenderLib
                 {
                     string buf = saveFileDialog1.Filter;
                     string dir = saveFileDialog1.InitialDirectory;
-                    saveFileDialog1.Filter = "файл - точка сохранения rpsp (*.cld)|*.cld|" +
+                    saveFileDialog1.Filter = "файл - линии створов (*.cld)|*.cld|" +
                          "All files (*.*)|*.*";
                     saveFileDialog1.InitialDirectory = path;
                     if (saveFileDialog1.ShowDialog() == DialogResult.OK)
@@ -696,7 +696,6 @@ namespace RenderLib
                         file.WriteLine(cl.ToString());
                     file.Close();
                 }
-
             }
         }
         private void btLoadTargetLine_Click(object sender, EventArgs e)
@@ -709,7 +708,7 @@ namespace RenderLib
                 {
                     string buf = openFileDialog1.Filter;
                     string dir = openFileDialog1.InitialDirectory;
-                    openFileDialog1.Filter = "файл - точка сохранения rpsp (*.cld)|*.cld|" +
+                    openFileDialog1.Filter = "файл - сохранения линии створа(*.cld)|*.cld|" + "(*.ccl) | *.ccl|" +
                          "All files (*.*)|*.*";
                     openFileDialog1.InitialDirectory = path;
                     if (openFileDialog1.ShowDialog() == DialogResult.OK)
@@ -717,17 +716,36 @@ namespace RenderLib
                     openFileDialog1.Filter = buf;
                     openFileDialog1.InitialDirectory = dir;
                 }
+
+                string FileEXT = Path.GetExtension(FileName).ToLower();
                 if (File.Exists(FileName) == true)
                 {
                     ListCross.Clear();
                     cbCrossList.Items.Clear();
+                    int idx = 0;
                     using (StreamReader file = new StreamReader(FileName))
                     {
                         for (string line = file.ReadLine(); line != null; line = file.ReadLine())
                         {
-                            CrossLine cl = CrossLine.Parse(line);
-                            ListCross.Add(cl);
-                            cbCrossList.Items.Add(cl.Name);
+                            switch (FileEXT)
+                            {
+                                case ".cld":
+                                    {
+                                        CrossLine cl = CrossLine.Parse(line);
+                                        ListCross.Add(cl);
+                                        cbCrossList.Items.Add(cl.Name);
+                                    }
+                                    break;
+                                case ".ccl":
+                                    {
+                                        string Name = "Створ" + idx.ToString();
+                                        CloudKnotLine cine = CloudKnotLine.Parse(line);
+                                        CrossLine cl = new CrossLine(Name, cine);
+                                        ListCross.Add(cl);
+                                        cbCrossList.Items.Add(cl.Name);
+                                    }
+                                    break;
+                            }
                         }
                         cbCrossList.SelectedIndex = 0;
                         file.Close();
@@ -740,7 +758,9 @@ namespace RenderLib
             {
                 Logger.Instance.Info("Буффер файл створа - отсутствует : " + ex.Message);
             }
+        
         }
+
 
         private void listBoxPoles_SelectedIndexChanged(object sender, EventArgs e) 
         {

@@ -21,11 +21,12 @@ namespace EddyViscosityLib
     [Serializable]
     public class EddyViscosity_Boussinesq1865 : AlgebraEddyViscosityTri
     {
+        double[] Vy = null;
         /// <summary>
         /// Конструктор 
         /// </summary>
-        public EddyViscosity_Boussinesq1865(ETurbViscType eTurbViscType, BEddyViscosityParam p)
-            : base(eTurbViscType, p)
+        public EddyViscosity_Boussinesq1865(ETurbViscType eTurbViscType, BEddyViscosityParam p, TypeTask tt)
+            : base(eTurbViscType, p, tt)
         {
         }
         public override void SolveTask(ref double[] eddyViscosity)
@@ -50,7 +51,7 @@ namespace EddyViscosityLib
                     double[] Y = mesh.GetCoords(1);
                     double H = Y.Max() - Y.Min();
                     double mCs = SPhysics.PHYS.Cs(H);
-                    double U0 = Ux.Sum() / Ux.Length;
+                    double U0 = Vy.Max() * mCs;
                     mu_t0 = rho_w * U0 * H * Math.Sqrt(GRAV) / (2 * a * mCs);
                 }
                 for (int node = 0; node < mesh.CountKnots; node++)
@@ -66,6 +67,7 @@ namespace EddyViscosityLib
         /// </summary>
         public override void SolveTask(ref double[] eddyViscosity, double[] Ux, double[] Vy, double[] Vz, double[] Phi, double[] Vortex, double dt)
         {
+            this.Vy = Vy;
             SolveTask(ref eddyViscosity);
         }
     }

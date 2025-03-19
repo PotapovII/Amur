@@ -68,7 +68,17 @@ namespace GeometryLib
                 name = "функция по точкам";
             SetFunctionData(x, y, name);
         }
-        
+
+        public DigFunction(DigFunctionPolynom p) : base(p.Smoothness, false)
+        {
+            name = p.Name;
+            x0.Clear();
+            y0.Clear();
+            x0.AddRange(p.x0.ToArray());
+            y0.AddRange(p.y0.ToArray());
+        }
+
+
         public DigFunction(double L, string name = "") : this(L, 0, name) {}
         
         public DigFunction(double L,double V, string name = "")

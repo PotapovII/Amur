@@ -32,6 +32,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 namespace EddyViscosityLib
 {
     using System;
+    using CommonLib;
     using CommonLib.EddyViscosity;
     /// <summary>
     /// простой менеджер моделей турбулентной вязкости
@@ -39,61 +40,61 @@ namespace EddyViscosityLib
     /// </summary>
     public static class MuManager
     {
-        public static IEddyViscosityTri Get(ETurbViscType type, BEddyViscosityParam p)
+        public static IEddyViscosityTri Get(ETurbViscType type, BEddyViscosityParam p, TypeTask tt)
         {
             IEddyViscosityTri eddyViscosityTri = null;
             switch (type)
             {
                 case ETurbViscType.Boussinesq1865:
-                    eddyViscosityTri = new EddyViscosity_Boussinesq1865(type, p);
+                    eddyViscosityTri = new EddyViscosity_Boussinesq1865(type, p, tt);
                     break;
                 case ETurbViscType.Karaushev1977:
-                    eddyViscosityTri = new EddyViscosity_Karaushev1977(type, p);
+                    eddyViscosityTri = new EddyViscosity_Karaushev1977(type, p, tt);
                     break;
                 case ETurbViscType.Prandtl1934:
-                    eddyViscosityTri = new EddyViscosity_Prandtl1934(type, p);
+                    eddyViscosityTri = new EddyViscosity_Prandtl1934(type, p, tt);
                     break;
                 case ETurbViscType.Velikanov1948:
-                    eddyViscosityTri = new EddyViscosity_Velikanov1948(type, p);
+                    eddyViscosityTri = new EddyViscosity_Velikanov1948(type, p, tt);
                     break;
                 case ETurbViscType.Leo_C_van_Rijn1984:
-                    eddyViscosityTri = new EddyViscosity_Leo_van_Rijn1984(type, p);
+                    eddyViscosityTri = new EddyViscosity_Leo_van_Rijn1984(type, p, tt);
                     break;
                 case ETurbViscType.Absi_2012:
-                    eddyViscosityTri = new EddyViscosity_Absi_2012(type, p);
+                    eddyViscosityTri = new EddyViscosity_Absi_2012(type, p, tt);
                     break;
                 case ETurbViscType.Absi_2019:
-                    eddyViscosityTri = new EddyViscosity_Absi_2019(type, p);
+                    eddyViscosityTri = new EddyViscosity_Absi_2019(type, p, tt);
                     break;
                 case ETurbViscType.VanDriest1956:
-                    eddyViscosityTri = new EddyViscosity_VanDriest1956(type, p);
+                    eddyViscosityTri = new EddyViscosity_VanDriest1956(type, p, tt);
                     break;
                 case ETurbViscType.GLS_1995:
-                    eddyViscosityTri = new EddyViscosity_GLS_1995(type, p);
+                    eddyViscosityTri = new EddyViscosity_GLS_1995(type, p, tt);
                     break;
                 case ETurbViscType.Les_Smagorinsky_Lilly_1996:
-                    eddyViscosityTri = new EddyViscosity_Smagorinsky_Lilly_1996(type, p);
+                    eddyViscosityTri = new EddyViscosity_Smagorinsky_Lilly_1996(type, p, tt);
                     break;
                 case ETurbViscType.Derek_G_Goring_and_K_1997:
-                    eddyViscosityTri = new EddyViscosity_Derek_G_Goring_and_K_1997(type, p);
+                    eddyViscosityTri = new EddyViscosity_Derek_G_Goring_and_K_1997(type, p, tt);
                     break;
                 case ETurbViscType.PotapobII_2024:
-                    eddyViscosityTri = new EddyViscosity_PotapovII_2024(type, p);
+                    eddyViscosityTri = new EddyViscosity_PotapovII_2024(type, p, tt);
                     break;
                 case ETurbViscType.КЕModelS:
-                    eddyViscosityTri = new EddyViscosityVKEModelTri(type, p);
+                    eddyViscosityTri = new EddyViscosityVKEModelTri(type, p, tt);
                     break;
                 case ETurbViscType.КЕModelN:
-                    eddyViscosityTri = new EddyViscosityKEModelTri(type, p);
+                    eddyViscosityTri = new EddyViscosityKEModelTri(type, p, tt);
                     break;
                 case ETurbViscType.SAModelS:
-                    eddyViscosityTri = new EddyViscosity_sSA_lTri(type, p);
+                    eddyViscosityTri = new EddyViscosity_sSA_lTri(type, p, tt);
                     break;
                 case ETurbViscType.SAModelN:
-                    eddyViscosityTri = new EddyViscosity_nSA_lTri(type, p);
+                    eddyViscosityTri = new EddyViscosity_nSA_lTri(type, p, tt);
                     break;
                 case ETurbViscType.EddyViscosityConst:
-                    eddyViscosityTri = new EddyViscosityConst(type, p);
+                    eddyViscosityTri = new EddyViscosityConst(type, p, tt);
                     break;
                 default:
                     throw new Exception("Выбранная модель турбулентности пока не реализована");

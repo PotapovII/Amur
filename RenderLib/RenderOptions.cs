@@ -50,7 +50,11 @@ namespace RenderLib
         /// Инверсия системы координат X<=>Y
         /// </summary>
         public bool coordInv = false;
-        
+        /// <summary>
+        /// Настройки для печати
+        /// </summary>
+        public bool printOp = false;
+
         public RenderOptions() { }
         public RenderOptions(RenderOptions o)
         {
@@ -63,6 +67,7 @@ namespace RenderLib
             opValuesKnot = o.opValuesKnot;
             scaleFields = o.scaleFields;
             coordInv = o.coordInv;
+            printOp = o.printOp;
         }
         /// <summary>
         /// 15 07 24 изменяемый масштаб полей

@@ -11,6 +11,8 @@ namespace EddyViscosityLib
 
     using CommonLib.Physics;
     using CommonLib.EddyViscosity;
+    using CommonLib;
+
     /// <summary>
     /// Профиль турбулентной вязкости Караушев 1977
     /// </summary>
@@ -20,8 +22,8 @@ namespace EddyViscosityLib
         /// <summary>
         /// Конструктор 
         /// </summary>
-        public EddyViscosity_Karaushev1977(ETurbViscType eTurbViscType, BEddyViscosityParam p)
-            : base(eTurbViscType, p){}
+        public EddyViscosity_Karaushev1977(ETurbViscType eTurbViscType, BEddyViscosityParam p, TypeTask tt)
+            : base(eTurbViscType, p, tt){}
         /// <summary>
         /// Определение турбулентной вязкости по модели Караушева 1977
         /// </summary>

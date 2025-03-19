@@ -126,6 +126,15 @@ namespace NPRiverLib.APRiver2XYD
             unknowns.Add(new CalkPapams("Свободная поверхность", _Eta, TypeFunForm.Form_2D_Rectangle_L1));
             unknowns.Add(new CalkPapams("Вихревая вязкость", _Mu, TypeFunForm.Form_2D_Rectangle_L1));
         }
+        /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        public void GetRoughness(ref double[] Roughness)
+        {
+            Roughness = null;
+        }
+
     }
 
 }

@@ -85,8 +85,8 @@ namespace EddyViscosityLib
         /// выполняет вычисления растояние от узла до ближайшей стенки канала
         /// </summary>
         protected MWRiverDistance mWRiverDistance = null;
-        public AEddyViscosity_SA_Tri(ETurbViscType eTurbViscType, int nLine)
-            : base(eTurbViscType, nLine) { }
+        public AEddyViscosity_SA_Tri(ETurbViscType eTurbViscType, TypeTask tt, int nLine)
+            : base(eTurbViscType, tt, nLine) { }
         public override void SetTask(IMesh mesh, IAlgebra algebra, IMeshWrapper wMesh = null)
         {
             base.SetTask(mesh, algebra, wMesh);

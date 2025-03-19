@@ -103,6 +103,18 @@ namespace GeometryLib
             this.name = name;
         }
         /// <summary>
+        /// Получить данных основы
+        /// </summary>
+        /// <param name="x">аргумент</param>
+        /// <param name="y">функция</param>
+        /// <param name="value">контекстный параметр</param>
+        public void GetFunctionData(ref string name, ref double[] x, ref double[] y)
+        {
+            name = this.name;
+            x = new double[1] { 0 };
+            y = new double[1] { Value };
+        }
+        /// <summary>
         /// Добавление точки
         /// </summary>
         public void Add(double x, double y) 

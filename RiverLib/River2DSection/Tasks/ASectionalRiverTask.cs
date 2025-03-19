@@ -107,6 +107,14 @@
         /// </summary>
         public EBedErosion GetBedErosion() => Erosion;
         public EBedErosion Erosion;
+        /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        public void GetRoughness(ref double[] Roughness)
+        {
+            Roughness = null;
+        }
 
 
         #region Свойства

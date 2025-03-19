@@ -13,6 +13,8 @@ namespace EddyViscosityLib
     using CommonLib.EddyViscosity;
     
     using MemLogLib;
+    using CommonLib;
+
     /// <summary>
     /// Профиль турбулентной вязкости Великанова 1948
     /// </summary>
@@ -22,8 +24,8 @@ namespace EddyViscosityLib
         /// <summary>
         /// Конструктор 
         /// </summary>
-        public EddyViscosity_Velikanov1948(ETurbViscType eTurbViscType, BEddyViscosityParam p)
-            : base(eTurbViscType, p)
+        public EddyViscosity_Velikanov1948(ETurbViscType eTurbViscType, BEddyViscosityParam p, TypeTask tt)
+            : base(eTurbViscType, p, tt)
         {
         }
         /// <summary>

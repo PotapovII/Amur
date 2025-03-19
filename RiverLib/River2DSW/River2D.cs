@@ -254,6 +254,15 @@ namespace RiverLib.River2D
         // =====================================================================
         #region Реализация    IRiver2D
         /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        public void GetRoughness(ref double[] Roughness)
+        {
+            Roughness = null;
+        }
+
+        /// <summary>
         /// Чтение входных данных задачи из файла
         /// геометрия канала
         /// эволюция расходов/уровней

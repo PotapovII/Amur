@@ -46,7 +46,7 @@ namespace BLLib
         double[] p1D = null;
         double[] x1D = null;
         IMesh mesh1D = null;
-        CBedLoadTask1D bltask = null;
+        CBedLoadTask_1XD bltask = null;
         /// <summary>
         /// Конструктор 
         /// </summary>
@@ -65,7 +65,7 @@ namespace BLLib
         /// <param name="theta">Параметр схемы по времени</param>
         /// <param name="dtime">шаг по времени</param>
         /// <param name="isAvalanche">флаг использования лавинной модели</param>
-        public override void SetTask(IMesh mesh, double[] Zeta0, IBoundaryConditions BConditions)
+        public override void SetTask(IMesh mesh, double[] Zeta0, double[] Roughness, IBoundaryConditions BConditions)
         {
             if (mesh == null)
             {
@@ -80,10 +80,10 @@ namespace BLLib
                 return;
             }
             uint NN = (uint)Math.Sqrt(mesh.CountKnots);
-            base.SetTask(mesh, Zeta0, BConditions);
+            base.SetTask(mesh, Zeta0, Roughness, BConditions);
             InitLocal(cu);
 
-            bltask = new CBedLoadTask1D(this);
+            bltask = new CBedLoadTask_1XD(this);
             // вычисление массива связей    
             Adapter_2D_to_1D_Mesh();
             // проекция дна на 1D
@@ -107,7 +107,7 @@ namespace BLLib
                 bltask.BCondOut = new BoundCondition1D(TypeBoundCond.Transit, 0);
             }
             bltask.dtime = dtime;
-            bltask.SetTask(mesh1D, zeta01D, BConditions);
+            bltask.SetTask(mesh1D, zeta01D, Roughness, BConditions);
 
             taskReady = true;
         }

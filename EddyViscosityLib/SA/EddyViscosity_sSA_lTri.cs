@@ -14,6 +14,8 @@ namespace EddyViscosityLib
     using System;
     using MemLogLib;
     using FEMTasksLib.FEMTasks.VortexStream;
+    using CommonLib;
+
     /// <summary>
     /// Стационарная модель  Спаларта-Аллмареса 
     /// </summary>
@@ -21,8 +23,8 @@ namespace EddyViscosityLib
     public class EddyViscosity_sSA_lTri : AEddyViscosity_SA_Tri
     {
         
-        public EddyViscosity_sSA_lTri(ETurbViscType eTurbViscType, BEddyViscosityParam p)
-            : base(eTurbViscType, p.NLine)
+        public EddyViscosity_sSA_lTri(ETurbViscType eTurbViscType, BEddyViscosityParam p, TypeTask tt)
+            : base(eTurbViscType, tt, p.NLine)
         {
             cs = 1;
         }

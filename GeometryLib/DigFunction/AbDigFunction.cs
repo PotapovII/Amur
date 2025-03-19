@@ -139,20 +139,15 @@ namespace GeometryLib
         {
             MEM.Alloc<double>(Count, ref x);
             MEM.Alloc<double>(Count, ref y);
-            if (isConstant == true && isParametric == false)
+            if (isConstant == true && isParametric == false || x0.Count == 1)
             {
-                double L = x0[x0.Count - 1] - x0[0];
-                double dx = L / (Count - 1);
-                for (int i = 0; i < Count; i++)
-                {
-                    double xi = x0[0] + i * dx;
-                    x[i] = xi;
-                    y[i] = y0[0];
-                }
+                x[0] = x0[0];
+                y[0] = y0[0];
                 return;
             }
             if (isParametric == false)
             {
+                if (Count < 21) Count = 21;
                 double L = x0[x0.Count - 1] - x0[0];
                 double dx = L / (Count - 1);
                 if (Smoothness == SmoothnessFunction.spline)
@@ -231,6 +226,18 @@ namespace GeometryLib
 
                 }
             }
+        }
+        /// <summary>
+        /// Получить данные основы
+        /// </summary>
+        /// <param name="x">аргумент</param>
+        /// <param name="y">функция</param>
+        /// <param name="value">контекстный параметр</param>
+        public void GetFunctionData(ref string name, ref double[] x, ref double[] y)
+        {
+            name = this.name;
+            x = x0.ToArray();
+            y = y0.ToArray();
         }
         /// <summary>
         /// Получение маркера границы для каждого узла

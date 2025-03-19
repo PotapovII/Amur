@@ -66,11 +66,11 @@ namespace EddyViscosityLib
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
-        public ADiffEddyViscosityTri(ETurbViscType eTurbViscType, int nLine = 100) 
-            : this(eTurbViscType, new BEddyViscosityParam(), nLine) { }
+        public ADiffEddyViscosityTri(ETurbViscType eTurbViscType, TypeTask tt, int nLine = 100) 
+            : this(eTurbViscType, new BEddyViscosityParam(), tt, nLine) { }
 
-        public ADiffEddyViscosityTri(ETurbViscType eTurbViscType, BEddyViscosityParam p, int nLine=100)
-            : base(eTurbViscType, p, TypeTask.streamY1D)
+        public ADiffEddyViscosityTri(ETurbViscType eTurbViscType, BEddyViscosityParam p, TypeTask tt, int nLine =100)
+            : base(eTurbViscType, p, tt)
         {
             NLine = nLine;
         }

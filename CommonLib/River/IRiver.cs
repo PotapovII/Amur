@@ -110,6 +110,11 @@ namespace CommonLib
         /// <param name="zeta"></param>
         void GetZeta(ref double[] zeta);
         /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        void GetRoughness(ref double[] Roughness);
+        /// <summary>
         /// Получение полей придонных касательных напряжений и давления/свободной поверхности по контексту задачи
         /// усредненных на конечных элементах
         /// </summary>

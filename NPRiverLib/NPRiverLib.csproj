@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,6 +54,10 @@
     <Compile Include="APRiver1XD\BEM_River2D\RiverBEMCircleMesh1XD.cs" />
     <Compile Include="APRiver1XD\BEM_River2D\RiverBEMCircleMeshAdapt1XD.cs" />
     <Compile Include="APRiver1XD\BEM_River2D\RiverBEMParams1XD.cs" />
+    <Compile Include="APRiver1XD\FEM_ke_River2D\AFEMRiver1XD.cs" />
+    <Compile Include="APRiver1XD\FEM_ke_River2D\APRiverFEM1XD.cs" />
+    <Compile Include="APRiver1XD\FEM_ke_River2D\FEMParams_1XD.cs" />
+    <Compile Include="APRiver1XD\FEM_ke_River2D\TriFEMRiver_1XD.cs" />
     <Compile Include="APRiver1XD\KGD_River2D\RGD_EnumTypes.cs" />
     <Compile Include="APRiver1XD\KGD_River2D\KGD_Eliz2024_1XD.cs" />
     <Compile Include="APRiver1XD\KGD_River2D\RGDParameters1XD.cs" />
@@ -92,6 +97,7 @@
     <Compile Include="ABaseTask\ARiverEmpty.cs" />
     <Compile Include="ABaseTask\ETaskStatus.cs" />
     <Compile Include="ABaseTask\RiverEmptyParams.cs" />
+    <Compile Include="IO\1XD\TaskReaderFEM_1XD.cs" />
     <Compile Include="IO\TaskReaderEmptyAll.cs" />
     <Compile Include="IO\2XYD\TaskReaderEmpty2XYD.cs" />
     <Compile Include="IO\2XYD\TaskReaderEmpty2XYDTri.cs" />
@@ -100,7 +106,6 @@
     <Compile Include="ABaseTask\TaskTestClass.cs" />
     <Compile Include="IO\1XD\TaskReaderBEM_1XD.cs" />
     <Compile Include="IO\1XD\TaskReaderSWE_1XD.cs" />
-    <Compile Include="IO\1YD\TaskReader1YD_Rose.cs" />
     <Compile Include="IO\1XD\TaskReader_Patankar1XD.cs" />
     <Compile Include="IO\2XYD\TaskReader2XYD_CFG.cs" />
     <Compile Include="APRiver1YD\Params\TaskVariant.cs" />

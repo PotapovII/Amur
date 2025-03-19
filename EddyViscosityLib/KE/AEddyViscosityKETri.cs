@@ -46,8 +46,8 @@ namespace EddyViscosityLib
         protected double cmu4 = Math.Sqrt(Math.Sqrt(C_mu));
         protected double Eps_wall = 9.8;
         #endregion
-        public AEddyViscosityKETri(ETurbViscType eTurbViscType, int nLine) 
-            : base(eTurbViscType, nLine) { }
+        public AEddyViscosityKETri(ETurbViscType eTurbViscType, TypeTask tt, int nLine) 
+            : base(eTurbViscType, tt, nLine) { }
         public override void SetTask(IMesh mesh, IAlgebra algebra, IMeshWrapper wMesh = null)
         {
             base.SetTask(mesh, algebra, wMesh);

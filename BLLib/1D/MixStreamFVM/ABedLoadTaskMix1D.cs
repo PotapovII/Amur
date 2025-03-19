@@ -243,10 +243,13 @@ namespace BLLib
         /// </summary>
         /// <param name="mesh">Сетка расчетной области</param>
         /// <param name="Zeta0">начальный уровень дна</param>
-        public virtual void SetTask(IMesh mesh, double[] Zeta0, IBoundaryConditions BConditions)
+        /// <param name="Roughness">шероховатость дна</param>
+        /// <param name="BConditions">граничные условия, 
+        /// количество в обзем случае определяется через маркеры 
+        /// границ сетеи</param>
+        public virtual void SetTask(IMesh mesh, double[] Zeta0, double[] Roughness, IBoundaryConditions BConditions)
         {
             double tanphi = SPhysics.PHYS.tanphi;
-
             taskReady = false;
             this.mesh = mesh;
             this.x = mesh.GetCoords(0);

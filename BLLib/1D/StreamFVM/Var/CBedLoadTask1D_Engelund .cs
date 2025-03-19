@@ -30,7 +30,7 @@ namespace BLLib
     /// расчете донных деформаций русла вдоль потока
     /// </summary>
     [Serializable]
-    public class CBedLoadTask1D_Engelund : CBedLoadTask1D
+    public class CBedLoadTask1D_Engelund : CBedLoadTask_1XD
     {
         public override IBedLoadTask Clone()
         {

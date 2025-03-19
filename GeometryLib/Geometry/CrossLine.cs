@@ -56,6 +56,12 @@ namespace GeometryLib.Geometry
             A = new HPoint(a);
             B = new HPoint(b);
         }
+        public CrossLine(string Name, IHLine line)
+        {
+            this.Name = Name;
+            A = new HPoint(line.A);
+            B = new HPoint(line.B);
+        }
         /// <summary>
         /// Конвертация в строку
         /// </summary>

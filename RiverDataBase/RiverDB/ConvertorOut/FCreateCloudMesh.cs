@@ -1027,7 +1027,8 @@ namespace RiverDB.ConvertorOut
                     LocatorTriMeshFacet tLine = new LocatorTriMeshFacet(bmesh);
                     tLine.SetCrossLine(points);
 
-                    int indxDeapth = 1;
+                    int indxDeapth = 0; // измеренная глубина
+                    //int indxDeapth = 1; // срезаная глубина
                     double[] s = null;
                     double[] Deapth = null;
                     tLine.GetCurve(values[indxDeapth], ref s, ref Deapth);
@@ -1041,7 +1042,7 @@ namespace RiverDB.ConvertorOut
                     double[] Vt = null;
 
                     int indxVx = 3;
-                    int indxVy = 3;
+                    int indxVy = 4;
                     tLine.GetCurve(values[indxVx], values[indxVy], ref s, ref Vx, ref Vy, ref Vn, ref Vt);
 
                     string Data = GetMeshData();
@@ -1056,7 +1057,97 @@ namespace RiverDB.ConvertorOut
                 Console.WriteLine("Сетка области не заданна!");
         }
 
+        /// <summary>
+        /// сохранение облачной линии створа (Cloud cross line)
+        /// </summary>
+        protected void SaveCCL()
+        {
+            try
+            {
+                string path = "..\\..\\Result";
+                string FileName = path + "\\" + "bufferCrossLines.ccl";
+                OpenFileDialog openFileDialog1 = new OpenFileDialog();
+                string buf = openFileDialog1.Filter;
+                string dir = openFileDialog1.InitialDirectory;
+                openFileDialog1.Filter = "файл - сохранение облачной линии створа (*.ccl)|*.ccl|" +
+                         "All files (*.*)|*.*";
+                openFileDialog1.InitialDirectory = path;
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                    FileName = openFileDialog1.FileName;
+                openFileDialog1.Filter = buf;
+                openFileDialog1.InitialDirectory = dir;
+                if (File.Exists(FileName) == true)
+                {
+                    string FileEXT = Path.GetExtension(FileName).ToLower();
+                    using (StreamReader file = new StreamReader(FileName))
+                    {
+                        string CLine = file.ReadLine();
+                        CloudKnotLine Cline = null;
+                        switch (FileEXT)
+                        {
+                            // Загрузка створа
+                            case ".cld":
+                                {
+                                    CrossLine cl = CrossLine.Parse(CLine);
+                                    CloudKnot start = new CloudKnot(cl.A.X, cl.A.Y, new double[5] { 0, 0, 0, 0, 0 }, 1);
+                                    CloudKnot end = new CloudKnot(cl.B.X, cl.B.Y, new double[5] { 0, 0, 0, 0, 0 }, 1);
+                                    Cline = new CloudKnotLine(start, end); 
+                                }
+                                break;
+                            case ".ccl":
+                                {
+                                    Cline = CloudKnotLine.Parse(CLine);
+                                }
+                                break;
+                        }
+                        if (Cline != null)
+                        {
+                            gdI_EditControlClouds1.SetCrossLine(Cline);
+                            SetEditState();
+                        }
+                        file.Close();
+                    }
+                }
+                else
+                    Logger.Instance.Info("Буффер файл створа - отсутствует");
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Info("Буффер файл створа - отсутствует : " + ex.Message);
+            }
+        }
+        /// <summary>
+        /// загрузка облачной линии створа (Cloud cross line)
+        /// </summary>
+        protected void LoadCCL()
+        {
+            IHLine crossLine = gdI_EditControlClouds1.GetCrossLine();
+            if (crossLine != null)
+            {
+                string Name = "bufferCrossLines";
+                CloudKnotLine cl = (CloudKnotLine)crossLine;
+                string path = "..\\..\\Result";
+                DirectoryInfo dirInfo = new DirectoryInfo(path);
+                if (dirInfo.Exists == false)
+                    dirInfo.Create();
+                string FileName = path + "\\" + Name + ".ccl";
+                string buf = saveFileDialog1.Filter;
+                string dir = saveFileDialog1.InitialDirectory;
+                saveFileDialog1.Filter = "Загрузка облачной линия створа задачи (*.ccl)|*.ccl|" +
+                     "All files (*.*)|*.*";
+                saveFileDialog1.InitialDirectory = path;
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                    FileName = saveFileDialog1.FileName;
+                saveFileDialog1.Filter = buf;
+                saveFileDialog1.InitialDirectory = dir;
+                using (StreamWriter file = new StreamWriter(FileName))
+                {
+                    file.WriteLine(cl.ToString());
+                    file.Close();
+                }
+            }
 
+        }
         #endregion
 
         private void cbAllData_CheckedChanged(object sender, EventArgs e)
@@ -1251,9 +1342,17 @@ namespace RiverDB.ConvertorOut
                                     file.WriteLine(str);
                                 }
                             }
-                            // сохраняем состояние настроек генерации сетки
-                            //SetCreateMeshOptions();
-                            // список облака точек наблюдения
+                            // сохраняем состояние створа
+                            IHLine crossLine = gdI_EditControlClouds1.GetCrossLine();
+                            if (crossLine != null)
+                            {
+                                file.WriteLine("1 # Створ");
+                                CloudKnotLine Cline = (CloudKnotLine)crossLine;
+                                string Cstr = Cline.ToString();
+                                file.WriteLine(Cstr);
+                            }
+                            else
+                                file.WriteLine("0 # Створ");
                             file.Close();
                         }
                     }
@@ -1357,8 +1456,17 @@ namespace RiverDB.ConvertorOut
                                 sLine.Add(ss);
                                 gdI_EditControlClouds1.LoadSmLines(sLine);
                             }
-                            SetEditState();
                         }
+                        // Загрузка створа
+                        string CLine = file.ReadLine(); 
+                        string[] CLines = CLine.Split(' ');
+                        if(int.Parse(CLines[0]) == 1)
+                        {
+                            CLine = file.ReadLine();
+                            CloudKnotLine Cline = CloudKnotLine.Parse(CLine);
+                            gdI_EditControlClouds1.SetCrossLine(Cline);
+                        }
+                        SetEditState();
                     }
                 }
                 catch (Exception ex)
@@ -1828,5 +1936,16 @@ namespace RiverDB.ConvertorOut
         {
             CreateFileTask1D();
         }
+
+        private void tbsSaveCrossLine_Click(object sender, EventArgs e)
+        {
+            LoadCCL();
+        }
+
+        private void tbsLoadCrossLine_Click(object sender, EventArgs e)
+        {
+            SaveCCL();
+        }
+
     }
 }

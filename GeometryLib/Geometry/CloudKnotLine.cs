@@ -108,6 +108,10 @@ namespace GeometryLib.Geometry
     /// </summary>
     public class CloudKnotLine : HLine,  IHLine
     {
+        public CloudKnotLine(IHLine line): this(line.A,line.B)
+        {
+        }
+
         public CloudKnotLine()
         {
             A = new CloudKnot(); 
@@ -127,6 +131,15 @@ namespace GeometryLib.Geometry
         {
             return ((CloudKnot)A).ToString() +" "+ ((CloudKnot)B).ToString();
         }
+        public static CloudKnotLine Parse(string line)
+        {
+            string[] mas = (line.Trim()).Split(' ');
+            CloudKnot A = CloudKnot.ReadCloudKnot(mas, 0);
+            CloudKnot B = CloudKnot.ReadCloudKnot(mas, 10);
+            CloudKnotLine Line = new CloudKnotLine(A, B);
+            return Line;
+        }
+
     }
 
 }

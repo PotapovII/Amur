@@ -7,19 +7,19 @@
 //---------------------------------------------------------------------------
 namespace NPRiverLib.APRiver_1XD.River1DSW
 {
-    using CommonLib;
-    using CommonLib.IO;
-    using MemLogLib;
-    using MeshLib;
     using System;
     using System.IO;
-    using GeometryLib;
+
+    using CommonLib;
     using CommonLib.Physics;
-    using CommonLib.ChannelProcess;
     using CommonLib.Function;
+    using CommonLib.ChannelProcess;
+
+    using MeshLib;
+    using MemLogLib;
+    using GeometryLib;
+
     using MeshGeneratorsLib.TapeGenerator;
-    using NPRiverLib.ABaseTask;
-    using System.Collections.Generic;
 
     /// <summary>
     /// ОО: Стандарт на 1D решатели мелкой воды

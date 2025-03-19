@@ -30,7 +30,7 @@ namespace EddyViscosityLib
         /// <summary>
         /// тип задачи 0 - плоская 1 - цилиндрическая
         /// </summary>
-        [DisplayName("тип задачи 0 - плоская 1 - цилиндрическая")]
+        [DisplayName("тип задачи 0 - плоская 1 - цилиндрическая в 1Y/осесимметричная в 1X")]
         [Category("Задача")]
         public int SigmaTask { get; set; }
         /// <summary>

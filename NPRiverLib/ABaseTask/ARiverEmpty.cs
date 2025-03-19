@@ -70,6 +70,14 @@ namespace NPRiverLib.ABaseTask
             fn.NameRData = "NameRData.txt";
             return fn;
         }
+        /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        public void GetRoughness(ref double[] Roughness)
+        {
+            Roughness = null;
+        }
 
         public ARiverAnyEmpty(TParam p, TypeTask typeTask) : base(p, typeTask) { }
         /// <summary>

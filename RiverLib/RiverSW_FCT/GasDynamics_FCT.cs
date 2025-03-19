@@ -632,6 +632,14 @@ namespace RiverLib
             fAD = s * fAD;
             return fAD;
         }
+        /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        public void GetRoughness(ref double[] Roughness)
+        {
+            Roughness = null;
+        }
 
         // ---------------------------------------------------------------------------------------
         // Тестовые НУ и ГУ

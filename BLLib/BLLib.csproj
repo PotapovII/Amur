@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="1D\SrossSectiona\SrossSectionalBedLoadStreemTask1D.cs" />
+    <Compile Include="1D\SrossSectiona\BedLoadStreamTask_1YD.cs" />
     <Compile Include="2D\FVM\BedLoadTaskZeta2DFVM.cs" />
     <Compile Include="2D\FVM\BedLoadTask2DFVM.cs" />
     <Compile Include="2D\FEM\CBedLoadFEMTask2DTri.cs" />
@@ -81,7 +81,7 @@
     <Compile Include="2D\FEM\CBedLoadFEMTask2D.cs" />
     <Compile Include="2D\FEM\ABedLoadFEMTask2D.cs" />
     <Compile Include="1D\ABedLoadTask1D.cs" />
-    <Compile Include="1D\StreamFVM\CBedLoadTask1D.cs" />
+    <Compile Include="1D\StreamFVM\CBedLoadTask_1XD.cs" />
     <Compile Include="Avalanche\OLD\Avalanche2DCircle.cs" />
     <Compile Include="Avalanche\OLD\Avalanche2DQuad.cs" />
     <Compile Include="Avalanche\OLD\Avalanche2D.cs" />
@@ -93,7 +93,7 @@
     <Compile Include="Old\СRiverSideBedLoadTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Solver.cs" />
-    <Compile Include="1D\SrossSectiona\SrossSectionalBedLoadTask1D.cs" />
+    <Compile Include="1D\SrossSectiona\BedLoadTask_1YD.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AlgebraLib\AlgebraLib.csproj">

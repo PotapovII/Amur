@@ -26,6 +26,7 @@ namespace CPForm
     using CommonLib.Physics;
     using System.Collections.Generic;
 
+    using RenderLib.PDG;
     /// <summary>
     /// Базистная форма задачи
     /// </summary>
@@ -120,16 +121,16 @@ namespace CPForm
             SetGrid();
             gdI_Control1.AddOwner(this);
         }
-        protected static void SetSplitter(PropertyGrid proGrid)
-        {
-            Type type = proGrid.GetType();
-            BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
-            FieldInfo field = type.GetField("gridView", flags);
-            object gridView = field.GetValue(proGrid);
-            Type gridType = gridView.GetType();
-            BindingFlags flagsTwo = BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Instance;
-            gridType.InvokeMember("MoveSplitterTo", flagsTwo, null, gridView, new object[] { 180 });
-        }
+        //protected static void SetSplitter(PropertyGrid proGrid)
+        //{
+        //    Type type = proGrid.GetType();
+        //    BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+        //    FieldInfo field = type.GetField("gridView", flags);
+        //    object gridView = field.GetValue(proGrid);
+        //    Type gridType = gridView.GetType();
+        //    BindingFlags flagsTwo = BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Instance;
+        //    gridType.InvokeMember("MoveSplitterTo", flagsTwo, null, gridView, new object[] { 180 });
+        //}
 
         #region Методы синхронизации при передаче данных м/д потоками
         /// <summary>

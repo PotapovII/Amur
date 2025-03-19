@@ -134,7 +134,7 @@ namespace MeshLib.Wrappers
             this.mesh = mesh;
             int cu = 3;
             MEM.Alloc(mesh.CountElements, ref S, "S");
-            MEM.Alloc(mesh.CountElements, ref ElemS, "ElemS");
+            MEM.Alloc(mesh.CountKnots, ref ElemS, "ElemS");
             MEM.Alloc(mesh.CountElements, ref Hx, "Hx");
             MEM.Alloc(mesh.CountElements, ref Hy, "Hy");
             MEM.Alloc(mesh.CountElements, cu, ref N, "N");

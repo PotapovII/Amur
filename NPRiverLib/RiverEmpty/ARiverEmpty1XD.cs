@@ -40,5 +40,14 @@ namespace NPRiverLib.RiverEmpty
         {
             return new ARiverEmpty1XD();
         }
+        /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        public override void GetRoughness(ref double[] Roughness)
+        {
+            Roughness = null;
+        }
+
     }
 }

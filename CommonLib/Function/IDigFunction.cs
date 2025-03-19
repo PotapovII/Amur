@@ -51,7 +51,22 @@ namespace CommonLib.Function
         /// Сплайн интерполяция
         /// </summary>
         [Description("Сплайн интерполяция")]
-        spline
+        spline,
+        /// <summary>
+        /// Полином 1 порядка
+        /// </summary>
+        [Description("Сплайн интерполяция")]
+        polynom1,
+        /// <summary>
+        /// Полином 2 порядка
+        /// </summary>
+        [Description("Сплайн интерполяция")]
+        polynom2,
+        /// <summary>
+        /// Полином 3 порядка
+        /// </summary>
+        [Description("Сплайн интерполяция")]
+        polynom3
     }
     /// <summary>
     /// ОО: Данные для функциональных зависимостей
@@ -112,6 +127,13 @@ namespace CommonLib.Function
         /// <param name="y">функция</param>
         /// <param name="value">контекстный параметр</param>
         void SetFunctionData(double[] x, double[] y, string name = "без названия");
+        /// <summary>
+        /// Получить данных основы
+        /// </summary>
+        /// <param name="x">аргумент</param>
+        /// <param name="y">функция</param>
+        /// <param name="value">контекстный параметр</param>
+        void GetFunctionData(ref string name, ref double[] x,ref double[] y);
         /// <summary>
         /// Добавление точки
         /// </summary>

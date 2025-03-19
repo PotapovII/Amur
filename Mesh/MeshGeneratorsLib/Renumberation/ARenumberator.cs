@@ -36,6 +36,7 @@ namespace MeshGeneratorsLib.Renumberation
     using MeshLib;
     using CommonLib;
     using CommonLib.Mesh;
+
     public abstract class ARenumberator : IFERenumberator
     {
         protected IFEMesh mesh = null;
@@ -93,5 +94,30 @@ namespace MeshGeneratorsLib.Renumberation
 
         }
         public abstract void FrontRenumberation(ref IFEMesh NewMesh, IFEMesh mesh, Direction direction = Direction.toRight);
+
+        /// <summary>
+        /// Имена 
+        /// </summary>
+        /// <returns></returns>
+        public static string[] Names()
+        {
+            return new string[2]
+            {
+                "Сеточный хеш - фронтальный перенумератор",
+                "Фронтальный по координатный перенумератор "
+            };
+        }
+        /// <summary>
+        /// Получить перенумератор по коду
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        public static IFERenumberator GetRenumberator(int ID)
+        {
+            if (ID == 0)
+                return new FERenumberator();
+            else
+                return new FERenumberatorHash();
+        }
     }
 }

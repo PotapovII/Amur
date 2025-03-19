@@ -142,6 +142,8 @@ namespace NPRiverLib.APRiver1YD
                         case 2:
                             taskPV.SolveStokesTask(ref Phi, ref Vortex, eddyViscosity, Ux);
                             break;
+                        default:
+                            break;
                     }
                     FlagStartMu = true;
                     flagErr++;
@@ -239,7 +241,7 @@ namespace NPRiverLib.APRiver1YD
             //algebra2 = new SparseAlgebraGMRES_P((uint)(2 * mesh.CountKnots), 30, true);
 
                 // создание общего враппера сетки для задачи
-                Set(mesh, algebra);
+            Set(mesh, algebra);
             
             if (taskUx == null)
             {
@@ -258,12 +260,12 @@ namespace NPRiverLib.APRiver1YD
                 // вычисление начальной вихревой вязкости потока по алгебраической модели Leo_C_van_Rijn1984
                 if (MEM.Equals(eddyViscosity.Sum(), 0) == true)
                 {
-                    taskViscosity = MuManager.Get(ETurbViscType.EddyViscosityConst, p);
+                    taskViscosity = MuManager.Get(ETurbViscType.EddyViscosityConst, p, TypeTask.streamY1D);
                     taskViscosity.SetTask(mesh, algebra, wMesh);
                     taskViscosity.SolveTask(ref eddyViscosity, Ux, null, null, Phi, Vortex, dtime);
                 }
                 // вычисление начальной вихревой вязкости потока
-                taskViscosity = MuManager.Get(Params.turbViscTypeA, p);
+                taskViscosity = MuManager.Get(Params.turbViscTypeA, p, TypeTask.streamY1D);
             }
             if (taskViscosity.Cet_cs() == 1)
                 taskViscosity.SetTask(mesh, algebra, wMesh);
@@ -274,12 +276,24 @@ namespace NPRiverLib.APRiver1YD
 
             unknowns.Clear();
             unknowns.Add(new Unknown("Скорость Ux", Ux, TypeFunForm.Form_2D_Rectangle_L1));
-            unknowns.Add(new Unknown("Скорость Vy", taskPV.Vy, TypeFunForm.Form_2D_Rectangle_L1));
-            unknowns.Add(new Unknown("Скорость Vz", taskPV.Vz, TypeFunForm.Form_2D_Rectangle_L1));
-            unknowns.Add(new Unknown("Скорость V", taskPV.Vy, taskPV.Vz, TypeFunForm.Form_2D_Rectangle_L1));
-            unknowns.Add(new Unknown("Функция тока", taskPV.Phi, TypeFunForm.Form_2D_Rectangle_L1));
-            unknowns.Add(new Unknown("Вихрь", taskPV.Vortex, TypeFunForm.Form_2D_Rectangle_L1));
-
+            switch (Params.ReTask)
+            {
+                case 0:
+                case 1:
+                case 2:
+                    taskPV.SolveStokesTask(ref Phi, ref Vortex, eddyViscosity, Ux);
+                    break;
+                default:
+                    break;
+            }
+            if (Params.ReTask <= 2)
+            {
+                unknowns.Add(new Unknown("Скорость Vy", taskPV.Vy, TypeFunForm.Form_2D_Rectangle_L1));
+                unknowns.Add(new Unknown("Скорость Vz", taskPV.Vz, TypeFunForm.Form_2D_Rectangle_L1));
+                unknowns.Add(new Unknown("Скорость V", taskPV.Vy, taskPV.Vz, TypeFunForm.Form_2D_Rectangle_L1));
+                unknowns.Add(new Unknown("Функция тока", taskPV.Phi, TypeFunForm.Form_2D_Rectangle_L1));
+                unknowns.Add(new Unknown("Вихрь", taskPV.Vortex, TypeFunForm.Form_2D_Rectangle_L1));
+            }
             unknowns.Add(new CalkPapams("Турб. вязкость", eddyViscosity, TypeFunForm.Form_2D_Rectangle_L1));
             unknowns.Add(new CalkPapams("Поле напряжений T_xy", TauY, TypeFunForm.Form_2D_Rectangle_L1));
             unknowns.Add(new CalkPapams("Поле напряжений T_xz", TauZ, TypeFunForm.Form_2D_Rectangle_L1));
@@ -327,13 +341,11 @@ namespace NPRiverLib.APRiver1YD
                 MEM.Alloc(mesh.CountKnots, ref eddyViscosity, "eddyViscosity");
                 BEddyViscosityParam p = new BEddyViscosityParam(1, Params.SigmaTask, 
                             Params.J, Params.RadiusMin, SСhannelForms.halfPorabolic);
-                IEddyViscosityTri tv = MuManager.Get(ETurbViscType.Leo_C_van_Rijn1984, p);
+                IEddyViscosityTri tv = MuManager.Get(ETurbViscType.Leo_C_van_Rijn1984, p, TypeTask.streamY1D);
                 tv.SetTask(mesh, algebra, wMesh);
                 tv.SolveTask(ref eddyViscosity, Ux, Phi, null, null, Vortex, dtime);
 
                 MEM.Alloc(mesh.CountKnots, ref Ux, "Ux");
-                MEM.Alloc(mesh.CountKnots, ref Ux, "Vy");
-                MEM.Alloc(mesh.CountKnots, ref Ux, "Vz");
                 MEM.Alloc(mesh.CountKnots, ref Phi, "Phi");
                 MEM.Alloc(mesh.CountKnots, ref Vortex, "Vortex");
                 // память под напряжения в области
@@ -377,6 +389,8 @@ namespace NPRiverLib.APRiver1YD
             VelosityUx = new DigFunction();
             // Радиальная скорость на WL
             VelosityUy = new DigFunction();
+            // шероховатость дна
+            Roughness = new DigFunction();
             //
             evolution.Clear();
             // геометрия дна
@@ -389,6 +403,8 @@ namespace NPRiverLib.APRiver1YD
             VelosityUx.Load(file);
             // Радиальная скорость на WL
             VelosityUy.Load(file);
+            // шероховатость дна
+            Roughness.Load(file);
             // инициализация задачи
             InitTask();
             // готовность задачи
@@ -416,6 +432,8 @@ namespace NPRiverLib.APRiver1YD
             VelosityUx = crossFunctions[3];
             // Радиальная скорость на WL
             VelosityUy = crossFunctions[4];
+            // шероховатость дна
+            Roughness = crossFunctions[5];
             // инициализация задачи
             InitTask();
             // готовность задачи
@@ -423,8 +441,6 @@ namespace NPRiverLib.APRiver1YD
             this.crossFunctions = crossFunctions;
             CreateCalculationDomain();
         }
-
-
         /// <summary>
         /// Создает экземпляр класса
         /// </summary>

@@ -16,7 +16,6 @@ namespace MeshGeneratorsLib.StripGenerator
     using MemLogLib;
 
     using CommonLib;
-    using System.Linq;
     using CommonLib.Mesh;
 
     /// <summary>

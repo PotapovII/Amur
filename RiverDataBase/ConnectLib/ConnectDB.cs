@@ -6,12 +6,16 @@
 //---------------------------------------------------------------------------
 namespace ConnectLib
 {
+    using MemLogLib;
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
+    using System.Diagnostics;
+
     public class ConnectDB
     {
+        public static bool DebugFlag = false;
         /// <summary>
         /// Получение диапазона
         /// </summary>
@@ -413,6 +417,52 @@ namespace ConnectLib
                 DataRow dr = place.Rows[0];
                 double WL = (double)dr["experiment_waterlevel"];
                 return WL;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return 0;
+        }
+        /// <summary>
+        /// Получение отметки нуля водомерного поста 
+        /// </summary>
+        /// <param name="placeID">1 == Хабаровск</param>
+        /// <returns></returns>
+        public static double WaterLevelsData(double Zerro, string Data, string DataEnd, ref double[] time, ref double[] wls, int placeID = 1)
+        {
+            string TName = "Experiment";
+            try
+            {
+                string sql = "select * from dbo.Experiment where [place_id] = '"
+                 + placeID.ToString() + "' AND CAST([experiment_datetime] AS DATE) >= '" + Data.Trim() + "'"
+                                      + " AND CAST([experiment_datetime] AS DATE) <= '" + DataEnd.Trim() + "'";
+                DataTable place = ConnectDB.GetDataTable(sql, TName);
+                MEM.Alloc(place.Rows.Count, ref time);
+                MEM.Alloc(place.Rows.Count, ref wls);
+                time[0] = 0;
+                if (DebugFlag == true)
+                    Console.Clear();
+                DataRow dr = place.Rows[0];
+                wls[0] = Zerro + 0.01 * (double)dr["experiment_waterlevel"];
+                DateTime now = (DateTime)dr["experiment_datetime"];
+                int dayOld = now.DayOfYear;
+
+                for (int i = 1; i < place.Rows.Count; i++)
+                {
+                    dr = place.Rows[i];
+                    wls[i] = Zerro + 0.01 * (double)dr["experiment_waterlevel"];
+                    now = (DateTime)dr["experiment_datetime"];
+                    int day = now.DayOfYear;
+                    
+                    if (dayOld < day)
+                        time[i] = time[i-1] + 24 * 3600 * (day - dayOld);
+                    else
+                        time[i] = time[i - 1] + 24 * 3600 * (day + 365 - dayOld);
+                    dayOld = day;
+                    if(DebugFlag == true)
+                        Console.WriteLine(now.ToString() + "   " + day.ToString() + " " + time[i].ToString());
+                }
             }
             catch (Exception e)
             {

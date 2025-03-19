@@ -24,8 +24,8 @@ namespace EddyViscosityLib
         /// <summary>
         /// Конструктор 
         /// </summary>
-        public EddyViscosity_Derek_G_Goring_and_K_1997(ETurbViscType eTurbViscType, BEddyViscosityParam p)
-            : base(eTurbViscType, p)
+        public EddyViscosity_Derek_G_Goring_and_K_1997(ETurbViscType eTurbViscType, BEddyViscosityParam p, TypeTask tt)
+            : base(eTurbViscType, p, tt)
         {
         }
         public override void SetTask(IMesh mesh, IAlgebra algebra, IMeshWrapper wMesh = null)

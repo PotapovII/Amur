@@ -86,8 +86,8 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sm_SsaveContur = new System.Windows.Forms.ToolStripMenuItem();
@@ -145,6 +145,8 @@
             this.tsb_GenerWorkFile2D = new System.Windows.Forms.ToolStripButton();
             this.tb_CrossLine = new System.Windows.Forms.ToolStripButton();
             this.tb_DelCrossLine = new System.Windows.Forms.ToolStripButton();
+            this.tbsLoadCrossLine = new System.Windows.Forms.ToolStripButton();
+            this.tbsSaveCrossLine = new System.Windows.Forms.ToolStripButton();
             this.tsb_GenerWorkFile1D = new System.Windows.Forms.ToolStripButton();
             this.panel1.SuspendLayout();
             this.tabControlState.SuspendLayout();
@@ -169,7 +171,7 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Controls.Add(this.tabControlState);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(879, 0);
+            this.panel1.Location = new System.Drawing.Point(948, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(301, 744);
             this.panel1.TabIndex = 86;
@@ -323,7 +325,7 @@
             this.tpCreateMesh.Controls.Add(this.panel2);
             this.tpCreateMesh.Location = new System.Drawing.Point(4, 29);
             this.tpCreateMesh.Name = "tpCreateMesh";
-            this.tpCreateMesh.Size = new System.Drawing.Size(285, 635);
+            this.tpCreateMesh.Size = new System.Drawing.Size(285, 707);
             this.tpCreateMesh.TabIndex = 1;
             this.tpCreateMesh.Text = "Сетка";
             // 
@@ -698,7 +700,7 @@
             this.tbMessage});
             this.statusPanel.Location = new System.Drawing.Point(0, 718);
             this.statusPanel.Name = "statusPanel";
-            this.statusPanel.Size = new System.Drawing.Size(879, 26);
+            this.statusPanel.Size = new System.Drawing.Size(948, 26);
             this.statusPanel.TabIndex = 90;
             this.statusPanel.Text = "statusStrip1";
             // 
@@ -756,11 +758,13 @@
             this.toolStripSeparator14,
             this.tb_CrossLine,
             this.tb_DelCrossLine,
+            this.tbsLoadCrossLine,
+            this.tbsSaveCrossLine,
             this.toolStripSeparator13,
             this.tsb_GenerWorkFile1D});
             this.toolStrip1.Location = new System.Drawing.Point(0, 29);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(879, 31);
+            this.toolStrip1.Size = new System.Drawing.Size(948, 31);
             this.toolStrip1.TabIndex = 91;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -824,15 +828,15 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 31);
             // 
-            // toolStripSeparator13
-            // 
-            this.toolStripSeparator13.Name = "toolStripSeparator13";
-            this.toolStripSeparator13.Size = new System.Drawing.Size(6, 31);
-            // 
             // toolStripSeparator14
             // 
             this.toolStripSeparator14.Name = "toolStripSeparator14";
             this.toolStripSeparator14.Size = new System.Drawing.Size(6, 31);
+            // 
+            // toolStripSeparator13
+            // 
+            this.toolStripSeparator13.Name = "toolStripSeparator13";
+            this.toolStripSeparator13.Size = new System.Drawing.Size(6, 31);
             // 
             // menuStrip1
             // 
@@ -844,7 +848,7 @@
             this.помошьToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(879, 29);
+            this.menuStrip1.Size = new System.Drawing.Size(948, 29);
             this.menuStrip1.TabIndex = 92;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -1075,7 +1079,7 @@
             this.gdI_EditControlClouds1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.gdI_EditControlClouds1.Location = new System.Drawing.Point(12, 61);
             this.gdI_EditControlClouds1.Name = "gdI_EditControlClouds1";
-            this.gdI_EditControlClouds1.Size = new System.Drawing.Size(855, 654);
+            this.gdI_EditControlClouds1.Size = new System.Drawing.Size(924, 654);
             this.gdI_EditControlClouds1.TabIndex = 0;
             // 
             // tsb_SsaveContur
@@ -1326,7 +1330,7 @@
             this.tb_CrossLine.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tb_CrossLine.Name = "tb_CrossLine";
             this.tb_CrossLine.Size = new System.Drawing.Size(28, 28);
-            this.tb_CrossLine.Text = "toolStripButton7";
+            this.tb_CrossLine.Text = "Создание створа";
             this.tb_CrossLine.Click += new System.EventHandler(this.tb_CrossLine_Click);
             // 
             // tb_DelCrossLine
@@ -1336,13 +1340,33 @@
             this.tb_DelCrossLine.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tb_DelCrossLine.Name = "tb_DelCrossLine";
             this.tb_DelCrossLine.Size = new System.Drawing.Size(28, 28);
-            this.tb_DelCrossLine.Text = "toolStripButton5";
+            this.tb_DelCrossLine.Text = "Удаление створа";
             this.tb_DelCrossLine.Click += new System.EventHandler(this.tb_DelCrossLine_Click);
+            // 
+            // tbsLoadCrossLine
+            // 
+            this.tbsLoadCrossLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tbsLoadCrossLine.Image = global::RiverDB.Properties.Resources.LoadCrossLineB;
+            this.tbsLoadCrossLine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tbsLoadCrossLine.Name = "tbsLoadCrossLine";
+            this.tbsLoadCrossLine.Size = new System.Drawing.Size(28, 28);
+            this.tbsLoadCrossLine.Text = "Загрузка створа";
+            this.tbsLoadCrossLine.Click += new System.EventHandler(this.tbsLoadCrossLine_Click);
+            // 
+            // tbsSaveCrossLine
+            // 
+            this.tbsSaveCrossLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tbsSaveCrossLine.Image = global::RiverDB.Properties.Resources.SaveCrossLineB;
+            this.tbsSaveCrossLine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tbsSaveCrossLine.Name = "tbsSaveCrossLine";
+            this.tbsSaveCrossLine.Size = new System.Drawing.Size(28, 28);
+            this.tbsSaveCrossLine.Text = "Сохранение створа";
+            this.tbsSaveCrossLine.Click += new System.EventHandler(this.tbsSaveCrossLine_Click);
             // 
             // tsb_GenerWorkFile1D
             // 
             this.tsb_GenerWorkFile1D.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsb_GenerWorkFile1D.Image = global::RiverDB.Properties.Resources.АмурСтвор;
+            this.tsb_GenerWorkFile1D.Image = global::RiverDB.Properties.Resources.АмурСтвор1;
             this.tsb_GenerWorkFile1D.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsb_GenerWorkFile1D.Name = "tsb_GenerWorkFile1D";
             this.tsb_GenerWorkFile1D.Size = new System.Drawing.Size(28, 28);
@@ -1353,7 +1377,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1180, 744);
+            this.ClientSize = new System.Drawing.Size(1249, 744);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusPanel);
             this.Controls.Add(this.menuStrip1);
@@ -1507,5 +1531,7 @@
         private System.Windows.Forms.ToolStripButton tsb_GenerWorkFile1D;
         private System.Windows.Forms.ToolStripButton tb_CrossLine;
         private System.Windows.Forms.ToolStripButton tb_DelCrossLine;
+        private System.Windows.Forms.ToolStripButton tbsLoadCrossLine;
+        private System.Windows.Forms.ToolStripButton tbsSaveCrossLine;
     }
 }

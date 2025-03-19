@@ -146,7 +146,7 @@ namespace BLLib
         /// <param name="theta">Параметр схемы по времени</param>
         /// <param name="dtime">шаг по времени</param>
         /// <param name="isAvalanche">флаг использования лавинной модели</param>
-        public override void SetTask(IMesh mesh, double[] Zeta0, IBoundaryConditions BConditions)
+        public override void SetTask(IMesh mesh, double[] Zeta0, double[] Roughness, IBoundaryConditions BConditions)
         {
             double tanphi = SPhysics.PHYS.tanphi;
             try
@@ -198,7 +198,7 @@ namespace BLLib
                     fvMesh.AreaElems[eID].InitElement();
 
                 #region подавление base.SetTask ABedLoadFEMTask2D (дабы не выделять память дважды)
-                BaseSetTask(mesh, Zeta0, BConditions);
+                BaseSetTask(mesh, Zeta0, Roughness, BConditions);
 
                 algebra = new SparseAlgebraCG((uint)mesh.CountKnots);
                 Ralgebra = algebra.Clone();

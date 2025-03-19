@@ -39,8 +39,8 @@ namespace EddyViscosityLib
         /// локальная матрица часть СЛАУ
         /// </summary>
         private double[][] RMatrix = null;
-        public EddyViscosity_nSA_lTri(ETurbViscType eTurbViscType, BEddyViscosityParam p)
-            : base(eTurbViscType, p.NLine)
+        public EddyViscosity_nSA_lTri(ETurbViscType eTurbViscType, BEddyViscosityParam p, TypeTask tt)
+            : base(eTurbViscType, tt, p.NLine)
         {
             cs = 1;
         }

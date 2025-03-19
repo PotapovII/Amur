@@ -53,6 +53,7 @@
     <Compile Include="BEMTasks\Order0\PoissonBEMTask.cs" />
     <Compile Include="BEMTasks\Order0\LaplaceBEM.cs" />
     <Compile Include="BoundLabel.cs" />
+    <Compile Include="FEMTasks\Reynolds\ReynoldsVortexStream2XDTri.cs" />
     <Compile Include="СontinuumMechanics.cs" />
     <Compile Include="FEComplexTask\AComplexFEMTask.cs" />
     <Compile Include="FEComplexTask\ATriFEMTask.cs" />

@@ -248,7 +248,6 @@ namespace MeshAdapterLib
             }
         }
 
-
         public static void GetRectangleTriMesh_XY(ref ComplecsMesh mesh, int Nx, int Ny, double dx, double dy)
         {
             mesh = new ComplecsMesh();
@@ -344,6 +343,122 @@ namespace MeshAdapterLib
             }
         }
 
+        public static void GetRectangleTriMesh_XY(ref IMesh mesh, int Nx, int Ny, double L, double H)
+        {
+            ComplecsMesh cmesh = null;
+            double dx = L / (Nx - 1);
+            double dy = H / (Ny - 1);
+            GetRectangleTriMesh_XY(ref cmesh, Nx, Ny, dx, dy);
+            mesh = cmesh;
+        }
 
+        public static void GetRectangleTriMesh(ref TriMesh mesh, int Nx, int Ny, double L, double H, int flag = 0)
+        {
+            double dx = L / (Nx - 1);
+            double dy = H / (Ny - 1);
+            GetRectangleTriMesh(ref mesh, dx, dy, Nx, Ny, flag);
+        }
+
+        public static void GetRectangleTriMesh(ref TriMesh mesh, double dx, double dy, int Nx, int Ny, int flag = 0)
+        {
+            mesh = new TriMesh();
+
+            int counter = 2 * (Nx - 1) + 2 * (Ny - 1);
+            int CountNodes = Nx * Ny;
+            int CountElems = 2 * (Nx - 1) * (Ny - 1);
+
+            MEM.Alloc(CountElems, ref mesh.AreaElems, "mesh.AreaElems");
+
+            MEM.Alloc(counter, ref mesh.BoundElems, "mesh.BoundElems");
+            MEM.Alloc(counter, ref mesh.BoundElementsMark, "mesh.BoundElementsMark");
+
+            MEM.Alloc(counter, ref mesh.BoundKnots, "mesh.BoundKnots");
+            MEM.Alloc(counter, ref mesh.BoundKnotsMark, "mesh.BoundKnotsMark");
+
+            MEM.Alloc(CountNodes, ref mesh.CoordsX, "mesh.CoordsX");
+            MEM.Alloc(CountNodes, ref mesh.CoordsY, "mesh.CoordsY");
+
+            uint[,] map = new uint[Nx, Ny];
+
+
+            uint k = 0;
+            for (uint i = 0; i < Nx; i++)
+            {
+                double xm = i * dx;
+                for (int j = 0; j < Ny; j++)
+                {
+                    double ym = dy * j;
+                    mesh.CoordsX[k] = xm;
+                    mesh.CoordsY[k] = ym;
+                    map[i, j] = k++;
+                }
+            }
+
+            int elem = 0;
+            for (int i = 0; i < Nx - 1; i++)
+            {
+                for (int j = 0; j < Ny - 1; j++)
+                {
+                    mesh.AreaElems[elem][0] = map[i, j];
+                    mesh.AreaElems[elem][1] = map[i + 1, j];
+                    mesh.AreaElems[elem][2] = map[i + 1, j + 1];
+                    elem++;
+                    mesh.AreaElems[elem][0] = map[i + 1, j + 1];
+                    mesh.AreaElems[elem][1] = map[i, j + 1];
+                    mesh.AreaElems[elem][2] = map[i, j];
+                    elem++;
+                }
+            }
+
+            int[] mask0 = { 0, 1, 2, 3 };
+            int[] mask1 = { 1, 2, 3, 0 };
+            int[] mask = null;
+            if (flag == 0)
+                mask = mask0;
+            else
+                mask = mask1;
+
+            k = 0;
+            // низ
+            for (int i = 0; i < Ny - 1; i++)
+            {
+                mesh.BoundElems[k][0] = map[Nx - 1, i];
+                mesh.BoundElems[k][1] = map[Nx - 1, i + 1];
+                mesh.BoundElementsMark[k] = mask[0];
+                // задана функция
+                mesh.BoundKnotsMark[k] = mask[0];
+                mesh.BoundKnots[k++] = (int)map[Nx - 1, i];
+            }
+            // правая сторона
+            for (int i = 0; i < Nx - 1; i++)
+            {
+                mesh.BoundElems[k][0] = map[Nx - 1 - i, Ny - 1];
+                mesh.BoundElems[k][1] = map[Nx - 2 - i, Ny - 1];
+                mesh.BoundElementsMark[k] = mask[1];
+                // задана производная
+                mesh.BoundKnotsMark[k] = mask[1];
+                mesh.BoundKnots[k++] = (int)map[Nx - 1 - i, Ny - 1];
+            }
+            // верх
+            for (int i = 0; i < Ny - 1; i++)
+            {
+                mesh.BoundElems[k][0] = map[0, Ny - i - 1];
+                mesh.BoundElems[k][1] = map[0, Ny - i - 2];
+                mesh.BoundElementsMark[k] = mask[2];
+                // задана производная
+                mesh.BoundKnotsMark[k] = mask[2];
+                mesh.BoundKnots[k++] = (int)map[0, Ny - i - 1];
+            }
+            // левая сторона
+            for (int i = 0; i < Nx - 1; i++)
+            {
+                mesh.BoundElems[k][0] = map[i, 0];
+                mesh.BoundElems[k][1] = map[i + 1, 0];
+                mesh.BoundElementsMark[k] = mask[3];
+                // задана функция
+                mesh.BoundKnotsMark[k] = mask[3];
+                mesh.BoundKnots[k++] = (int)map[i, 0];
+            }
+        }
     }
 }

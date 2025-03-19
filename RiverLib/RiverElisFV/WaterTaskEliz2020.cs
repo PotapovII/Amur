@@ -277,6 +277,14 @@ namespace RiverLib
             SetModels();
         }
         /// <summary>
+        /// Получить шероховатость дна
+        /// </summary>
+        /// <param name="zeta"></param>
+        public void GetRoughness(ref double[] Roughness)
+        {
+            Roughness = null;
+        }
+        /// <summary>
         ///  Настройка решателя, через делегаты , дабы не порождать
         ///  больших иерархий наследования и переопределения
         /// </summary>

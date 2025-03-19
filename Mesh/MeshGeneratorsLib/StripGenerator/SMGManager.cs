@@ -66,7 +66,7 @@ namespace MeshGeneratorsLib.StripGenerator
             try
             {
                 for (StripGenMeshType f = StripGenMeshType.StripMeshGenerator_0;
-                    f < StripGenMeshType.StripMeshGenerator_3; f++)
+                    f <= StripGenMeshType.StripMeshGenerator_3; f++)
                 {
                     FieldInfo fi = f.GetType().GetField(f.ToString());
                     DescriptionAttribute[] attributes =

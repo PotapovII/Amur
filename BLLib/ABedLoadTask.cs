@@ -132,6 +132,11 @@ namespace BLLib
         /// массив придонного давления
         /// </summary>
         public double[] P = null;
+        /// <summary>
+        /// шероховатость дна
+        /// </summary>
+        public double[] Roughness = null;
+
         #endregion
         /// <summary>
         /// Граничные условия задачи
@@ -204,12 +209,17 @@ namespace BLLib
         /// </summary>
         /// <param name="mesh">Сетка расчетной области</param>
         /// <param name="Zeta0">начальный уровень дна</param>
-        public virtual void SetTask(IMesh mesh, double[] Zeta0, IBoundaryConditions BConditions)
+        /// <param name="Roughness">шероховатость дна</param>
+        /// <param name="BConditions">граничные условия, 
+        /// количество в обзем случае определяется через маркеры 
+        /// границ сетеи</param>
+        public virtual void SetTask(IMesh mesh, double[] Zeta0, double[] Roughness, IBoundaryConditions BConditions)
         {
             taskReady = false;
             this.mesh = mesh;
             this.Zeta0 = Zeta0;
             this.Count = mesh.CountKnots;
+            this.Roughness = Roughness;
             this.BConditions = BConditions;
         }
         /// <summary>
