@@ -151,7 +151,7 @@ namespace GeometryLib
         {
             return Value;
         }
-        public void GetFunctionData(ref double[] x, ref double[] y, int Count = 0)
+        public void GetFunctionData(ref double[] x, ref double[] y, int Count = 10, bool revers = false)
         {
             Count = 2;
             MEM.Alloc(Count, ref x);

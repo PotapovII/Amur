@@ -63,7 +63,9 @@
             double WaterLevel = H;
             double PFE = double.Parse(textBoxDiam.Text, MEM.formatter);
             diametrFE = Math.Min(L, H) / 100 * PFE;
-            bool AxisOfSymmetry = false;
+            
+            CrossStripMeshOption op = new CrossStripMeshOption();
+            op.channelSectionForms = SСhannelForms.trapezoid;
             switch (lb_AreaGeom.SelectedIndex)
             {
                 case 0:
@@ -71,8 +73,11 @@
                         double[] xx = { 0, L };
                         double[] yy = { WL - HL, WL - HR };
                         int Ny = (int)(L / diametrFE) + 1;
-                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(AxisOfSymmetry, SСhannelForms.trapezoid);
-                        mesh = sg.CreateMesh(ref WetBed, WaterLevel, xx, yy, Ny);
+                        
+                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(op);
+                        int[][] riverGates = null;
+                        mesh = sg.CreateMesh(ref WetBed, ref riverGates, WaterLevel, xx, yy, Ny);
+
                     }
                     break;
                 case 1:
@@ -80,8 +85,10 @@
                         double[] xx = { 0, L / 3, 2 * L / 3, L };
                         double[] yy = { WL - HL, WL - 0.6 * HL, WL - 1.2 * HL, WL - HR };
                         int Ny = (int)(L / diametrFE) + 1;
-                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(AxisOfSymmetry, SСhannelForms.trapezoid);
-                        mesh = sg.CreateMesh(ref WetBed, WaterLevel, xx, yy, Ny);
+                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(op);
+                        int[][] riverGates = null;
+                        mesh = sg.CreateMesh(ref WetBed, ref riverGates, WaterLevel, xx, yy, Ny);
+
                     }
                     break;
                 case 2:
@@ -89,8 +96,9 @@
                         double[] xx = { 0, L / 3, 2 * L / 3, L };
                         double[] yy = { WL - HL, WL -  1.5*HL, WL - 0.6 * HR, WL - HR };
                         int Ny = (int)(L / diametrFE) + 1;
-                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(AxisOfSymmetry, SСhannelForms.trapezoid);
-                        mesh = sg.CreateMesh(ref WetBed, WaterLevel, xx, yy, Ny);
+                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(op);
+                        int[][] riverGates = null;
+                        mesh = sg.CreateMesh(ref WetBed, ref riverGates, WaterLevel, xx, yy, Ny);
                     }
                     break;
                 case 3:
@@ -98,8 +106,9 @@
                         double[] xx = { 0, L / 3, 2 * L / 3, L };
                         double[] yy = { -WL, WL - 1.5 * HL, WL - 0.6 * HR, -WL };
                         int Ny = (int)(L / diametrFE) + 1;
-                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(AxisOfSymmetry, SСhannelForms.trapezoid);
-                        mesh = sg.CreateMesh(ref WetBed, WaterLevel, xx, yy, Ny);
+                        IStripMeshGenerator sg = new CrossStripMeshGeneratorTri(op);
+                        int[][] riverGates = null;
+                        mesh = sg.CreateMesh(ref WetBed, ref riverGates, WaterLevel, xx, yy, Ny);
                     }
                     break;
             }

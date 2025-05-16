@@ -135,10 +135,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BLLib\BLLib.csproj">
-      <Project>{f8ce2ed0-9994-4b88-93d1-eda182069caa}</Project>
-      <Name>BLLib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ChannelProcessLib\ChannelProcessLib.csproj">
       <Project>{c9c3ac13-cacb-40ee-a8dd-673742ef765f}</Project>
       <Name>ChannelProcessLib</Name>

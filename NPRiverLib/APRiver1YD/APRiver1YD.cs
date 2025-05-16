@@ -59,6 +59,14 @@ namespace NPRiverLib.APRiver1YD
         /// </summary>
         public double[] eddyViscosity;
         /// <summary>
+        /// Концентрация взвешенных наносов
+        /// </summary>
+        protected double[] concentration = null;
+        /// <summary>
+        /// По узловой расход взвешенных наносов
+        /// </summary>
+        protected double[] Gcon = null;
+        /// <summary>
         /// Поле напряжений T_xz
         /// </summary>
         public double[] TauZ;
@@ -70,15 +78,24 @@ namespace NPRiverLib.APRiver1YD
         /// Поле напряжений - модуль
         /// </summary>
         public double[] tau;
+        /// <summary>
+        /// Поле концентрации на донно - береговой поверхности
+        /// </summary>
+        public double[] concentBed;
+        /// <summary>
+        /// сечения створа
+        /// </summary>
+        protected int[][] riverGates;
+        public void SetRiverGates(int[][] riverGates)=>this.riverGates = riverGates;
         #endregion
 
         #region Локальные переменные
         /// <summary>
-        /// координаты дна по оси х
+        /// координаты Х узлов донно - береговой поверхности
         /// </summary>
         protected double[] bottom_x;
         /// <summary>
-        /// координаты дна по оси у
+        /// координаты Y узлов донно - береговой поверхности
         /// </summary>
         protected double[] bottom_y;
         /// <summary>
@@ -101,6 +118,9 @@ namespace NPRiverLib.APRiver1YD
         /// текущий уровень свободной поверхности
         /// </summary>
         protected double waterLevel;
+
+        protected double[] xCon = null;
+        protected double[] Con = null;
         #endregion
 
         #region Инструменты и функции
@@ -121,10 +141,17 @@ namespace NPRiverLib.APRiver1YD
         /// </summary>
         protected IDigFunction FlowRate;
         /// <summary>
-        /// шероховатость дна
+        /// Шероховатость дна
         /// </summary>
         protected IDigFunction Roughness;
+        /// <summary>
+        /// Шероховатость дна
+        /// </summary>
         protected double[] roughness;
+        /// <summary>
+        /// Шероховатость дна
+        /// </summary>
+        protected double roughness0 = 0.001;
         /// <summary>
         /// Данные о створе
         /// </summary>
@@ -290,7 +317,16 @@ namespace NPRiverLib.APRiver1YD
         /// </summary>
         /// <returns></returns>
         protected abstract bool CalkWaterLevel();
-        protected abstract double[] TausToVols(in double[] x, in double[] y);
+        /// <summary>
+        /// Расчет придонных касательных напряжений на сетке для расчета донных деформаций 
+        /// </summary>
+        /// <param name="tauBed">напряжение на дне/стенках</param>
+        protected abstract void CalkTauBed(ref double[] tauBed);
+        /// <summary>
+        /// Расчет интегрального рсхода концентрации 
+        /// </summary>
+        /// <param name="concentBed">концентрация на дне/стенках</param>
+        protected virtual void CalkGsBed(ref double[] concentBed, ref double[] gCon) { }
         #endregion
     }
 }

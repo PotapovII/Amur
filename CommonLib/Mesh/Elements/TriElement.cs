@@ -115,5 +115,32 @@ namespace CommonLib
             elementValue[1] = Values[knots.Vertex2];
             elementValue[2] = Values[knots.Vertex3];
         }
+        public new string ToString()
+        {
+            return Vertex1.ToString() + " " +
+                   Vertex2.ToString() + " " +
+                   Vertex3.ToString();
+        }
+        /// <summary>
+        /// Проверка на эквивалентнойсть
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public bool Equals(TriElement elem)
+        {
+            if(Vertex1 == elem.Vertex1 &&
+               Vertex2 == elem.Vertex2 &&
+               Vertex3 == elem.Vertex3 ) return true;
+            // сдвиг против часовой
+            if (Vertex1 == elem.Vertex3 &&
+                Vertex2 == elem.Vertex1 &&
+                Vertex3 == elem.Vertex2) return true;
+            // сдвиг по часовой
+            if (Vertex1 == elem.Vertex2 &&
+                Vertex2 == elem.Vertex3 &&
+                Vertex3 == elem.Vertex1) return true;
+            return false;
+        }
     }
 }

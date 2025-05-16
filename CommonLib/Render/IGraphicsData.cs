@@ -74,6 +74,11 @@ namespace CommonLib
         /// <param name="y"></param>
         void AddCurve(string Name, double[] x, double[] y);
         /// <summary>
+        /// Удаление кривой по имени
+        /// </summary>
+        /// <param name="Name">Название поля</param>
+        void RemoveCurve(string Name);
+        /// <summary>
         /// Получить подмножество IGraphicsData с кривыми заданного типа 
         /// в активных подгруппах
         /// </summary>

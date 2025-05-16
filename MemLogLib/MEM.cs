@@ -118,6 +118,21 @@ namespace MemLogLib
             //else
             return 1000000 * X + Y;
         }
+        /// <summary>
+        /// Реверс массива
+        /// </summary>
+        /// <typeparam name="Tp"></typeparam>
+        /// <param name="y"></param>
+        public static void Reverse<Tp>(ref Tp[] y)
+        {
+            int Count = y.Length - 1;
+            for (int i = 0; i < y.Length / 2; i++)
+            {
+                Tp ytmp = y[i];
+                y[i] = y[Count - i];
+                y[Count - i] = ytmp;
+            }
+        }
 
         /// <summary>
         /// TODO выделить в отдельный класс

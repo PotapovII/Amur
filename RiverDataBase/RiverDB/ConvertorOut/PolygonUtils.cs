@@ -27,6 +27,8 @@ namespace RiverDB.ConvertorOut
     using CommonLib;
     using CommonLib.Mesh;
     using TriangleNet.Tools;
+    using System.Linq;
+    using MemLogLib;
 
     /// <summary>
     /// Класс для вывода полигона в фломате *.poly
@@ -270,15 +272,6 @@ namespace RiverDB.ConvertorOut
                 pointsCurCount += segment.Count;
             }
         }
-
-        //public static IPolygon CreatePolygonFromMesh(MeshNet meshRiver)
-        //{
-        //    IPolygon polygon = new Polygon();
-        //    var vertexs = meshRiver.Vertices;
-        //    foreach(Vertex vertex in vertexs) 
-        //        polygon.Add(vertex);
-        //    return polygon;
-        //}
         public static IPolygon CreatePolygonFromPolygon(IPolygon cloud)
         {
             for (int s = 0; s < cloud.Segments.Count; s++)
@@ -549,19 +542,19 @@ namespace RiverDB.ConvertorOut
                 // Проход по контурам фигур
                 for (int area = 0; area < Area.Count; area++)
                 {
-                    // Запоминаем узлы контура для текущей фигуры
+                    // Список для узлов контура для текущей фигуры
                     List<Vertex> newPoints = new List<Vertex>();
-                    // Запоминаем типы границ для каждой созданной точки контра
+                    // Список для типов границ для каждой созданной точки контра
                     List<int> segs = new List<int>();
                     // текущая фигура
                     IMFigura fig = Area.Figures[area];
                     #region вершины контура
-                    //  List<IMSegment> bsegments = new List<IMSegment>();
                     // Сегменты фигуры
                     List<IMSegment> segments = fig.Segments;
                     for (int i = 0; i < segments.Count; i++)
                     {
-                        int ii = (i+1)%segments.Count;
+                        int ii = (i + 1) % segments.Count;
+                        int mi = (segments.Count + i - 1) % segments.Count;
                         // маркер границы сегмента
                         int Marker = segments[i].Marker;
                         CloudKnot knot = null;
@@ -569,26 +562,21 @@ namespace RiverDB.ConvertorOut
                         {
                             knot = (CloudKnot)segments[i].pointA.Point;
                             Vertex av = ConvertCloudKnotToVertex(ID, Marker, knot);
-                            av.attributes[1] = av.attributes[0] - Hs;
+                            av.attributes[AtrCK.idx_Hs] = av.attributes[AtrCK.idx_H] - Hs;
+                            av.attributes[AtrCK.idx_Ice] = fig.Ice;
+                            av.attributes[AtrCK.idx_ks] = fig.ks;
                             newPoints.Add(av); 
-
                             ID++;
                             segs.Add(Marker);
-                            // узлы берега накрывают узлы створа
-                            if (segments[i].Marker == 1 && segments[ii].Marker > 1)
-                            {
-                                knot = (CloudKnot)segments[i].pointB.Point;
-                                Vertex bv = ConvertCloudKnotToVertex(ID, Marker, knot);
-                                bv.attributes[1] = bv.attributes[0] - Hs;
-                                newPoints.Add(bv);
-                                segs.Add(Marker);
-                                ID++;
-                            }
                         }
                         else
                         {
                             CloudKnot pA = (CloudKnot)segments[i].pointA.Point;
                             CloudKnot pB = (CloudKnot)segments[i].pointB.Point;
+                            pA.Attributes[AtrCK.idx_Ice] = fig.Ice;
+                            pA.Attributes[AtrCK.idx_ks] = fig.ks;
+                            pB.Attributes[AtrCK.idx_Ice] = fig.Ice;
+                            pB.Attributes[AtrCK.idx_ks] = fig.ks;
                             int ida = area == 0 ? 1 : -1;
                             // Информация о сегменте 
                             SegmentInfo si = new SegmentInfo(ida, Marker, pA, pB);
@@ -596,23 +584,27 @@ namespace RiverDB.ConvertorOut
                             double ds = 1.0 / (segments[i].CountKnots - 1);
                             int startPoint = 0;
                             int segmentsCountKnots;
+
                             if (segments[i].Marker > 1)
                             {
                                 segmentsCountKnots = segments[i].CountKnots - 1;
                                 startPoint = 1;
                             }
                             else
-                            if (segments[i].Marker == 1 && segments[ii].Marker > 1)
-                                segmentsCountKnots = segments[i].CountKnots;
-                            else
                             {
-                                segmentsCountKnots = segments[i].CountKnots - 1;
+                                if (segments[i].Marker == 1 && segments[ii].Marker > 1)
+                                    segmentsCountKnots = segments[i].CountKnots;
+                                else
+                                {
+                                    segmentsCountKnots = segments[i].CountKnots - 1;
+                                }
                             }
                             for (int j = startPoint; j < segmentsCountKnots; j++)
                             {
                                 // интерполяция по берегу
                                 knot = CloudKnot.Interpolation(pA, pB, j * ds, Marker);
-                                if (Marker > 1)
+                                if (Marker > 1 || fig.FType == FigureType.FigureSubArea)
+                                // if (Marker > 1)
                                 {
                                     // интерполяция атрибутов в области
                                     if (uMmesh == null)
@@ -656,12 +648,9 @@ namespace RiverDB.ConvertorOut
                             segInfo.Add(si);
                         }
                     }
-
-
                     // добовляем вершины контура в полигон
                     foreach (var v in newPoints)
                         cloudPoints.Add(v);
-
                     // Если контур фигуоы дырка находим точку в фигуре
                     // и маркируем контур в полигоне
                     if (fig.FType == FigureType.FigureHole)
@@ -683,6 +672,30 @@ namespace RiverDB.ConvertorOut
                         cloudPoints.Add(seg);
                     }
                     #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            try
+            {
+                // Проход по контурам фигур
+                for (int area = 0; area < Area.Count; area++)
+                {
+                    IMFigura fig = Area.Figures[area];
+                    if (fig.FType == FigureType.FigureSubArea)
+                    {
+                        List<Vertex> Points = cloudPoints.Points;
+                        foreach (var v in Points)
+                        {
+                            if (fig.Contains(v.X, v.Y) == true)
+                            {
+                                v.Attributes[AtrCK.idx_ks] = fig.ks;
+                                v.Attributes[AtrCK.idx_Ice] = fig.Ice;
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -811,15 +824,7 @@ namespace RiverDB.ConvertorOut
         {
             Vertex v = new Vertex(knot.x, knot.y, Marker);
             v.ID = ID;
-#if USE_ATTRIBS
-            var attribs = new double[CountAttributes];
-            attribs[0] = knot.Attributes[0];
-            attribs[1] = knot.Attributes[1];
-            attribs[2] = knot.Attributes[2];
-            attribs[3] = knot.Attributes[3];
-            attribs[4] = knot.Attributes[4];
-            v.attributes = attribs;
-#endif
+            MEM.Copy(ref v.attributes, knot.Attributes);
             return v;
         }
         /// <summary>

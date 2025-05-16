@@ -50,7 +50,7 @@ namespace CommonLib.Geometry
     /// </summary>
     [Serializable]
     [DebuggerDisplay("ID {ID} [{X}, {Y}]")]
-    public class HPoint : IHPoint, IEquatable<HPoint>
+    public class HPoint : IHPoint, IEquatable<HPoint>, IComparable<HPoint>
     {
         /// <summary>
         /// Координата по х
@@ -198,6 +198,20 @@ namespace CommonLib.Geometry
         public static implicit operator HPoint(PointF p)
         {
             return new HPoint((float)p.X, (float)p.Y);
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double Length2(HPoint p)
+        {
+            double dx = x - p.x;
+            double dy = y - p.y;
+            return dx * dx + dy * dy;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double Length(HPoint p)
+        {
+            double dx = x - p.x;
+            double dy = y - p.y;
+            return Math.Sqrt( dx * dx + dy * dy );
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Length(double x1, double y1, double x2, double y2)
@@ -440,6 +454,7 @@ namespace CommonLib.Geometry
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual IHPoint IClone() => new HPoint(this);
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static HPoint Interpolation(HPoint A, HPoint B, double s)
         {

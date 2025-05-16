@@ -29,12 +29,12 @@ OTHER DEALINGS IN THE SOFTWARE.
 //               гидродинамических и русловых процессов
 //                      - (C) Copyright 2021 -
 //                       ALL RIGHT RESERVED
-//                        ПРОЕКТ "BLLib"
+//                        ПРОЕКТ "BedLoadLib"
 //---------------------------------------------------------------------------
 //                   разработка: Потапов И.И.
 //                          25.12.2021
 //---------------------------------------------------------------------------
-namespace CommonLib
+namespace CommonLib.BedLoad
 {
     public interface IAvalanche
     {

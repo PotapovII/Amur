@@ -87,6 +87,21 @@ namespace MeshLib
             }
         }
         /// <summary>
+        /// Удаление кривой по имени
+        /// </summary>
+        /// <param name="Name">Название поля</param>
+        public void RemoveCurve(string Name)
+        {
+            foreach (var curve in curves)
+            {
+                if (curve.Name == Name)
+                {
+                    curves.Remove(curve);
+                    break;
+                }
+            }
+        }
+        /// <summary>
         /// Очистка контейнера
         /// </summary>
         public void Clear(TypeGraphicsCurve TGraphicsCurve = TypeGraphicsCurve.TimeCurve) 

@@ -17,7 +17,6 @@ namespace RenderLib
     using System.Collections.Generic;
     using CommonLib.Areas;
     using CommonLib.Geometry;
-
     /// <summary>
     ///ОО: Компонент визуализации облачных данных и котруров границ 
     /// </summary>
@@ -628,7 +627,7 @@ namespace RenderLib
             {
                 rbCountur.Checked = false;
                 rbHole.Checked = false;
-                
+                rbSubArea.Checked = false;
             }
             else
             {
@@ -637,20 +636,22 @@ namespace RenderLib
                 {
                     rbCountur.Checked = true;
                     rbHole.Checked = false;
-                    
+                    rbSubArea.Checked = false;
                 }
                 else
                 {
-                    //if (ft == FigureType.FigureHole)
-                    //{
+                    if (ft == FigureType.FigureHole)
+                    {
                         rbCountur.Checked = false;
                         rbHole.Checked = true;
-                    //}
-                    //else
-                    //{
-                    //    rbCountur.Checked = false;
-                    //    rbHole.Checked = false;
-                    //}
+                        rbSubArea.Checked = false;
+                    }
+                    else
+                    {
+                        rbCountur.Checked = false;
+                        rbHole.Checked = false;
+                        rbSubArea.Checked = true;
+                    }
                 }
             }
         }
@@ -682,6 +683,26 @@ namespace RenderLib
             {
                 if (bm.SegmentIndex.Count > 0)
                     lbBoundary.Items.Add(bm.Name);
+            }
+        }
+        private void btUpDateFig_Click(object sender, EventArgs e)
+        {
+            // если не контур области
+            if (listBoxFig.SelectedIndex > 0)
+            {
+                FigureType ft = control.GetFType(listBoxFig.SelectedIndex);
+                if(rbHole.Checked == true && ft == FigureType.FigureHole)
+                    return;
+                // Установка типа контура
+                if (rbHole.Checked == true)
+                    control.SetFType(listBoxFig.SelectedIndex, FigureType.FigureHole);
+                if (rbSubArea.Checked == true)
+                {
+                    control.SetFType(listBoxFig.SelectedIndex, FigureType.FigureSubArea);
+                    double ice = double.Parse(tbIce.Text, MEM.formatter);
+                    double ks = double.Parse(tbKs.Text, MEM.formatter);
+                    control.SetAtributes(listBoxFig.SelectedIndex, ice, ks);
+                }
             }
         }
         /// <summary>
@@ -971,5 +992,15 @@ namespace RenderLib
             control.LoadSmLines(sl);
         }
         #endregion
+
+        private void cbIce_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbKs_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

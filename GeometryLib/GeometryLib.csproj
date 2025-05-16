@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aalgorithms\RemoveDuplicates\Duplicates.cs" />
     <Compile Include="Aalgorithms\Sorrt\ForkJoinSort.cs" />
     <Compile Include="Aalgorithms\Sorrt\SortArray.cs" />
     <Compile Include="Aalgorithms\ConvexHull.cs" />
@@ -55,10 +56,12 @@
     <Compile Include="Areas\MFigura.cs" />
     <Compile Include="Areas\MPoint.cs" />
     <Compile Include="Areas\MSegment.cs" />
+    <Compile Include="DigFunction\DigFunctionTSpline.cs" />
     <Compile Include="DigFunction\DigFunctionPolynom.cs" />
     <Compile Include="DigFunction\DigFunctionConst.cs" />
     <Compile Include="DigFunction\FunctionСhannelRose.cs" />
     <Compile Include="Fields\Unknowns\SUnknown.cs" />
+    <Compile Include="Geometry\HContour.cs" />
     <Compile Include="Geometry\CrossLine.cs" />
     <Compile Include="Geometry\HEdge.cs" />
     <Compile Include="Geometry\HSmLine.cs" />
@@ -66,6 +69,7 @@
     <Compile Include="Geometry\CloudKnotLine.cs" />
     <Compile Include="Geometry\HTriangle.cs" />
     <Compile Include="Geometry\HVoronoiCell.cs" />
+    <Compile Include="Geometry\HQuad.cs" />
     <Compile Include="Locators\LocPolygon2D.cs" />
     <Compile Include="Locators\TriMeshLocators.cs" />
     <Compile Include="Locators\LineLocator.cs" />
@@ -73,6 +77,8 @@
     <Compile Include="Points\CloudKnot.cs" />
     <Compile Include="Points\RiverNode.cs" />
     <Compile Include="Points\SKnot.cs" />
+    <Compile Include="Predicates\HPredicatesDelone.cs" />
+    <Compile Include="Predicates\IPredicatesDelone.cs" />
     <Compile Include="Vector\GEM.cs" />
     <Compile Include="Vector\Vector2.cs" />
     <Compile Include="Vector\Vector4.cs" />

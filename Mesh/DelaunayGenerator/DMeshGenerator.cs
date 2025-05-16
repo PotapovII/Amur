@@ -164,6 +164,7 @@ namespace DelaunayGenerator
                 mesh.Print();
             return mesh; 
         }
+
         /// <summary>
         /// Генерация
         /// </summary>

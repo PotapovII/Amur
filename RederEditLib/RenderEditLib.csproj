@@ -105,10 +105,6 @@
       <Project>{a2180524-2fa6-42b8-92ff-e66a39a79177}</Project>
       <Name>HydroTaskLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\_TestProjects\TestMeshGeneratoe\TestMeshGeneratoe.csproj">
-      <Project>{2f39b4e3-9bc1-4267-810d-ed53e9821644}</Project>
-      <Name>TestMeshGeneratoe</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="GDI_EditMeshControl.resx">

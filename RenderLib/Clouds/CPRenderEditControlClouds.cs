@@ -590,23 +590,25 @@ namespace RenderLib
                     PointF c = new PointF((float)e.X, (float)e.Y);
                     zoom.ScreenToWorld(ref c);
                     CloudKnot p = null;
+                    
+
                     switch (editRenderOptions.editState)
                     {
                         case EditState.NoState:
                             break;
                         case EditState.Contur:
-                            p = new CloudKnot(c.X, c.Y, new double[5], 1);
+                            p = new CloudKnot(c.X, c.Y, AtrCK.CreateZerro(), 1);
                             conturs.Add(p);
                             break;
                         case EditState.BeLine:
                             if (start == null)
                             {
-                                start = new CloudKnot(c.X, c.Y, new double[5], 1);
+                                start = new CloudKnot(c.X, c.Y, AtrCK.CreateZerro(), 1);
                                 p = start;
                             }
                             else
                             {
-                                CloudKnot end = new CloudKnot(c.X, c.Y, new double[5], 1);
+                                CloudKnot end = new CloudKnot(c.X, c.Y, AtrCK.CreateZerro(), 1);
                                 sLines.Add(new HSmLine(start, end));
                                 p = end;
                                 start = null;
@@ -617,12 +619,12 @@ namespace RenderLib
                         case EditState.CrossLine:
                             if (start == null)
                             {
-                                start = new CloudKnot(c.X, c.Y, new double[5], 1);
+                                start = new CloudKnot(c.X, c.Y, AtrCK.CreateZerro(), 1);
                                 p = start;
                             }
                             else
                             {
-                                CloudKnot end = new CloudKnot(c.X, c.Y, new double[5], 1);
+                                CloudKnot end = new CloudKnot(c.X, c.Y, AtrCK.CreateZerro(), 1);
                                 _crossLine = new CloudKnotLine(start, end);
 
                                 p = end;
@@ -851,6 +853,15 @@ namespace RenderLib
         {
             IMFigura fig = Area[index];
             fig.FType = ft;
+        }
+        /// <summary>
+        /// Установка атрибутов контура
+        /// </summary>
+        public void SetAtributes(int index, double ice, double ks)
+        {
+            IMFigura fig = Area[index];
+            fig.ks = ks;
+            fig.Ice = ice;
         }
         /// <summary>
         /// Удалить фигуры

@@ -14,11 +14,7 @@ namespace MeshLib
 
     using CommonLib;
     using GeometryLib;
-    using CommonLib.Geometry;
-    using GeometryLib.Locators;
     using CommonLib.Function;
-    using System.Xml.Linq;
-
     /// <summary>
     /// ОО: Точка сохранения задачи для визуализации ее полей
     /// </summary>
@@ -148,7 +144,15 @@ namespace MeshLib
             gdata.Add(curve);
         }
         /// <summary>
-        /// Добавить кривую в контейнер кривых IGraphicsData 
+        /// Удаление кривой по имени
+        /// </summary>
+        /// <param name="Name">Название поля</param>
+        public void RemoveCurve(string Name)
+        {
+            gdata.RemoveCurve(Name);
+        }
+        /// <summary>
+        /// Очистить кривые по фильтру
         /// </summary>
         /// <param name="curve"></param>
         public void ClearСurve(TypeGraphicsCurve TGraphicsCurve = TypeGraphicsCurve.TimeCurve)

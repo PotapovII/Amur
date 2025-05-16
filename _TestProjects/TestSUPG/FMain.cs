@@ -222,24 +222,29 @@
             double GR = 0;
             double WL = 0;
             CreateGeometry(ref WL);
-            if( listBoxArea.SelectedIndex == 1 )
+            CrossStripMeshOption op = new CrossStripMeshOption();
+            if ( listBoxArea.SelectedIndex == 1 )
             {
                 if(listBoxTypeMesh.SelectedIndex == 0)
                 {
-                    bool AxisOfSymmetry = false;
-                    CrossStripMeshGenerator sg = new CrossStripMeshGenerator(AxisOfSymmetry, TypeMesh.MixMesh);
-                    mesh = (TriMesh)((ComplecsMesh)sg.CreateMesh(ref GR, WL, x, y));
+                    
+                    op.typeMesh = TypeMesh.MixMesh;
+                    CrossStripMeshGenerator sg = new CrossStripMeshGenerator(op);
+                    int[][] riverGates = null;
+                    mesh = (TriMesh)((ComplecsMesh)sg.CreateMesh(ref GR, ref riverGates, WL, x, y));
                 }
                 else
                 {
-                    HStripMeshGeneratorTri sg = new HStripMeshGeneratorTri();
-                    mesh = (TriMesh)sg.CreateMesh(ref GR, WL, x, y);
+                    HStripMeshGeneratorTri sg = new HStripMeshGeneratorTri(op);
+                    int[][] riverGates = null;
+                    mesh = (TriMesh)sg.CreateMesh(ref GR, ref riverGates, WL, x, y);
                 }
             }
             else
             {
-                HStripMeshGeneratorTri sg = new HStripMeshGeneratorTri();
-                mesh = (TriMesh)sg.CreateMesh(ref GR, WL, x, y);
+                HStripMeshGeneratorTri sg = new HStripMeshGeneratorTri(op);
+                int[][] riverGates = null;
+                mesh = (TriMesh)sg.CreateMesh(ref GR, ref riverGates, WL, x, y);
             }
             ShowMesh();
         }

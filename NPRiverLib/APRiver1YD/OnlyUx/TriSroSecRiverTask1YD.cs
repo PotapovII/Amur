@@ -153,7 +153,7 @@ namespace NPRiverLib.APRiver1YD
                 SolveVelosity();
                 flagErr++;
                 // расчет  придонных касательных напряжений на дне
-                tau = TausToVols(bottom_x, bottom_y);
+                CalkTauBed(ref tau);
                 flagErr++;
                 time += dtime;
             }
@@ -289,7 +289,7 @@ namespace NPRiverLib.APRiver1YD
             this.bottom_x = fx;
             this.bottom_y = fy;
             // генерация сетки
-            mesh = meshGenerator.CreateMesh(ref WetBed, waterLevel, bottom_x, bottom_y);
+            mesh = meshGenerator.CreateMesh(ref WetBed, ref riverGates, waterLevel, bottom_x, bottom_y);
             //mesh = sg.CreateMesh(ref WetBed, waterLevel, bottom_x, bottom_y);
             IPointsA.SetInt(1 + (int)mesh.typeRangeMesh, TypeFunForm.Form_2D_Triangle_L1);
             IPointsB.SetInt(1 + (int)mesh.typeRangeMesh, TypeFunForm.Form_2D_Rectangle_L1);
@@ -370,10 +370,10 @@ namespace NPRiverLib.APRiver1YD
         /// </summary>
         public void ReCalkRoughness()
         {
-            Logger.Instance.Info("шероховатость дна : " + roughness.ToString("F6"));
+            Logger.Instance.Info("шероховатость дна : " + roughness0.ToString("F6"));
             // вычисление приведенной вязкости и согласованной скорости
-            roughness = DMath.RootBisectionMethod(DFRateRoughness, 0.00001, 0.01);
-            Logger.Instance.Info("согласованная шероховатость дна : " + roughness.ToString("F6"));
+            roughness0 = DMath.RootBisectionMethod(DFRateRoughness, 0.00001, 0.01);
+            Logger.Instance.Info("согласованная шероховатость дна : " + roughness0.ToString("F6"));
             FlagStartRoughness = true;
         }
         /// <summary>
@@ -381,10 +381,10 @@ namespace NPRiverLib.APRiver1YD
         /// </summary>
         public void ReCalkRoughnessWRodi()
         {
-            Logger.Instance.Info("шероховатость дна : " + roughness.ToString("F6"));
+            Logger.Instance.Info("шероховатость дна : " + roughness0.ToString("F6"));
             // вычисление приведенной вязкости и согласованной скорости
-            roughness = DMath.RootBisectionMethod(DFRateRoughnessWRodi, 0.000001, 0.01);
-            Logger.Instance.Info("согласованная шероховатость дна : " + roughness.ToString("F6"));
+            roughness0 = DMath.RootBisectionMethod(DFRateRoughnessWRodi, 0.000001, 0.01);
+            Logger.Instance.Info("согласованная шероховатость дна : " + roughness0.ToString("F6"));
             FlagStartRoughness = true;
         }
         /// <summary>
@@ -392,13 +392,13 @@ namespace NPRiverLib.APRiver1YD
         /// </summary>
         public void ReCalkRoughnessDiff()
         {
-            Logger.Instance.Info("шероховатость дна : " + roughness.ToString("F6"));
+            Logger.Instance.Info("шероховатость дна : " + roughness0.ToString("F6"));
             /// </summary>
             SetMu();
             SolveU();
             // вычисление приведенной вязкости и согласованной скорости
-            roughness = DMath.RootBisectionMethod(DFRateRoughnessDiff, 0.5, 5);
-            Logger.Instance.Info("согласованная шероховатость дна : " + roughness.ToString("F6"));
+            roughness0 = DMath.RootBisectionMethod(DFRateRoughnessDiff, 0.5, 5);
+            Logger.Instance.Info("согласованная шероховатость дна : " + roughness0.ToString("F6"));
             FlagStartRoughness = true;
         }
         /// <summary>
@@ -422,7 +422,7 @@ namespace NPRiverLib.APRiver1YD
         /// <returns></returns>
         public double DFRateRoughness(double Roughness)
         {
-            roughness = Roughness;
+            roughness0 = Roughness;
             SetMuRoughness();
             SolveU();
             double Qrfr = RiverFlowRate();
@@ -436,7 +436,7 @@ namespace NPRiverLib.APRiver1YD
         /// <returns></returns>
         public double DFRateRoughnessWRodi(double Roughness)
         {
-            roughness = Roughness;
+            roughness0 = Roughness;
             SetMuRoughnessWRodi();
             SolveU();
             double Qrfr = RiverFlowRate();
@@ -450,7 +450,7 @@ namespace NPRiverLib.APRiver1YD
         /// <returns></returns>
         public double DFRateRoughnessDiff(double Roughness)
         {
-            roughness = Roughness;
+            roughness0 = Roughness;
             SetMuDiff();
             SolveU();
             double Qrfr = RiverFlowRate();
@@ -465,7 +465,7 @@ namespace NPRiverLib.APRiver1YD
             MEM.MemSet(eddyViscosity, Mu);
         }
         /// <summary>
-        /// Установка вязкости при mu = mu(roughness)
+        /// Установка вязкости при mu = mu(roughness0)
         /// </summary>
         public void SetMuRoughness()
         {
@@ -489,11 +489,11 @@ namespace NPRiverLib.APRiver1YD
                 if (H <= MEM.Error10 || MEM.Equals(xi, 1))
                     eddyViscosity[node] = mu0;
                 else
-                    eddyViscosity[node] = rho_w * kappa_w * uStar * (1 - xi) * (roughness + z) + mu0;
+                    eddyViscosity[node] = rho_w * kappa_w * uStar * (1 - xi) * (roughness0 + z) + mu0;
             }
         }
         /// <summary>
-        /// Установка вязкости при mu = mu(roughness)
+        /// Установка вязкости при mu = mu(roughness0)
         /// </summary>
         public void SetMuRoughnessWRodi()
         {
@@ -529,12 +529,12 @@ namespace NPRiverLib.APRiver1YD
                     //if (zplus > 30 && zplus <= 0.2 * Re)
                     if (zplus <= 0.2 * Re)
                     {
-                        eddyViscosity[node] = rho_w * kappa_w * uStar * (1 - xi) * (roughness + z) + mu0;
+                        eddyViscosity[node] = rho_w * kappa_w * uStar * (1 - xi) * (roughness0 + z) + mu0;
                     }
                     if (zplus > 0.2 * Re)
                     {
-                        eddyViscosity[node] = rho_w * kappa_w * uStar * (1 - xi) * (roughness + z) * H /
-                        (H + 2 * Math.PI * Math.PI * Pa * (roughness + z) * Math.Sin(Math.PI * xi)) + mu0;
+                        eddyViscosity[node] = rho_w * kappa_w * uStar * (1 - xi) * (roughness0 + z) * H /
+                        (H + 2 * Math.PI * Math.PI * Pa * (roughness0 + z) * Math.Sin(Math.PI * xi)) + mu0;
                     }
                 }
             }
@@ -599,7 +599,7 @@ namespace NPRiverLib.APRiver1YD
                 double H = waterLevel - zeta;
                 double z = yy[node] - zeta;
                 double xi = z / H;
-                double lm = (kappa_w * z) * Math.Exp(-roughness * xi);
+                double lm = (kappa_w * z) * Math.Exp(-roughness0 * xi);
                 if (H <= MEM.Error10)
                     eddyViscosity[node] = mu0;
                 else
@@ -924,10 +924,12 @@ namespace NPRiverLib.APRiver1YD
         protected override void CreateCalculationDomain()
         {
             bool axisOfSymmetry = Params.axisSymmetry == 1 ? true: false;
+            CrossStripMeshOption op = new CrossStripMeshOption();
+            op.AxisOfSymmetry = axisOfSymmetry;
             // генерация сетки
             if (meshGenerator == null)
-                meshGenerator = new HStripMeshGenerator(axisOfSymmetry);
-            mesh = meshGenerator.CreateMesh(ref WetBed, waterLevel, bottom_x, bottom_y);
+                meshGenerator = new HStripMeshGenerator(op);
+            mesh = meshGenerator.CreateMesh(ref WetBed, ref riverGates, waterLevel, bottom_x, bottom_y);
             right = meshGenerator.Right();
             left = meshGenerator.Left();
             // получение ширины ленты для алгебры

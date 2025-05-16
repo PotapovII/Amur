@@ -58,7 +58,8 @@ namespace CommonLib.Function
         /// <param name="x">аргумент</param>
         /// <param name="y">функция</param>
         /// <param name="Count">количество точек</param>
-        void GetFunctionData(ref double[] x, ref double[] y, int Count = 0);
+        void GetFunctionData(ref double[] x, ref double[] y, 
+                             int Count = 10, bool revers = false);
     }
 
     //---------------------------------------------------------------------------
@@ -103,7 +104,8 @@ namespace CommonLib.Function
         /// <param name="x">координаты Х</param>
         /// <param name="y">координаты У</param>
         /// <param name="Count">количество узлов для русла</param>
-        public void GetFunctionData(ref double[] x, ref double[] y, int Count)
+        public void GetFunctionData(ref double[] x, ref double[] y, 
+                                    int Count = 10, bool revers = false)
         {
             MEM.Alloc(Count, ref x);
             MEM.Alloc(Count, ref y);
@@ -129,6 +131,8 @@ namespace CommonLib.Function
                 x[ii] = xx;
                 y[ii] = (1 - N1) * fun[i - 1] + N1 * fun[i];
             }
+            if(revers == true)
+                MEM.Reverse(ref y);
         }
         /// <summary>
         /// Получение не сглаженного значения данных по линейной интерполяции

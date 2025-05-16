@@ -38,5 +38,9 @@ namespace CommonLib.EddyViscosity
         /// <param name="algebra">решатель задачи</param>
         /// <param name="wMesh">врапер задачи</param>
         void SetTask(IMesh mesh, IAlgebra algebra, IMeshWrapper wMesh = null);
+        /// <summary>
+        /// Тип модели
+        /// </summary>
+        ETurbViscType turbViscType { get; set; }
     }
 }

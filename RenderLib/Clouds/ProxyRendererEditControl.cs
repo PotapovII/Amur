@@ -277,6 +277,13 @@ namespace RenderLib
             renderer.SetFType(index, ft);
         }
         /// <summary>
+        /// Установка атрибутов контура
+        /// </summary>
+        public void SetAtributes(int index, double ice, double ks)
+        {
+            renderer.SetAtributes(index, ice, ks);
+        }
+        /// <summary>
         /// Удалить фигуры
         /// </summary>
         public void ClearFigs()

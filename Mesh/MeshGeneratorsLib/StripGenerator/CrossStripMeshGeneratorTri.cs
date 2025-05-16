@@ -25,6 +25,9 @@ namespace MeshGeneratorsLib.StripGenerator
     [Serializable]
     public class CrossStripMeshGeneratorTri: ACrossStripMeshGenerator
     {
+        /// <summary>
+        /// Тип формы канала в створе потока
+        /// </summary>
         SСhannelForms channelSectionForms;
         /// <summary>
         /// Создаваемая сетка
@@ -35,11 +38,10 @@ namespace MeshGeneratorsLib.StripGenerator
         /// </summary>
         /// <param name="MAXElem">максимальное количество КЭ сетки</param>
         /// <param name="MAXKnot">максимальное количество узлов сетки</param>
-        public CrossStripMeshGeneratorTri(bool axisOfSymmetry = false, 
-            SСhannelForms channelSectionForms = SСhannelForms.porabolic) 
-            : base(axisOfSymmetry)
+        public CrossStripMeshGeneratorTri(CrossStripMeshOption Option) 
+            : base(Option)
         {
-            this.channelSectionForms = channelSectionForms;
+            this.channelSectionForms = Option.channelSectionForms;
         }
         /// <summary>
         /// // расчет количества конечных элементов
@@ -114,7 +116,7 @@ namespace MeshGeneratorsLib.StripGenerator
         /// <param name="yy">координаты дна по Y</param>
         /// <param name="Count">Количество узлов по дну</param>
         /// <returns></returns>
-        public override IMesh CreateMesh(ref double WetBed, double WaterLevel, double[] xx, double[] yy, int Count = 0)
+        public override IMesh CreateMesh(ref double WetBed, ref int[][] riverGates, double WaterLevel, double[] xx, double[] yy, int Count = 0)
         {
             try
             {
@@ -143,16 +145,34 @@ namespace MeshGeneratorsLib.StripGenerator
                 MEM.Alloc(CountBoundKnots, ref mesh.BoundKnotsMark);
                 MEM.Alloc(CountBoundKnots, ref mesh.BoundElementsMark);
                 MEM.Alloc(CountBoundKnots, ref mesh.BoundElems);
-
+                int WallR = 1;
+                int WallL = 3;
+                switch (Option.markerArea)
+                {
+                    case SimpleMarkerArea.crossSectionRiver:
+                    case SimpleMarkerArea.crossSectionTrapezoid:
+                        WallR = 0;
+                        WallL = 0;
+                        break;
+                    case SimpleMarkerArea.crossSectionRiverLeft:
+                        WallR = 0;
+                        break;
+                    case SimpleMarkerArea.crossSectionRiverRight:
+                        WallL = 0;
+                        break;
+                }
                 // вычисление массивов координат
                 CountKnots = 0;
+                riverGates = new int[Count][];
                 for (int i = 0; i < Count; i++)
                 {
                     double y = y0 + dy * i;
+                    riverGates[i] = new int[map1D[i]];
                     for (int j = 0; j < map1D[i]; j++)
                     {
                         mesh.CoordsX[CountKnots] = y;
                         mesh.CoordsY[CountKnots] = mapZ[i][j];
+                        riverGates[i][j] = (int)CountKnots;
                         CountKnots++;
                     }
                 }

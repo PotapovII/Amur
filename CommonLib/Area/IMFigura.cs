@@ -79,6 +79,20 @@ namespace CommonLib.Areas
         /// Тип фигуры
         /// </summary>
         FigureType FType { get; set; }
+        #region Атрибуты фигуры
+        /// <summary>
+        /// Свойства в узлах (состояние контексное) от задачи
+        /// </summary>
+        // double[] Attributes { get; set; }
+        /// <summary>
+        /// Толщина льда
+        /// </summary>
+        double Ice { get; set; }
+        /// <summary>
+        /// шероховатость дна
+        /// </summary>
+        double ks { get; set; }
+        #endregion
         /// <summary>
         /// Точки контура
         /// </summary>
@@ -129,5 +143,13 @@ namespace CommonLib.Areas
         /// </summary>
         /// <param name="point"></param>
         void Remove(IMPoint point);
+        /// <summary>
+        /// Принадлежит ли точка полигону фигуры
+        /// </summary>
+        bool Contains(IHPoint point);
+        /// <summary>
+        /// Принадлежит ли точка полигону фигуры
+        /// </summary>
+        bool Contains(double x, double y);
     }
 }

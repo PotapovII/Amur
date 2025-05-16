@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -62,6 +63,14 @@
     <ProjectReference Include="..\..\RenderLib\RenderLib.csproj">
       <Project>{3330d65d-e283-47a3-b43c-ce8c4eb2b201}</Project>
       <Name>RenderLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_ExternalLibraries\Triangle.NET\Triangle.Rendering\Triangle.Rendering.csproj">
+      <Project>{41022e0e-bd0f-439e-bc3a-aabb1b43471b}</Project>
+      <Name>Triangle.Rendering</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_ExternalLibraries\Triangle.NET\Triangle\Triangle.csproj">
+      <Project>{ad37da98-33b1-448e-9104-6e77b61e84f3}</Project>
+      <Name>Triangle</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

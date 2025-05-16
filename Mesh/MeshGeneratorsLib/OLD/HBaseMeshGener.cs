@@ -1111,7 +1111,7 @@ namespace MeshGeneratorsLib
             {
                 mesh.BoundKnots[n] = Map[i][j];
                 B.Add(mesh.BoundKnots[n]);
-                mesh.BoundKnotsMark[n++] = pMap[i][j].type; //    RealSegmRibs[0].MarkBC;
+                mesh.BoundKnotsMark[n++] = pMap[i][j].marker; //    RealSegmRibs[0].MarkBC;
                 // Console.Write(" " + mesh.BoundKnots[n].ToString());
             }
             // Console.WriteLine();
@@ -1120,7 +1120,7 @@ namespace MeshGeneratorsLib
             {
                 mesh.BoundKnots[n] = Map[i][Right[i] - 1];
                 R.Add(mesh.BoundKnots[n]);
-                mesh.BoundKnotsMark[n++] = pMap[i][Right[i] - 1].type; // RealSegmRibs[1].MarkBC;
+                mesh.BoundKnotsMark[n++] = pMap[i][Right[i] - 1].marker; // RealSegmRibs[1].MarkBC;
             }
             // Console.WriteLine();
             // верх
@@ -1129,7 +1129,7 @@ namespace MeshGeneratorsLib
             {
                 mesh.BoundKnots[n] = Map[i][j];
                 T.Add(mesh.BoundKnots[n]);
-                mesh.BoundKnotsMark[n++] = pMap[i][j].type; ;
+                mesh.BoundKnotsMark[n++] = pMap[i][j].marker; ;
                 // Console.Write(" " + mesh.BoundKnots[n].ToString());
             }
             // Console.WriteLine();
@@ -1138,7 +1138,7 @@ namespace MeshGeneratorsLib
             {
                 mesh.BoundKnots[n] = Map[i][Left[i]];
                 L.Add(mesh.BoundKnots[n]);
-                mesh.BoundKnotsMark[n++] = pMap[i][Left[i]].type;
+                mesh.BoundKnotsMark[n++] = pMap[i][Left[i]].marker;
                 // Console.Write(" " + mesh.BoundKnots[n].ToString());
             }
             // Console.WriteLine();

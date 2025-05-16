@@ -144,7 +144,7 @@
             this.panel3.Controls.Add(this.lb_Algebra);
             this.panel3.Location = new System.Drawing.Point(294, 13);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(464, 678);
+            this.panel3.Size = new System.Drawing.Size(464, 685);
             this.panel3.TabIndex = 66;
             // 
             // lb_TurbModels
@@ -802,7 +802,7 @@
             // 
             this.cb_AxisOfSymmetry.AutoSize = true;
             this.cb_AxisOfSymmetry.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cb_AxisOfSymmetry.Location = new System.Drawing.Point(14, 444);
+            this.cb_AxisOfSymmetry.Location = new System.Drawing.Point(14, 463);
             this.cb_AxisOfSymmetry.Name = "cb_AxisOfSymmetry";
             this.cb_AxisOfSymmetry.Size = new System.Drawing.Size(206, 24);
             this.cb_AxisOfSymmetry.TabIndex = 156;
@@ -835,11 +835,13 @@
             "Тест - левая парабола  Rose",
             "Тест - правая парабола  Rose",
             "Тест - парабола ",
+            "Тест - линейный уступ",
+            "Тест - плавный уступ",
             "Амур - загрузка"});
-            this.lb_CrossNamber.Location = new System.Drawing.Point(14, 240);
+            this.lb_CrossNamber.Location = new System.Drawing.Point(14, 237);
             this.lb_CrossNamber.Margin = new System.Windows.Forms.Padding(4);
             this.lb_CrossNamber.Name = "lb_CrossNamber";
-            this.lb_CrossNamber.Size = new System.Drawing.Size(235, 204);
+            this.lb_CrossNamber.Size = new System.Drawing.Size(235, 224);
             this.lb_CrossNamber.TabIndex = 95;
             this.lb_CrossNamber.SelectedIndexChanged += new System.EventHandler(this.lb_CrossNamber_SelectedIndexChanged);
             // 
@@ -863,7 +865,7 @@
             this.panel2.Location = new System.Drawing.Point(13, 13);
             this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(264, 678);
+            this.panel2.Size = new System.Drawing.Size(264, 685);
             this.panel2.TabIndex = 65;
             // 
             // bt_Open
@@ -947,7 +949,7 @@
             "Инкрементный Л",
             "Карта треугольный",
             "Карта комплекс"});
-            this.lb_MeshGen.Location = new System.Drawing.Point(14, 525);
+            this.lb_MeshGen.Location = new System.Drawing.Point(14, 538);
             this.lb_MeshGen.Margin = new System.Windows.Forms.Padding(4);
             this.lb_MeshGen.Name = "lb_MeshGen";
             this.lb_MeshGen.Size = new System.Drawing.Size(233, 84);
@@ -959,7 +961,7 @@
             this.checkBoxView.Checked = true;
             this.checkBoxView.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxView.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.checkBoxView.Location = new System.Drawing.Point(14, 644);
+            this.checkBoxView.Location = new System.Drawing.Point(14, 656);
             this.checkBoxView.Name = "checkBoxView";
             this.checkBoxView.Size = new System.Drawing.Size(208, 24);
             this.checkBoxView.TabIndex = 85;
@@ -970,7 +972,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label11.Location = new System.Drawing.Point(14, 471);
+            this.label11.Location = new System.Drawing.Point(14, 485);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(181, 20);
@@ -981,7 +983,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label8.Location = new System.Drawing.Point(14, 496);
+            this.label8.Location = new System.Drawing.Point(14, 509);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(126, 17);
@@ -991,7 +993,7 @@
             // textBoxDiam
             // 
             this.textBoxDiam.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxDiam.Location = new System.Drawing.Point(162, 497);
+            this.textBoxDiam.Location = new System.Drawing.Point(162, 510);
             this.textBoxDiam.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxDiam.Name = "textBoxDiam";
             this.textBoxDiam.Size = new System.Drawing.Size(81, 23);
@@ -1002,7 +1004,7 @@
             // 
             this.btCreateMesh.BackColor = System.Drawing.SystemColors.ControlLight;
             this.btCreateMesh.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btCreateMesh.Location = new System.Drawing.Point(14, 614);
+            this.btCreateMesh.Location = new System.Drawing.Point(14, 628);
             this.btCreateMesh.Margin = new System.Windows.Forms.Padding(4);
             this.btCreateMesh.Name = "btCreateMesh";
             this.btCreateMesh.Size = new System.Drawing.Size(233, 29);
@@ -1116,7 +1118,7 @@
             this.panel6.Location = new System.Drawing.Point(765, 12);
             this.panel6.Margin = new System.Windows.Forms.Padding(4);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(257, 679);
+            this.panel6.Size = new System.Drawing.Size(257, 686);
             this.panel6.TabIndex = 168;
             // 
             // button1
@@ -1286,7 +1288,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1024, 695);
+            this.ClientSize = new System.Drawing.Size(1024, 705);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel6);

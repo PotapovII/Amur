@@ -28,8 +28,8 @@ namespace GeometryLib
         /// </summary>
         public double[] Values = null;
         public VMapKnot() : base() { R = 1; Values = new double[1]; }
-        public VMapKnot(double xx, double yy, double[] v, double R = 1, int type = 0, int typeEx = 0)
-            : base(xx, yy, type, typeEx)
+        public VMapKnot(double xx, double yy, double[] v, double R = 1, int marker = 0, int typeEx = 0)
+            : base(xx, yy, marker, typeEx)
         {
             this.R = R;
             MEM.MemCopy(ref Values, v);
@@ -44,7 +44,7 @@ namespace GeometryLib
         {
             string s = " " + x.ToString(format) +
                    " " + y.ToString(format) +
-                   " " + type.ToString() +
+                   " " + marker.ToString() +
                    " " + typeEx.ToString() +
                    " " + R.ToString(format);
             for (int j = 0; j < Values.Length; j++)
@@ -58,7 +58,7 @@ namespace GeometryLib
             int id = int.Parse(mas[0]);
             double xx = double.Parse(mas[1], MEM.formatter);
             double yy = double.Parse(mas[2], MEM.formatter);
-            int type = int.Parse(mas[3]);
+            int marker = int.Parse(mas[3]);
             int typeEx = int.Parse(mas[4]);
             double R = double.Parse(mas[5], MEM.formatter);
             int count = mas.Length - 6;
@@ -66,7 +66,7 @@ namespace GeometryLib
             double[] v = new double[count];
             for (int j = 6; j < mas.Length; j++)
                 v[j - 6] = double.Parse(mas[j], MEM.formatter);
-            VMapKnot p = new VMapKnot(xx, yy, v, R, type, typeEx);
+            VMapKnot p = new VMapKnot(xx, yy, v, R, marker, typeEx);
             return p;
         }
         /// <summary>

@@ -8,6 +8,7 @@
 namespace GeometryLib
 {
     using CommonLib.Function;
+    using CommonLib.Geometry;
     using MemLogLib;
     using System;
     using System.IO;
@@ -76,6 +77,19 @@ namespace GeometryLib
             y0.Clear();
             x0.AddRange(p.x0.ToArray());
             y0.AddRange(p.y0.ToArray());
+        }
+
+        public DigFunction(HPoint[] p, string name = "")
+         : base(SmoothnessFunction.linear, false)
+        {
+            this.name = name;
+            x0.Clear();
+            y0.Clear();
+            for (int i = 0; i < p.Length; i++)
+            {
+                x0.Add(p[i].X);
+                y0.Add(p[i].Y);
+            }
         }
 
 

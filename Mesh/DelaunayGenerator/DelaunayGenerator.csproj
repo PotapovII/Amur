@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="DMeshGenerator.cs" />
     <Compile Include="DelaunayMeshGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

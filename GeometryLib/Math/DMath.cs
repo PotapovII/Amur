@@ -111,7 +111,7 @@ namespace GeometryLib
         {
             double sum = 0;
             for (int i = 0; i < x.Length - 1; i++)
-                sum += (f[i] + f[i + 1]) * (x[i + 1] - x[i]);
+                sum += (f[i] + f[i + 1]) * Math.Abs(x[i + 1] - x[i]);
             return 0.5 * sum;
         }
         /// <summary>
@@ -121,7 +121,7 @@ namespace GeometryLib
         {
             double sum = 0;
             for (int i = 0; i < x.Length - 1; i++)
-                sum += (Math.Abs(f[i]) + Math.Abs(f[i + 1])) * (x[i + 1] - x[i]);
+                sum += (Math.Abs(f[i]) + Math.Abs(f[i + 1])) * Math.Abs(x[i + 1] - x[i]);
             return 0.5 * sum;
         }
 

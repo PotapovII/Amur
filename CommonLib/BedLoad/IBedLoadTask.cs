@@ -29,14 +29,13 @@ OTHER DEALINGS IN THE SOFTWARE.
 //               гидродинамических и русловых процессов
 //                      - (C) Copyright 2021 -
 //                       ALL RIGHT RESERVED
-//                        ПРОЕКТ "BLLib"
+//                        ПРОЕКТ "BedLoadLib"
 //---------------------------------------------------------------------------
 //                   разработка: Потапов И.И.
 //                          08.04.21
 //---------------------------------------------------------------------------
-namespace CommonLib
+namespace CommonLib.BedLoad
 {
-    using CommonLib.Function;
     using System;
     using System.ComponentModel;
 
@@ -118,7 +117,8 @@ namespace CommonLib
         /// <param name="Zeta">>возвращаемая форма дна на n+1 итерации</param>
         /// <param name="tau">придонное касательное напряжение</param>
         /// <param name="P">придонное давление</param>
-        void CalkZetaFDM(ref double[] Zeta, double[] tauX, double[] tauY, double[] P = null, double[][] CS = null);
+        void CalkZetaFDM(ref double[] Zeta, double[] tauX, double[] tauY, 
+                                double[] P = null, double[][] CS = null);
         /// <summary>
         /// Создает экземпляр класса
         /// </summary>

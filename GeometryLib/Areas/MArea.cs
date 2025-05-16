@@ -91,8 +91,8 @@ namespace GeometryLib.Areas
         {
             if (figures.Count == 0)
                 fig.FType = FigureType.FigureContur;
-            else
-                fig.FType = FigureType.FigureHole;
+            //else
+            //    fig.FType = FigureType.FigureHole;
             figures.Add(fig);
             int[] idx = fig.GetSegmentIndexs();
             int count = boundMark.Count;

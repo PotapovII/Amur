@@ -81,13 +81,15 @@ namespace MeshGeneratorsLib.StripGenerator
         int vertRight = 1;
         int waterLevel = 2;
         int vertLeft = 3;
+
+        public HStripMeshGeneratorTri():this(new CrossStripMeshOption()) { }
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="MAXElem">максимальное количество КЭ сетки</param>
         /// <param name="MAXKnot">максимальное количество узлов сетки</param>
-        public HStripMeshGeneratorTri(bool axisOfSymmetry = false, int MAXElem = 1000000, int MAXKnot = 1000000)
-            : base(axisOfSymmetry)
+        public HStripMeshGeneratorTri(CrossStripMeshOption Option, int MAXElem = 1000000, int MAXKnot = 1000000)
+            : base(Option)
         {
             AreaElems = new TriElement[MAXElem];
             BoundElems = new TwoElement[MAXElem];
@@ -97,9 +99,9 @@ namespace MeshGeneratorsLib.StripGenerator
             BoundKnots = new int[MAXKnot];
             BoundKnotsMark = new int[MAXKnot];
         }
-        public override IMesh CreateMesh(ref double GR, double WaterLevel, double[] xx, double[] yy, int Count = 0)
+        public override IMesh CreateMesh(ref double GR, ref int[][] riverGates, double WaterLevel, double[] xx, double[] yy, int Count = 0)
         {
-            return CreateTriMesh(ref GR, WaterLevel, xx, yy, Count);
+            return CreateTriMesh(ref GR, ref riverGates, WaterLevel, xx, yy, Count);
         }
         /// <summary>
         /// Создает сетку в области
@@ -110,7 +112,7 @@ namespace MeshGeneratorsLib.StripGenerator
         /// <param name="yy">координаты дна по Y</param>
         /// <param name="Count">Количество узлов по дну</param>
         /// <returns></returns>
-        public TriMesh CreateTriMesh(ref double WetBed, double WaterLevel, double[] xx, double[] yy, int Count = 0)
+        public TriMesh CreateTriMesh(ref double WetBed, ref int[][] riverGates, double WaterLevel, double[] xx, double[] yy, int Count = 0)
         {
             try
             {
@@ -142,48 +144,56 @@ namespace MeshGeneratorsLib.StripGenerator
                 HNumbKnot lb, lt, rb, rt;
                 lb = new HNumbKnot(left.x, left.y, bottom, CountKnots++);
                 lt = lb;
-                BoundKnots[CountBoundKnots] = lb.number;
-                BoundKnotsMark[CountBoundKnots++] = lb.type;
+                BoundKnots[CountBoundKnots] = lb.ID;
+                BoundKnotsMark[CountBoundKnots++] = lb.marker;
 
                 x = left.x + dx;
                 y = spline.Value(x);
                 rb = new HNumbKnot(x, y, bottom, CountKnots++);
-                BoundKnots[CountBoundKnots] = rb.number;
-                BoundKnotsMark[CountBoundKnots++] = rb.type;
+                BoundKnots[CountBoundKnots] = rb.ID;
+                BoundKnotsMark[CountBoundKnots++] = rb.marker;
 
                 y = left.y;
                 rt = new HNumbKnot(x, y, waterLevel, CountKnots++);
-                BoundKnots[CountBoundKnots] = rt.number;
-                BoundKnotsMark[CountBoundKnots++] = rt.type;
+                BoundKnots[CountBoundKnots] = rt.ID;
+                BoundKnotsMark[CountBoundKnots++] = rt.marker;
 
-                AreaElems[CountElems].Vertex1 = (uint)lb.number;
-                AreaElems[CountElems].Vertex2 = (uint)rb.number;
-                AreaElems[CountElems].Vertex3 = (uint)rt.number;
-                CoordsX[lb.number] = lb.x;
-                CoordsY[lb.number] = lb.y;
-                CoordsX[rt.number] = rt.x;
-                CoordsY[rt.number] = rt.y;
-                CoordsX[rb.number] = rb.x;
-                CoordsY[rb.number] = rb.y;
+                AreaElems[CountElems].Vertex1 = (uint)lb.ID;
+                AreaElems[CountElems].Vertex2 = (uint)rb.ID;
+                AreaElems[CountElems].Vertex3 = (uint)rt.ID;
+                CoordsX[lb.ID] = lb.x;
+                CoordsY[lb.ID] = lb.y;
+                CoordsX[rt.ID] = rt.x;
+                CoordsY[rt.ID] = rt.y;
+                CoordsX[rb.ID] = rb.x;
+                CoordsY[rb.ID] = rb.y;
                 ++CountElems;
 
                 BoundElementsMark[BoundElementsCount] = waterLevel;
-                BoundElems[BoundElementsCount].Vertex1 = (uint)rt.number;
-                BoundElems[BoundElementsCount++].Vertex2 = (uint)lt.number;
+                BoundElems[BoundElementsCount].Vertex1 = (uint)rt.ID;
+                BoundElems[BoundElementsCount++].Vertex2 = (uint)lt.ID;
 
                 BoundElementsMark[BoundElementsCount] = bottom;
-                BoundElems[BoundElementsCount].Vertex1 = (uint)lb.number;
-                BoundElems[BoundElementsCount++].Vertex2 = (uint)rb.number;
+                BoundElems[BoundElementsCount].Vertex1 = (uint)lb.ID;
+                BoundElems[BoundElementsCount++].Vertex2 = (uint)rb.ID;
                 // создание левой границы сетки после 1 КЭ
                 HNumbKnot[] knotsTmp = new HNumbKnot[2];
                 knotsTmp[0] = new HNumbKnot(rb);
                 knotsTmp[1] = new HNumbKnot(rt);
+                riverGates = new int[Count][];
+                riverGates[0] = new int[1];
+                riverGates[0][0] = lb.ID;
                 // герерация сетки в затопленной части
                 int ii = 1;
                 try
                 {
                     for (ii = 1; ii < Count; ii++)
+                    {
+                        riverGates[ii] = new int[knotsTmp.Length];
+                        for (int j = 0; j < knotsTmp.Length; j++)
+                            riverGates[ii][j] = (int)knotsTmp[j].ID;
                         knotsTmp = DevideStripe(knotsTmp, ii, Count);
+                    }
                 }
                 catch(Exception eez) 
                 {
@@ -198,19 +208,19 @@ namespace MeshGeneratorsLib.StripGenerator
                     {
                         if (i != knotsTmp.Length - 2)
                         {
-                            BoundKnots[CountBoundKnots] = knotsTmp[i + 1].number;
-                            if(AxisOfSymmetry == true)
+                            BoundKnots[CountBoundKnots] = knotsTmp[i + 1].ID;
+                            if(Option.AxisOfSymmetry == true)
                                 BoundKnotsMark[CountBoundKnots] = vertRight;
                             else
                                 BoundKnotsMark[CountBoundKnots] = bottom;
                             CountBoundKnots++;
                         }
-                        if (AxisOfSymmetry == true)
+                        if (Option.AxisOfSymmetry == true)
                             BoundElementsMark[BoundElementsCount] = vertRight;
                         else
                             BoundKnotsMark[CountBoundKnots] = bottom;
-                        BoundElems[BoundElementsCount].Vertex1 = (uint)knotsTmp[i + 1].number;
-                        BoundElems[BoundElementsCount].Vertex2 = (uint)knotsTmp[i].number;
+                        BoundElems[BoundElementsCount].Vertex1 = (uint)knotsTmp[i + 1].ID;
+                        BoundElems[BoundElementsCount].Vertex2 = (uint)knotsTmp[i].ID;
                         BoundElementsCount++;
                     }
                 }
@@ -308,14 +318,14 @@ namespace MeshGeneratorsLib.StripGenerator
             // увеличиваем счетчик узлов
             CountKnots++;
             // запоминаем созданный донный узел в массиве граничных узлов
-            BoundKnots[CountBoundKnots] = rightKnots[0].number;
+            BoundKnots[CountBoundKnots] = rightKnots[0].ID;
             // устанавливаем флаг данного узла
-            BoundKnotsMark[CountBoundKnots++] = rightKnots[0].type;
+            BoundKnotsMark[CountBoundKnots++] = rightKnots[0].marker;
 
             // создаем граничный элемент 
             BoundElementsMark[BoundElementsCount] = bottom;
-            BoundElems[BoundElementsCount].Vertex1 = (uint)leftKnots[0].number;
-            BoundElems[BoundElementsCount++].Vertex2 = (uint)rightKnots[0].number;
+            BoundElems[BoundElementsCount].Vertex1 = (uint)leftKnots[0].ID;
+            BoundElems[BoundElementsCount++].Vertex2 = (uint)rightKnots[0].ID;
             // создаем узлы правой стороны
             int k = 1; // k - счетчик узлов на правой стороне
             y = YB;
@@ -328,19 +338,19 @@ namespace MeshGeneratorsLib.StripGenerator
             {
                 rightKnots[k] = new HNumbKnot(top.x, top.y, waterLevel, CountKnots++);
                 // создаем граничный узел и флаг на свободной поверхности
-                BoundKnots[CountBoundKnots] = rightKnots[k].number;
-                BoundKnotsMark[CountBoundKnots++] = rightKnots[k].type;
+                BoundKnots[CountBoundKnots] = rightKnots[k].ID;
+                BoundKnotsMark[CountBoundKnots++] = rightKnots[k].marker;
                 // создаем ГЭ на свободной поверхности
                 BoundElementsMark[BoundElementsCount] = waterLevel;
-                BoundElems[BoundElementsCount].Vertex1 = (uint)rightKnots[k].number;
-                BoundElems[BoundElementsCount++].Vertex2 = (uint)leftKnots[leftKnots.Length - 1].number;
+                BoundElems[BoundElementsCount].Vertex1 = (uint)rightKnots[k].ID;
+                BoundElems[BoundElementsCount++].Vertex2 = (uint)leftKnots[leftKnots.Length - 1].ID;
             }
             else  // правый угол
             {
                 // создаем ГЭ на свободной поверхности
                 BoundElementsMark[BoundElementsCount] = waterLevel;
-                BoundElems[BoundElementsCount].Vertex1 = (uint)rightKnots[0].number;
-                BoundElems[BoundElementsCount++].Vertex2 = (uint)leftKnots[leftKnots.Length - 1].number;
+                BoundElems[BoundElementsCount].Vertex1 = (uint)rightKnots[0].ID;
+                BoundElems[BoundElementsCount++].Vertex2 = (uint)leftKnots[leftKnots.Length - 1].ID;
             }
             // Строим матрицу обхода КЭ - в и вычисляем координаты узлов 
             HNumbKnot A, B, C, D;
@@ -359,14 +369,14 @@ namespace MeshGeneratorsLib.StripGenerator
                     C = rightKnots[i + 1];
                     D = rightKnots[i];
 
-                    CoordsX[A.number] = A.x;
-                    CoordsY[A.number] = A.y;
-                    CoordsX[B.number] = B.x;
-                    CoordsY[B.number] = B.y;
-                    CoordsX[C.number] = C.x;
-                    CoordsY[C.number] = C.y;
-                    CoordsX[D.number] = D.x;
-                    CoordsY[D.number] = D.y;
+                    CoordsX[A.ID] = A.x;
+                    CoordsY[A.ID] = A.y;
+                    CoordsX[B.ID] = B.x;
+                    CoordsY[B.ID] = B.y;
+                    CoordsX[C.ID] = C.x;
+                    CoordsY[C.ID] = C.y;
+                    CoordsX[D.ID] = D.x;
+                    CoordsY[D.ID] = D.y;
 
                     double dBD = HNumbKnot.Length(B, D);
                     double dAC = HNumbKnot.Length(A, C);
@@ -378,14 +388,14 @@ namespace MeshGeneratorsLib.StripGenerator
                         //  |2 \ | 
                         //  A----D
                         //   формируем
-                        AreaElems[CountElems].Vertex1 = (uint)A.number;
-                        AreaElems[CountElems].Vertex2 = (uint)D.number;
-                        AreaElems[CountElems].Vertex3 = (uint)B.number;
+                        AreaElems[CountElems].Vertex1 = (uint)A.ID;
+                        AreaElems[CountElems].Vertex2 = (uint)D.ID;
+                        AreaElems[CountElems].Vertex3 = (uint)B.ID;
                         CountElems++;
 
-                        AreaElems[CountElems].Vertex1 = (uint)C.number;
-                        AreaElems[CountElems].Vertex2 = (uint)B.number;
-                        AreaElems[CountElems].Vertex3 = (uint)D.number;
+                        AreaElems[CountElems].Vertex1 = (uint)C.ID;
+                        AreaElems[CountElems].Vertex2 = (uint)B.ID;
+                        AreaElems[CountElems].Vertex3 = (uint)D.ID;
                         CountElems++;
                     }
                     else
@@ -395,14 +405,14 @@ namespace MeshGeneratorsLib.StripGenerator
                         //  |/ 2 | 
                         //  A----D
                         //   формируем
-                        AreaElems[CountElems].Vertex1 = (uint)B.number;
-                        AreaElems[CountElems].Vertex2 = (uint)A.number;
-                        AreaElems[CountElems].Vertex3 = (uint)C.number;
+                        AreaElems[CountElems].Vertex1 = (uint)B.ID;
+                        AreaElems[CountElems].Vertex2 = (uint)A.ID;
+                        AreaElems[CountElems].Vertex3 = (uint)C.ID;
                         CountElems++;
 
-                        AreaElems[CountElems].Vertex1 = (uint)A.number;
-                        AreaElems[CountElems].Vertex2 = (uint)D.number;
-                        AreaElems[CountElems].Vertex3 = (uint)C.number;
+                        AreaElems[CountElems].Vertex1 = (uint)A.ID;
+                        AreaElems[CountElems].Vertex2 = (uint)D.ID;
+                        AreaElems[CountElems].Vertex3 = (uint)C.ID;
                         CountElems++;
                     }
                 }
@@ -424,24 +434,24 @@ namespace MeshGeneratorsLib.StripGenerator
                         C = rightKnots[i + 1];
                         D = rightKnots[i];
 
-                        CoordsX[A.number] = A.x;
-                        CoordsY[A.number] = A.y;
-                        CoordsX[B.number] = B.x;
-                        CoordsY[B.number] = B.y;
-                        CoordsX[C.number] = C.x;
-                        CoordsY[C.number] = C.y;
-                        CoordsX[D.number] = D.x;
-                        CoordsY[D.number] = D.y;
+                        CoordsX[A.ID] = A.x;
+                        CoordsY[A.ID] = A.y;
+                        CoordsX[B.ID] = B.x;
+                        CoordsY[B.ID] = B.y;
+                        CoordsX[C.ID] = C.x;
+                        CoordsY[C.ID] = C.y;
+                        CoordsX[D.ID] = D.x;
+                        CoordsY[D.ID] = D.y;
 
                         // формируем
-                        AreaElems[CountElems].Vertex1 = (uint)A.number;
-                        AreaElems[CountElems].Vertex2 = (uint)D.number;
-                        AreaElems[CountElems].Vertex3 = (uint)B.number;
+                        AreaElems[CountElems].Vertex1 = (uint)A.ID;
+                        AreaElems[CountElems].Vertex2 = (uint)D.ID;
+                        AreaElems[CountElems].Vertex3 = (uint)B.ID;
                         CountElems++;
 
-                        AreaElems[CountElems].Vertex1 = (uint)C.number;
-                        AreaElems[CountElems].Vertex2 = (uint)B.number;
-                        AreaElems[CountElems].Vertex3 = (uint)D.number;
+                        AreaElems[CountElems].Vertex1 = (uint)C.ID;
+                        AreaElems[CountElems].Vertex2 = (uint)B.ID;
+                        AreaElems[CountElems].Vertex3 = (uint)D.ID;
                         CountElems++;
                         //}
                     }
@@ -458,20 +468,20 @@ namespace MeshGeneratorsLib.StripGenerator
                     B = leftKnots[leftKnots.Length - 2];
                     A = leftKnots[leftKnots.Length - 1];
                     D = rightKnots[rightKnots.Length - 1];
-                    CoordsX[D.number] = D.x;
-                    CoordsY[D.number] = D.y;
+                    CoordsX[D.ID] = D.x;
+                    CoordsY[D.ID] = D.y;
                     // ПРОВЕРИТЬ ПРАВИЛЬНОСТЬ ОБХОДА УЗЛОВ !!!!!!!!!
-                    AreaElems[CountElems].Vertex1 = (uint)A.number;
-                    AreaElems[CountElems].Vertex2 = (uint)B.number;
-                    AreaElems[CountElems].Vertex3 = (uint)D.number;
+                    AreaElems[CountElems].Vertex1 = (uint)A.ID;
+                    AreaElems[CountElems].Vertex2 = (uint)B.ID;
+                    AreaElems[CountElems].Vertex3 = (uint)D.ID;
                     ++CountElems;
                     if (dknot == 2)
                     {
                         C = leftKnots[leftKnots.Length - 3];
                         // ПРОВЕРИТЬ ПРАВИЛЬНОСТЬ ОБХОДА УЗЛОВ !!!!!!!!!
-                        AreaElems[CountElems].Vertex1 = (uint)C.number;
-                        AreaElems[CountElems].Vertex2 = (uint)D.number;
-                        AreaElems[CountElems].Vertex3 = (uint)B.number;
+                        AreaElems[CountElems].Vertex1 = (uint)C.ID;
+                        AreaElems[CountElems].Vertex2 = (uint)D.ID;
+                        AreaElems[CountElems].Vertex3 = (uint)B.ID;
                         ++CountElems;
                     }
                 }
@@ -489,21 +499,21 @@ namespace MeshGeneratorsLib.StripGenerator
                         B = leftKnots[i + 1];
                         C = rightKnots[i + 1];
                         D = rightKnots[i];
-                        CoordsX[C.number] = C.x;
-                        CoordsY[C.number] = C.y;
-                        CoordsX[D.number] = D.x;
-                        CoordsY[D.number] = D.y;
+                        CoordsX[C.ID] = C.x;
+                        CoordsY[C.ID] = C.y;
+                        CoordsX[D.ID] = D.x;
+                        CoordsY[D.ID] = D.y;
                         //double Lf = B.y - A.y;
                         //double Rf = C.y - D.y;
                         // формируем 
-                        AreaElems[CountElems].Vertex1 = (uint)A.number;
-                        AreaElems[CountElems].Vertex2 = (uint)C.number;
-                        AreaElems[CountElems].Vertex3 = (uint)B.number;
+                        AreaElems[CountElems].Vertex1 = (uint)A.ID;
+                        AreaElems[CountElems].Vertex2 = (uint)C.ID;
+                        AreaElems[CountElems].Vertex3 = (uint)B.ID;
                         CountElems++;
 
-                        AreaElems[CountElems].Vertex1 = (uint)C.number;
-                        AreaElems[CountElems].Vertex2 = (uint)A.number;
-                        AreaElems[CountElems].Vertex3 = (uint)D.number;
+                        AreaElems[CountElems].Vertex1 = (uint)C.ID;
+                        AreaElems[CountElems].Vertex2 = (uint)A.ID;
+                        AreaElems[CountElems].Vertex3 = (uint)D.ID;
                         CountElems++;
                     }
                     // если количество узлов справо больше (может только на 1)
@@ -513,14 +523,14 @@ namespace MeshGeneratorsLib.StripGenerator
                         B = rightKnots[rightKnots.Length - 1];
                         C = rightKnots[leftKnots.Length - 1];
 
-                        CoordsX[B.number] = B.x;
-                        CoordsY[B.number] = B.y;
-                        CoordsX[C.number] = C.x;
-                        CoordsY[C.number] = C.y;
+                        CoordsX[B.ID] = B.x;
+                        CoordsY[B.ID] = B.y;
+                        CoordsX[C.ID] = C.x;
+                        CoordsY[C.ID] = C.y;
 
-                        AreaElems[CountElems].Vertex1 = (uint)A.number;
-                        AreaElems[CountElems].Vertex2 = (uint)C.number;
-                        AreaElems[CountElems].Vertex3 = (uint)B.number;
+                        AreaElems[CountElems].Vertex1 = (uint)A.ID;
+                        AreaElems[CountElems].Vertex2 = (uint)C.ID;
+                        AreaElems[CountElems].Vertex3 = (uint)B.ID;
                         ++CountElems;
                     }
                 }

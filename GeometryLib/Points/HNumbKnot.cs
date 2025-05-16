@@ -18,14 +18,17 @@ namespace GeometryLib
     [Serializable]
     public class HNumbKnot : HKnot
     {
-        public int number = 0;
-        public HNumbKnot() : base() { number = 0; }
-        public HNumbKnot(double xx, double yy, int type, int number)
-            : base(xx, yy, type)
+        /// <summary>
+        /// Номер/маркер точки
+        /// </summary>
+        public int ID = 0;
+        public HNumbKnot() : base() { ID = 0; }
+        public HNumbKnot(double xx, double yy, int marker, int ID)
+            : base(xx, yy, marker)
         {
-            this.number = number;
+            this.ID = ID;
         }
-        public HNumbKnot(HNumbKnot k) : base(k) { number = k.number; }
+        public HNumbKnot(HNumbKnot k) : base(k) { ID = k.ID; }
 
         public static new HNumbKnot Parse(string str)
         {
@@ -42,6 +45,5 @@ namespace GeometryLib
         /// </summary>
         /// <returns></returns>
         public override IHPoint IClone() => new HNumbKnot(this);
-
     }
 }

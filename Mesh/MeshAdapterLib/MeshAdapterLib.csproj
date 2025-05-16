@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="CreateCrossSection.cs" />
+    <Compile Include="CreateTriMeshCannal.cs" />
     <Compile Include="PolygonAdapter.cs" />
     <Compile Include="CreateMesh.cs" />
     <Compile Include="AdapterFVTriМesh.cs" />
@@ -53,6 +56,7 @@
     <Compile Include="MeshAdapter2D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CreateTriMesh.cs" />
+    <Compile Include="QualityMeshNetOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\CommonLib\CommonLib.csproj">
@@ -82,6 +86,10 @@
     <ProjectReference Include="..\MeshLib\MeshLib.csproj">
       <Project>{b8062e08-76ac-4ec2-a7aa-2d7a4c601351}</Project>
       <Name>MeshLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SHillObjLib\SHillObjLib.csproj">
+      <Project>{2122dec0-7b53-4bbd-a26f-95f9f689e05c}</Project>
+      <Name>SHillObjLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

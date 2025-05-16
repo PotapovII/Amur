@@ -46,7 +46,6 @@
     <Compile Include="ChannelProcessPro.cs" />
     <Compile Include="Managers\ManagerBedLoadTask.cs" />
     <Compile Include="Managers\ManagerRiverTask.cs" />
-    <Compile Include="ChannelProcess.cs" />
     <Compile Include="CProcParams.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -55,9 +54,9 @@
       <Project>{3620fe4f-9d3e-4fa2-965e-762234334d84}</Project>
       <Name>AlgebraLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BLLib\BLLib.csproj">
-      <Project>{f8ce2ed0-9994-4b88-93d1-eda182069caa}</Project>
-      <Name>BLLib</Name>
+    <ProjectReference Include="..\BedLoadLib\BedLoadLib.csproj">
+      <Project>{b42dff59-7511-4bf7-b85c-e8411cfc372a}</Project>
+      <Name>BedLoadLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\CommonLib\CommonLib.csproj">
       <Project>{45fdf4ae-457a-42ae-a44c-e07a2726822f}</Project>
@@ -86,10 +85,6 @@
     <ProjectReference Include="..\RiverDataBase\RiverDB\RiverDB.csproj">
       <Project>{754d1a25-333c-4be5-b275-60b22f3e3cb8}</Project>
       <Name>RiverDB</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RiverLib\RiverLib.csproj">
-      <Project>{9AC6E045-03A5-4C7C-A597-D245EA7E2C04}</Project>
-      <Name>RiverLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

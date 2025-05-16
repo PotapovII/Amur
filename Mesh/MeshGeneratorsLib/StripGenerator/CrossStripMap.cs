@@ -19,6 +19,10 @@ namespace MeshGeneratorsLib.StripGenerator
     public class CrossStripMap
     {
         /// <summary>
+        /// Способ замыкания крутого берега
+        /// </summary>
+        public int BoundaryClose;
+        /// <summary>
         /// количество узлов по вертикали
         /// </summary>
         public uint[] map1D = null;
@@ -54,8 +58,11 @@ namespace MeshGeneratorsLib.StripGenerator
         /// отметка свободной поверхности потока
         /// </summary>
         public double WaterLevel;
-        public CrossStripMap() { }
-        public CrossStripMap(CrossStripMap m)
+        public CrossStripMap(int BoundaryClose = 0) 
+        {
+            this.BoundaryClose = BoundaryClose;
+        }
+        public CrossStripMap(CrossStripMap m, int BoundaryClose = 0)
         {
             this.map1D = m.map1D;
             this.map = m.map;
@@ -66,6 +73,7 @@ namespace MeshGeneratorsLib.StripGenerator
             this.Count = m.Count;
             this.CountH = m.CountH;
             this.WaterLevel = m.WaterLevel;
+            this.BoundaryClose = m.BoundaryClose;
         }
         /// <summary>
         /// Вычисление узловой карты створа
@@ -91,7 +99,8 @@ namespace MeshGeneratorsLib.StripGenerator
             // максимальное количество узлов по глубине
             int CountH = (int)(H / dy) + 1;
             if (CountH < 5)
-                throw new Exception("Сетка вырождена по напрявлению Z");
+                CountH = 5;
+                //throw new Exception("Сетка вырождена по напрявлению Z");
             this.dy = dy;
             this.y0 = y0;
             this.Count = Count;
@@ -134,21 +143,44 @@ namespace MeshGeneratorsLib.StripGenerator
                     }
                 }
             }
-            if (Math.Abs(map1D[Count - 1] - map1D[Count - 2]) > 1)
+            switch (BoundaryClose)
             {
-                // цикл коррекции
-                for (int i = Count - 1; i > 0; i--)
-                {
-                    int dn = (int)map1D[i] - (int)map1D[i - 1];
-                    if (Math.Abs(dn) > 1)
+                case 0: // обратное сглаживание - артефактная сетка на крутых берегах
+                    if (Math.Abs(map1D[Count - 1] - map1D[Count - 2]) > 1)
                     {
-                        if (dn > 0)
-                            map1D[i - 1] = map1D[i] - 1;
-                        else
-                            map1D[i - 1] = map1D[i] + 1;
-                    }
+                        // цикл коррекции
+                        for (int i = Count - 1; i > 0; i--)
+                        {
+                            int dn = (int)map1D[i] - (int)map1D[i - 1];
+                            if (Math.Abs(dn) > 1)
+                            {
+                                if (dn > 0)
+                                    map1D[i - 1] = map1D[i] - 1;
+                                else
+                                    map1D[i - 1] = map1D[i] + 1;
+                            }
 
-                }
+                        }
+                    }
+                    break;
+                case 1:
+                    if (Math.Abs(map1D[Count - 1] - map1D[Count - 2]) > 2)
+                    {
+                        // цикл коррекции
+                        for (int i = Count - 1; i > 0; i--)
+                        {
+                            int dn = (int)map1D[i] - (int)map1D[i - 1];
+                            if (Math.Abs(dn) > 2)
+                            {
+                                if (dn > 0)
+                                    map1D[i - 1] = map1D[i] - 2;
+                                else
+                                    map1D[i - 1] = map1D[i] + 2;
+                            }
+
+                        }
+                    }
+                    break;
             }
 
             for (int i = 0; i < Count; i++)

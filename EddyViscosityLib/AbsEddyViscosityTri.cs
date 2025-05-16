@@ -18,12 +18,20 @@ namespace EddyViscosityLib
     using FEMTasksLib.FEMTasks.VortexStream;
     using MemLogLib.Reflection;
 
+    //public interface ITurbViscType
+    //{
+    //    /// <summary>
+    //    /// Тип модели
+    //    /// </summary>
+    //    ETurbViscType turbViscType { get; set; }
+    //}
+
     /// <summary>
     /// Базовый класс для расчета вихревой вязкости
     /// </summary>
     [Serializable]
     public abstract class AbsEddyViscosityTri<TParam>: AWRAP_FETaskTri 
-         where TParam : class, ITProperty<TParam> 
+         where TParam : class, ITProperty<TParam> //, ITurbViscType
     {
         #region Константы 
         /// <summary>
@@ -54,6 +62,8 @@ namespace EddyViscosityLib
         /// <summary>
         /// Тип модели
         /// </summary>
+
+        public ETurbViscType turbViscType { get=> eTurbViscType; set=> eTurbViscType= value; }
         protected ETurbViscType eTurbViscType;
         #region Параметры задачи
         /// <summary>

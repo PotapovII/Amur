@@ -39,8 +39,18 @@ namespace GeometryLib
         public void Init(double L1, double Lm1, double L2, double Lm2, double L3, double H)
         {
             name = "Функция трапецвидной каверны";
-            x0.Add(0); x0.Add(L1); x0.Add(Lm1 + L1); x0.Add(L2 + Lm1 + L1); x0.Add(Lm2 + L2 + Lm1 + L1); x0.Add(L3 + Lm2 + L2 + Lm1 + L1);
-            y0.Add(0); y0.Add(0); y0.Add(H); y0.Add(H); y0.Add(0); y0.Add(0);
+            x0.Add(0); 
+            x0.Add(L1); 
+            x0.Add(Lm1 + L1); 
+            x0.Add(L2 + Lm1 + L1); 
+            x0.Add(Lm2 + L2 + Lm1 + L1); 
+            x0.Add(L3 + Lm2 + L2 + Lm1 + L1);
+            y0.Add(0); 
+            y0.Add(0); 
+            y0.Add(H); 
+            y0.Add(H); 
+            y0.Add(0); 
+            y0.Add(0);
         }
     }
 }

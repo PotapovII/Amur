@@ -89,7 +89,7 @@ namespace NPRiverLib.APRiver1YD
                     FlagStartMu = true;
                     flagErr++;
                     // расчет  придонных касательных напряжений на дне
-                    tau = TausToVols(in bottom_x, in bottom_y);
+                    CalkTauBed(ref tau);
                     flagErr++;
                     MEM.Copy(ref eddyViscosity0, eddyViscosity);
                     time += dtime;
@@ -123,10 +123,12 @@ namespace NPRiverLib.APRiver1YD
         {
             // генерация сетки
             bool axisOfSymmetry = Params.axisSymmetry == 1 ? true : false;
+            CrossStripMeshOption op = new CrossStripMeshOption();
+            op.AxisOfSymmetry = axisOfSymmetry;
             if (meshGenerator == null)
-                meshGenerator = new HStripMeshGenerator(axisOfSymmetry);
-                //meshGenerator = new HStripMeshGenerator();
-            mesh = meshGenerator.CreateMesh(ref WetBed, waterLevel, bottom_x, bottom_y);
+                meshGenerator = new HStripMeshGenerator(op);
+            //meshGenerator = new HStripMeshGenerator();
+            mesh = meshGenerator.CreateMesh(ref WetBed, ref riverGates, waterLevel, bottom_x, bottom_y);
             right = meshGenerator.Right();
             left = meshGenerator.Left();
             // получение ширины ленты для алгебры

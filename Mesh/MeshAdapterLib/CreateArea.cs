@@ -98,6 +98,81 @@ namespace MeshAdapterLib
 
             return poly;
         }
+
+        public static IPolygon CreateRectangle_Tube(int Nx, int Ny, int Nr, double L = 10, double H = 5, double Xh = 5, double Yh = 0.6, double Rh = 0.5, bool hole=false, bool flag = false)
+        {
+            var poly = new Polygon();
+            List<Vertex> Points = new List<Vertex>();
+            List<int> Markers = new List<int>();
+            double dx = L / (Nx - 1);
+            double dy = H / (Ny - 1);
+            // дно
+            int label = 1;
+            for (int i = 0; i < Nx; i++)
+            { 
+                Points.Add(new Vertex(dx * i, 0, label)); 
+                Markers.Add(label); 
+            }
+            // исток
+            label = 2;
+            for (int j = 0; j < Ny; j++)
+            {
+                Points.Add(new Vertex(L, j * dy, label)); 
+                Markers.Add(label);
+            }
+            // WL
+            label = 3;
+            for (int i = 0; i < Nx; i++)
+            {
+                Points.Add(new Vertex(L - dx * i, H, label));
+                Markers.Add(label);
+            }
+            // вток
+            label = 4;
+            for (int j = 0; j < Ny; j++)
+            {
+                Points.Add(new Vertex(0, H - dy*j, label));
+                Markers.Add(label);
+            }
+            poly.Add(new Contour(Points, Markers));
+
+            if (hole == true)
+            {
+                Point center;
+                label = 5;
+                //bool flag = false;
+                Vertex[] hole0;
+                if (flag == false)
+                {
+                    hole0 = new Vertex[4]
+                       {
+                     new Vertex(L/2, 0.2, label),
+                     new Vertex(L/2+1, 0.2, label),
+                     new Vertex(L/2+1, 1.2, label),
+                     new Vertex(L/2, 1.2, label)
+                       };
+                    center = new Point(L / 2 + 0.5, .6);
+                }
+                else
+                {
+                    center = new Point(Xh, Yh);
+                    var points = new List<Vertex>(Nr);
+                    double x, y, dphi = 2 * Math.PI / Nr;
+                    for (int i = 0; i < Nr; i++)
+                    {
+                        x = center.X + Rh * Math.Cos(i * dphi);
+                        y = center.Y + Rh * Math.Sin(i * dphi);
+
+                        points.Add(new Vertex(x, y, label));
+                    }
+                    hole0 = points.ToArray();
+
+                }
+                poly.Add(new Contour(hole0, label), center);
+            }
+            return poly;
+        }
+
         public static IPolygon CreateATubePolygon(double L = 10, double H = 5, double Xh = 5, double Yh = 0.6, double Rh = 0.5, bool flag = false)
         {
             double h = 0.1;

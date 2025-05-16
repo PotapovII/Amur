@@ -15,7 +15,7 @@ namespace GeometryLib
     using CommonLib.Mesh;
 
     /// <summary>
-    /// Расширение точки 2 ее идентификатором
+    /// Расширение точки 2D ее идентификатором
     /// </summary>
     [Serializable]
     [DebuggerDisplay("ID {ID} [{X}, {Y}]")]

@@ -153,30 +153,32 @@ namespace MeshLib.Wrappers
                 uint i1 = knots[elem].Vertex2;
                 uint i2 = knots[elem].Vertex3;
                 //Координаты и площадь
-                S[elem] = X[i1] * Y[i2] + Y[i0] * X[i2] + X[i0] * Y[i1]
-                          - Y[i1] * X[i2] - X[i0] * Y[i2] - Y[i0] * X[i1];
-
-                double S3 = S[elem] / 3.0;
-                ElemS[i0] += S3;
-                ElemS[i1] += S3;
-                ElemS[i2] += S3;
+                double Se2 = (  X[i1] * Y[i2] + Y[i0] * X[i2] + X[i0] * Y[i1]
+                           - Y[i1] * X[i2] - X[i0] * Y[i2] - Y[i0] * X[i1] );
 
                 double[] dxs = { Math.Abs(X[i2] - X[i1]), Math.Abs(X[i0] - X[i2]), Math.Abs(X[i1] - X[i0]) };
                 Hx[elem] = dxs.Max() - dxs.Min();
                 double[] dys = { Math.Abs(Y[i1] - Y[i2]), Math.Abs(Y[i2] - Y[i0]), Math.Abs(Y[i0] - Y[i1]) };
                 Hy[elem] = dys.Max() - dys.Min();
 
-                dNdx[elem][0] = (Y[i1] - Y[i2]) / S[elem];
-                dNdx[elem][1] = (Y[i2] - Y[i0]) / S[elem];
-                dNdx[elem][2] = (Y[i0] - Y[i1]) / S[elem];
+                dNdx[elem][0] = (Y[i1] - Y[i2]) / Se2;
+                dNdx[elem][1] = (Y[i2] - Y[i0]) / Se2;
+                dNdx[elem][2] = (Y[i0] - Y[i1]) / Se2;
 
-                dNdy[elem][0] = (X[i2] - X[i1]) / S[elem];
-                dNdy[elem][1] = (X[i0] - X[i2]) / S[elem];
-                dNdy[elem][2] = (X[i1] - X[i0]) / S[elem];
+                dNdy[elem][0] = (X[i2] - X[i1]) / Se2;
+                dNdy[elem][1] = (X[i0] - X[i2]) / Se2;
+                dNdy[elem][2] = (X[i1] - X[i0]) / Se2;
 
-                aN[elem][0] = (X[i1] * Y[i2] - X[i2] * Y[i1]) / S[elem];
-                aN[elem][1] = (X[i2] * Y[i0] - X[i0] * Y[i2]) / S[elem];
-                aN[elem][2] = (X[i0] * Y[i1] - X[i1] * Y[i0]) / S[elem];
+                aN[elem][0] = (X[i1] * Y[i2] - X[i2] * Y[i1]) / Se2;
+                aN[elem][1] = (X[i2] * Y[i0] - X[i0] * Y[i2]) / Se2;
+                aN[elem][2] = (X[i0] * Y[i1] - X[i1] * Y[i0]) / Se2;
+
+                // поправкк от 23 03 2025
+                S[elem] = Se2 / 2.0;
+                double S3 = S[elem] / 3.0;
+                ElemS[i0] += S3;
+                ElemS[i1] += S3;
+                ElemS[i2] += S3;
             }
             TwoElement[] BoundElems = mesh.GetBoundElems();
             MEM.Alloc(mesh.CountBoundElements, ref Lb, "Lb");
@@ -215,7 +217,7 @@ namespace MeshLib.Wrappers
                     Y[eKnots[elem].Vertex3] += X[elem] * S3;
                 }
                 for (int i = 0; i < Y.Length; i++)
-                    Y[i] = 2*Y[i] /ElemS[i];
+                    Y[i] = Y[i] /ElemS[i];
             }
             catch (Exception ex)
             {

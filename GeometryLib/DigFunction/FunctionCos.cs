@@ -23,7 +23,8 @@ namespace GeometryLib
         /// <param name="x">координаты Х</param>
         /// <param name="y">координаты У</param>
         /// <param name="Count">количество узлов для русла</param>
-        public override void GetFunctionData(ref double[] x, ref double[] y, int Count)
+        public override void GetFunctionData(ref double[] x, ref double[] y,
+                            int Count = 10, bool revers = false)
         {
             MEM.Alloc<double>(Count, ref x);
             MEM.Alloc<double>(Count, ref y);
@@ -46,13 +47,15 @@ namespace GeometryLib
                     y[i] = FunctionValue(xi);
                 }
             }
+            if (revers == true)
+                MEM.Reverse(ref y);
         }
         /// <summary>
         /// Гауссовский холм
         /// </summary>
         public override double FunctionValue(double s)
         {
-            double y = H * Math.Sin(k * s);
+            double y = H * Math.Cos(k * s);
             return y;
         }
         public FunctionCos()
@@ -61,6 +64,14 @@ namespace GeometryLib
             double[] yy = { 0, 1 };
             SetFunctionData(xx, yy, "Функция Sin");
             Init(0.1, 0.05);
+        }
+        public FunctionCos(double amplitude, double L)
+        {
+            double[] xx = { 0, L };
+            double[] yy = { 0, L };
+            double sigma = 2 * Math.PI / L;
+            SetFunctionData(xx, yy, "Функция Cos");
+            Init(amplitude, 1);
         }
         public FunctionCos(double amplitude, double sigma, double[] xx, double[] yy)
         {

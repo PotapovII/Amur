@@ -13,9 +13,9 @@
         [STAThread]
         static void Main(string[] args)
         {
-            SavePoint data = new SavePoint();
-            Form form = new ViForm(data);
-            form.ShowDialog();
+            //SavePoint data = new SavePoint();
+            //Form form = new ViForm(data);
+            //form.ShowDialog();
         }
     }
 }

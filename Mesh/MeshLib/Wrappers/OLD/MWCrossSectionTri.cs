@@ -422,6 +422,8 @@ namespace MeshLib.Wrappers
                 HPoint tau = pe - pw;
                 HPoint normal = tau.GetOrt();
                 HPoint P = p - normal * delta;
+                if(P.Y > p.Y)
+                    P = p + normal * delta;
                 pLengthWaterLevel[nod] = delta;
                 waterLevelPoint[nod] = P;
             }

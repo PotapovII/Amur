@@ -526,8 +526,10 @@ namespace RenderLib
                         // создаем объект BinaryFormatter
                         BinaryFormatter formatter = new BinaryFormatter();
                         // получаем поток, куда будем записывать сериализованный объект
-                        using (FileStream fs = new FileStream(saveFileDialog1.FileName, FileMode.OpenOrCreate))
+                        using (FileStream fs = new FileStream(saveFileDialog1.FileName, 
+                            FileMode.OpenOrCreate))
                         {
+                            sp.Name = Path.GetFileNameWithoutExtension(saveFileDialog1.FileName);
                             formatter.Serialize(fs, sp);
                         }
                         Logger.Instance.Info("Сохранение успешно:");

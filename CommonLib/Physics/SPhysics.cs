@@ -563,7 +563,8 @@ namespace CommonLib.Physics
         /// </summary>
         public void GetLocalBedLoadParams(double roughness, ref double tau0, ref double tanphi, ref double G1)
         {
-            double d50 = 0.05 * roughness;
+            double d50 = 0.005 * roughness;
+            //double d50 = Convert_ks_to_d50(roughness, H)
             // тангенс угла внешнего откоса
             if (avtoPhi == true)
                 tanphi = 1.15 * Math.Pow(d50, 1.0 / 7);
@@ -632,9 +633,8 @@ namespace CommonLib.Physics
             //
             //d50 = 0.00071;
             //d50 = 0.00022;
-            d50 = 0.002;
+            d50 = 0.0005;
             // 
-
             epsilon = 0.35;
             kappa = 0.25;
             cx = 0.5;
@@ -692,6 +692,35 @@ namespace CommonLib.Physics
             else
                 return 5.75 * Math.Log10(12);
         }
+        /// <summary>
+        /// Расчет шероховатости по среднему диаметру песка в диапазоне
+        /// 0.0002 м < d50 < 0.003 м
+        /// </summary>
+        /// <param name="d50"></param>
+        /// <param name="H"></param>
+        /// <returns></returns>
+        public double Convert_d50_to_ks(double d50, double H)
+        {
+            double A = 3.25;
+            double B = 12;
+            return B * H / Math.Exp(A * kappa_w * Math.Pow(H / d50, 6));
+        }
+        /// <summary>
+        /// Расчет среднего диаметра песка по шероховатости в диапазоне
+        /// 0.0002 м < d50 < 0.01 м
+        /// 0.05 < ks < 0.8
+        /// </summary>
+        /// <param name="d50"></param>
+        /// <param name="H"></param>
+        /// <returns></returns>
+        public double Convert_ks_to_d50(double d50, double H)
+        {
+            double A = 3.25;
+            double B = 12;
+            return H * Math.Pow(((A * kappa_w) / Math.Log(B * H / ks)), 6);
+        }
+
+
 
         /// <summary>
         /// Вычисление числа Рауза
@@ -824,9 +853,53 @@ namespace CommonLib.Physics
             return WW.FunctionValue(d50);
         }
 
-    #endregion
+        #endregion
+        /// <summary>
+        /// Таблица удельного сцепления песков разной крупности
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="eps"></param>
+        /// <returns></returns>
+        public static double GetAdhesion(double d, double eps = 0.45)
+        {
+            if (eps > 0.75) 
+            {
+                return 0;
+            }
+            if (eps < 0.5 && eps <= 0.55)
+            {
+                if (d <= 0.0025) return 0;
+                if (d > 0.0025 && d > 0.002) return 0.0;
+                if (d > 0.002 &&  d > 0.001) return 0.01;
+                if (d > 0.001 &&  d > 0.0005) return 0.02;
+                if (d > 0.0005 && d > 0.00025) return 0.04;
+                if (d > 0.00025 && d > 0.0001) return 0.06;
+                if (d > 0.00025 && d > 0.0001) return 0.08;
+            }
+            if (eps < 0.45 && eps <= 0.5)
+            {
+                if (d <= 0.0025) return 0.02;
+                if (d > 0.0025 && d > 0.002) return 0.3;
+                if (d > 0.002 && d > 0.001) return 0.06;
+                if (d > 0.001 && d > 0.0005) return 0.08;
+                if (d > 0.0005 && d > 0.00025) return 0.010;
+                if (d > 0.00025 && d > 0.0001) return 0.012;
+                if (d > 0.00025 && d > 0.0001) return 0.016;
+            }
+            if (eps < 0.35 && eps <= 0.45)
+            {
+                if (d <= 0.0025) return 0.04;
+                if (d > 0.0025 && d > 0.002) return 0.6;
+                if (d > 0.002 && d > 0.001) return 0.08;
+                if (d > 0.001 && d > 0.0005) return 0.012;
+                if (d > 0.0005 && d > 0.00025) return 0.016;
+                if (d > 0.00025 && d > 0.0001) return 0.020;
+                if (d > 0.00025 && d > 0.0001) return 0.025;
+            }
+            return 0;
+        }
 
-    #region Вычисление придонной концентрации
+        #region Вычисление придонной концентрации
     /// <summary>
     /// Вычисление придонной концентрации Потапов И И (2024)
     /// </summary>

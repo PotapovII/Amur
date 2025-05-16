@@ -64,7 +64,7 @@ namespace MeshGeneratorsLib
             MEM.VAlloc(Knots.Length, markBC, ref MarkBC, "MarkBC");
             for (int i = 0; i < Knots.Length; i++)
             {
-                Knots[i].type = markBC;
+                Knots[i].marker = markBC;
             }
         }
         public HMapSegment(HMapSegment s)
@@ -90,14 +90,14 @@ namespace MeshGeneratorsLib
             Knots = null;
         }
         /// <summary>
-        /// Установить флаг сегмента в type узлов
+        /// Установить флаг сегмента в marker узлов
         /// </summary>
         public void SetMarkBCToKnots()
         {
             if (Knots == null) return;
             for (int i = 0; i < Knots.Length; i++)
             {
-                Knots[i].type = MarkBC[i];
+                Knots[i].marker = MarkBC[i];
             }
         }
         #region IComparable

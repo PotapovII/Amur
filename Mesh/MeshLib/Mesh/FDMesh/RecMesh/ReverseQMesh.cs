@@ -220,7 +220,7 @@ namespace MeshLib
                 Function.GetFunctionData(ref bx, ref by, NY);
                 for (int i = 0; i < NY; i++)
                 {
-                    yy[0][i] = H - by[i];
+                    yy[0][i] = H;// - by[i];
                     yy[nx][i] = by[i];
                 }
                 for (int i = 0; i < NY; i++)

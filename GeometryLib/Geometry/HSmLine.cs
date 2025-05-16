@@ -119,7 +119,7 @@ namespace GeometryLib.Geometry
             bool LinkB = (int.Parse(mas[2]) == 1) ? true : false;
             int Selected = int.Parse(mas[3]);
             CloudKnot A = CloudKnot.ReadCloudKnot(mas, 5);
-            CloudKnot B = CloudKnot.ReadCloudKnot(mas, 15);
+            CloudKnot B = CloudKnot.ReadCloudKnot(mas, 17);
             HSmLine sLine = new HSmLine(A, B, Count, LinkA, LinkB, Selected);
             return sLine;
         }

@@ -23,7 +23,8 @@ namespace GeometryLib
         /// <param name="x">координаты Х</param>
         /// <param name="y">координаты У</param>
         /// <param name="Count">количество узлов для русла</param>
-        public override void GetFunctionData(ref double[] x, ref double[] y, int Count)
+        public override void GetFunctionData(ref double[] x, ref double[] y,
+             int Count = 10, bool revers = false)
         {
             MEM.Alloc<double>(Count, ref x);
             MEM.Alloc<double>(Count, ref y);
@@ -46,6 +47,8 @@ namespace GeometryLib
                     y[i] = FunctionValue(xi);
                 }
             }
+            if (revers == true)
+                MEM.Reverse(ref y);
         }
         /// <summary>
         /// Гауссовский холм

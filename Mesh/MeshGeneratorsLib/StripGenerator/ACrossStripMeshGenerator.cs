@@ -25,8 +25,8 @@ namespace MeshGeneratorsLib.StripGenerator
         /// <summary>
         /// Конструктор
         /// </summary>
-        public ACrossStripMeshGenerator(bool axisOfSymmetry = false) 
-            : base(axisOfSymmetry) 
+        public ACrossStripMeshGenerator(CrossStripMeshOption Option) 
+            : base(Option) 
         {
         }
         /// <summary>
@@ -42,7 +42,7 @@ namespace MeshGeneratorsLib.StripGenerator
             if (Count == 0)
                 Count = CountBed;
             double ymin = yy.Min();
-            Map = new CrossStripMap();
+            Map = new CrossStripMap(Option.BoundaryClose);
             Map.CreateMap(spline, WaterLevel, ymin, Count, width, left, right, dryLeft, dryRight);
         }
     }

@@ -130,8 +130,6 @@ namespace CommonLib
         /// <param name="Vx">Аргументы функции поля</param>
         /// <param name="Vy">Значение функции поля</param>
         void Add(string Name, double[] Vx, double[] Vy);
-
-        
         /// <summary>
         /// Добавление поля не привязанного к узлам сетки
         /// </summary>
@@ -140,8 +138,11 @@ namespace CommonLib
         /// <param name="Value">Значение функции поля</param>
         void AddCurve(string Name, double[] X, double[] Y, 
             TypeGraphicsCurve TGraphicsCurve = TypeGraphicsCurve.AreaCurve);
-
-
+        /// <summary>
+        /// Удаление кривой по имени
+        /// </summary>
+        /// <param name="Name">Название поля</param>
+        void RemoveCurve(string Name);
         /// <summary>
         /// Добавить кривую в контейнер кривых IDigFunction
         /// </summary>

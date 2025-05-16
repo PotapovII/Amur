@@ -268,4 +268,5 @@ namespace NPRiverLib.ABaseTask
         #endregion
 
     }
+
 }

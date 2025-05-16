@@ -39,7 +39,7 @@ namespace EddyViscosityLib
             try
             {
                 double A_vd = 26;
-                IMWCrossSection wm = (IMWCrossSection)wMesh;
+                
                 if (Ux.Sum() == 0 || Params.u_start == ECalkDynamicSpeed.u_start_J ||
                                      Params.u_start == ECalkDynamicSpeed.u_start_M)
                 {
@@ -64,16 +64,17 @@ namespace EddyViscosityLib
                 }
                 else
                 {
-                    double[] Us = null;
-                    wm.CalkBoundary_U_star(Ux, ref Us);
-                    for (int node = 0; node < mesh.CountKnots; node++)
-                    {
-                        double u_star = Us[node];
-                        double z = Distance[node];
-                        double zplus = u_star * z / nu;
-                        double mu_t0 = rho_w * u_star * kappa_w * z * (1 - Math.Exp(-zplus / A_vd));
-                        eddyViscosity[node] = mu_t0 + mu;
-                    }
+                    //IMWCrossSection wm = (IMWCrossSection)wMesh;
+                    //double[] Us = null;
+                    //wm.CalkBoundary_U_star(Ux, ref Us);
+                    //for (int node = 0; node < mesh.CountKnots; node++)
+                    //{
+                    //    double u_star = Us[node];
+                    //    double z = Distance[node];
+                    //    double zplus = u_star * z / nu;
+                    //    double mu_t0 = rho_w * u_star * kappa_w * z * (1 - Math.Exp(-zplus / A_vd));
+                    //    eddyViscosity[node] = mu_t0 + mu;
+                    //}
                 }
             }
             catch (Exception ee)

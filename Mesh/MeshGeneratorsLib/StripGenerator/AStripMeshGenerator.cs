@@ -21,9 +21,9 @@ namespace MeshGeneratorsLib.StripGenerator
     public abstract class AStripMeshGenerator : IStripMeshGenerator
     {
         /// <summary>
-        /// Ось симметрии
+        /// Опции для генерации Ленточной КЭ сетки 
         /// </summary>
-        public bool AxisOfSymmetry { get; }
+        public CrossStripMeshOption Option { get; }
         /// <summary>
         /// Левая береговая точка
         /// </summary>
@@ -66,12 +66,13 @@ namespace MeshGeneratorsLib.StripGenerator
         protected int beginRight;
         protected int CountBed = 0;
 
-        public AStripMeshGenerator(bool axisOfSymmetry = false)
+        public AStripMeshGenerator(CrossStripMeshOption Option)
         {
-            AxisOfSymmetry = axisOfSymmetry;
+            this.Option = Option;
         }
         
-        public virtual void CalkBedFunction(ref double WetBed, double WaterLevel, double[] xx, double[] yy)
+        public virtual void CalkBedFunction(ref double WetBed, 
+                    double WaterLevel, double[] xx, double[] yy)
         {
             // Поиск береговых точек створа
             LookingBoundary(WaterLevel, xx, yy, out beginLeft, out beginRight);
@@ -90,7 +91,8 @@ namespace MeshGeneratorsLib.StripGenerator
         /// <param name="yy"></param>
         /// <param name="beginLeft"></param>
         /// <param name="beginRight"></param>
-        protected void CreateBedWet(ref double WetBed, double WaterLevel, double[] xx, double[] yy, int beginLeft, int beginRight)
+        protected void CreateBedWet(ref double WetBed, double WaterLevel, 
+                    double[] xx, double[] yy, int beginLeft, int beginRight)
         {
             List<HKnot> pointsBed = new List<HKnot>();
             int label = 1;
@@ -161,7 +163,8 @@ namespace MeshGeneratorsLib.StripGenerator
         /// <param name="N"></param>
         /// <param name="beginLeft"></param>
         /// <param name="beginRight"></param>
-        protected void LookingBoundary(double WaterLevel, double[] xx, double[] yy, out int beginLeft, out int beginRight)
+        protected void LookingBoundary(double WaterLevel, double[] xx, double[] yy, 
+                                            out int beginLeft, out int beginRight)
         {
             int N = xx.Length - 1;
             if (yy[0] < WaterLevel) // левый берег затоплен
@@ -230,7 +233,8 @@ namespace MeshGeneratorsLib.StripGenerator
         /// <param name="yy">координаты дна по Y</param>
         /// <param name="Count">Количество узлов по дну</param>
         /// <returns>КЭ сетка</returns>
-        public abstract IMesh CreateMesh(ref double GR, double WaterLevel, double[] xx, double[] yy, int Count = 0);
+        public abstract IMesh CreateMesh(ref double GR, ref int[][] riverGates,
+                    double WaterLevel, double[] xx, double[] yy, int Count = 0);
     }
 
 }

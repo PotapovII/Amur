@@ -106,21 +106,23 @@
             //CrossStripMeshGeneratorTri sg = new CrossStripMeshGeneratorTri();
             //mesh = sg.CreateMesh(ref GR, WL, x, y);
             IStripMeshGenerator sg = null;
-            bool AxisOfSymmetry = false;
+            CrossStripMeshOption op = new CrossStripMeshOption();
             switch (lb_MeshGen.SelectedIndex)
             {
                 case 0:
-                    sg = new HStripMeshGeneratorTri();
+                    sg = new HStripMeshGeneratorTri(op);
                     break;
                 case 1:
-                    sg = new CrossStripMeshGeneratorTri();
+                    sg = new CrossStripMeshGeneratorTri(op);
                     break;
                 case 2:
-                    sg = new CrossStripMeshGenerator(AxisOfSymmetry,TypeMesh.Triangle);
+                    sg = new CrossStripMeshGenerator(op);
                     break;
             }
             //WL = 3;
-            mesh = sg.CreateMesh(ref GR, WL, x, y);
+            int[][] riverGates = null;
+            mesh = sg.CreateMesh(ref GR, ref riverGates, WL, x, y);
+
             ShowMesh();
         }
         protected void ShowMesh()

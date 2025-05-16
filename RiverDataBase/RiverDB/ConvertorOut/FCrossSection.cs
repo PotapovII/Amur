@@ -7,27 +7,29 @@
 //---------------------------------------------------------------------------
 namespace RiverDB.ConvertorOut
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Windows.Forms;
+
     using MemLogLib;
     using ConnectLib;
-    using GeometryLib;
+    using CommonLib;
     using CommonLib.Function;
+
+    using GeometryLib;
 
     using RiverDB.Report;
     using RiverDB.FormsDB;
 
-    using System;
-    using System.IO;
-    using System.Windows.Forms;
-    using RenderLib;
-    using MeshLib;
-    using CommonLib;
-    using System.Threading.Tasks;
     using NPRiverLib.APRiver1YD.Params;
-    using System.Reflection;
-    using RenderLib.PDG;
-    using System.Linq;
-    using MeshGeneratorsLib.StripGenerator;
+
     using HelpLib;
+    using RenderLib;
+    using RenderLib.PDG;
+
+    using MeshLib;
+    using MeshGeneratorsLib.StripGenerator;
 
     public partial class FCrossSection : Form
     {
@@ -39,6 +41,10 @@ namespace RiverDB.ConvertorOut
         /// уровни(нь) свободной поверхности потока во времени
         /// </summary>
         protected IDigFunction WaterLevels;
+        /// <summary>
+        /// уровни(нь) свободной поверхности потока во времени
+        /// </summary>
+        protected IDigFunction CSWaterLevels;
         /// <summary>
         /// расход потока во времени
         /// </summary>
@@ -86,6 +92,7 @@ namespace RiverDB.ConvertorOut
         /// отметка поймы по гидропосту по балтийской ситеме
         /// </summary>
         double floodplain = 0;
+
         const string Ext_RvY = ".rvy";
         const string Ext_Crf = ".crf";
         double[] Zeta = null;
@@ -157,27 +164,66 @@ namespace RiverDB.ConvertorOut
             MEM.Alloc(Zeta.Length, ref Ux);
             MEM.Alloc(Zeta.Length, ref Uy);
             MEM.Alloc(Zeta.Length, ref sx);
+
             ChangGP_WL();
-            // геометрия дна
-            
+
+            //    геометрия дна
+            //     A ---                                              floodplain + 1  возвышение над поймой
+            //          ----
+            //               ---- B  ------------------------------   floodplain       пойма   
+            //                        \
+            //                            \
+            //                                 C ---------------------- WL 
+            //                                    \
+            //                                       \
+            //                                          \        
+            //                                            \ ----------  дно
+            //     |---- Ls -----|---- L1 ----|                                 
+            // Zeta[0]        Zeta[1]       Zeta[2] ...                            
             double xMax = s.Max();
             double xMin = s.Min();
             double Ls = 0.1 * (xMax - xMin);
-            double mZeta = Zerro + 0.01 * WLRiver;
-            double H1 = floodplain - mZeta;
-            double L1 = 2 * H1;
-            double dFp = 1;
-            if (floodplain + 1 - mZeta < 0)
-                dFp = mZeta + 1 - floodplain;
-            if (L1 > Ls) Ls = 2 *L1;
-            Zeta[0] = floodplain + 1;
+            // текущий уровень WL по гидропосту
+            double waterLevel = Zerro + 0.01 * WLRiver;
+            // возвышение над уровнем поймы
+            double H1 = floodplain - waterLevel;
+            // ширина участка между отметками от WL до  floodplain (уклон 30 градусов) + 1 метр
+            double L1 = 2 * H1 + 1; 
+            // если вода вышла на пойму
+            if (L1 > Ls)  Ls = 2 *L1;
+            
+            Zeta[0] = floodplain + 5;
             Zeta[1] = floodplain;
             Zeta[Zeta.Length - 2] = floodplain;
-            Zeta[Zeta.Length - 1] = floodplain + dFp;
-            sx[0] = xMin - Ls;
-            sx[1] = xMin - L1;
-            sx[sx.Length - 2] = xMax + L1;
-            sx[sx.Length - 1] = xMax + Ls;
+            Zeta[Zeta.Length - 1] = floodplain + 5;
+
+            double[] wx = new double[2];
+            if (s[0] < xMax)
+            {
+                sx[0] = xMin - Ls;
+                sx[1] = xMin - L1;
+
+                sx[sx.Length - 2] = xMax + L1;
+                sx[sx.Length - 1] = xMax + Ls;
+                wx[0] = sx[0];
+                wx[1] = sx[sx.Length - 1];
+
+            }
+            else
+            {
+                sx[0] = xMax + Ls;
+                sx[1] = xMax + L1;
+
+                sx[sx.Length - 2] = xMin - L1;
+                sx[sx.Length - 1] = xMin - Ls;
+                wx[0] = sx[0];
+                wx[1] = sx[sx.Length - 1];
+
+            }
+            double[] wH = { waterLevel, waterLevel };
+            CSWaterLevels = new DigFunction(wx, wH, "Свободная поверхность");
+
+
             tbS0.Text = sx[0].ToString("F4");
             tbSL.Text = sx[sx.Length - 1].ToString("F4");
             tbks.Text = ks0.ToString("F4");
@@ -189,11 +235,12 @@ namespace RiverDB.ConvertorOut
                 sx[i + 2] = s[i];
                 // вычислени отметок дна по глубинам,
                 // отметоки гидпопоста и текуше глубины по гидропосту
-                Zeta[i + 2] = mZeta - Depth[i];
+                Zeta[i + 2] = waterLevel - Depth[i];
                 // перевод размерности из км/час в м/с
                 Ux[i + 2] = Vn[i] / 3.6;
                 Uy[i + 2] = Vt[i] / 3.6;
             }
+            
             for (int i = 0; i < ks.Length; i++)
                 ks[i] = ks0;
             Geometry = new DigFunction(sx, Zeta, "Геометрия створа");
@@ -209,7 +256,9 @@ namespace RiverDB.ConvertorOut
             pGridTask.SelectedObject = p;
             int splitterPositionCP = pGridTask.GetInternalLabelWidth();
         }
-
+        /// <summary>
+        /// Определение времени расчета, уровня свободной поверхности, и расхода
+        /// </summary>
         public void ChangGP_WL()
         {
             ConnectDB.PlaceInfo(placeID, ref NameGP, ref X, ref Y, ref Zerro, ref floodplain);
@@ -221,8 +270,11 @@ namespace RiverDB.ConvertorOut
             double[] t = null;
             double[] wl = null;
             double[] qr = null;
+            // если дата начала и конца расчетного периода совподают
+            // ставим текущий уровень свободной поверхности, и расхода
             if (tb_DataEnd.Text.Trim() == tb_Data.Text.Trim())
             {
+                // WLRiver хранится в БД в сантиметрах
                 WLRiver = ConnectDB.WaterLevelData(Data, placeID);
                 QRiver = riverFlow(WLRiver);
                 tb_RF.Text = QRiver.ToString("F1");
@@ -308,6 +360,9 @@ namespace RiverDB.ConvertorOut
             sp.AddCurve(VelocityX);
             sp.AddCurve(VelocityY);
             sp.AddCurve(Roughness);
+            if(CSWaterLevels!=null)
+                sp.AddCurve(CSWaterLevels);
+
             if (formCL.CloseDO == true)
             {
                 formCL = new FVCurves(sp);
@@ -315,8 +370,16 @@ namespace RiverDB.ConvertorOut
             }
             else
             {
-                formCL.SetSavePoint(sp);
-                formCL.Show();
+                try
+                {
+                    formCL.SetSavePoint(sp);
+                    formCL.Show();
+                }
+                catch
+                {
+                    formCL = new FVCurves(sp);
+                    formCL.Show();
+                }
             }
         }
 
@@ -332,8 +395,16 @@ namespace RiverDB.ConvertorOut
             }
             else
             {
-                formTM.SetSavePoint(sp);
-                formTM.Show();
+                try
+                {
+                    formTM.SetSavePoint(sp);
+                    formTM.Show();
+                }
+                catch 
+                {
+                    formTM = new FVCurves(sp);
+                    formTM.Show();
+                }
             }
         }
 
@@ -426,7 +497,59 @@ namespace RiverDB.ConvertorOut
                 pnRF.Visible = false;
         }
 
+        private void btCSMesh_Click(object sender, EventArgs e)
+        {
+            try 
+            {
+                /// координаты дна по оси х
+                double[] bottom_x = null;
+                /// координаты дна по оси у
+                double[] bottom_y = null;
+                /// <summary>
+                /// Длина смоченного периметра
+                /// </summary>
+                double WetBed = 0;
+                RSCrossParams p = (RSCrossParams)pGridTask.SelectedObject;
+                // получение отметок дна
+                Geometry.GetFunctionData(ref bottom_x, ref bottom_y, p.CountBLKnots);
+                // начальный уровень свободной поверхности
+                var waterLevel = WaterLevels.FunctionValue(0);
+                // начальный расход потока
+                var riverFlowRate = FlowRate.FunctionValue(0);
 
+                bool axisOfSymmetry = p.axisSymmetry == 1 ? true : false;
+                CrossStripMeshOption op = new CrossStripMeshOption();
+                op.AxisOfSymmetry = axisOfSymmetry;
+                var meshGenerator = SMGManager.GetMeshGenerator(p.typeMeshGenerator, op);
+                /// сечения створа
+                int[][] riverGates = null;
+                IMesh mesh = meshGenerator.CreateMesh(ref WetBed,ref riverGates, waterLevel, bottom_x, bottom_y);
+                ShowMesh(mesh);
+            } 
+            catch(Exception ex) 
+            {
+                Logger.Instance.Info(ex.Message);
+            }
+        }
+        /// <summary>
+        /// Отобразить сетку в отдельном окне
+        /// </summary>
+        /// <param name="meshRiver"></param>
+        public void ShowMesh(IMesh mesh)
+        {
+            if (mesh != null)
+            {
+                SavePoint data = new SavePoint("Триангуляция в контуре по точкам наблюдения");
+                data.SetSavePoint(0, mesh);
+                double[] x = mesh.GetCoords(0);
+                double[] y = mesh.GetCoords(1);
+                data.Add("Координата Х", x);
+                data.Add("Координата Y", y);
+                Form form = new ViForm(data);
+                form.Show();
+            }
+
+        }
 
         private void rbAmur_CheckedChanged(object sender, EventArgs e)
         {

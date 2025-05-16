@@ -511,13 +511,13 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                 hice /= CountElementKnots;
                 double h_clear = h - hice;
                 double Ks = ks;
-                double Ux = 0, V = 0;
+                double Ux = 0, Uy = 0;
                 if (h > Params.H_minGroundWater)
                 {
                     Ux = qx / h_clear;
-                    V = qy / h_clear;
+                    Uy = qy / h_clear;
                 }
-                double A = 12.0 * h_clear / (Ks);
+                double A = 12.0 * h_clear /Ks;
                 double e2 = E * E;
                 double Cs;
                 if (A > e2)
@@ -525,10 +525,10 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                 else
                     Cs = 2.5 + 2.5 / e2 * A;
                 double Cs2 = Cs * Cs;
-                double mU = Math.Sqrt(Ux * Ux + V * V);
+                double mU = Math.Sqrt(Ux * Ux + Uy * Uy);
 
                 double tx = rho_w * Ux * mU / Cs2;
-                double ty = rho_w * V * mU / Cs2;
+                double ty = rho_w * Uy * mU / Cs2;
                 if (StressesFlag.Nod == stressFlag)
                 {
                     double S = meshRiver.ElemSquare(elem) / 3;

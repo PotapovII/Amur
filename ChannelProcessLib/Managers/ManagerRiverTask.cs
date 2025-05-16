@@ -3,31 +3,32 @@
 //               гидродинамических и русловых процессов
 //                      - (C) Copyright 2019 -
 //                       ALL RIGHT RESERVED
-//                        ПРОЕКТ "BLLib"
+//                        ПРОЕКТ "BedLoadLib"
 //---------------------------------------------------------------------------
 //                   разработка: Потапов И.И.
 //                     27.12.19 - 04.09.21
 //---------------------------------------------------------------------------
-//            Модуль BLLib для расчета донных деформаций 
+//            Модуль BedLoadLib для расчета донных деформаций 
 //             (учет движения только влекомых наносов)
 //    по русловой модели Петрова А.Г. и Потапова И.И. от 2014 г.
 //---------------------------------------------------------------------------
 namespace ChannelProcessLib
 {
+    using System.Collections.Generic;
+
     using CommonLib;
+    using NPRiverLib.ABaseTask;
+    using NPRiverLib.APRiver_1XD;
     using NPRiverLib.APRiver1YD;
 
-    using System.Collections.Generic;
     using NPRiverLib.APRiver_1XD.River2D_FVM_ke;
     using NPRiverLib.APRiver_1XD.River1DSW;
+    
     using NPRiverLib.APRiver1XD.BEM_River2D;
     using NPRiverLib.APRiver2XYD.River2DFST;
     using NPRiverLib.APRiver1XD.KGD_River2D;
-    using NPRiverLib.ABaseTask;
+    
     using NPRiverLib.APRiver2XYD.River2DSW;
-    using RiverLib;
-    using NPRiverLib.APRiver_1XD;
-
     /// <summary>
     /// Менеджер решателей для задач расчета речного потока
     /// </summary>
@@ -54,11 +55,8 @@ namespace ChannelProcessLib
             tasks.Add(new CPatankarStream1XD());
             // течение под цилиндром
             tasks.Add(new RiverBEMCircleMesh1XD(new RiverBEMParams1XD()));
-
             #endregion
-
             #region 1YD течение в створе реки
-
                 tasks.Add(new TriSecRiver_1YD());
                 tasks.Add(new TriSecRiverTask1YBase());
                 tasks.Add(new TriSecRiverTask1YD());
@@ -68,7 +66,7 @@ namespace ChannelProcessLib
                 //tasks.Add(new RiverSectionalQuad(new RiverStreamQuadParams()));
                 //tasks.Add(new RiverSectionaChannel(new RiverStreamQuadParams()));
                 //tasks.Add(new RiverSectionaChannelQuad(new RiverStreamQuadParams()));
-                tasks.Add(new RiverSectionaChannelTrapez(new RiverStreamQuadParams()));
+       //         tasks.Add(new RiverSectionaChannelTrapez(new RiverStreamQuadParams()));
                 //tasks.Add(new RiverSectionalQuad_SV(new RiverStreamQuadParams()));
                 //tasks.Add(new RiverSectionalQuad_Phi(new RiverStreamQuadParams()));
 

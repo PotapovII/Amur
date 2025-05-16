@@ -530,7 +530,7 @@ namespace MeshGeneratorsLib
                 for (int j = Left[i]; j < Right[i]; j++)
                 {
                     id = Map[i][j];
-                    SMesh.BNods[n] = new FENods(id, pMap[i][j].type);
+                    SMesh.BNods[n] = new FENods(id, pMap[i][j].marker);
                     B.Add(SMesh.BNods[n]);
                     n++;
                 }
@@ -540,7 +540,7 @@ namespace MeshGeneratorsLib
                 for (i = Right.Count - 1; i > -1; i--)
                 {
                     id = Map[i][Right[i] - 1];
-                    SMesh.BNods[n] = new FENods(id, pMap[i][Right[i] - 1].type);
+                    SMesh.BNods[n] = new FENods(id, pMap[i][Right[i] - 1].marker);
                     R.Add(SMesh.BNods[n]);
                     n++;
                 }
@@ -551,7 +551,7 @@ namespace MeshGeneratorsLib
                 for (int j = Right[i] - 1; j > Left[i] - 1; j--)
                 {
                     id = Map[i][j];
-                    SMesh.BNods[n] = new FENods(id, pMap[i][j].type);
+                    SMesh.BNods[n] = new FENods(id, pMap[i][j].marker);
                     T.Add(SMesh.BNods[n]);
                     n++;
                 }
@@ -561,7 +561,7 @@ namespace MeshGeneratorsLib
                 for (i = 0; i < Left.Count; i++)
                 {
                     id = Map[i][Left[i]];
-                    SMesh.BNods[n] = new FENods(id, pMap[i][Left[i]].type);
+                    SMesh.BNods[n] = new FENods(id, pMap[i][Left[i]].marker);
                     L.Add(SMesh.BNods[n]);
                     n++;
                 }

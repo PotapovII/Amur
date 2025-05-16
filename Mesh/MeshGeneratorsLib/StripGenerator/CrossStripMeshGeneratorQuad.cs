@@ -25,9 +25,9 @@ namespace MeshGeneratorsLib.StripGenerator
     public class CrossStripMeshGeneratorQuad : IStripMeshGenerator
     {
         /// <summary>
-        /// Ось симметрии
+        /// Опции для генерации Ленточной КЭ сетки 
         /// </summary>
-        public bool AxisOfSymmetry { get; }
+        public CrossStripMeshOption Option { get; }
 
         protected double[] xx, yy;
         protected HKnot left, right;
@@ -71,10 +71,6 @@ namespace MeshGeneratorsLib.StripGenerator
         /// </summary>
         protected double dy, dz;
         /// <summary>
-        /// Тип сетки
-        /// </summary>
-        protected TypeMesh typeMesh;
-        /// <summary>
         /// Создаваемая сетка
         /// </summary>
         protected ComplecsMesh mesh = null;
@@ -83,10 +79,9 @@ namespace MeshGeneratorsLib.StripGenerator
         /// </summary>
         /// <param name="MAXElem">максимальное количество КЭ сетки</param>
         /// <param name="MAXKnot">максимальное количество узлов сетки</param>
-        public CrossStripMeshGeneratorQuad(TypeMesh typeMesh = TypeMesh.Triangle, bool axisOfSymmetry = false)
+        public CrossStripMeshGeneratorQuad(CrossStripMeshOption Option)
         {
-            this.typeMesh = typeMesh;
-            AxisOfSymmetry = axisOfSymmetry;
+            this.Option = Option;
         }
 
         public void GetMap(ref uint[][] map)
@@ -98,7 +93,8 @@ namespace MeshGeneratorsLib.StripGenerator
                     map[i][j] = k++;
         }
 
-        public IMesh CreateMesh(ref double WetBed, double WaterLevel, double[] xx, double[] yy, int Ny = 0)
+        public IMesh CreateMesh(ref double WetBed, ref int[][] riverGates, 
+                double WaterLevel, double[] xx, double[] yy, int Ny = 0)
         {
             int elem = 0;
             uint[][] map = null;

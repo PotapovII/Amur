@@ -581,6 +581,8 @@ namespace TestSUPG
                 case 5:
                 case 6:
                 case 7:
+                case 8:
+                case 9:
                     lb_WL.Visible = true;
                     lb_H.Visible = true;
                     lb_BL.Visible = false;
@@ -588,7 +590,7 @@ namespace TestSUPG
                     tb_H.Visible = true;
                     tb_BL.Visible = false;
                     break;
-                case 8:
+                case 10:
                     lb_WL.Visible = false;
                     lb_H.Visible = false;
                     lb_BL.Visible = false;
@@ -650,19 +652,22 @@ namespace TestSUPG
                 MEM.Alloc(Ny, ref xx);
                 MEM.Alloc(Ny, ref yy);
                 IStripMeshGenerator sg = null;
+                CrossStripMeshOption op = new CrossStripMeshOption();
+                op.AxisOfSymmetry = AxisOfSymmetry;
+                op.typeMesh = TypeMesh.Triangle;
                 switch (lb_MeshGen.SelectedIndex)
                 {
                     case 0:
-                        sg = new HStripMeshGeneratorTri(AxisOfSymmetry);
+                        sg = new HStripMeshGeneratorTri(op);
                         break;
                     case 1:
-                        sg = new HStripMeshGenerator(AxisOfSymmetry);
+                        sg = new HStripMeshGenerator(op);
                         break;
                     case 2:
-                        sg = new CrossStripMeshGeneratorTri(AxisOfSymmetry);
+                        sg = new CrossStripMeshGeneratorTri(op);
                         break;
                     case 3:
-                        sg = new CrossStripMeshGenerator(AxisOfSymmetry, TypeMesh.Triangle);
+                        sg = new CrossStripMeshGenerator(op);
                         break;
                 }
                 switch (lb_CrossNamber.SelectedIndex)
@@ -796,6 +801,39 @@ namespace TestSUPG
                         break;
                     case 8:
                         {
+                            double[] ox = { 0, 0.25 * WL, 0.5 * WL, 0.75 * WL, WL };
+                            double[] oy = { -H, -H, -1.5 * H, -2 * H, -2 * H };
+
+                            double dx = (ox[ox.Length - 1] - ox[0]) / (Ny - 1);
+                            IDigFunction fun = new DigFunction(ox, oy, "Дно");
+                            for (int i = 0; i < xx.Length; i++)
+                            {
+                                double x = ox[0] + dx * i;
+                                xx[i] = x;
+                                yy[i] = fun.FunctionValue(x);
+                            }
+                            if (cb_AxisOfSymmetry.Checked == false)
+                                indexsBC = new int[3] { 0, 1, 3 };
+                            else
+                                indexsBC = new int[2] { 0, 3 };
+                        }
+                        break;
+                    case 9:
+                        {
+                            Ny = 100;
+                            //double L = 20, L1=4, L2=4;
+                            //double H = 2, H1 = 1;
+                            //Geometry = new FunctionСhannelStep(Ny, L, L1, L2, H, H1);
+                            //Geometry.GetFunctionData(ref xx, ref yy, Ny);
+                            double L = 20, L1 = 4, L2 = 4;
+                            double H = 0, H1 = 1;
+                            WaterLevel = 2;
+                            Geometry = new FunctionСhannelStep(Ny, L, L1, L2, H, H1);
+                            Geometry.GetFunctionData(ref xx, ref yy, Ny);
+                        }
+                        break;
+                    case 10:
+                        {
                             if (Geometry == null)
                                 rb_SigmaTask_CheckedChanged(null, null);
                             WaterLevel = 0;// WaterLevels.FunctionValue(0);
@@ -805,12 +843,13 @@ namespace TestSUPG
                             {
                                 double x = xa + dx * i;
                                 xx[i] = x;
-                                yy[i] = - (Geometry.FunctionValue(x) + 1);
+                                yy[i] = -(Geometry.FunctionValue(x) + 1);
                             }
                         }
                         break;
                 }
-                mesh = sg.CreateMesh(ref WetBed, WaterLevel, xx, yy, Ny);
+                int[][] riverGates = null;
+                mesh = sg.CreateMesh(ref WetBed, ref riverGates, WaterLevel, xx, yy, Ny);
             }
             catch (Exception ex) 
             { 

@@ -7,15 +7,15 @@
 //---------------------------------------------------------------------------
 namespace NPRiverLib.APRiver2XYD.River2DSW
 {
-    using CommonLib;
-    using CommonLib.Mesh;
-    using CommonLib.Geometry;
-
     using System;
     using System.Linq;
     using System.Collections.Generic;
+
     using GeometryLib;
 
+    using CommonLib;
+    using CommonLib.Mesh;
+    using CommonLib.Geometry;
     //---------------------------------------------------------------------------
     //  ОО: TriRiverMesh - базистная техузловая конечно-элементная сетка 
     //---------------------------------------------------------------------------

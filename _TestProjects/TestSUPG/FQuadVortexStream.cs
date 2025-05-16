@@ -136,8 +136,10 @@ namespace TestSUPG
                 double[] xx = { 0, L };
                 double[] yy = { 0, H };
                 int Ny = (int)(L / diametrFE) + 1;
-                IStripMeshGenerator sg = new CrossStripMeshGeneratorQuad();
-                mesh = sg.CreateMesh(ref WetBed, WaterLevel, xx, yy, Ny);
+                IStripMeshGenerator sg = new CrossStripMeshGeneratorQuad(new CrossStripMeshOption());
+                int[][] riverGates = null;
+                mesh = sg.CreateMesh(ref WetBed, ref riverGates, WaterLevel, xx, yy, Ny);
+
             }
             ShowMesh();
         }

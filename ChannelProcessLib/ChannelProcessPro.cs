@@ -29,7 +29,7 @@ namespace ChannelProcessLib
     using CommonLib;
     using CommonLib.ChannelProcess;
     using CommonLib.IO;
-    using NPRiverLib.APRiver1YD;
+    using CommonLib.BedLoad;
 
     [Serializable]
     public enum ChannelProcessError
@@ -391,7 +391,7 @@ namespace ChannelProcessLib
                      bedLoadTask.dtime = ps.dtime;
                     // расчет  придонных касательных напряжений на дне
                     riverTask.GetTau(ref tauX, ref tauY, ref P, ref CS);
-                    // ========== БИБЛИОТЕКА === BLLib === 
+                    // ========== БИБЛИОТЕКА === BedLoadLib === 
                     if (bedLoadTask.TaskReady() == false)
                     {
                         riverTask.GetZeta(ref Zeta);

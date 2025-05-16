@@ -22,22 +22,34 @@ namespace GeometryLib
     [Serializable]
     public class HKnot : HPoint
     {
-        public int type = 0;
+        /// <summary>
+        /// Маркер точки, заначение по контексту
+        /// </summary>
+        public int marker = 0;
+        /// <summary>
+        /// дополнительный маркер точки, заначение по контексту
+        /// </summary>
         public int typeEx = 0;
-        public HKnot() : base() { type = 0; typeEx = 0; }
-        public HKnot(double xx, double yy, int type = 0, int typeEx = 0) : base(xx, yy)
+        public HKnot() : base() { marker = 0; typeEx = 0; }
+        public HKnot(IHPoint p, int marker = 0, int typeEx = 0) : base(p.X, p.Y)
         {
-            this.type = type;
+            this.marker = marker;
+            this.typeEx = typeEx;
+        }
+
+        public HKnot(double xx, double yy, int marker = 0, int typeEx = 0) : base(xx, yy)
+        {
+            this.marker = marker;
             this.typeEx = typeEx;
         }
         public HKnot(HKnot k) : base(k) 
         { 
-            type = k.type;
+            marker = k.marker;
             typeEx = k.typeEx;
         }
-        public HKnot(HPoint p, int type = 0, int typeEx = 0) : base(p) 
+        public HKnot(HPoint p, int marker = 0, int typeEx = 0) : base(p) 
         { 
-            this.type = type;
+            this.marker = marker;
             this.typeEx = typeEx;
         }
         public static new HKnot Parse(string str)

@@ -22,7 +22,6 @@ namespace MeshAdapterLib
     using TriangleNet.IO;
     using TriangleNet.Smoothing;
     using CommonLib.Geometry;
-
     // Библиотека с триангулятором Делоне.
     // Мощная но медленная по сравнению с триангуляторами повторителями
     // и проекторами
@@ -223,6 +222,93 @@ namespace MeshAdapterLib
             }
             return BedMesh;
         }
+
+
+        public static void CorrectorTriMesh(ref TriMesh mesh)
+        {
+            double[] X = mesh.GetCoords(0);
+            double[] Y = mesh.GetCoords(1);
+            int[] flagIdx = new int[X.Length];
+            HKnot [] points = new HKnot[X.Length];
+            int[] newIdx = new int[X.Length];
+            for (int ii = 0; ii < X.Length; ii++)
+            {
+                points[ii] = new HKnot(X[ii], Y[ii], ii);
+                newIdx[ii] = ii;
+            }
+            // с помощью оператора orderby
+            var sortedVertex = from p in points
+                               orderby p.X, p.Y
+                               select p;
+            HKnot old = null;
+            int i = 0;
+            List<(int, int)> list = new List<(int, int)>();
+            foreach (var v in sortedVertex)
+            {
+                if (i > 0)
+                {
+                    if (MEM.Equals(v.X, old.X) == true &&
+                        MEM.Equals(v.Y, old.Y) == true)
+                    {
+                        if (v.marker < old.marker)
+                            list.Add((v.marker, old.marker));
+                        else
+                            list.Add((old.marker,v.marker));
+                        flagIdx[v.marker] = -1;
+                    }
+                }
+                Console.WriteLine("X = {0} Y = {1} ID = {2}", v.X, v.Y, v.marker);
+                if (flagIdx[v.marker] != -1)
+                    old = v;
+                i++;
+            }
+
+            foreach (var v in list)
+                newIdx[v.Item2] = newIdx[v.Item1];
+
+
+
+            //for (int e = 0; e < flagIdx.Length; e++)
+            //    flagIdx[e] = 0;
+            //foreach (var v in list)
+            //    flagIdx[v.Item2] = -1;
+            //foreach (var v in list)
+            //{
+            //    Console.WriteLine("ID = {0} ID = {1}", v.Item1, v.Item2);
+            //    newIdx[v.Item2] = newIdx[v.Item1];
+            //    for (int e = v.Item2; e < newIdx.Length; e++)
+            //        if (flagIdx[e] != -1)
+            //            newIdx[e]--;
+            //}
+
+            //// координаты
+            //mesh.CoordsX = new double[newIdx.Length - list.Count];
+            //mesh.CoordsY = new double[newIdx.Length - list.Count];
+            //for (int e = 0; e < mesh.CoordsY.Length; e++)
+            //{
+            //    mesh.CoordsX[e] = X[newIdx[e]];
+            //    mesh.CoordsY[e] = Y[newIdx[e]];
+            //}
+            for (int e = 0; e < mesh.CountElements; e++)
+            {
+                mesh.AreaElems[e].Vertex1 = (uint)newIdx[mesh.AreaElems[e].Vertex1];
+                mesh.AreaElems[e].Vertex2 = (uint)newIdx[mesh.AreaElems[e].Vertex2];
+                mesh.AreaElems[e].Vertex3 = (uint)newIdx[mesh.AreaElems[e].Vertex3];
+                Console.WriteLine("{3}: V1 = {0} V2 = {1}  V3 = {2}", 
+                    mesh.AreaElems[e].Vertex1, 
+                    mesh.AreaElems[e].Vertex2, 
+                    mesh.AreaElems[e].Vertex3, e);
+            }
+            for (int e = 0; e < mesh.CountBoundElements; e++)
+            {
+                mesh.BoundElems[e].Vertex1 = (uint)newIdx[mesh.BoundElems[e].Vertex1];
+                mesh.BoundElems[e].Vertex2 = (uint)newIdx[mesh.BoundElems[e].Vertex2];
+            }
+            for (int e = 0; e < mesh.CountBoundKnots; e++)
+            {
+                mesh.BoundKnots[e] = newIdx[mesh.BoundKnots[e]];
+            }
+        }
         /// <summary>
         /// Фронтальный перенумератор сетки
         /// </summary>
@@ -231,6 +317,8 @@ namespace MeshAdapterLib
         /// <returns></returns>
         public static TriMesh ConvertMeshNetToTriMesh(IMeshNet mesh, Direction direction = Direction.toRight)
         {
+            
+
             TriMesh BedMesh = new TriMesh();
             int ix, iy, jy;
             // узлы КЭ сетки
@@ -409,6 +497,7 @@ namespace MeshAdapterLib
             BedMesh.BoundElementsMark = new int[Edges.Count()];
             //for (int i = 0; i < BedMesh.BoundElems.Length; i++)
             //    BedMesh.BoundElems[i] = new int[2];
+            var _Edges = Edges.ToArray();
             int be = 0;
             foreach (var e in Edges)
             {
@@ -421,6 +510,43 @@ namespace MeshAdapterLib
                 BedMesh.BoundElementsMark[be] = e.Label;
                 be++;
             }
+
+            // + 20 03 2025
+            {
+                int[] marks = null;
+                MEM.Alloc(BedMesh.CountKnots, ref marks);
+                TwoElement[] belems = BedMesh.GetBoundElems();
+                int[] bEMark = BedMesh.GetBElementsBCMark();
+                int countBE = 0;
+                for (be = 0; be < BedMesh.CountBoundElements; be++)
+                {
+                    if (bEMark[be] > 0)
+                    {
+                        marks[belems[be].Vertex1] = bEMark[be];
+                        marks[belems[be].Vertex2] = bEMark[be];
+                        countBE++;
+                    }
+                }
+                for (uint bk = 0; bk < BedMesh.CountBoundKnots; bk++)
+                    BedMesh.BoundKnotsMark[bk] = marks[BedMesh.BoundKnots[bk]]-1;
+                TwoElement[] newbelems = null;
+                int[] newbEMark = null;
+                uint nbe = 0;
+                MEM.Alloc(countBE, ref newbelems);
+                MEM.Alloc(countBE, ref newbEMark);
+                for (be = 0; be < BedMesh.CountBoundElements; be++)
+                {
+                    if (bEMark[be] > 0)
+                    {
+                        newbEMark[nbe] = bEMark[be] - 1;
+                        newbelems[nbe++] = belems[be];
+                    }
+                }
+                BedMesh.BoundElems = newbelems;
+                BedMesh.BoundElementsMark = newbEMark;
+            }
+
+         //   CorrectorTriMesh(ref BedMesh);
             return BedMesh;
         }
 

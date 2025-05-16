@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E20295B2-040F-406C-86B0-7C8F1C1A7FDF}</ProjectGuid>
+    <ProjectGuid>{AA3F285E-66BD-4F90-BEA6-534D016C06D8}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>TestDelaunayGenerator</RootNamespace>
     <AssemblyName>TestDelaunayGenerator</AssemblyName>
@@ -44,10 +44,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Area\AreaBase.cs" />
+    <Compile Include="Area\GridArea.cs" />
+    <Compile Include="Area\UniformArea.cs" />
+    <Compile Include="Boundary\BoundaryHill.cs" />
+    <Compile Include="Boundary\DelaunayMeshGenerator.cs" />
+    <Compile Include="Boundary\IGeneratorBase.cs" />
+    <Compile Include="Boundary\GeneratorFixed.cs" />
+    <Compile Include="Boundary\BoundaryContainer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="CircleDelaunayGenerator.cs" />
+    <Compile Include="TriangulationLog.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -60,6 +69,10 @@
     <ProjectReference Include="..\..\GeometryLib\GeometryLib.csproj">
       <Project>{CB805006-1B1B-412B-9FDE-4C8E8AD7CE13}</Project>
       <Name>GeometryLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MemLogLib\MemLogLib.csproj">
+      <Project>{4d84c29a-57f3-44d0-9520-0294dc35763e}</Project>
+      <Name>MemLogLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Mesh\DelaunayGenerator\DelaunayGenerator.csproj">
       <Project>{A1A7ADFB-F3E8-4361-9614-9BB96E54B8BA}</Project>

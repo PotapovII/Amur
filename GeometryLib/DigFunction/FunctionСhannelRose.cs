@@ -33,7 +33,8 @@ namespace GeometryLib
         /// <param name="x">координаты Х</param>
         /// <param name="y">координаты У</param>
         /// <param name="Count">количество узлов для русла</param>
-        public override void GetFunctionData(ref double[] x, ref double[] y, int Count)
+        public override void GetFunctionData(ref double[] x, ref double[] y,
+            int Count = 10, bool revers = false)
         {
             MEM.Alloc<double>(Count, ref x);
             MEM.Alloc<double>(Count, ref y);
@@ -46,6 +47,8 @@ namespace GeometryLib
                 x[i] = xi;
                 y[i] = FunctionValue(xi);
             }
+            if (revers == true)
+                MEM.Reverse(ref y);
         }
         /// <summary>
         /// Гауссовский холм
@@ -86,6 +89,7 @@ namespace GeometryLib
 
     /// <summary>
     /// ОО: Класс - для определения начальной параболической геометрии канала Розовского 
+    /// задает геометрию параболой
     /// </summary>
     [Serializable]
     public class FunctionСhannel : AbDigFunction
@@ -110,7 +114,8 @@ namespace GeometryLib
         /// <param name="x">координаты Х</param>
         /// <param name="y">координаты У</param>
         /// <param name="Count">количество узлов для русла</param>
-        public override void GetFunctionData(ref double[] x, ref double[] y, int Count)
+        public override void GetFunctionData(ref double[] x, ref double[] y,
+                                        int Count = 10, bool revers = false)
         {
             MEM.Alloc<double>(Count, ref x);
             MEM.Alloc<double>(Count, ref y);
@@ -123,6 +128,8 @@ namespace GeometryLib
                 x[i] = xi;
                 y[i] = FunctionValue(xi);
             }
+            if (revers == true)
+                MEM.Reverse(ref y);
         }
         /// <summary>
         /// Гауссовский холм
@@ -161,5 +168,110 @@ namespace GeometryLib
             GetFunctionData(ref fun[0], ref fun[1], N);
         }
     }
+
+    /// <summary>
+    /// ОО: Класс - для определения начальной параболической геометрии канала Розовского 
+    /// задает геометрию уступа
+    /// </summary>
+    [Serializable]
+    public class FunctionСhannelStep : AbDigFunction
+    {
+        /// <summary>
+        /// Максимальнаыя глубина канала
+        /// </summary>
+        double H;
+        /// <summary>
+        /// Максимальнаыя глубина канала в мелкой части
+        /// </summary>
+        double H1;
+        /// <summary>
+        /// Длина канала по свободной поверхности
+        /// </summary>
+        double L;
+        /// <summary>
+        /// Длина канала в узкой части 
+        /// </summary>
+        double L1;
+        /// <summary>
+        /// Длина канала в переходной части 
+        /// </summary>
+        double L2;
+        double Lk;
+        double Hk;
+        /// <summary>
+        /// Получаем начальную геометрию русла для заданной дискретизации дна
+        /// </summary>
+        /// <param name="x">координаты Х</param>
+        /// <param name="y">координаты У</param>
+        /// <param name="Count">количество узлов для русла</param>
+        public override void GetFunctionData(ref double[] x, ref double[] y, 
+                                int Count = 10, bool revers = false)
+        {
+            MEM.Alloc<double>(Count, ref x);
+            MEM.Alloc<double>(Count, ref y);
+            double dx = L / (Count - 1);
+            for (int i = 0; i < Count; i++)
+            {
+                double xi = i * dx;
+                x[i] = xi;
+                y[i] = FunctionValue(xi);
+            }
+            if (revers == true)
+                MEM.Reverse(ref y);
+        }
+        /// <summary>
+        /// Гауссовский холм
+        /// </summary>
+        public override double FunctionValue(double x)
+        {
+            if (x <= L1)
+                return H1;
+            else if (x >= Lk)
+                return H;
+            else
+            {
+                double F = (1 + Math.Cos((x - Lk) / L2 * Math.PI)) / 2;
+                return H1 + Hk * F;
+            }
+            //if (x <= L1)
+            //    return - H1;
+            //else if(x >= Lk)
+            //    return - H;
+            //else
+            //{
+            //    double F = (1 + Math.Cos((x - Lk) / L2 * Math.PI)) / 2;
+            //    return - H1 - Hk * F;
+            //}
+        }
+        public FunctionСhannelStep(int CountCR, double L, double L1, double L2, double H, double H1) : base()
+        {
+            this.L = L;
+            this.L1 = L1;
+            this.L2 = L2;
+            this.H = H;
+            this.H1 = H1;
+            this.Lk = L2 + L1;
+            this.Hk = H - H1;
+            double dx = L / (CountCR - 1);
+            for (int i = 0; i < CountCR; i++)
+            {
+                double xi = i * dx;
+                x0.Add(xi);
+                y0.Add(FunctionValue(xi));
+            }
+            name = "Канал";
+        }
+        /// <summary>
+        /// Получить базу функции
+        /// </summary>
+        /// <param name="fun"></param>
+        /// <param name="N">количество</param>
+        public override void GetBase(ref double[][] fun, int N = 0)
+        {
+            MEM.Alloc(2, N, ref fun);
+            GetFunctionData(ref fun[0], ref fun[1], N);
+        }
+    }
+
 }
 

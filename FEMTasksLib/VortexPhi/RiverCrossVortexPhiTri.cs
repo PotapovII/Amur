@@ -473,12 +473,6 @@ namespace FEMTasksLib.FESimpleTask
 
                     Console.WriteLine(" int Mu_t " + (1000 * eddyViscosity.Sum() / eddyViscosity.Length).ToString());
                 }
-                else
-                {
-                    for (int i = 0; i < CountKnots; i++)
-                        eddyViscosity[i] = (1 - w) * eddyViscosity_old[i] + w * eddyViscosity[i];
-                }
-
                 for (int i = 0; i < CountKnots; i++)
                     eddyViscosityUx[i] = (1 - w) * eddyViscosityUx_old[i] + w * eddyViscosityUx[i];
                 #endregion

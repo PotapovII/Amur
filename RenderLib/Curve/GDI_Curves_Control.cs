@@ -58,6 +58,7 @@ namespace RenderLib
         {
             InitializeComponent();
             cbRefreshCurves.SelectedIndex = 0;
+            cbMeasure.SelectedIndex = 0;
             tbScaleX.Enabled = false;
             tbScaleY.Enabled = false;
             openFileDialog1.Filter = "файл - русловой процесс rpsp (*.sp)|*.sp|" +
@@ -1021,6 +1022,60 @@ namespace RenderLib
         private void panel8_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        int indexPoleA = -1;
+        int indexPoleB = -1;
+
+        private void tbCurveA_Click(object sender, EventArgs e)
+        {
+            if (checkedListBoxCurve.SelectedIndex != -1)
+            {
+                indexPoleA = checkedListBoxCurve.SelectedIndex;
+                tbCurveA.Text = (string)checkedListBoxCurve.Items[indexPoleA];
+            }
+        }
+        private void tbCurveB_Click(object sender, EventArgs e)
+        {
+            if (checkedListBoxCurve.SelectedIndex != -1)
+            {
+                indexPoleB = checkedListBoxCurve.SelectedIndex;
+                tbCurveB.Text = (string)checkedListBoxCurve.Items[indexPoleB];
+            }
+        }
+
+        private void btCalkMeasure_Click(object sender, EventArgs e)
+        {
+            if (indexPoleA > -1 && indexPoleB > -1 
+                && cbMeasure.SelectedIndex > -1)
+            {
+                try
+                {
+                    GraphicsCurve curvesA = graphicsData.curves[indexPoleA];
+                    GraphicsCurve curvesB = graphicsData.curves[indexPoleB];
+                    double result = 0;
+                    GraphicsCurve.CalkMeasure(curvesA, curvesB,
+                    (MeasureType)cbMeasure.SelectedIndex, ref result);
+                    tbError.Text = result.ToString("F6");
+                }
+                catch (Exception ee)
+                {
+                    tSS_Analys.Text = ee.Message;
+                }
+            }
+        }
+        /// <summary>
+        /// Удалить кривую
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btDel_Click(object sender, EventArgs e)
+        {
+            int indexPole = checkedListBoxCurve.SelectedIndex;
+            if (indexPole == -1) return;
+            GraphicsCurve curve = graphicsData.curves[indexPole];
+            isp.RemoveCurve(curve.Name);
+            SendSavePoint(isp);
         }
 
         private void GV(NumericUpDown nud, TextBox tb, ref int old)

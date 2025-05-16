@@ -79,16 +79,24 @@ namespace CommonLib
                     throw new Exception("bad vector index");
             }
         }
-
-        public TwoElement(uint upLeft, uint lowRight)
+        public TwoElement(uint a, uint b)
         {
-            this.Vertex1 = upLeft;
-            this.Vertex2 = lowRight;
+            this.Vertex1 = a;
+            this.Vertex2 = b;
         }
-        public TwoElement(int upLeft, int lowRight)
+        public TwoElement(int a, int b)
         {
-            this.Vertex1 = (uint)upLeft;
-            this.Vertex2 = (uint)lowRight;
+            this.Vertex1 = (uint)a;
+            this.Vertex2 = (uint)b;
+        }
+        public bool Equals(TwoElement elem)
+        {
+            if (Vertex1 == elem.Vertex1 &&
+                Vertex2 == elem.Vertex2) return true;
+            // зеркалка
+            if (Vertex1 == elem.Vertex2 &&
+                Vertex2 == elem.Vertex1) return true;
+            return false;
         }
     }
 }

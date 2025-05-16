@@ -9,12 +9,9 @@ namespace MeshGeneratorsLib.StripGenerator
 {
     
     using System;
+    using System.Reflection;
     using System.ComponentModel;
     using System.Collections.Generic;
-
-    using CommonLib;
-    using System.Reflection;
-
     /// <summary>
     /// Тип ленточного герератора КЭ сетки для створовых задач
     /// TO DO все генераторы нестабильны в различных геометриях :(
@@ -33,6 +30,8 @@ namespace MeshGeneratorsLib.StripGenerator
         StripMeshGenerator_2 = 2,
         [Description("Ленточный три/тетрангулятор, карта")]
         StripMeshGenerator_3 = 3,
+        [Description("Ленточный три/тетрангулятор, карта V.1")]
+        StripMeshGenerator_4 = 4
     }
     /// <summary>
     /// Простой менеджер ленточных герераторов КЭ сетки 
@@ -40,20 +39,22 @@ namespace MeshGeneratorsLib.StripGenerator
     public static class SMGManager
     {
         public static IStripMeshGenerator GetMeshGenerator(StripGenMeshType tp,
-                bool axisOfSymmetry = false, TypeMesh tfem = TypeMesh.Triangle)
+                CrossStripMeshOption Option)
         {
             switch (tp)
             {
                 case StripGenMeshType.StripMeshGenerator_0:
-                    return new HStripMeshGeneratorTri(axisOfSymmetry);
+                    return new HStripMeshGeneratorTri(Option);
                 case StripGenMeshType.StripMeshGenerator_1:
-                    return new HStripMeshGenerator(axisOfSymmetry);
+                    return new HStripMeshGenerator(Option);
                 case StripGenMeshType.StripMeshGenerator_2:
-                    return new CrossStripMeshGeneratorTri(axisOfSymmetry);
+                    return new CrossStripMeshGeneratorTri(Option);
                 case StripGenMeshType.StripMeshGenerator_3:
-                    return new CrossStripMeshGenerator(axisOfSymmetry, tfem);
+                    return new CrossStripMeshGenerator(Option);
+                case StripGenMeshType.StripMeshGenerator_4:
+                    return new StripMeshGenerator(Option);
                 default:
-                    return new CrossStripMeshGenerator(axisOfSymmetry, tfem);
+                    return new CrossStripMeshGenerator(Option);
             }
         }
         /// <summary>
@@ -66,7 +67,7 @@ namespace MeshGeneratorsLib.StripGenerator
             try
             {
                 for (StripGenMeshType f = StripGenMeshType.StripMeshGenerator_0;
-                    f <= StripGenMeshType.StripMeshGenerator_3; f++)
+                    f <= StripGenMeshType.StripMeshGenerator_4; f++)
                 {
                     FieldInfo fi = f.GetType().GetField(f.ToString());
                     DescriptionAttribute[] attributes =

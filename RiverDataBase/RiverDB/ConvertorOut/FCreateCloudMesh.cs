@@ -38,9 +38,8 @@ namespace RiverDB.ConvertorOut
 
     using ConnectLib;
     using RiverDB.ConvertorIn;
-    using GeometryLib.Vector;
-    using System.Drawing;
     using MeshLib.Locators;
+
 
     public partial class FCreateCloudMesh : Form
     {
@@ -63,11 +62,8 @@ namespace RiverDB.ConvertorOut
         /// Циклов сглаживания сетки
         /// </summary>
         int CountSmooth;
-
         bool SmoothChecked;
-
-        const int CountAttributes = 5;
-        string[] ArtNames = { "Глубина", "Срез.Глубина", "Температура", "Скорость", "Курс" };
+        
 
         double K = 2 * Math.PI / 360;
         /// <summary>
@@ -89,12 +85,24 @@ namespace RiverDB.ConvertorOut
         string TName = "knot";
         DataTable pointsTable;
         int placeID = 1; // Хабаровск
+
+        RadioButton[] rb = new RadioButton[3];
+
+        CheckBox[] listCB = new CheckBox[4];
         public FCreateCloudMesh()
         {
             InitializeComponent();
             tsb_Contur.Checked = false;
             tsb_BeLine.Checked = false;
             tb_CrossLine.Checked = false;
+            rb[0] = rbSplithill;
+            rb[1] = rbCreateBK;
+            rb[2] = rbNotCreateKnot;
+
+            listCB[0] = cbFilterVelocity;
+            listCB[1] = cb_MarkerNods;
+            listCB[2] = cbTreckVelocity;
+            listCB[3] = cbFVelocity;
         }
         private void btLoadData_Click(object sender, EventArgs e)
         {
@@ -253,12 +261,15 @@ namespace RiverDB.ConvertorOut
             double T = (double)dr["knot_temperature"];
             double C = (double)dr["knot_course"];
             int knot_id = (int)dr["knot_id"];
-            var attribs = new double[CountAttributes];
-            attribs[0] = H;
-            attribs[1] = sH;
-            attribs[2] = T;
-            attribs[3] = V;// 3.6;
-            attribs[4] = C;
+            var attribs = new double[AtrCK.CountAttributes];
+            int idx = 0;
+            attribs[idx++] = H;
+            attribs[idx++] = sH;
+            attribs[idx++] = T;
+            attribs[idx++] = V;// 3.6;
+            attribs[idx++] = C;
+            attribs[idx++] = double.Parse(tbIce.Text, MEM.formatter);
+            attribs[idx++] = double.Parse(tbKs.Text, MEM.formatter);
             p = new CloudKnot(x, y, attribs, mark, knot_id);
             p.time = (DateTime)dr["knot_datetime"];
             return true;
@@ -278,29 +289,6 @@ namespace RiverDB.ConvertorOut
                 }
             }
             return false;
-            //double x = (double)dr["knot_longitude"];
-            //double y = (double)dr["knot_latitude"];
-            //if (rbGrad.Checked == false)
-            //    Con.WGS84_To_LocalCity(ref x, ref y);
-            //if (MEM.Equals(a.X, x, error) == true &&
-            //    MEM.Equals(a.Y, y, error) == true)
-            //{
-            //    double H = (double)dr["knot_fulldepth"];
-            //    double sH = (double)dr["knot_depth"];
-            //    double T = (double)dr["knot_temperature"];
-            //    double V = (double)dr["knot_speed"];
-            //    double C = (double)dr["knot_course"];
-            //    a.X = x;
-            //    a.Y = y;
-            //    a.Attributes[0] = H;
-            //    a.Attributes[1] = sH;
-            //    a.Attributes[2] = T;
-            //    a.Attributes[3] = V;
-            //    a.Attributes[4] = C;
-            //    a.ID = (int)dr["knot_id"];
-            //    a.time = (DateTime)dr["knot_datetime"];
-            //    return true;
-            //}
         }
 
         /// <summary>
@@ -536,12 +524,12 @@ namespace RiverDB.ConvertorOut
             MeshAdapter.ConvertFrontRenumberationAndCutting(ref bmesh, ref values, meshRiver, Direction.toRight);
             if (bmesh != null)
             {
-                SavePoint data = new SavePoint("Триангуляция в контуре по точкам наблюдения");
-                data.SetSavePoint(0, bmesh);
+                SavePoint sp = new SavePoint("Триангуляция в контуре по точкам наблюдения");
+                sp.SetSavePoint(0, bmesh);
                 double[] x = bmesh.GetCoords(0);
                 double[] y = bmesh.GetCoords(1);
-                data.Add("Координата Х", x);
-                data.Add("Координата Y", y);
+                sp.Add("Координата Х", x);
+                sp.Add("Координата Y", y);
                 // Ноль графика - отметка репера по Балтийской системе
                 double hr = ConnectDB.WaterLevelGP(placeID);
                 if (hr > 0)
@@ -550,9 +538,14 @@ namespace RiverDB.ConvertorOut
                     list.AddRange(values[1]);
                     for (int i = 0; i < list.Count; i++)
                         list[i] = hr - list[i];
-                    data.Add("Отметки дна", list.ToArray());
+                    sp.Add("Отметки дна", list.ToArray());
                 }
-                if(cbFVelocity.Checked == true)
+
+                double scaleVelocity = 1; // км/час
+                if (rbVelocity_m_c.Checked == true)
+                    scaleVelocity = 3.6; // м/с
+
+                if (cbFVelocity.Checked == true)
                 {
                     if (cbTreckVelocity.Checked == false)
                     {
@@ -563,12 +556,12 @@ namespace RiverDB.ConvertorOut
                         for (int i = 0; i < Vx.Length; i++)
                         {
                             double phi = values[4][i] * Math.PI / 180;
-                            Vx[i] = values[3][i] * Math.Cos(phi + Math.PI / 4);
-                            Vy[i] = values[3][i] * Math.Sin(phi + Math.PI / 4);
+                            Vx[i] = values[3][i] * Math.Cos(phi + Math.PI / 4) / scaleVelocity;
+                            Vy[i] = values[3][i] * Math.Sin(phi + Math.PI / 4) / scaleVelocity;
                         }
-                        data.Add("Скорость по X", Vx);
-                        data.Add("Скорость по Y", Vy);
-                        data.Add("Скорость", Vx, Vy);
+                        sp.Add("Скорость по X", Vx);
+                        sp.Add("Скорость по Y", Vy);
+                        sp.Add("Скорость", Vx, Vy);
                     }
                     else
                     {
@@ -580,34 +573,30 @@ namespace RiverDB.ConvertorOut
                         for (int i = 0; i < Vx.Length; i++)
                         {
                             if(Math.Abs(values[3][i]) < fv)
-                                Vx[i] = values[3][i];
+                                Vx[i] = values[3][i] / scaleVelocity;
                             else
                                 Vx[i] = 0;
                             if (Math.Abs(values[4][i]) < fv)
-                                Vy[i] = values[4][i];
+                                Vy[i] = values[4][i] / scaleVelocity;
                             else
                                 Vy[i] = 0;
                         }
-                        //double mX1 = Vx.Max();
-                        //double mX2 = Vx.Min();
-                        //double mY1 = Vy.Max();
-                        //double mY2 = Vy.Min();
-                        data.Add("Скорость по X", Vx);
-                        data.Add("Скорость по Y", Vy);
-                        data.Add("Скорость", Vx, Vy);
+                        sp.Add("Скорость по X", Vx);
+                        sp.Add("Скорость по Y", Vy);
+                        sp.Add("Скорость", Vx, Vy);
                     }
                 }
 
                 if (values != null)
                     for (int i = 0; i < values.Length; i++)
                     {
-                        data.Add(new Field1D(ArtNames[i], values[i]));
+                        sp.Add(new Field1D(AtrCK.AtrNames[i], values[i]));
                     }
                 double[][] p = bmesh.GetParams();
                 for (int i = 0; i < p.Length; i++)
-                    data.Add(new Field1D("Фу" + i.ToString(), p[i]));
+                    sp.Add(new Field1D("Фу" + i.ToString(), p[i]));
 
-                Form form = new ViForm(data);
+                Form form = new ViForm(sp);
                 form.Show();
             }
 
@@ -618,14 +607,25 @@ namespace RiverDB.ConvertorOut
         /// </summary>
         private void SetCreateMeshOptions()
         {
+
+            // создавать узлы на границах ?
+            for(int i = 0; i<rb.Length; i++)
+            {
+                if(rb[i].Checked == true)
+                {
+                    options.SegmentSplitting = i;
+                    break;
+                }
+            }
+            if (cbQuality.Checked == true)
+            {
+                quality.MinimumAngle = (float)nUDMinimumAngle.Value;
+                quality.MaximumAngle = (float)nUDMaximumAngle.Value;
+            }
             // создать выпуклый контур
             options.Convex = cbCreateContur.Checked;
             // создать трианг. Делоне
             options.ConformingDelaunay = cbConformingDelaunay.Checked;// true;
-            // создавать узлы на границах ?
-            options.SegmentSplitting = cbSegmentSplitting.Checked == true ? 0 : 1;
-            quality.MinimumAngle = (float)nUDMinimumAngle.Value;
-            quality.MaximumAngle = (float)nUDMaximumAngle.Value;
             CountSmooth = (int)nUDCountSmooth.Value;
             SmoothChecked = checkBoxSM.Checked;
         }
@@ -652,7 +652,7 @@ namespace RiverDB.ConvertorOut
                             // Read a vertex marker.
                             v.Label = 0;
                             v.ID = k++;
-                            double[] attribs = new double[CountAttributes];
+                            double[] attribs = null;// new double[nod.Attributes.Length];
                             MEM.MemCopy(ref attribs, nod.Attributes);
                             v.attributes = attribs;
                             cloudPoints.Add(v);
@@ -1023,7 +1023,13 @@ namespace RiverDB.ConvertorOut
                     double[] y = bmesh.GetCoords(1);
 
                     ISavePoint spLine = new SavePoint("Тест");
-                    IHPoint[] points = { new HPoint(crossLine.A), new HPoint(crossLine.B) };
+                    HPoint A = new HPoint(crossLine.A);
+                    HPoint B = new HPoint(crossLine.B);
+                    if(A.X > B.X)
+                    {
+                        HPoint C = A;  A = B; B = C;
+                    }    
+                    IHPoint[] points = { A, B };
                     LocatorTriMeshFacet tLine = new LocatorTriMeshFacet(bmesh);
                     tLine.SetCrossLine(points);
 
@@ -1169,10 +1175,7 @@ namespace RiverDB.ConvertorOut
             CreateCountursMesh();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            CreateAreaMesh();
-        }
+
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -1183,15 +1186,9 @@ namespace RiverDB.ConvertorOut
         {
             CreateBoundaryCountsAreaMesh();
         }
-        private void btMrf_Click(object sender, EventArgs e)
-        {
-            CreateFileTask2D();
-        }
 
-        private void btSaveCloud_Click(object sender, EventArgs e)
-        {
-            SaveNodes();
-        }
+
+
 
         protected void SaveNodes()
         {
@@ -1459,12 +1456,15 @@ namespace RiverDB.ConvertorOut
                         }
                         // Загрузка створа
                         string CLine = file.ReadLine(); 
-                        string[] CLines = CLine.Split(' ');
-                        if(int.Parse(CLines[0]) == 1)
+                        if(CLine != null)
                         {
-                            CLine = file.ReadLine();
-                            CloudKnotLine Cline = CloudKnotLine.Parse(CLine);
-                            gdI_EditControlClouds1.SetCrossLine(Cline);
+                            string[] CLines = CLine.Split(' ');
+                            if (int.Parse(CLines[0]) == 1)
+                            {
+                                CLine = file.ReadLine();
+                                CloudKnotLine Cline = CloudKnotLine.Parse(CLine);
+                                gdI_EditControlClouds1.SetCrossLine(Cline);
+                            }
                         }
                         SetEditState();
                     }
@@ -1695,7 +1695,7 @@ namespace RiverDB.ConvertorOut
                 if (values != null)
                     for (int i = 0; i < values.Length; i++)
                     {
-                        sp.Add(new Field1D(ArtNames[i], values[i]));
+                        sp.Add(new Field1D(AtrCK.AtrNames[i], values[i]));
                     }
                 double[][] p = bmesh.GetParams();
                 for (int i = 0; i < p.Length; i++)
@@ -1946,6 +1946,56 @@ namespace RiverDB.ConvertorOut
         {
             SaveCCL();
         }
+        #region Флаги фильтров скорсти
+        bool FlagA = true;
+        private void cbAllVelocityFilters_CheckedChanged(object sender, EventArgs e)
+        {
+            foreach (var cb in listCB)
+                    cb.Checked = cbAllVelocityFilters.Checked;
+        }
+        private void cbFilterVelocity_CheckedChanged(object sender, EventArgs e)
+        {
+        }
+        private void cb_MarkerNods_CheckedChanged(object sender, EventArgs e)
+        {
+        }
+        private void cbTreckVelocity_CheckedChanged(object sender, EventArgs e)
+        {
+        }
+        private void cbFVelocity_CheckedChanged(object sender, EventArgs e)
+        {
+            //cbAllVelocityFilters_CheckedChanged(sender, e);
+        }
+        private void cbKs_CheckedChanged(object sender, EventArgs e)
+        {
+           AtrCK.ice = cbIce.Checked;
+        }
+        private void cbIce_CheckedChanged(object sender, EventArgs e)
+        {
+            AtrCK.ice = cbIce.Checked;
+        }
 
+        private void btUpdateAtr_Click(object sender, EventArgs e)
+        {
+            AtrCK.ice = cbIce.Checked;
+            AtrCK.ice = cbIce.Checked;
+
+            //attribs[idx++] = double.Parse(tbIce.Text, MEM.formatter);
+            //attribs[idx++] = double.Parse(tbKs.Text, MEM.formatter);
+
+        }
+        #endregion
+        //private void button1_Click(object sender, EventArgs e)
+        //{
+        //    CreateAreaMesh();
+        //}
+        //private void btSaveCloud_Click(object sender, EventArgs e)
+        //{
+        //    SaveNodes();
+        //}
+        //private void btMrf_Click(object sender, EventArgs e)
+        //{
+        //    CreateFileTask2D();
+        //}
     }
 }

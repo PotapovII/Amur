@@ -26,6 +26,7 @@ namespace NPRiverLib.APRiver_1XD
     using System.Collections.Generic;
     using CommonLib.Mesh;
     using MeshLib.Wrappers;
+    using static alglib;
 
 
     /// <summary>
@@ -63,9 +64,17 @@ namespace NPRiverLib.APRiver_1XD
         /// </summary>
         public double[] TauY;
         /// <summary>
-        /// Поле напряжений - модуль
+        /// Поле придонных напряжений 
         /// </summary>
         public double[] tau;
+        /// <summary>
+        /// координаты придонных напряжений (центры КЭ)
+        /// </summary>
+        public double[] xtau;
+        /// <summary>
+        /// сечения створа
+        /// </summary>
+        protected int[][] riverGates;
         #endregion
 
         #region Локальные переменные
@@ -217,7 +226,7 @@ namespace NPRiverLib.APRiver_1XD
         /// <param name="left"></param>
         protected abstract void CreateCalculationDomain();
 
-        protected abstract double[] TausToVols(in double[] x, in double[] y);
+        protected abstract double[] TausToVols(in double[] x, in double[] y, bool spline = false);
         #endregion
     }
 }

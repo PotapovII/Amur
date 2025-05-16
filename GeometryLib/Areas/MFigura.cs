@@ -13,6 +13,7 @@ namespace GeometryLib.Areas
     using CommonLib.Geometry;
     using System.Collections.Generic;
     using System.IO;
+    using TestsUtils;
 
     /// <summary>
     /// Контурная фигура
@@ -39,6 +40,20 @@ namespace GeometryLib.Areas
         /// Тип фигуры
         /// </summary>
         public FigureType FType { get; set; }
+        #region Атрибуты фигуры
+        /// <summary>
+        /// Свойства в узлах (состояние контексное) от задачи
+        /// </summary>
+        // double[] Attributes { get; set; }
+        /// <summary>
+        /// Толщина льда
+        /// </summary>
+        public double Ice { get; set; }
+        /// <summary>
+        /// шероховатость дна
+        /// </summary>
+        public double ks { get; set; }
+        #endregion
         /// <summary>
         /// Точки контура
         /// </summary>
@@ -96,12 +111,16 @@ namespace GeometryLib.Areas
                 CreateSegments();
             return segments[idx % segments.Count];
         }
-        public Figura(string Name,int FID, List<HPoint> ps, FigureType ft = FigureType.FigureContur)
+        public Figura(string Name,int FID, List<HPoint> ps, 
+            FigureType ft = FigureType.FigureContur,
+            double ks = 0.1, double Ice = 0)
         {
             this.FID = FID;
             this.Name = Name;
             this.Status = FigureStatus.UnselectedShape;
             this.FType = ft;
+            this.ks = ks;
+            this.Ice = Ice;
             for (int i = 0; i < ps.Count; i++)
             {
                 string name = "point" + i.ToString();
@@ -109,12 +128,16 @@ namespace GeometryLib.Areas
                 this.points.Add(pp);
             }
         }
-        public Figura(string Name, int FID, List<CloudKnot> ps, FigureType ft = FigureType.FigureContur)
+        public Figura(string Name, int FID, List<CloudKnot> ps, 
+                    FigureType ft = FigureType.FigureContur,
+                    double ks = 0.1, double Ice = 0)
         {
             this.FID = FID;
             this.Name = Name;
             this.Status = FigureStatus.UnselectedShape;
             this.FType = ft;
+            this.ks = ks;
+            this.Ice = Ice;
             for (int i = 0; i < ps.Count; i++)
             {
                 string name = "point" + i.ToString();
@@ -128,6 +151,8 @@ namespace GeometryLib.Areas
             this.Name = fig.Name;
             this.Status = fig.Status;
             this.FType = fig.FType;
+            this.Ice = fig.Ice;
+            this.ks = fig.ks;
             if (ext == false)
             {
                 this.points.AddRange(fig.points);
@@ -225,60 +250,80 @@ namespace GeometryLib.Areas
             segments.Clear();
             segmentStatus = false;
         }
+
         /// <summary>
-        /// Сохранение области
+        /// Принадлежит ли точка полигону фигуры
         /// </summary>
-        /// <param name="Filter"></param>
-        /// <returns></returns>
-        public string ToString(string Filter = "F15")
+        public bool Contains(IHPoint point)
         {
-            string str = FID.ToString();
-            str += " " + Name;
-            str += " " + ((int)FType).ToString();
-            str += " " + (points.Count).ToString();
-            for (int i = 0; i < points.Count; i++)
-            {
-                IMPoint iknot = points[i];
-                CloudKnot knot = iknot as CloudKnot;
-                if (knot != null)
-                {
-                    str += " " + points[i].ToString();
-                }
-                else 
-                {
-                    MPoint ph = iknot as MPoint;
-                    if (ph != null)
-                        str += " " + ph.ToString();
-                }
-            }
-            for (int i = 0; i < segments.Count; i++)
-            {
-                string ds = ((MSegment)segments[i]).ToString();
-                str += " " + ds;
-            }
-            return str;
+            return LocPolygon2D.Contains(point, Points);
         }
-        public static IMFigura Parse(string line)
+        /// <summary>
+        /// Принадлежит ли точка полигону фигуры
+        /// </summary>
+        public bool Contains(double x, double y)
         {
-            List<CloudKnot> ps = new List <CloudKnot>();
-            string[] mas = (line.Trim()).Split(' ');
-            int FID = int.Parse(mas[0]);
-            string Name = mas[1];
-            int FType = int.Parse(mas[2]);
-            int Count = int.Parse(mas[3]);
-            for (int i = 0; i < Count; i++)
-            {
-                CloudKnot point = CloudKnot.Parse(mas[4 + i]);
-                ps.Add(point);
-            }
-            Figura fig = new Figura(Name, FID, ps, (FigureType)FType);
-            fig.CreateSegments();
-            for (int i = 0; i < Count; i++)
-            {
-                fig.segments[i] = MSegment.Parse(mas[5 + Count + i], fig);
-            }
-            return fig;
+            IHPoint point = new HPoint(x, y);
+            return LocPolygon2D.Contains(point, Points);
         }
+        ///// <summary>
+        ///// Сохранение области
+        ///// </summary>
+        ///// <param name="Filter"></param>
+        ///// <returns></returns>
+        //public string ToString(string Filter = "F15")
+        //{
+        //    string str = FID.ToString();
+        //    str += " " + Name;
+        //    str += " " + ((int)FType).ToString();
+        //    str += " " + (points.Count).ToString();
+        //    str += " " + Ice.ToString("F6");
+        //    str += " " + ks.ToString("F6");
+        //    for (int i = 0; i < points.Count; i++)
+        //    {
+        //        IMPoint iknot = points[i];
+        //        CloudKnot knot = iknot as CloudKnot;
+        //        if (knot != null)
+        //        {
+        //            str += " " + points[i].ToString();
+        //        }
+        //        else 
+        //        {
+        //            MPoint ph = iknot as MPoint;
+        //            if (ph != null)
+        //                str += " " + ph.ToString();
+        //        }
+        //    }
+        //    for (int i = 0; i < segments.Count; i++)
+        //    {
+        //        string ds = ((MSegment)segments[i]).ToString();
+        //        str += " " + ds;
+        //    }
+        //    return str;
+        //}
+        //public static IMFigura Parse(string line)
+        //{
+        //    List<CloudKnot> ps = new List <CloudKnot>();
+        //    string[] mas = (line.Trim()).Split(' ');
+        //    int FID = int.Parse(mas[0]);
+        //    string Name = mas[1];
+        //    int FType = int.Parse(mas[2]);
+        //    int Count = int.Parse(mas[3]);
+        //    double Ice = double.Parse(mas[4]);
+        //    double ks = double.Parse(mas[5]);
+        //    for (int i = 0; i < Count; i++)
+        //    {
+        //        CloudKnot point = CloudKnot.Parse(mas[6 + i]);
+        //        ps.Add(point);
+        //    }
+        //    Figura fig = new Figura(Name, FID, ps, (FigureType)FType);
+        //    fig.CreateSegments();
+        //    for (int i = 0; i < Count; i++)
+        //    {
+        //        fig.segments[i] = MSegment.Parse(mas[7 + Count + i], fig);
+        //    }
+        //    return fig;
+        //}
         /// <summary>
         /// Запсь фигуры
         /// </summary>
@@ -289,6 +334,8 @@ namespace GeometryLib.Areas
             str += " " + FID.ToString();
             str += " " + ((int)FType).ToString();
             str += " " + (points.Count).ToString();
+            str += " " + Ice.ToString("F6");
+            str += " " + ks.ToString("F6");
             file.WriteLine(str);
             for (int i = 0; i < points.Count; i++)
             {
@@ -316,6 +363,8 @@ namespace GeometryLib.Areas
             int FID = int.Parse(mas[1]);
             int FType = int.Parse(mas[2]);
             int Count = int.Parse(mas[3]);
+            double Ice = double.Parse(mas[4]);
+            double ks = double.Parse(mas[5]);
 
             for (int i = 0; i < Count; i++)
             {
@@ -323,7 +372,7 @@ namespace GeometryLib.Areas
                 CloudKnot point = CloudKnot.Parse(line);
                 ps.Add(point);
             }
-            Figura fig = new Figura(Name, FID, ps, (FigureType)FType);
+            Figura fig = new Figura(Name, FID, ps, (FigureType)FType, ks, Ice);
             fig.CreateSegments();
             for (int i = 0; i < Count; i++)
             {

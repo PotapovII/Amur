@@ -15,6 +15,8 @@ namespace MeshLib
     using System;
     using System.Linq;
     using MemLogLib;
+    using System.Collections.Generic;
+
     //---------------------------------------------------------------------------
     //  ОО: TriMesh - базистная техузловая конечно-элементная сетка 
     //---------------------------------------------------------------------------
@@ -194,6 +196,198 @@ namespace MeshLib
             }
             return max + 1;
         }
+        /// <summary>
+        /// Установка новой сетки в текущую
+        /// </summary>
+        /// <param name="m"></param>
+        public void Set(TriMesh m)
+        {
+            try
+            {
+                this.tRangeMesh = m.tRangeMesh;
+                this.tMesh = TypeMesh.Triangle;
+                MEM.MemCopy(ref CoordsX, m.CoordsX);
+                MEM.MemCopy(ref CoordsY, m.CoordsY);
+                MEM.MemCopy(ref AreaElems, m.AreaElems);
+                MEM.MemCopy(ref BoundElems, m.BoundElems);
+                MEM.MemCopy(ref BoundKnots, m.BoundKnots);
+                MEM.MemCopy(ref BoundElementsMark, m.BoundElementsMark);
+                MEM.MemCopy(ref BoundKnotsMark, m.BoundKnotsMark);
+
+
+            }
+            catch (Exception e)
+            {
+                Logger.Instance.Exception(e);
+            }
+        }
+        /// <summary>
+        /// добавить новую сетку к текущей
+        /// </summary>
+        /// <param name="mesh"></param>
+        public void Add(TriMesh mesh)
+        {
+            // переопределенный +=
+            try
+            {
+                // Если первая сетка пустая то просто скопировать вторую
+                if (CountKnots == 0)
+                {
+                    this.Set(mesh);
+                    return;
+                }
+                // Если прибавляемая пустая то ничего не прибавлять
+                if (mesh.CountKnots == 0) return;
+                // ==========================================================
+                int k;
+                int numKnotOne = CountKnots;     // кол-во узлов в 1 подобласти
+                int numKnotTwo = mesh.CountKnots;// кол-во узлов в 2 подобласти
+                                                 // создание временного массива для хранения
+                int[] ConformID = null;
+                bool[] Check = null;
+                MEM.Alloc(numKnotTwo, ref ConformID);
+                MEM.Alloc(numKnotTwo, ref Check);
+                for (int i = 0; i < numKnotTwo; i++)
+                {
+                    Check[i] = true;
+                    ConformID[i] = i;
+                }
+                // координаты 1 сетки
+                double[] x = GetCoords(0);
+                double[] y = GetCoords(1);
+                // координаты 2 сетки
+                double[] mx = mesh.GetCoords(0);
+                double[] my = mesh.GetCoords(1);
+
+                int dKnot = 0;              // счетчик числа совпадающих узлов
+                for (uint i = 0; i < CountBoundKnots; i++)   // перебор по 1 сетке
+                {
+                    for (uint j = 0; j < mesh.CountBoundKnots; j++) // перебор по 2 сетке
+                    {
+                        // если координаты граничных точек совпадают
+                        if (MEM.Equals(x[this.BoundKnots[i]], mx[mesh.BoundKnots[j]], MEM.Error8) &&
+                            MEM.Equals(y[this.BoundKnots[i]], my[mesh.BoundKnots[j]], MEM.Error8))
+                        //if ((Point[BNods[i].ID]) == (mesh.Point[mesh.BNods[j].ID]))
+                        {
+                            ConformID[mesh.BoundKnots[j]] = this.BoundKnots[i];
+                            Check[mesh.BoundKnots[j]] = false; dKnot++;
+                            break;
+                        }
+                    }
+                }
+                // Перенумерация узлов во 2 -й подобласти
+                k = numKnotOne;
+                for (uint i = 0; i < numKnotTwo; i++)
+                    if (Check[i] == true) { ConformID[i] = k; k++; }
+                //
+                // **************** Создание нового массива обхода ******************
+                List<TriElement> ListAElement = new List<TriElement>(CountElements + mesh.CountElements);
+                ListAElement.AddRange(AreaElems);
+                // перебор по всем КЭ второй сетки
+                int CountTwoFE = mesh.AreaElems.Length;
+                for (uint i = 0; i < CountTwoFE; i++)
+                {
+                    TriElement Elem = mesh.AreaElems[i];
+                    Elem.Vertex1 = (uint)ConformID[Elem.Vertex1];
+                    Elem.Vertex2 = (uint)ConformID[Elem.Vertex2];
+                    Elem.Vertex3 = (uint)ConformID[Elem.Vertex3];
+                    ListAElement.Add(Elem);
+                }
+                AreaElems = ListAElement.ToArray();
+                //***************  Массив обхода граничных КЭ *************
+                int[] SensBFE_1 = null;
+                int[] SensBFE_2 = null;
+                MEM.Alloc(CountBoundElements, ref SensBFE_1, 1);
+                MEM.Alloc(mesh.CountBoundElements, ref SensBFE_2, 1);
+                // перенумерация узлов в ГКЭ второго сегмента
+                for (uint i = 0; i < mesh.CountBoundElements; i++)
+                {
+                    // перенумерация узлов в ГЭ второй сетки
+                    mesh.BoundElems[i].Vertex1 = (uint)ConformID[mesh.BoundElems[i].Vertex1];
+                    mesh.BoundElems[i].Vertex2 = (uint)ConformID[mesh.BoundElems[i].Vertex2];
+                }
+                // Пометка совпадающих ГКЭ
+                for (uint i = 0; i < CountBoundElements; i++) // перебор по ГКЭ 2 подобласти
+                {
+                    for (uint j = 0; j < mesh.CountBoundElements; j++)
+                    {
+                        if (BoundElems[i].Equals(mesh.BoundElems[j]) == true)
+                        {
+                            SensBFE_1[i] = 0;
+                            SensBFE_2[j] = 0;
+                        }
+                    }
+                }
+                // Формирование окончательного буферного массива
+                List<TwoElement> ListBElement = new List<TwoElement>(CountBoundElements + mesh.CountBoundElements);
+                List<int> ListBoundElementsMark = new List<int>(CountBoundElements + mesh.CountBoundElements);
+                //HVectorFE TmpBoundElems;
+                for (uint i = 0; i < CountBoundElements; i++) // перебор по ГКЭ 1 подобласти
+                    if (SensBFE_1[i] > 0)
+                    {
+                        ListBElement.Add(BoundElems[i]);
+                        ListBoundElementsMark.Add(BoundElementsMark[i]);
+                    }
+                for (uint i = 0; i < mesh.CountBoundElements; i++) // перебор по ГКЭ 2 подобласти
+                    if (SensBFE_2[i] > 0)
+                    {
+                        ListBElement.Add(mesh.BoundElems[i]);
+                        ListBoundElementsMark.Add(mesh.BoundElementsMark[i]);
+                    }
+                // создание массива ГКЭ
+                BoundElems = ListBElement.ToArray();
+                BoundElementsMark = ListBoundElementsMark.ToArray();
+
+                //*********  Массив координат и параметров сетки ************
+                List<double> listX = new List<double>();
+                List<double> listY = new List<double>();
+                listX.AddRange(CoordsX);
+                listY.AddRange(CoordsY);
+                for (uint i = 0; i < mesh.CountKnots; i++)
+                {
+                    if (Check[i] == true)
+                    {
+                        listX.Add(mesh.CoordsX[i]);
+                        listY.Add(mesh.CoordsY[i]);
+                    }
+                }
+                CoordsX = listX.ToArray();
+                CoordsY = listY.ToArray();
+                //**************** Список граничных узлов ******************
+                //        созданный без циклической сортировки !!!
+                //     временный расширенный массив граничных узлов
+                int[] tmpBoundKnots = null;
+                int[] tmpBoundKnotsMark = null;
+                MEM.Alloc(CountKnots + mesh.CountKnots, ref tmpBoundKnots, -1);
+                MEM.Alloc(CountKnots + mesh.CountKnots, ref tmpBoundKnotsMark);
+                //  запись всех узлов принадлежащих граничным элементам сформированной сетки
+                for (int i = 0; i < CountBoundElements; i++)
+                {
+                    tmpBoundKnots[BoundElems[i].Vertex1] = (int)BoundElems[i].Vertex1;
+                    tmpBoundKnots[BoundElems[i].Vertex2] = (int)BoundElems[i].Vertex2;
+                    tmpBoundKnotsMark[BoundElems[i].Vertex1] = BoundElementsMark[i];
+                    tmpBoundKnotsMark[BoundElems[i].Vertex2] = BoundElementsMark[i];
+                }
+                List<int> LBoundKnots = new List<int>(CountBoundKnots + mesh.CountBoundKnots);
+                List<int> LBoundKnotsMark = new List<int>(CountBoundKnots + mesh.CountBoundKnots);
+                // количество граничных узлов в рез. сетке
+                for (uint i = 0; i < CountKnots; i++)
+                    if (tmpBoundKnots[i] != -1)
+                    {
+                        LBoundKnots.Add(tmpBoundKnots[i]);
+                        LBoundKnotsMark.Add(tmpBoundKnotsMark[i]);
+                    }
+                BoundKnots = LBoundKnots.ToArray();
+                BoundKnotsMark = LBoundKnotsMark.ToArray();
+            }
+            catch (Exception ee)
+            {
+                Logger.Instance.Exception(ee);
+            }
+        }
+
+
+
         public override void Print()
         {
             base.Print();

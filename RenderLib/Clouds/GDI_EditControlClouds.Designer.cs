@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            RenderLib.ColorSchemeFields colorSchemeFields1 = new RenderLib.ColorSchemeFields();
+            RenderLib.ColorSchemeFields colorSchemeFields4 = new RenderLib.ColorSchemeFields();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GDI_EditControlClouds));
-            RenderLib.RenderOptionsFields renderOptionsFields1 = new RenderLib.RenderOptionsFields();
+            RenderLib.RenderOptionsFields renderOptionsFields4 = new RenderLib.RenderOptionsFields();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btShow = new System.Windows.Forms.Button();
             this.tabControlOption = new System.Windows.Forms.TabControl();
@@ -108,6 +108,8 @@
             this.cb_ColoBrushrKnots = new System.Windows.Forms.CheckBox();
             this.tabControlState = new System.Windows.Forms.TabControl();
             this.tp_Area = new System.Windows.Forms.TabPage();
+            this.label40 = new System.Windows.Forms.Label();
+            this.listBoxCLine = new System.Windows.Forms.ListBox();
             this.btPointFig = new System.Windows.Forms.Button();
             this.label39 = new System.Windows.Forms.Label();
             this.tb_LLS = new System.Windows.Forms.TextBox();
@@ -141,9 +143,13 @@
             this.textBoxY = new System.Windows.Forms.TextBox();
             this.textBoxX = new System.Windows.Forms.TextBox();
             this.tp_Areas = new System.Windows.Forms.TabPage();
+            this.tbIce = new System.Windows.Forms.TextBox();
+            this.tbKs = new System.Windows.Forms.TextBox();
+            this.btUpDateFig = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.listBoxFig = new System.Windows.Forms.ListBox();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.rbSubArea = new System.Windows.Forms.RadioButton();
             this.rbHole = new System.Windows.Forms.RadioButton();
             this.rbCountur = new System.Windows.Forms.RadioButton();
             this.btSaveFig = new System.Windows.Forms.Button();
@@ -154,6 +160,7 @@
             this.btDelFig = new System.Windows.Forms.Button();
             this.btSelectBM = new System.Windows.Forms.Button();
             this.btDelKnot = new System.Windows.Forms.Button();
+            this.renderControl1 = new RenderLib.CPRenderControlFields();
             this.panel1 = new System.Windows.Forms.Panel();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
@@ -169,9 +176,8 @@
             this.tSS_Max = new System.Windows.Forms.ToolStripStatusLabel();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.listBoxCLine = new System.Windows.Forms.ListBox();
-            this.renderControl1 = new RenderLib.CPRenderControlFields();
-            this.label40 = new System.Windows.Forms.Label();
+            this.label41 = new System.Windows.Forms.Label();
+            this.label42 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this.tabControlOption.SuspendLayout();
             this.tabObjects.SuspendLayout();
@@ -1225,6 +1231,27 @@
             this.tp_Area.TabIndex = 1;
             this.tp_Area.Text = "Область";
             // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label40.Location = new System.Drawing.Point(207, 176);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(62, 18);
+            this.label40.TabIndex = 139;
+            this.label40.Text = "Створы";
+            // 
+            // listBoxCLine
+            // 
+            this.listBoxCLine.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.listBoxCLine.FormattingEnabled = true;
+            this.listBoxCLine.ItemHeight = 18;
+            this.listBoxCLine.Location = new System.Drawing.Point(204, 198);
+            this.listBoxCLine.Name = "listBoxCLine";
+            this.listBoxCLine.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.listBoxCLine.Size = new System.Drawing.Size(87, 130);
+            this.listBoxCLine.TabIndex = 138;
+            // 
             // btPointFig
             // 
             this.btPointFig.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -1312,8 +1339,8 @@
             this.cbSegMark.FormattingEnabled = true;
             this.cbSegMark.Items.AddRange(new object[] {
             "Берег",
-            "Вток",
-            "Исток"});
+            "Приток",
+            "Отток"});
             this.cbSegMark.Location = new System.Drawing.Point(68, 391);
             this.cbSegMark.Name = "cbSegMark";
             this.cbSegMark.Size = new System.Drawing.Size(97, 28);
@@ -1550,6 +1577,11 @@
             // 
             // tp_Areas
             // 
+            this.tp_Areas.Controls.Add(this.label42);
+            this.tp_Areas.Controls.Add(this.label41);
+            this.tp_Areas.Controls.Add(this.tbIce);
+            this.tp_Areas.Controls.Add(this.tbKs);
+            this.tp_Areas.Controls.Add(this.btUpDateFig);
             this.tp_Areas.Controls.Add(this.label1);
             this.tp_Areas.Controls.Add(this.listBoxFig);
             this.tp_Areas.Controls.Add(this.panel4);
@@ -1567,6 +1599,34 @@
             this.tp_Areas.TabIndex = 2;
             this.tp_Areas.Text = "Контуры";
             this.tp_Areas.UseVisualStyleBackColor = true;
+            // 
+            // tbIce
+            // 
+            this.tbIce.Location = new System.Drawing.Point(191, 252);
+            this.tbIce.Name = "tbIce";
+            this.tbIce.Size = new System.Drawing.Size(98, 26);
+            this.tbIce.TabIndex = 125;
+            this.tbIce.Text = "0.0";
+            // 
+            // tbKs
+            // 
+            this.tbKs.Location = new System.Drawing.Point(191, 224);
+            this.tbKs.Name = "tbKs";
+            this.tbKs.Size = new System.Drawing.Size(98, 26);
+            this.tbKs.TabIndex = 124;
+            this.tbKs.Text = "0.1";
+            // 
+            // btUpDateFig
+            // 
+            this.btUpDateFig.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btUpDateFig.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btUpDateFig.Location = new System.Drawing.Point(190, 279);
+            this.btUpDateFig.Name = "btUpDateFig";
+            this.btUpDateFig.Size = new System.Drawing.Size(99, 30);
+            this.btUpDateFig.TabIndex = 121;
+            this.btUpDateFig.Text = "Обновить";
+            this.btUpDateFig.UseVisualStyleBackColor = false;
+            this.btUpDateFig.Click += new System.EventHandler(this.btUpDateFig_Click);
             // 
             // label1
             // 
@@ -1587,7 +1647,7 @@
             this.listBoxFig.ItemHeight = 18;
             this.listBoxFig.Location = new System.Drawing.Point(11, 30);
             this.listBoxFig.Name = "listBoxFig";
-            this.listBoxFig.Size = new System.Drawing.Size(115, 94);
+            this.listBoxFig.Size = new System.Drawing.Size(136, 94);
             this.listBoxFig.TabIndex = 111;
             this.listBoxFig.SelectedIndexChanged += new System.EventHandler(this.listBoxFig_SelectedIndexChanged);
             // 
@@ -1595,22 +1655,33 @@
             // 
             this.panel4.BackColor = System.Drawing.Color.White;
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel4.Controls.Add(this.rbSubArea);
             this.panel4.Controls.Add(this.rbHole);
             this.panel4.Controls.Add(this.rbCountur);
             this.panel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.panel4.Location = new System.Drawing.Point(10, 136);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(112, 52);
+            this.panel4.Size = new System.Drawing.Size(285, 82);
             this.panel4.TabIndex = 9;
+            // 
+            // rbSubArea
+            // 
+            this.rbSubArea.AutoSize = true;
+            this.rbSubArea.Location = new System.Drawing.Point(9, 52);
+            this.rbSubArea.Name = "rbSubArea";
+            this.rbSubArea.Size = new System.Drawing.Size(113, 22);
+            this.rbSubArea.TabIndex = 3;
+            this.rbSubArea.Text = "Подобласть";
+            this.rbSubArea.UseVisualStyleBackColor = true;
             // 
             // rbHole
             // 
             this.rbHole.AutoSize = true;
-            this.rbHole.Location = new System.Drawing.Point(9, 24);
+            this.rbHole.Location = new System.Drawing.Point(9, 26);
             this.rbHole.Name = "rbHole";
-            this.rbHole.Size = new System.Drawing.Size(73, 22);
+            this.rbHole.Size = new System.Drawing.Size(134, 22);
             this.rbHole.TabIndex = 2;
-            this.rbHole.Text = "Дырка";
+            this.rbHole.Text = "Остров в русле";
             this.rbHole.UseVisualStyleBackColor = true;
             // 
             // rbCountur
@@ -1619,19 +1690,19 @@
             this.rbCountur.Checked = true;
             this.rbCountur.Location = new System.Drawing.Point(8, 2);
             this.rbCountur.Name = "rbCountur";
-            this.rbCountur.Size = new System.Drawing.Size(75, 22);
+            this.rbCountur.Size = new System.Drawing.Size(119, 22);
             this.rbCountur.TabIndex = 0;
             this.rbCountur.TabStop = true;
-            this.rbCountur.Text = "Контур";
+            this.rbCountur.Text = "Контур русла";
             this.rbCountur.UseVisualStyleBackColor = true;
             // 
             // btSaveFig
             // 
             this.btSaveFig.BackColor = System.Drawing.Color.WhiteSmoke;
             this.btSaveFig.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btSaveFig.Location = new System.Drawing.Point(10, 299);
+            this.btSaveFig.Location = new System.Drawing.Point(152, 319);
             this.btSaveFig.Name = "btSaveFig";
-            this.btSaveFig.Size = new System.Drawing.Size(143, 26);
+            this.btSaveFig.Size = new System.Drawing.Size(143, 30);
             this.btSaveFig.TabIndex = 117;
             this.btSaveFig.Text = "Записать фигуру";
             this.btSaveFig.UseVisualStyleBackColor = false;
@@ -1641,7 +1712,7 @@
             // 
             this.btDelFigs.BackColor = System.Drawing.Color.WhiteSmoke;
             this.btDelFigs.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btDelFigs.Location = new System.Drawing.Point(12, 363);
+            this.btDelFigs.Location = new System.Drawing.Point(154, 387);
             this.btDelFigs.Name = "btDelFigs";
             this.btDelFigs.Size = new System.Drawing.Size(141, 26);
             this.btDelFigs.TabIndex = 118;
@@ -1655,9 +1726,9 @@
             this.lbBoundary.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lbBoundary.FormattingEnabled = true;
             this.lbBoundary.ItemHeight = 18;
-            this.lbBoundary.Location = new System.Drawing.Point(142, 30);
+            this.lbBoundary.Location = new System.Drawing.Point(156, 30);
             this.lbBoundary.Name = "lbBoundary";
-            this.lbBoundary.Size = new System.Drawing.Size(105, 94);
+            this.lbBoundary.Size = new System.Drawing.Size(139, 94);
             this.lbBoundary.TabIndex = 113;
             this.lbBoundary.SelectedIndexChanged += new System.EventHandler(this.lbBoundary_SelectedIndexChanged);
             // 
@@ -1665,9 +1736,9 @@
             // 
             this.btClear.BackColor = System.Drawing.Color.WhiteSmoke;
             this.btClear.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btClear.Location = new System.Drawing.Point(10, 267);
+            this.btClear.Location = new System.Drawing.Point(9, 386);
             this.btClear.Name = "btClear";
-            this.btClear.Size = new System.Drawing.Size(142, 26);
+            this.btClear.Size = new System.Drawing.Size(138, 26);
             this.btClear.TabIndex = 116;
             this.btClear.Text = "Очистить буффер";
             this.btClear.UseVisualStyleBackColor = false;
@@ -1678,7 +1749,7 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(139, 10);
+            this.label2.Location = new System.Drawing.Point(149, 10);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(110, 18);
             this.label2.TabIndex = 114;
@@ -1688,7 +1759,7 @@
             // 
             this.btDelFig.BackColor = System.Drawing.Color.WhiteSmoke;
             this.btDelFig.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btDelFig.Location = new System.Drawing.Point(10, 331);
+            this.btDelFig.Location = new System.Drawing.Point(152, 355);
             this.btDelFig.Name = "btDelFig";
             this.btDelFig.Size = new System.Drawing.Size(143, 26);
             this.btDelFig.TabIndex = 119;
@@ -1700,9 +1771,9 @@
             // 
             this.btSelectBM.BackColor = System.Drawing.Color.WhiteSmoke;
             this.btSelectBM.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btSelectBM.Location = new System.Drawing.Point(10, 200);
+            this.btSelectBM.Location = new System.Drawing.Point(9, 319);
             this.btSelectBM.Name = "btSelectBM";
-            this.btSelectBM.Size = new System.Drawing.Size(142, 30);
+            this.btSelectBM.Size = new System.Drawing.Size(138, 30);
             this.btSelectBM.TabIndex = 115;
             this.btSelectBM.Text = "Выделить";
             this.btSelectBM.UseVisualStyleBackColor = false;
@@ -1712,13 +1783,34 @@
             // 
             this.btDelKnot.BackColor = System.Drawing.Color.WhiteSmoke;
             this.btDelKnot.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btDelKnot.Location = new System.Drawing.Point(10, 235);
+            this.btDelKnot.Location = new System.Drawing.Point(9, 354);
             this.btDelKnot.Name = "btDelKnot";
-            this.btDelKnot.Size = new System.Drawing.Size(141, 26);
+            this.btDelKnot.Size = new System.Drawing.Size(137, 26);
             this.btDelKnot.TabIndex = 120;
             this.btDelKnot.Text = "Удалить узел";
             this.btDelKnot.UseVisualStyleBackColor = false;
             this.btDelKnot.Click += new System.EventHandler(this.btDelKnot_Click);
+            // 
+            // renderControl1
+            // 
+            this.renderControl1.BackColor = System.Drawing.Color.White;
+            colorSchemeFields4.Background = System.Drawing.Color.White;
+            colorSchemeFields4.FontKnot = new System.Drawing.Font("Arial", 8F);
+            colorSchemeFields4.FontReper = new System.Drawing.Font("Arial", 8F);
+            colorSchemeFields4.FontValue = null;
+            colorSchemeFields4.formatTextReper = ((uint)(2u));
+            this.renderControl1.colorScheme = colorSchemeFields4;
+            this.renderControl1.IndexTask = 0;
+            this.renderControl1.Location = new System.Drawing.Point(218, 3);
+            this.renderControl1.Name = "renderControl1";
+            this.renderControl1.Points = new System.Drawing.PointF[] {
+        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points"))),
+        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points1")))};
+            this.renderControl1.renderOptions = renderOptionsFields4;
+            this.renderControl1.Size = new System.Drawing.Size(32, 22);
+            this.renderControl1.TabIndex = 0;
+            this.renderControl1.Text = "renderControl1";
+            this.renderControl1.Visible = false;
             // 
             // panel1
             // 
@@ -1802,47 +1894,23 @@
             // 
             this.openFileDialog2.FileName = "openFileDialog2";
             // 
-            // listBoxCLine
+            // label41
             // 
-            this.listBoxCLine.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.listBoxCLine.FormattingEnabled = true;
-            this.listBoxCLine.ItemHeight = 18;
-            this.listBoxCLine.Location = new System.Drawing.Point(204, 198);
-            this.listBoxCLine.Name = "listBoxCLine";
-            this.listBoxCLine.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listBoxCLine.Size = new System.Drawing.Size(87, 130);
-            this.listBoxCLine.TabIndex = 138;
+            this.label41.AutoSize = true;
+            this.label41.Location = new System.Drawing.Point(20, 227);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(160, 20);
+            this.label41.TabIndex = 126;
+            this.label41.Text = "шероховатость дна";
             // 
-            // renderControl1
+            // label42
             // 
-            this.renderControl1.BackColor = System.Drawing.Color.White;
-            colorSchemeFields1.Background = System.Drawing.Color.White;
-            colorSchemeFields1.FontKnot = new System.Drawing.Font("Arial", 8F);
-            colorSchemeFields1.FontReper = new System.Drawing.Font("Arial", 8F);
-            colorSchemeFields1.FontValue = null;
-            colorSchemeFields1.formatTextReper = ((uint)(2u));
-            this.renderControl1.colorScheme = colorSchemeFields1;
-            this.renderControl1.IndexTask = 0;
-            this.renderControl1.Location = new System.Drawing.Point(218, 3);
-            this.renderControl1.Name = "renderControl1";
-            this.renderControl1.Points = new System.Drawing.PointF[] {
-        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points"))),
-        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points1")))};
-            this.renderControl1.renderOptions = renderOptionsFields1;
-            this.renderControl1.Size = new System.Drawing.Size(32, 22);
-            this.renderControl1.TabIndex = 0;
-            this.renderControl1.Text = "renderControl1";
-            this.renderControl1.Visible = false;
-            // 
-            // label40
-            // 
-            this.label40.AutoSize = true;
-            this.label40.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label40.Location = new System.Drawing.Point(207, 176);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(62, 18);
-            this.label40.TabIndex = 139;
-            this.label40.Text = "Створы";
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(23, 253);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(120, 20);
+            this.label42.TabIndex = 127;
+            this.label42.Text = "толщина льда";
             // 
             // GDI_EditControlClouds
             // 
@@ -2044,5 +2112,11 @@
         private System.Windows.Forms.Button btPointFig;
         private System.Windows.Forms.ListBox listBoxCLine;
         private System.Windows.Forms.Label label40;
+        private System.Windows.Forms.RadioButton rbSubArea;
+        private System.Windows.Forms.Button btUpDateFig;
+        private System.Windows.Forms.TextBox tbIce;
+        private System.Windows.Forms.TextBox tbKs;
+        private System.Windows.Forms.Label label41;
+        private System.Windows.Forms.Label label42;
     }
 }

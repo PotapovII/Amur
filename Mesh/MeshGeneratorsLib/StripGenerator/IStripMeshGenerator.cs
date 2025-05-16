@@ -15,9 +15,9 @@ namespace MeshGeneratorsLib.StripGenerator
     public interface IStripMeshGenerator
     {
         /// <summary>
-        /// Ось симметрии
+        /// Опции для генерации Ленточной КЭ сетки 
         /// </summary>
-        bool AxisOfSymmetry { get; }
+        CrossStripMeshOption Option { get; }
         /// <summary>
         /// Правая береговая точка
         /// </summary>
@@ -43,7 +43,7 @@ namespace MeshGeneratorsLib.StripGenerator
         /// <param name="yy">координаты дна по Y</param>
         /// <param name="Count">Количество узлов по дну</param>
         /// <returns>КЭ сетка</returns>
-        IMesh CreateMesh(ref double WetBed, double WaterLevel, double[] xx, double[] yy, int Count = 0);
+        IMesh CreateMesh(ref double WetBed, ref int[][] riverGates, double WaterLevel, double[] xx, double[] yy, int Count = 0);
         /// <summary>
         /// интерполяция дна
         /// </summary>
@@ -51,5 +51,4 @@ namespace MeshGeneratorsLib.StripGenerator
         /// <returns></returns>
         double Zeta(double arg);
     }
-
 }

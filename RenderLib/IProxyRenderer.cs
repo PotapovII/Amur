@@ -266,6 +266,10 @@ namespace RenderLib
         /// </summary>
         void SetFType(int index, FigureType ft);
         /// <summary>
+        /// Установка атрибутов контура
+        /// </summary>
+        void SetAtributes(int index, double ice, double ks);
+        /// <summary>
         /// Удалить фигуры
         /// </summary>
         void ClearFigs();

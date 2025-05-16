@@ -12,6 +12,8 @@ namespace EddyViscosityLib
     using CommonLib.Physics;
     using CommonLib.EddyViscosity;
     using CommonLib;
+    using System.Linq;
+    using MemLogLib;
 
     /// <summary>
     /// Профиль турбулентной вязкости Караушев 1977
@@ -39,7 +41,8 @@ namespace EddyViscosityLib
                 double mCs = SPhysics.PHYS.Cs(R0) * Math.Sqrt(GRAV);
                 double U1 = Math.Sqrt(GRAV * R0 * J);
                 double mM = 0.7 * mCs + 1.92 * Math.Sqrt(GRAV);
-                if (Vy != null && Vz != null)
+                double sU = Ux.Sum();
+                if (Ux != null && Vy != null && Vz != null && sU>0)
                 {
                     for (int node = 0; node < mesh.CountKnots; node++)
                     {
@@ -50,11 +53,18 @@ namespace EddyViscosityLib
                 }
                 else
                 {
-                    for (int node = 0; node < mesh.CountKnots; node++)
-                    {
-                        double mu_t0 = rho_w * (Ux[node] / U0) * U1 * GRAV * R0 / (mM * mCs);
-                        eddyViscosity[node] = mu_t0 + mu;
-                    }
+                    if( MEM.Equals(sU,0)==true)
+                        for (int node = 0; node < mesh.CountKnots; node++)
+                        {
+                            double mu_t0 = rho_w * U1 * GRAV * R0 / (mM * mCs);
+                            eddyViscosity[node] = mu_t0 + mu;
+                        }
+                    else
+                        for (int node = 0; node < mesh.CountKnots; node++)
+                        {
+                            double mu_t0 = rho_w * (Ux[node] / U0) * U1 * GRAV * R0 / (mM * mCs);
+                            eddyViscosity[node] = mu_t0 + mu;
+                        }
                 }
             }
             catch (Exception ee)

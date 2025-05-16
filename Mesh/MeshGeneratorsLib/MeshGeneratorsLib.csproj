@@ -67,6 +67,7 @@
     <Compile Include="HProject\HMeshParams.cs" />
     <Compile Include="HProject\Geometry\IHTaskMap.cs" />
     <Compile Include="LineStretch.cs" />
+    <Compile Include="Stamp\SMeshGenerator.cs" />
     <Compile Include="Renumberation\ARenumberator.cs" />
     <Compile Include="Renumberation\FERenumberatorHesh.cs" />
     <Compile Include="Renumberation\FERenumberator.cs" />
@@ -76,6 +77,9 @@
     <Compile Include="StripGenerator\AStripMeshGenerator.cs" />
     <Compile Include="StripGenerator\ACrossStripMeshGenerator.cs" />
     <Compile Include="StripGenerator\BoundaryCrossSectionType.cs" />
+    <Compile Include="StripGenerator\CrossStripMapBr.cs" />
+    <Compile Include="StripGenerator\StripMeshGenerator.cs" />
+    <Compile Include="StripGenerator\CrossStripMeshOption.cs" />
     <Compile Include="StripGenerator\SMGManager.cs" />
     <Compile Include="StripGenerator\CrossStripMap.cs" />
     <Compile Include="StripGenerator\CrossStripMeshGeneratorQuad.cs" />
@@ -111,6 +115,8 @@
       <Name>MeshLib</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Stamp\SMeshGenerator.doc" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -581,7 +581,7 @@ namespace MeshGeneratorsLib
                     VMapKnot Kb = RealSegmRibs[rib].Knots[knot];
                     //pMap[i][j] = Kb.SelectBC(Ka);
                     pMap[i][j] = new VMapKnot(Kb);
-                    pMap[i][j].type = RealSegmRibs[rib].Knots[knot].type;
+                    pMap[i][j].marker = RealSegmRibs[rib].Knots[knot].marker;
                     pMap[i][j].typeEx = (int)RealSegmRibs[rib].Knots[knot].typeEx;
                 }
             }

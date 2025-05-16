@@ -27,6 +27,8 @@ namespace CPForm
     using System.Collections.Generic;
 
     using RenderLib.PDG;
+    using CommonLib.BedLoad;
+
     /// <summary>
     /// Базистная форма задачи
     /// </summary>
@@ -494,9 +496,6 @@ namespace CPForm
             taskState = TaskState.startTask;
             IRiver rtask = mrt.Clone(idxRiver);
             IBedLoadTask btask = mbt.Clone(idxBload);
-            task = new ChannelProcessPro(rtask, btask);
-            // загрузка параметров по умолчанию в созданную задачу
-            SetTaskParams();
             // получение загрузчика задачи
             IOFormater<IRiver> loader = rtask.GetFormater();
             // получение от загрузчика задачи списка тестовых кейсов
@@ -509,7 +508,12 @@ namespace CPForm
                 FTestsList ff = new FTestsList(TaskNames);
                 if (ff.ShowDialog() == DialogResult.OK)
                     testTaskID = (uint)ff.GetTaskID();
+                else
+                    return;
             }
+            task = new ChannelProcessPro(rtask, btask);
+            // загрузка параметров по умолчанию в созданную задачу
+            SetTaskParams();
             // загрузка задачи по умолчанию или тестовых кейсов
             task.LoadComputationalDomainDefault(testTaskID);
             // установка параметров загруженной задачи в гриды окна управления

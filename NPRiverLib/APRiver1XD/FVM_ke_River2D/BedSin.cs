@@ -40,7 +40,8 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         /// <param name="x">аргумент</param>
         /// <param name="y">функция</param>
         /// <param name="Count">количество точек</param>
-        public void GetFunctionData(ref double[] x, ref double[] y, int Count = 0)
+        public void GetFunctionData(ref double[] x, ref double[] y,
+                 int Count = 10, bool revers = false)
         {
             MEM.Alloc<double>(Count, ref x);
             MEM.Alloc<double>(Count, ref y);
@@ -52,6 +53,8 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                 x[i] = xi;
                 y[i] = FunctionValue(xi);
             }
+            if (revers == true)
+                MEM.Reverse(ref y);
         }
         double Len1, Len2, Len3, K, bottomWaveAmplitude;
         public BedSinLen2(double Len1, double Len2, double Len3, double bottomWaveAmplitude, 

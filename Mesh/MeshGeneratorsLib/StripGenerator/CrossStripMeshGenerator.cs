@@ -14,7 +14,6 @@ namespace MeshGeneratorsLib.StripGenerator
 
     using MeshLib;
     using MemLogLib;
-
     using CommonLib;
     /// <summary>
     /// ОО: Фронтальный генератор КЭ трехузловой сетки для русла реки в 
@@ -24,10 +23,6 @@ namespace MeshGeneratorsLib.StripGenerator
     public class CrossStripMeshGenerator : ACrossStripMeshGenerator
     {
         /// <summary>
-        /// Тип сетки
-        /// </summary>
-        TypeMesh typeMesh;
-        /// <summary>
         /// Создаваемая сетка
         /// </summary>
         ComplecsMesh mesh = null;
@@ -36,12 +31,11 @@ namespace MeshGeneratorsLib.StripGenerator
         /// </summary>
         /// <param name="MAXElem">максимальное количество КЭ сетки</param>
         /// <param name="MAXKnot">максимальное количество узлов сетки</param>
-        public CrossStripMeshGenerator(bool axisOfSymmetry = false, 
-            TypeMesh typeMesh = TypeMesh.Triangle)
-            : base(axisOfSymmetry)
+        public CrossStripMeshGenerator(CrossStripMeshOption Option)
+            : base(Option)
         {
-            this.typeMesh = typeMesh;
         }
+        public CrossStripMeshGenerator():this(new CrossStripMeshOption()) { }
         /// <summary>
         /// // расчет количества конечных элементов
         /// </summary>
@@ -58,7 +52,6 @@ namespace MeshGeneratorsLib.StripGenerator
                     CountElements++;
                     CountEl3++;
                 }
-
                 else if (Map.map1D[i + 1] == 1)
                 {
                     CountElements++;
@@ -66,7 +59,7 @@ namespace MeshGeneratorsLib.StripGenerator
                 }
                 else
                 {
-                    if (typeMesh == TypeMesh.Triangle)
+                    if (Option.typeMesh == TypeMesh.Triangle)
                     {
                         uint Nmin = Math.Min(Map.map1D[i], Map.map1D[i + 1]) - 1;
                         CountElements += 2*Nmin;
@@ -97,7 +90,7 @@ namespace MeshGeneratorsLib.StripGenerator
         /// <param name="yy">координаты дна по Y</param>
         /// <param name="Count">Количество узлов по дну</param>
         /// <returns></returns>
-        public override IMesh CreateMesh(ref double WetBed, double WaterLevel, double[] xx, double[] yy, int Count = 0)
+        public override IMesh CreateMesh(ref double WetBed, ref int[][] riverGates, double WaterLevel, double[] xx, double[] yy, int Count = 0)
         {
             try
             {
@@ -124,12 +117,22 @@ namespace MeshGeneratorsLib.StripGenerator
                 if (CountInL > 0)
                     CountBoundKnots += (int)CountInL + 1;
                 int CountBoundElems = CountBoundKnots;
+                
                 int WallR = 1;
                 int WallL = 3;
-                if (AxisOfSymmetry == false)
+                switch (Option.markerArea)
                 {
-                    WallR = 0;
-                    WallL = 0;
+                    case SimpleMarkerArea.crossSectionRiver:
+                    case SimpleMarkerArea.crossSectionTrapezoid:
+                        WallR = 0;
+                        WallL = 0;
+                        break;
+                    case SimpleMarkerArea.crossSectionRiverLeft:
+                        WallR = 0;
+                        break;
+                    case SimpleMarkerArea.crossSectionRiverRight:
+                        WallL = 0;
+                        break;
                 }
 
                 mesh = new ComplecsMesh();
@@ -145,13 +148,16 @@ namespace MeshGeneratorsLib.StripGenerator
                 MEM.Alloc(CountBoundElems, ref mesh.BoundElems);
                 // вычисление массивов координат
                 CountKnots = 0;
+                riverGates = new int[Count][];
                 for (int i = 0; i < Count; i++)
                 {
                     double x = y0 + dy * i;
+                    riverGates[i] = new int[map1D[i]];
                     for (int j = 0; j < map1D[i]; j++)
                     {
                         mesh.CoordsX[CountKnots] = x;
                         mesh.CoordsY[CountKnots] = mapZ[i][j];
+                        riverGates[i][j] = (int)CountKnots;
                         CountKnots++;
                     }
                 }
@@ -194,7 +200,7 @@ namespace MeshGeneratorsLib.StripGenerator
                         for (int j = 0; j < Nmin; j++)
                         {
                   
-                            if (typeMesh == TypeMesh.Triangle)
+                            if (Option.typeMesh == TypeMesh.Triangle)
                             {
 
                                 double dx1 = mesh.CoordsX[map[i][j]] - mesh.CoordsX[map[i + 1][j + 1]];
@@ -205,7 +211,7 @@ namespace MeshGeneratorsLib.StripGenerator
                                 double dy2 = mesh.CoordsY[map[i + 1][j]] - mesh.CoordsY[map[i][j + 1]];
                                 double L2 = dx2 * dx2 + dy2 * dy2;
 
-                                if (L1 <= 0.99* L2)// || i > Count / 2)
+                                if (L1 <= 0.95* L2)// || i > Count / 2)
                                 {
                                     //  ij ----- i+1 j
                                     //  |  \    2  |
@@ -294,6 +300,10 @@ namespace MeshGeneratorsLib.StripGenerator
                         }
                     }
                 }
+                if(mesh.AreaElems.Length != CountElements)
+                {
+
+                }
 
                 CountKnots = 0;
                 // свободная поверхность
@@ -363,10 +373,7 @@ namespace MeshGeneratorsLib.StripGenerator
                     {
                          map[iR][j], map[iR][j+1]
                     };
-                    if(AxisOfSymmetry == true)
-                        mesh.BoundElementsMark[belem] = WallR;
-                    else
-                        mesh.BoundElementsMark[belem] = 0;
+                    mesh.BoundElementsMark[belem] = WallR;
                     belem++;
                 }
             }

@@ -135,7 +135,8 @@ namespace GeometryLib
         /// <param name="x">координаты Х</param>
         /// <param name="y">координаты У</param>
         /// <param name="Count">количество узлов для русла</param>
-        public virtual void GetFunctionData(ref double[] x, ref double[] y, int Count)
+        public virtual void GetFunctionData(ref double[] x, ref double[] y,
+                            int Count = 10, bool revers = false)
         {
             MEM.Alloc<double>(Count, ref x);
             MEM.Alloc<double>(Count, ref y);
@@ -196,36 +197,43 @@ namespace GeometryLib
                 else
                 {
                     double[] LS = new double[x0.Count - 1];
-                    for (int k = 1; k < x0.Count; k++)
+                    for (int k = 0; k < x0.Count-1; k++)
                     {
-                        double dsx = x0[k] - x0[k - 1];
-                        double dsy = y0[k] - y0[k - 1];
-                        LS[k - 1] = Math.Sqrt(dsx * dsx + dsy * dsy);
+                        double dsx = x0[k + 1] - x0[k];
+                        double dsy = y0[k + 1] - y0[k];
+                        LS[k] = Math.Sqrt(dsx * dsx + dsy * dsy);
                     }
-
                     int i;
                     for (int k = 0; k < Count; k++)
                     {
                         double xx = k * ds;
-                        double sum = 0;
                         double Li = 0;
-                        for (i = 1; i < x0.Count; i++)
+                        double sum = 0;
+                        for (i = 0; i < x0.Count - 1; i++)
                         {
-                            Li = LS[i - 1];
+                            Li = LS[i];
                             sum += Li;
                             if (sum >= xx)
                                 break;
                         }
-                        if (i == x0.Count) i = x0.Count - 1;
-                        double s0 = sum - Li;
-                        double N1 = (xx - s0) / Li;
-                        double N0 = 1 - N1;
-                        x[k] = N0 * x0[i - 1] + N1 * x0[i];
-                        y[k] = N0 * y0[i - 1] + N1 * y0[i];
+                        if (i < x0.Count - 1)
+                        {
+                            double s0 = sum - Li;
+                            double N1 = (xx - s0) / Li;
+                            double N0 = 1 - N1;
+                            x[k] = N0 * x0[i] + N1 * x0[i + 1];
+                            y[k] = N0 * y0[i] + N1 * y0[i + 1];
+                        }
+                        else
+                        {
+                            x[k] = x0[i];
+                            y[k] = y0[i];
+                        }
                     }
-
                 }
             }
+            if (revers == true)
+                MEM.Reverse(ref y);
         }
         /// <summary>
         /// Получить данные основы

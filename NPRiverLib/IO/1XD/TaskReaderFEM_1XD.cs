@@ -19,6 +19,8 @@ namespace NPRiverLib.IO
     using MemLogLib;
     using GeometryLib;
     using NPRiverLib.APRiver_1XD;
+    using NPRiverLib.IO._1XD.Tests;
+    using System.Windows.Forms;
 
     [Serializable]
     public class TaskReaderFEM_1XD : ATaskFormat<IRiver>
@@ -53,11 +55,19 @@ namespace NPRiverLib.IO
                 }
             }
             else
+            if (testID == 1) // Загрузка по умолчанию
             {
-                TriFEMRiver_1XD river1XD = river as TriFEMRiver_1XD;
-                if (river1XD == null)
-                    throw new NotSupportedException("Не возможно загрузить выбранный объект задачи в формате *.prf, river1XD == null");
-                river1XD.DefaultCalculationDomain(testID);
+                OpenFileDialog ofd = new OpenFileDialog();
+                string filter = "(*" + Ext_prf + ")|*" + Ext_prf + "| ";
+                filter += " All files (*.*)|*.*";
+                ofd.Filter = filter;
+                if (ofd.ShowDialog() == DialogResult.OK)
+                    Read_prf(ofd.FileName, ref river);
+                return;
+            }
+            else
+            {
+                Test_Cannal_1XD.GetTest(ref river, testID);
             }
         }
         /// <summary>
@@ -151,20 +161,6 @@ namespace NPRiverLib.IO
         /// Создает список тестовых задач для загрузчика по умолчанию
         /// </summary>
         /// <returns></returns>
-        public override List<string> GetTestsName()
-        {
-            List<string> list = new List<string>();
-            list.Add("Загрузка по умолчанию");          // 0
-            list.Add("Прямой канал (нс Стокс)");        // 1
-            list.Add("Прямой канал (ст Рейнольдс)");    // 2
-            list.Add("Прямой канал (нс Рейнольдс)");    // 3
-            list.Add("Канал с соплом (нс Стокс)");      // 4
-            list.Add("Канал с соплом (ст Рейнольдс)");  // 5
-            list.Add("Канал с соплом (нс Рейнольдс)");  // 6
-            list.Add("Канал с уступом (нс Стокс)");     // 7
-            list.Add("Канал с уступом (ст Рейнольдс)"); // 8
-            list.Add("Канал с уступом (нс Рейнольдс)"); // 9
-            return list;
-        }
+        public override List<string> GetTestsName() => Test_Cannal_1XD.GetTestsName();
     }
 }

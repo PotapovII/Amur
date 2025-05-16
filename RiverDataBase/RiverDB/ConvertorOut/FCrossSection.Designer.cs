@@ -36,8 +36,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.cbRetask = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.dtpStart = new System.Windows.Forms.DateTimePicker();
-            this.dtpEnd = new System.Windows.Forms.DateTimePicker();
             this.cbDataEnd = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tb_DataEnd = new System.Windows.Forms.TextBox();
@@ -75,13 +73,14 @@
             this.tbSL = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.button3 = new System.Windows.Forms.Button();
             this.btAdd = new System.Windows.Forms.Button();
             this.btDel = new System.Windows.Forms.Button();
             this.btEdit = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.lbKs = new System.Windows.Forms.ListBox();
-            this.button3 = new System.Windows.Forms.Button();
             this.btLoad = new System.Windows.Forms.Button();
+            this.btCSMesh = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.pnRF.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -92,10 +91,10 @@
             // 
             this.btClose.BackColor = System.Drawing.SystemColors.Control;
             this.btClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btClose.Location = new System.Drawing.Point(521, 533);
+            this.btClose.Location = new System.Drawing.Point(521, 536);
             this.btClose.Margin = new System.Windows.Forms.Padding(4);
             this.btClose.Name = "btClose";
-            this.btClose.Size = new System.Drawing.Size(133, 32);
+            this.btClose.Size = new System.Drawing.Size(133, 30);
             this.btClose.TabIndex = 1;
             this.btClose.Text = "Выход";
             this.btClose.UseVisualStyleBackColor = false;
@@ -105,10 +104,10 @@
             // 
             this.bt_CreateTaskFile.BackColor = System.Drawing.SystemColors.Control;
             this.bt_CreateTaskFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bt_CreateTaskFile.Location = new System.Drawing.Point(521, 456);
+            this.bt_CreateTaskFile.Location = new System.Drawing.Point(521, 476);
             this.bt_CreateTaskFile.Margin = new System.Windows.Forms.Padding(4);
             this.bt_CreateTaskFile.Name = "bt_CreateTaskFile";
-            this.bt_CreateTaskFile.Size = new System.Drawing.Size(133, 33);
+            this.bt_CreateTaskFile.Size = new System.Drawing.Size(133, 30);
             this.bt_CreateTaskFile.TabIndex = 0;
             this.bt_CreateTaskFile.Text = "Создать";
             this.bt_CreateTaskFile.UseVisualStyleBackColor = false;
@@ -122,8 +121,6 @@
             this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.cbRetask);
             this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.dtpStart);
-            this.panel1.Controls.Add(this.dtpEnd);
             this.panel1.Controls.Add(this.cbDataEnd);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.tb_DataEnd);
@@ -182,26 +179,10 @@
             this.label3.TabIndex = 547;
             this.label3.Text = "Учет вторичных - створовых течений при решении задачи";
             // 
-            // dtpStart
-            // 
-            this.dtpStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.dtpStart.Location = new System.Drawing.Point(476, 31);
-            this.dtpStart.Name = "dtpStart";
-            this.dtpStart.Size = new System.Drawing.Size(166, 26);
-            this.dtpStart.TabIndex = 546;
-            // 
-            // dtpEnd
-            // 
-            this.dtpEnd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.dtpEnd.Location = new System.Drawing.Point(476, 59);
-            this.dtpEnd.Name = "dtpEnd";
-            this.dtpEnd.Size = new System.Drawing.Size(166, 26);
-            this.dtpEnd.TabIndex = 545;
-            // 
             // cbDataEnd
             // 
             this.cbDataEnd.AutoSize = true;
-            this.cbDataEnd.Location = new System.Drawing.Point(344, 69);
+            this.cbDataEnd.Location = new System.Drawing.Point(491, 63);
             this.cbDataEnd.Name = "cbDataEnd";
             this.cbDataEnd.Size = new System.Drawing.Size(15, 14);
             this.cbDataEnd.TabIndex = 544;
@@ -224,7 +205,7 @@
             // 
             this.tb_DataEnd.Enabled = false;
             this.tb_DataEnd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tb_DataEnd.Location = new System.Drawing.Point(369, 61);
+            this.tb_DataEnd.Location = new System.Drawing.Point(544, 59);
             this.tb_DataEnd.Margin = new System.Windows.Forms.Padding(4);
             this.tb_DataEnd.Name = "tb_DataEnd";
             this.tb_DataEnd.Size = new System.Drawing.Size(97, 26);
@@ -234,7 +215,7 @@
             // tb_RF
             // 
             this.tb_RF.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tb_RF.Location = new System.Drawing.Point(545, 114);
+            this.tb_RF.Location = new System.Drawing.Point(545, 115);
             this.tb_RF.Margin = new System.Windows.Forms.Padding(4);
             this.tb_RF.Name = "tb_RF";
             this.tb_RF.Size = new System.Drawing.Size(96, 26);
@@ -291,7 +272,7 @@
             // 
             this.tb_Data.Enabled = false;
             this.tb_Data.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tb_Data.Location = new System.Drawing.Point(369, 31);
+            this.tb_Data.Location = new System.Drawing.Point(544, 31);
             this.tb_Data.Margin = new System.Windows.Forms.Padding(4);
             this.tb_Data.Name = "tb_Data";
             this.tb_Data.Size = new System.Drawing.Size(97, 26);
@@ -314,7 +295,7 @@
             // 
             this.tb_Version.Enabled = false;
             this.tb_Version.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tb_Version.Location = new System.Drawing.Point(545, 4);
+            this.tb_Version.Location = new System.Drawing.Point(545, 3);
             this.tb_Version.Margin = new System.Windows.Forms.Padding(4);
             this.tb_Version.Name = "tb_Version";
             this.tb_Version.Size = new System.Drawing.Size(96, 26);
@@ -501,10 +482,10 @@
             // 
             this.button1.BackColor = System.Drawing.SystemColors.Control;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.Location = new System.Drawing.Point(521, 384);
+            this.button1.Location = new System.Drawing.Point(521, 381);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(133, 33);
+            this.button1.Size = new System.Drawing.Size(133, 30);
             this.button1.TabIndex = 52;
             this.button1.Text = "Уровни";
             this.button1.UseVisualStyleBackColor = false;
@@ -514,10 +495,10 @@
             // 
             this.button2.BackColor = System.Drawing.SystemColors.Control;
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.Location = new System.Drawing.Point(521, 420);
+            this.button2.Location = new System.Drawing.Point(521, 446);
             this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(133, 33);
+            this.button2.Size = new System.Drawing.Size(133, 30);
             this.button2.TabIndex = 53;
             this.button2.Text = "Створ";
             this.button2.UseVisualStyleBackColor = false;
@@ -537,7 +518,7 @@
             // tbS0
             // 
             this.tbS0.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbS0.Location = new System.Drawing.Point(51, 38);
+            this.tbS0.Location = new System.Drawing.Point(50, 51);
             this.tbS0.Margin = new System.Windows.Forms.Padding(4);
             this.tbS0.Name = "tbS0";
             this.tbS0.Size = new System.Drawing.Size(102, 26);
@@ -547,7 +528,7 @@
             // tbks
             // 
             this.tbks.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbks.Location = new System.Drawing.Point(50, 98);
+            this.tbks.Location = new System.Drawing.Point(49, 111);
             this.tbks.Margin = new System.Windows.Forms.Padding(4);
             this.tbks.Name = "tbks";
             this.tbks.Size = new System.Drawing.Size(102, 26);
@@ -559,7 +540,7 @@
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.SystemColors.ControlLight;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(14, 41);
+            this.label4.Location = new System.Drawing.Point(13, 54);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(29, 20);
@@ -571,7 +552,7 @@
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.SystemColors.ControlLight;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(14, 71);
+            this.label5.Location = new System.Drawing.Point(13, 84);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(29, 20);
@@ -581,7 +562,7 @@
             // tbSL
             // 
             this.tbSL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbSL.Location = new System.Drawing.Point(51, 68);
+            this.tbSL.Location = new System.Drawing.Point(50, 81);
             this.tbSL.Margin = new System.Windows.Forms.Padding(4);
             this.tbSL.Name = "tbSL";
             this.tbSL.Size = new System.Drawing.Size(102, 26);
@@ -593,7 +574,7 @@
             this.label7.AutoSize = true;
             this.label7.BackColor = System.Drawing.SystemColors.ControlLight;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label7.Location = new System.Drawing.Point(17, 101);
+            this.label7.Location = new System.Drawing.Point(16, 114);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(25, 20);
@@ -618,6 +599,19 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(492, 183);
             this.panel4.TabIndex = 549;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.SystemColors.Control;
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button3.Location = new System.Drawing.Point(18, 145);
+            this.button3.Margin = new System.Windows.Forms.Padding(4);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(133, 33);
+            this.button3.TabIndex = 550;
+            this.button3.Text = "Помощь";
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // btAdd
             // 
@@ -681,37 +675,38 @@
             this.lbKs.TabIndex = 548;
             this.lbKs.DoubleClick += new System.EventHandler(this.lbKs_DoubleClick);
             // 
-            // button3
-            // 
-            this.button3.BackColor = System.Drawing.SystemColors.Control;
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button3.Location = new System.Drawing.Point(18, 145);
-            this.button3.Margin = new System.Windows.Forms.Padding(4);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(133, 33);
-            this.button3.TabIndex = 550;
-            this.button3.Text = "Помощь";
-            this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
             // btLoad
             // 
             this.btLoad.BackColor = System.Drawing.SystemColors.Control;
             this.btLoad.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btLoad.Location = new System.Drawing.Point(522, 494);
+            this.btLoad.Location = new System.Drawing.Point(522, 506);
             this.btLoad.Margin = new System.Windows.Forms.Padding(4);
             this.btLoad.Name = "btLoad";
-            this.btLoad.Size = new System.Drawing.Size(133, 33);
+            this.btLoad.Size = new System.Drawing.Size(133, 30);
             this.btLoad.TabIndex = 550;
             this.btLoad.Text = "Загрузить";
             this.btLoad.UseVisualStyleBackColor = false;
             this.btLoad.Click += new System.EventHandler(this.btLoad_Click);
+            // 
+            // btCSMesh
+            // 
+            this.btCSMesh.BackColor = System.Drawing.SystemColors.Control;
+            this.btCSMesh.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btCSMesh.Location = new System.Drawing.Point(521, 414);
+            this.btCSMesh.Margin = new System.Windows.Forms.Padding(4);
+            this.btCSMesh.Name = "btCSMesh";
+            this.btCSMesh.Size = new System.Drawing.Size(133, 30);
+            this.btCSMesh.TabIndex = 551;
+            this.btCSMesh.Text = "Сетка";
+            this.btCSMesh.UseVisualStyleBackColor = false;
+            this.btCSMesh.Click += new System.EventHandler(this.btCSMesh_Click);
             // 
             // FCrossSection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(967, 575);
+            this.Controls.Add(this.btCSMesh);
             this.Controls.Add(this.btLoad);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.pGridTask);
@@ -722,7 +717,7 @@
             this.Controls.Add(this.bt_CreateTaskFile);
             this.Controls.Add(this.panel1);
             this.Name = "FCrossSection";
-            this.Text = "FCrossSection";
+            this.Text = "Создание задачи в створе русла";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.pnRF.ResumeLayout(false);
@@ -768,8 +763,6 @@
         private System.Windows.Forms.CheckBox cbDataEnd;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.DateTimePicker dtpStart;
-        private System.Windows.Forms.DateTimePicker dtpEnd;
         private System.Windows.Forms.PropertyGrid pGridTask;
         private System.Windows.Forms.CheckBox cbRetask;
         private System.Windows.Forms.Label label3;
@@ -789,5 +782,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btLoad;
+        private System.Windows.Forms.Button btCSMesh;
     }
 }

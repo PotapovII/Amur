@@ -29,11 +29,11 @@ namespace RenderLib
         /// </summary>
         private void InitializeComponent()
         {
-            RenderLib.ColorScheme colorScheme7 = new RenderLib.ColorScheme();
-            RenderLib.RenderOptionsCurves renderOptionsCurves7 = new RenderLib.RenderOptionsCurves();
+            RenderLib.ColorScheme colorScheme2 = new RenderLib.ColorScheme();
+            RenderLib.RenderOptionsCurves renderOptionsCurves2 = new RenderLib.RenderOptionsCurves();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btDel = new System.Windows.Forms.Button();
             this.cbFNames = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -84,6 +84,15 @@ namespace RenderLib
             this.label15 = new System.Windows.Forms.Label();
             this.textBoxXmax = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.panel12 = new System.Windows.Forms.Panel();
+            this.cbMeasure = new System.Windows.Forms.ComboBox();
+            this.tbCurveB = new System.Windows.Forms.Button();
+            this.tbCurveA = new System.Windows.Forms.Button();
+            this.tbError = new System.Windows.Forms.TextBox();
+            this.btCalkMeasure = new System.Windows.Forms.Button();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
             this.checkedListBoxGroup = new System.Windows.Forms.CheckedListBox();
             this.tabControlOption = new System.Windows.Forms.TabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
@@ -93,6 +102,14 @@ namespace RenderLib
             this.panel9 = new System.Windows.Forms.Panel();
             this.cb_opGraphicCurve = new System.Windows.Forms.CheckBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label11 = new System.Windows.Forms.Label();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.label20 = new System.Windows.Forms.Label();
+            this.btFontCurve = new System.Windows.Forms.Button();
+            this.label18 = new System.Windows.Forms.Label();
+            this.textBoxCurve = new System.Windows.Forms.TextBox();
+            this.textBoxCoords = new System.Windows.Forms.TextBox();
+            this.btFontCoords = new System.Windows.Forms.Button();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -100,17 +117,14 @@ namespace RenderLib
             this.btBrushFields = new System.Windows.Forms.Button();
             this.btBrushCurve = new System.Windows.Forms.Button();
             this.btBrushCoords = new System.Windows.Forms.Button();
-            this.label11 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
+            this.label17 = new System.Windows.Forms.Label();
             this.nUD_penGraphCurve = new System.Windows.Forms.NumericUpDown();
+            this.label19 = new System.Windows.Forms.Label();
             this.nUD_penGraphLine = new System.Windows.Forms.NumericUpDown();
-            this.textBoxCurve = new System.Windows.Forms.TextBox();
             this.btColorCurve = new System.Windows.Forms.Button();
-            this.textBoxCoords = new System.Windows.Forms.TextBox();
             this.btColorCoord = new System.Windows.Forms.Button();
-            this.btFontCurve = new System.Windows.Forms.Button();
-            this.btFontCoords = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.panel11 = new System.Windows.Forms.Panel();
@@ -151,11 +165,6 @@ namespace RenderLib
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.saveFileDialog2 = new System.Windows.Forms.SaveFileDialog();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.panel7 = new System.Windows.Forms.Panel();
             this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -166,10 +175,13 @@ namespace RenderLib
             this.tabPage5.SuspendLayout();
             this.tabPage7.SuspendLayout();
             this.panel5.SuspendLayout();
+            this.tabPage6.SuspendLayout();
+            this.panel12.SuspendLayout();
             this.tabControlOption.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.panel9.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.panel7.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUD_penGraphCurve)).BeginInit();
@@ -180,7 +192,6 @@ namespace RenderLib
             ((System.ComponentModel.ISupportInitialize)(this.nUD_formatText)).BeginInit();
             this.panel4.SuspendLayout();
             this.statusStrip1.SuspendLayout();
-            this.panel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -199,7 +210,7 @@ namespace RenderLib
             // 
             this.panel2.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel2.Controls.Add(this.button1);
+            this.panel2.Controls.Add(this.btDel);
             this.panel2.Controls.Add(this.cbFNames);
             this.panel2.Controls.Add(this.tabControl1);
             this.panel2.Controls.Add(this.checkedListBoxGroup);
@@ -213,15 +224,16 @@ namespace RenderLib
             this.panel2.Size = new System.Drawing.Size(339, 704);
             this.panel2.TabIndex = 14;
             // 
-            // button1
+            // btDel
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.Location = new System.Drawing.Point(167, 239);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(154, 29);
-            this.button1.TabIndex = 97;
-            this.button1.Text = "Удалить кривую";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btDel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btDel.Location = new System.Drawing.Point(167, 239);
+            this.btDel.Name = "btDel";
+            this.btDel.Size = new System.Drawing.Size(154, 29);
+            this.btDel.TabIndex = 97;
+            this.btDel.Text = "Удалить кривую";
+            this.btDel.UseVisualStyleBackColor = true;
+            this.btDel.Click += new System.EventHandler(this.btDel_Click);
             // 
             // cbFNames
             // 
@@ -242,6 +254,7 @@ namespace RenderLib
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage7);
+            this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tabControl1.Location = new System.Drawing.Point(11, 10);
             this.tabControl1.Name = "tabControl1";
@@ -802,6 +815,104 @@ namespace RenderLib
             this.label14.TabIndex = 90;
             this.label14.Text = "X_max";
             // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.panel12);
+            this.tabPage6.Location = new System.Drawing.Point(4, 29);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Size = new System.Drawing.Size(308, 160);
+            this.tabPage6.TabIndex = 3;
+            this.tabPage6.Text = "Ошибки";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // panel12
+            // 
+            this.panel12.BackColor = System.Drawing.Color.LightGray;
+            this.panel12.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel12.Controls.Add(this.cbMeasure);
+            this.panel12.Controls.Add(this.tbCurveB);
+            this.panel12.Controls.Add(this.tbCurveA);
+            this.panel12.Controls.Add(this.tbError);
+            this.panel12.Controls.Add(this.btCalkMeasure);
+            this.panel12.Controls.Add(this.label28);
+            this.panel12.Controls.Add(this.label32);
+            this.panel12.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel12.Location = new System.Drawing.Point(0, 0);
+            this.panel12.Name = "panel12";
+            this.panel12.Size = new System.Drawing.Size(308, 160);
+            this.panel12.TabIndex = 93;
+            // 
+            // cbMeasure
+            // 
+            this.cbMeasure.FormattingEnabled = true;
+            this.cbMeasure.Items.AddRange(new object[] {
+            "Метрика Лебега L2",
+            "Метрика Чебышева С"});
+            this.cbMeasure.Location = new System.Drawing.Point(15, 67);
+            this.cbMeasure.Name = "cbMeasure";
+            this.cbMeasure.Size = new System.Drawing.Size(277, 28);
+            this.cbMeasure.TabIndex = 96;
+            // 
+            // tbCurveB
+            // 
+            this.tbCurveB.Location = new System.Drawing.Point(100, 36);
+            this.tbCurveB.Name = "tbCurveB";
+            this.tbCurveB.Size = new System.Drawing.Size(192, 28);
+            this.tbCurveB.TabIndex = 95;
+            this.tbCurveB.Text = "не определена";
+            this.tbCurveB.UseVisualStyleBackColor = true;
+            this.tbCurveB.Click += new System.EventHandler(this.tbCurveB_Click);
+            // 
+            // tbCurveA
+            // 
+            this.tbCurveA.Location = new System.Drawing.Point(100, 6);
+            this.tbCurveA.Name = "tbCurveA";
+            this.tbCurveA.Size = new System.Drawing.Size(192, 27);
+            this.tbCurveA.TabIndex = 94;
+            this.tbCurveA.Text = "не определена";
+            this.tbCurveA.UseVisualStyleBackColor = true;
+            this.tbCurveA.Click += new System.EventHandler(this.tbCurveA_Click);
+            // 
+            // tbError
+            // 
+            this.tbError.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbError.Location = new System.Drawing.Point(135, 100);
+            this.tbError.Name = "tbError";
+            this.tbError.Size = new System.Drawing.Size(157, 26);
+            this.tbError.TabIndex = 93;
+            this.tbError.Text = "100";
+            // 
+            // btCalkMeasure
+            // 
+            this.btCalkMeasure.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btCalkMeasure.Location = new System.Drawing.Point(15, 99);
+            this.btCalkMeasure.Name = "btCalkMeasure";
+            this.btCalkMeasure.Size = new System.Drawing.Size(117, 27);
+            this.btCalkMeasure.TabIndex = 92;
+            this.btCalkMeasure.Text = "Расчет";
+            this.btCalkMeasure.UseVisualStyleBackColor = true;
+            this.btCalkMeasure.Click += new System.EventHandler(this.btCalkMeasure_Click);
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label28.Location = new System.Drawing.Point(15, 6);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(77, 20);
+            this.label28.TabIndex = 85;
+            this.label28.Text = "Кривая 1";
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label32.Location = new System.Drawing.Point(15, 41);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(77, 20);
+            this.label32.TabIndex = 90;
+            this.label32.Text = "Кривая 2";
+            // 
             // checkedListBoxGroup
             // 
             this.checkedListBoxGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -918,6 +1029,89 @@ namespace RenderLib
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Перья";
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label11.Location = new System.Drawing.Point(14, 99);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(109, 20);
+            this.label11.TabIndex = 101;
+            this.label11.Text = "Шрифты для";
+            // 
+            // panel7
+            // 
+            this.panel7.BackColor = System.Drawing.Color.White;
+            this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel7.Controls.Add(this.label20);
+            this.panel7.Controls.Add(this.btFontCurve);
+            this.panel7.Controls.Add(this.label18);
+            this.panel7.Controls.Add(this.textBoxCurve);
+            this.panel7.Controls.Add(this.textBoxCoords);
+            this.panel7.Controls.Add(this.btFontCoords);
+            this.panel7.Location = new System.Drawing.Point(7, 119);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(244, 66);
+            this.panel7.TabIndex = 96;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label20.Location = new System.Drawing.Point(8, 8);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(55, 20);
+            this.label20.TabIndex = 108;
+            this.label20.Text = "полей";
+            // 
+            // btFontCurve
+            // 
+            this.btFontCurve.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btFontCurve.Location = new System.Drawing.Point(114, 6);
+            this.btFontCurve.Name = "btFontCurve";
+            this.btFontCurve.Size = new System.Drawing.Size(45, 24);
+            this.btFontCurve.TabIndex = 98;
+            this.btFontCurve.UseVisualStyleBackColor = true;
+            this.btFontCurve.Click += new System.EventHandler(this.btFontCurve_Click);
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label18.Location = new System.Drawing.Point(5, 36);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(91, 20);
+            this.label18.TabIndex = 106;
+            this.label18.Text = "координат";
+            // 
+            // textBoxCurve
+            // 
+            this.textBoxCurve.Enabled = false;
+            this.textBoxCurve.Location = new System.Drawing.Point(174, 5);
+            this.textBoxCurve.Name = "textBoxCurve";
+            this.textBoxCurve.Size = new System.Drawing.Size(48, 26);
+            this.textBoxCurve.TabIndex = 99;
+            this.textBoxCurve.Text = "A 12";
+            // 
+            // textBoxCoords
+            // 
+            this.textBoxCoords.Enabled = false;
+            this.textBoxCoords.Location = new System.Drawing.Point(174, 33);
+            this.textBoxCoords.Name = "textBoxCoords";
+            this.textBoxCoords.Size = new System.Drawing.Size(48, 26);
+            this.textBoxCoords.TabIndex = 95;
+            this.textBoxCoords.Text = "A 12";
+            // 
+            // btFontCoords
+            // 
+            this.btFontCoords.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btFontCoords.Location = new System.Drawing.Point(114, 34);
+            this.btFontCoords.Name = "btFontCoords";
+            this.btFontCoords.Size = new System.Drawing.Size(45, 25);
+            this.btFontCoords.TabIndex = 93;
+            this.btFontCoords.UseVisualStyleBackColor = true;
+            this.btFontCoords.Click += new System.EventHandler(this.btFontCoords_Click);
+            // 
             // panel6
             // 
             this.panel6.BackColor = System.Drawing.Color.White;
@@ -993,16 +1187,6 @@ namespace RenderLib
             this.btBrushCoords.UseVisualStyleBackColor = true;
             this.btBrushCoords.Click += new System.EventHandler(this.btBrushCoords_Click);
             // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label11.Location = new System.Drawing.Point(14, 99);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(109, 20);
-            this.label11.TabIndex = 101;
-            this.label11.Text = "Шрифты для";
-            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -1029,6 +1213,16 @@ namespace RenderLib
             this.panel8.TabIndex = 95;
             this.panel8.Paint += new System.Windows.Forms.PaintEventHandler(this.panel8_Paint);
             // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label17.Location = new System.Drawing.Point(10, 36);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(63, 20);
+            this.label17.TabIndex = 105;
+            this.label17.Text = "репера";
+            // 
             // nUD_penGraphCurve
             // 
             this.nUD_penGraphCurve.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -1052,6 +1246,16 @@ namespace RenderLib
             0,
             0});
             this.nUD_penGraphCurve.ValueChanged += new System.EventHandler(this.nUD_penGraphCurve_ValueChanged);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label19.Location = new System.Drawing.Point(10, 8);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(62, 20);
+            this.label19.TabIndex = 107;
+            this.label19.Text = "кривых";
             // 
             // nUD_penGraphLine
             // 
@@ -1078,15 +1282,6 @@ namespace RenderLib
             this.nUD_penGraphLine.ValueChanged += new System.EventHandler(this.nUD_penGraphLine_ValueChanged);
             this.nUD_penGraphLine.ChangeUICues += new System.Windows.Forms.UICuesEventHandler(this.nUD_penGraphLine_ChangeUICues);
             // 
-            // textBoxCurve
-            // 
-            this.textBoxCurve.Enabled = false;
-            this.textBoxCurve.Location = new System.Drawing.Point(174, 5);
-            this.textBoxCurve.Name = "textBoxCurve";
-            this.textBoxCurve.Size = new System.Drawing.Size(48, 26);
-            this.textBoxCurve.TabIndex = 99;
-            this.textBoxCurve.Text = "A 12";
-            // 
             // btColorCurve
             // 
             this.btColorCurve.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -1097,15 +1292,6 @@ namespace RenderLib
             this.btColorCurve.UseVisualStyleBackColor = true;
             this.btColorCurve.Click += new System.EventHandler(this.btColorCurve_Click);
             // 
-            // textBoxCoords
-            // 
-            this.textBoxCoords.Enabled = false;
-            this.textBoxCoords.Location = new System.Drawing.Point(174, 33);
-            this.textBoxCoords.Name = "textBoxCoords";
-            this.textBoxCoords.Size = new System.Drawing.Size(48, 26);
-            this.textBoxCoords.TabIndex = 95;
-            this.textBoxCoords.Text = "A 12";
-            // 
             // btColorCoord
             // 
             this.btColorCoord.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -1115,26 +1301,6 @@ namespace RenderLib
             this.btColorCoord.TabIndex = 96;
             this.btColorCoord.UseVisualStyleBackColor = true;
             this.btColorCoord.Click += new System.EventHandler(this.btColorCoord_Click);
-            // 
-            // btFontCurve
-            // 
-            this.btFontCurve.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btFontCurve.Location = new System.Drawing.Point(114, 6);
-            this.btFontCurve.Name = "btFontCurve";
-            this.btFontCurve.Size = new System.Drawing.Size(45, 24);
-            this.btFontCurve.TabIndex = 98;
-            this.btFontCurve.UseVisualStyleBackColor = true;
-            this.btFontCurve.Click += new System.EventHandler(this.btFontCurve_Click);
-            // 
-            // btFontCoords
-            // 
-            this.btFontCoords.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btFontCoords.Location = new System.Drawing.Point(114, 34);
-            this.btFontCoords.Name = "btFontCoords";
-            this.btFontCoords.Size = new System.Drawing.Size(45, 25);
-            this.btFontCoords.TabIndex = 93;
-            this.btFontCoords.UseVisualStyleBackColor = true;
-            this.btFontCoords.Click += new System.EventHandler(this.btFontCoords_Click);
             // 
             // label12
             // 
@@ -1378,14 +1544,14 @@ namespace RenderLib
             // renderControl1
             // 
             this.renderControl1.BackColor = System.Drawing.Color.White;
-            colorScheme7.Background = System.Drawing.Color.White;
-            colorScheme7.FontReper = new System.Drawing.Font("Arial", 8F);
-            colorScheme7.FontValue = null;
-            colorScheme7.formatTextReper = ((uint)(2u));
-            this.renderControl1.colorScheme = colorScheme7;
+            colorScheme2.Background = System.Drawing.Color.White;
+            colorScheme2.FontReper = new System.Drawing.Font("Arial", 8F);
+            colorScheme2.FontValue = null;
+            colorScheme2.formatTextReper = ((uint)(2u));
+            this.renderControl1.colorScheme = colorScheme2;
             this.renderControl1.Location = new System.Drawing.Point(228, 3);
             this.renderControl1.Name = "renderControl1";
-            this.renderControl1.renderOptions = renderOptionsCurves7;
+            this.renderControl1.renderOptions = renderOptionsCurves2;
             this.renderControl1.Size = new System.Drawing.Size(25, 23);
             this.renderControl1.TabIndex = 0;
             this.renderControl1.Text = "renderControl1";
@@ -1503,61 +1669,6 @@ namespace RenderLib
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label17.Location = new System.Drawing.Point(10, 36);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(63, 20);
-            this.label17.TabIndex = 105;
-            this.label17.Text = "репера";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label18.Location = new System.Drawing.Point(5, 36);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(91, 20);
-            this.label18.TabIndex = 106;
-            this.label18.Text = "координат";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label19.Location = new System.Drawing.Point(10, 8);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(62, 20);
-            this.label19.TabIndex = 107;
-            this.label19.Text = "кривых";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label20.Location = new System.Drawing.Point(8, 8);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(55, 20);
-            this.label20.TabIndex = 108;
-            this.label20.Text = "полей";
-            // 
-            // panel7
-            // 
-            this.panel7.BackColor = System.Drawing.Color.White;
-            this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel7.Controls.Add(this.label20);
-            this.panel7.Controls.Add(this.btFontCurve);
-            this.panel7.Controls.Add(this.label18);
-            this.panel7.Controls.Add(this.textBoxCurve);
-            this.panel7.Controls.Add(this.textBoxCoords);
-            this.panel7.Controls.Add(this.btFontCoords);
-            this.panel7.Location = new System.Drawing.Point(7, 119);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(244, 66);
-            this.panel7.TabIndex = 96;
-            // 
             // GDI_Curves_Control
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1584,6 +1695,9 @@ namespace RenderLib
             this.tabPage7.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
+            this.tabPage6.ResumeLayout(false);
+            this.panel12.ResumeLayout(false);
+            this.panel12.PerformLayout();
             this.tabControlOption.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
@@ -1591,6 +1705,8 @@ namespace RenderLib
             this.panel9.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.panel7.ResumeLayout(false);
+            this.panel7.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
             this.panel8.ResumeLayout(false);
@@ -1607,8 +1723,6 @@ namespace RenderLib
             this.panel4.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.panel7.ResumeLayout(false);
-            this.panel7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1734,7 +1848,7 @@ namespace RenderLib
         private System.Windows.Forms.CheckBox cb_PrintOp;
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.CheckBox cbFNames;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btDel;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label3;
@@ -1743,5 +1857,14 @@ namespace RenderLib
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.Panel panel12;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.ComboBox cbMeasure;
+        private System.Windows.Forms.Button tbCurveB;
+        private System.Windows.Forms.Button tbCurveA;
+        private System.Windows.Forms.TextBox tbError;
+        private System.Windows.Forms.Button btCalkMeasure;
     }
 }

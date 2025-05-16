@@ -8,9 +8,110 @@
 namespace GeometryLib
 {
     using System;
-    using CommonLib.Geometry;
-    using GeometryLib.Vector;
+    using System.Collections.Generic;
+
     using MemLogLib;
+    using CommonLib.Geometry;
+    [Serializable]
+    public static class AtrCK
+    {
+        /// <summary>
+        /// Индексы атрибутов
+        /// </summary>
+        public const int idx_H      = 0;
+        public const int idx_Hs     = 1;
+        public const int idx_T      = 2;
+        public const int idx_Vx     = 3;
+        public const int idx_Vy     = 4;
+        public const int idx_Ice    = 5;
+        public const int idx_ks     = 6;
+        /// <summary>
+        /// Количество всех атрибутов 
+        /// </summary>
+        public const int Count = 7;
+        /// <summary>
+        /// Количество базовых атрибутов 
+        /// </summary>
+        public const int CountBase = 5;
+        /// <summary>
+        /// флаг создания внешнего атрибута - толщина льда
+        /// </summary>
+        public static bool ice = false;
+        /// <summary>
+        /// флаг создания внешнего атрибута - шероховатость дна
+        /// </summary>
+        public static bool ks = false;
+        /// <summary>
+        /// Названия атрибутов
+        /// </summary>
+        static string[] names = { "Глубина", "Срез.Глубина", "Температура", "Скорость", "Курс",  "Лед", "Шероховатость" };
+        /// <summary>
+        /// Количество атрибутов точки
+        /// </summary>
+        public static int CountAttributes => names.Length;
+        /// <summary>
+        /// Создать пустой массив атрибутов
+        /// </summary>
+        /// <returns></returns>
+        public static double[] CreateZerro() => new double[CountAttributes];
+        /// <summary>
+        /// Название атрибутов точки
+        /// </summary>
+        public static string[] AtrNames => names; 
+    }
+    /// <summary>
+    /// Атрибуты точек наблюдения из БД + внешние атрибуты точки
+    /// </summary>
+    [Serializable]
+    public static class AttributesCloudKnot1
+    {
+        /// <summary>
+        /// флаг создания внешнего атрибута - толщина льда
+        /// </summary>
+        public static bool ice = false;
+        /// <summary>
+        /// флаг создания внешнего атрибута - шероховатость дна
+        /// </summary>
+        public static bool ks = false;
+        /// <summary>
+        /// Количество атрибутов точки
+        /// </summary>
+        public static int CountAttributes => AtrNames.Length;
+        /// <summary>
+        /// Создать пустой массив атрибутов
+        /// </summary>
+        /// <returns></returns>
+        public static double[] CreateZerro()=>new double[CountAttributes];
+        /// <summary>
+        /// Название атрибутов точки
+        /// </summary>
+        public static string[] AtrNames
+        {
+            get
+            {
+                List<string> names = new List<string>(new string[5]
+                {  "Глубина", 
+                   "Срез.Глубина", 
+                   "Температура", 
+                   "Скорость", 
+                   "Курс" });
+                if (ice == true)
+                    names.Add(NameIce);
+                if (ks == true)
+                    names.Add(NameKs);
+                return names.ToArray();
+            }
+        }
+        /// <summary>
+        /// Название атрибута лед
+        /// </summary>
+        public static string NameIce = "Лед";
+        /// <summary>
+        /// Название атрибута Шероховатость
+        /// </summary>
+        public static string NameKs = "Шероховатость";
+
+    }
     /// <summary>
     /// Узел для облака данных
     /// </summary>
@@ -85,11 +186,11 @@ namespace GeometryLib
         public new static CloudKnot Parse(string line)
         {
             string[] mas = (line.Trim()).Split(' ');
-            double xx = double.Parse(mas[0], MEM.formatter);
-            double yy = double.Parse(mas[1], MEM.formatter);
-            int _mark = int.Parse(mas[2]);
-            int _ID = int.Parse(mas[3]);
-            int count = mas.Length - 4;
+            double xx = double.Parse(mas[0], MEM.formatter); // 0
+            double yy = double.Parse(mas[1], MEM.formatter); // 1
+            int _mark = int.Parse(mas[2]);                   // 2
+            int _ID = int.Parse(mas[3]);                     // 3
+            int count = mas.Length - 4;                     
             count = count <= 0 ? 1 : count;
             double[] v = new double[count];
             for (int j = 4; j < mas.Length; j++)

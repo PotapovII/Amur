@@ -26,12 +26,13 @@ namespace MeshLib.SaveData
         public string[] AttributNames { get; }
 
         public List<CloudKnot> CloudKnots = new List<CloudKnot>();
+
         public SavePointRiverNods()
         {
-            AttributNames = new string[7]
-            { "Глубина", "Срез.глубина", "Тепература","Скорость X","Скорость Y","Вектор скорости","Код узла" };
+            // при создании нового идет настройка на текущее состояние 
+            // статического класса и его флагов
+            AttributNames = AtrCK.AtrNames;
         }
-
         public SavePointRiverNods(SavePointRiverNods m)
         {
             AttributNames = m.AttributNames;

@@ -67,9 +67,9 @@ namespace FEMTasksLib.FEMTasks.VortexStream
         /// </summary>
         protected double[][] MM =
         {
-            new double[3] { 1 / 12.0, 1 / 24.0, 1 / 24.0 },
-            new double[3] { 1 / 24.0, 1 / 12.0, 1 / 24.0 },
-            new double[3] { 1 / 24.0, 1 / 24.0, 1 / 12.0 }
+            new double[3] { 1 / 6.0,  1 / 12.0, 1 / 12.0 },
+            new double[3] { 1 / 12.0, 1 / 6.0,  1 / 12.0 },
+            new double[3] { 1 / 12.0, 1 / 12.0, 1 / 6.0 }
         };
         /// <summary>
         /// номера граничных узлов

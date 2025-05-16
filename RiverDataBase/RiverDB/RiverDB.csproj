@@ -267,6 +267,10 @@
       <Project>{336aaf8a-5316-4303-9e73-5e38bd0b28af}</Project>
       <Name>Mesh Explorer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\_ExternalLibraries\Triangle.NET\Triangle.Rendering\Triangle.Rendering.csproj">
+      <Project>{41022e0e-bd0f-439e-bc3a-aabb1b43471b}</Project>
+      <Name>Triangle.Rendering</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\_ExternalLibraries\Triangle.NET\Triangle\Triangle.csproj">
       <Project>{ad37da98-33b1-448e-9104-6e77b61e84f3}</Project>
       <Name>Triangle</Name>

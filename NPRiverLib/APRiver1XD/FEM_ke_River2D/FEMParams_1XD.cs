@@ -16,6 +16,7 @@ namespace NPRiverLib.APRiver_1XD
     using CommonLib.EConverter;
     using NPRiverLib.APRiver_1XD.River2D_FVM_ke;
     using CommonLib.EddyViscosity;
+    using CommonLib.BedLoad;
 
     /// <summary>
     /// ОО: Физические параметры модели к-e
@@ -32,7 +33,6 @@ namespace NPRiverLib.APRiver_1XD
         [Description("Колиество переменных задачи")]
         [Category("Задача")]
         public int CountUnknow => nfmax;
-
         /// <summary>
         /// Количество КЭ для давления по Х
         /// </summary>
@@ -76,7 +76,6 @@ namespace NPRiverLib.APRiver_1XD
         [Description("Количество итераций по движению узлов границы")]
         [Category("Сетка")]
         public int CountBoundaryMove { get; set; }
-
         /// <summary>
         /// Ширина расчетной области  -> по X
         /// </summary>
@@ -110,7 +109,6 @@ namespace NPRiverLib.APRiver_1XD
         [Description("Длина водотока на 3 участке (истечение)")]
         [Category("Геометрия области")]
         public double Len3 { get; set; }
-
         /// <summary>
         /// Глубина водотока 1 придонный участок
         /// </summary>
@@ -131,7 +129,6 @@ namespace NPRiverLib.APRiver_1XD
         [Description("Глубина водотока 1 приповерхностный участок")]
         [Category("Геометрия области")]
         public double Wen3 { get; set; }
-
         /// <summary>
         /// Расчет концентрации вместо температуры true == да
         /// </summary>
@@ -189,7 +186,7 @@ namespace NPRiverLib.APRiver_1XD
         [Description("Граничные условия для скоростей на верхней границе области")]
         [Category("Задача")]
         [TypeConverter(typeof(MyEnumConverter))]
-        public RoofCondition bcIndex { get; set; }
+        public RoofCondition bcTypeOnWL { get; set; }
         /// <summary>
         /// типы задачи по входной струе
         /// </summary>
@@ -299,8 +296,6 @@ namespace NPRiverLib.APRiver_1XD
         [Description("Расчет напряжений на всем дне или только на размываемом участке")]
         [Category("Опции")]
         public bool AllBedForce { get; set; }
-
-
         /// <summary>
         /// Тип гидродинамики 0 - нестационарные 1 - стационарные у-я Рейнольдса 2 - Стокс
         /// нестационар/стационар
@@ -331,6 +326,13 @@ namespace NPRiverLib.APRiver_1XD
         [TypeConverter(typeof(MyEnumConverter))]
         public ETurbViscType turbViscType { get; set; }
 
+        #region + 01 05 2025 ОО: Флаг для расчета задачи взвешенных наносов
+        [TypeConverter(typeof(BooleanTypeConverterYN))]
+        [DisplayName("Расчет взвешенных наносов")]
+        [Description("Флаг для расчета взвешенных наносов Да - true, Нет -false")]
+        [Category("Задача")]
+        public BCalkConcentration CalkConcentration { get; set; } = BCalkConcentration.NeCalkConcentration;
+        #endregion
 
 
         /// <summary>
@@ -388,7 +390,7 @@ namespace NPRiverLib.APRiver_1XD
             
            
             NonLinearIterations = 15;
-            bcIndex = RoofCondition.adhesion;
+            bcTypeOnWL = RoofCondition.adhesion;
             typeMAlgebra = TypeMAlgebra.TriDiagMat_Algorithm;
 
             topBottom = true;
@@ -405,6 +407,8 @@ namespace NPRiverLib.APRiver_1XD
             theta = 0.5;
             mu_const = 1;
             turbViscType = ETurbViscType.Boussinesq1865;
+            // + 01 05 2025
+            CalkConcentration = BCalkConcentration.NotCalkConcentration;
         }
         /// <summary>
         /// установка параметров
@@ -439,7 +443,7 @@ namespace NPRiverLib.APRiver_1XD
             V2_inlet = ps.V2_inlet;
             V3_inlet = ps.V3_inlet;
 
-            bcIndex = ps.bcIndex;
+            bcTypeOnWL = ps.bcTypeOnWL;
             bedLoadStart_X0 = ps.bedLoadStart_X0;
             bedLoadTauPlus = ps.bedLoadTauPlus;
 
@@ -463,6 +467,8 @@ namespace NPRiverLib.APRiver_1XD
             theta = ps.theta;
             mu_const = ps.mu_const;
             turbViscType = ps.turbViscType;
+            // + 01 05 2025
+            CalkConcentration = ps.CalkConcentration;
         }
         /// <summary>
         /// Чтение параметров задачи из файла
@@ -493,7 +499,7 @@ namespace NPRiverLib.APRiver_1XD
             wavePeriod = LOG.GetInt(file.ReadLine());
             NonLinearIterations = LOG.GetInt(file.ReadLine());
             typeStreamTask = (TypeStreamTask)LOG.GetInt(file.ReadLine());
-            bcIndex = (RoofCondition)LOG.GetInt(file.ReadLine());
+            bcTypeOnWL = (RoofCondition)LOG.GetInt(file.ReadLine());
             typeMAlgebra = (TypeMAlgebra)LOG.GetInt(file.ReadLine());
             topBottom = LOG.GetBool(file.ReadLine());
             leftRight = LOG.GetBool(file.ReadLine());
@@ -511,6 +517,9 @@ namespace NPRiverLib.APRiver_1XD
             theta = LOG.GetDouble(file.ReadLine());
             mu_const = LOG.GetDouble(file.ReadLine());
             turbViscType = (ETurbViscType)LOG.GetInt(file.ReadLine());
+            // + 01 05 2025
+            CalkConcentration = (BCalkConcentration)LOG.GetInt(file.ReadLine());
+
         }
         public virtual void Save(StreamReader file)
         {

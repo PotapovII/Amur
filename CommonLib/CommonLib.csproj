@@ -54,6 +54,7 @@
     <Compile Include="Area\IMPoint.cs" />
     <Compile Include="Area\IMSegment.cs" />
     <Compile Include="Area\RectangleWorld.cs" />
+    <Compile Include="BedLoad\BCalkConcentration.cs" />
     <Compile Include="BedLoad\IAvalanche.cs" />
     <Compile Include="BedLoad\IBedLoadTask.cs" />
     <Compile Include="Delegate\CommonDelegate.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Function\IFunction2D.cs" />
     <Compile Include="Function\IDigFunction.cs" />
     <Compile Include="Function\IFunction1D.cs" />
+    <Compile Include="Geometry\IHTriangle.cs" />
     <Compile Include="Geometry\IHSmLine.cs" />
     <Compile Include="Geometry\IHLine.cs" />
     <Compile Include="Geometry\IHEdge.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="EddyViscosity\ETurbViscType.cs" />
     <Compile Include="Geometry\IRiverPoint.cs" />
     <Compile Include="Physics\MWRiverCross.cs" />
+    <Compile Include="Predicates\IPredicatesDelone.cs" />
     <Compile Include="River\TaskFileNemes.cs" />
     <Compile Include="Physics\ECbType.cs" />
     <Compile Include="Physics\ECritTauType.cs" />

@@ -944,10 +944,8 @@ namespace NPRiverLib.APRiver1YD
                 return false;
         }
 
-        protected override double[] TausToVols(in double[] x, in double[] y)
-        {
-            return null;
-        }
+        
+        protected override void CalkTauBed(ref double[] tauBed){}
         #endregion
 
         /// <summary>

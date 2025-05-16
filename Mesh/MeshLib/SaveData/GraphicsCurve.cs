@@ -18,6 +18,7 @@ namespace MeshLib
     using System.Linq;
     using CommonLib.IO;
     using CommonLib.Geometry;
+    using CommonLib.Function;
 
     /// <summary>
     /// ОО: данные о кривой для отрисовки
@@ -189,6 +190,25 @@ namespace MeshLib
         {
             this.TGraphicsCurve = tGraphicsCurve;
             this.Name = Name;
+            this.Check = Check;
+            this.scaleX = 1;
+            this.scaleY = 1;
+            if (x != null && y != null)
+            {
+                points = new List<HPoint>(x.Length);
+                for (int i = 0; i < x.Length; i++)
+                    points.Add(new HPoint(x[i], y[i]));
+            }
+        }
+
+        public GraphicsCurve(IDigFunction fun, 
+                TypeGraphicsCurve tGraphicsCurve = TypeGraphicsCurve.AreaCurve, 
+                bool Check = true)
+        {
+            double[] x = null;
+            double[] y = null;
+            fun.GetFunctionData(ref Name, ref x, ref y);
+            this.TGraphicsCurve = tGraphicsCurve;
             this.Check = Check;
             this.scaleX = 1;
             this.scaleY = 1;
@@ -432,6 +452,7 @@ namespace MeshLib
                 }
             }
             if (max > 0 && points[0].y <= 0 && points[points.Count - 1].y <= 0)
+            {
                 // ход в лево
                 if (idx == 0)
                     xa = points[idx].x;
@@ -446,6 +467,7 @@ namespace MeshLib
                         }
                     }
                 }
+            }
             // ход в право
             if (idx == points.Count - 1)
                 xb = points[idx].x;
@@ -461,7 +483,103 @@ namespace MeshLib
                 }
             }
         }
+        /// <summary>
+        /// Расчет метрики 
+        /// </summary>
+        /// <param name="A">функция А</param>
+        /// <param name="B">функция И</param>
+        /// <param name="measure">тип метрики</param>
+        /// <param name="result">результат</param>
+        public static void CalkMeasure(GraphicsCurve A, GraphicsCurve B, 
+                           MeasureType measure, ref double result)
+        {
+            if (measure == MeasureType.LebesgueMeasure)
+                CalkLebesgueMeasure(A, B, measure, ref result);
+            else
+                CalkChebyshevMeasure(A, B, measure, ref result);
+        }
+        /// <summary>
+        /// Расчет метрики в пространстве С0
+        /// </summary>
+        /// <param name="A">функция А</param>
+        /// <param name="B">функция И</param>
+        /// <param name="measure">тип метрики</param>
+        /// <param name="result">результат</param>
+        public static void CalkChebyshevMeasure(GraphicsCurve A, GraphicsCurve B,
+                           MeasureType measure, ref double result)
+        {
+            double xx, df;
+            result = 0;
+            if (A.points.Count == B.points.Count)
+            {
+                for (int i = 0; i < A.points.Count; i++)
+                {
+                    df = A.points[i].y - B.points[i].y;
+                    result = Math.Max(result, Math.Abs(df));
+                }
+            }
+            else
+            {
+                result = 0;
+                GraphicsCurve tmp;
+                if (A.points.Count < B.points.Count)
+                {
+                    tmp = B; B = A; A = tmp;
+                }
+                DigFunction fB = new DigFunction(B.points.ToArray());
+                for (int i = 0; i < A.points.Count; i++)
+                {
+                    xx = A.points[i].x;
+                    df = A.points[i].y - fB.FunctionValue(xx);
+                    result = Math.Max(result, Math.Abs(df));
+                }
+            }
+        }
 
+        /// <summary>
+        /// Расчет метрики в пространстве L2
+        /// </summary>
+        /// <param name="A">функция А</param>
+        /// <param name="B">функция И</param>
+        /// <param name="measure">тип метрики</param>
+        /// <param name="result">результат</param>
+        public static void CalkLebesgueMeasure(GraphicsCurve A, GraphicsCurve B,
+                   MeasureType measure, ref double result)
+        {
+            double[] x = null;
+            double[] y = null;
+            result = 0;
+            if (A.points.Count == B.points.Count)
+            {
+                MEM.Alloc(A.points.Count, ref x);
+                MEM.Alloc(A.points.Count, ref y);
+                for (int i = 0; i < A.points.Count; i++)
+                {
+                    x[i] = A.points[i].x;
+                    double df = A.points[i].y - B.points[i].y;
+                    y[i] = df * df;
+                }
+            }
+            else
+            {
+                GraphicsCurve tmp;
+                if (A.points.Count < B.points.Count)
+                {
+                    tmp = B; B = A; A = tmp;
+                }
+                MEM.Alloc(A.points.Count, ref x);
+                MEM.Alloc(A.points.Count, ref y);
+                DigFunction fB = new DigFunction(B.points.ToArray());
+                for (int i = 0; i < A.points.Count; i++)
+                {
+                    x[i] = A.points[i].x;
+                    double df = A.points[i].y - fB.FunctionValue(x[i]);
+                    y[i] = df * df;
+                }
+            }
+            result = Math.Sqrt(DMath.Integtal(x, y));
+            return;
+        }
 
 
         /// <summary>
@@ -473,4 +591,11 @@ namespace MeshLib
             return new GraphicsCurveFormat();
         }
     }
+
+    public enum MeasureType
+    {
+        LebesgueMeasure = 0,
+        ChebyshevMeasure = 1
+    }
+
 }

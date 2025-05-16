@@ -86,16 +86,16 @@ namespace MeshGeneratorsLib.StripGenerator
         /// </summary>
         /// <param name="MAXElem">максимальное количество КЭ сетки</param>
         /// <param name="MAXKnot">максимальное количество узлов сетки</param>
-        public HStripMeshGenerator(bool axisOfSymmetry = false, int MAXKnot = 1000000) 
-            : base(axisOfSymmetry)
+        public HStripMeshGenerator(CrossStripMeshOption Option, int MAXKnot = 1000000) 
+            : base(Option)
         {
             CoordsX = new double[MAXKnot];
             CoordsY = new double[MAXKnot];
         }
-        public override IMesh CreateMesh(ref double GR, double WaterLevel, 
+        public override IMesh CreateMesh(ref double GR, ref int[][] riverGates, double WaterLevel, 
                                   double[] xx, double[] yy, int Count = 0)
         {
-            return CreateTriMesh(ref GR, WaterLevel, xx, yy, Count);
+            return CreateTriMesh(ref GR, ref riverGates, WaterLevel, xx, yy, Count);
         }
         /// <summary>
         /// Создает сетку в области
@@ -106,7 +106,7 @@ namespace MeshGeneratorsLib.StripGenerator
         /// <param name="yy">координаты дна по Y</param>
         /// <param name="Count">Количество узлов по дну</param>
         /// <returns></returns>
-        public TriMesh CreateTriMesh(ref double WetBed, double WaterLevel, double[] xx, double[] yy, int Count = 0)
+        public TriMesh CreateTriMesh(ref double WetBed, ref int[][] riverGates, double WaterLevel, double[] xx, double[] yy, int Count = 0)
         {
             try
             {
@@ -140,50 +140,55 @@ namespace MeshGeneratorsLib.StripGenerator
                 lb = new HNumbKnot(left.x, left.y, bottom, CountKnots++);
                 lt = lb;
 
-                BoundKnots.Add(lb.number);
-                BoundKnotsMark.Add(lb.type);
+                BoundKnots.Add(lb.ID);
+                BoundKnotsMark.Add(lb.marker);
 
                 x = left.x + dx;
                 y = spline.Value(x);
                 rb = new HNumbKnot(x, y, bottom, CountKnots++);
 
-                BoundKnots.Add(rb.number);
-                BoundKnotsMark.Add(rb.type);
+                BoundKnots.Add(rb.ID);
+                BoundKnotsMark.Add(rb.marker);
 
                 y = left.y;
                 rt = new HNumbKnot(x, y, waterLevel, CountKnots++);
 
-                BoundKnots.Add(rt.number);
-                BoundKnotsMark.Add(rt.type);
+                BoundKnots.Add(rt.ID);
+                BoundKnotsMark.Add(rt.marker);
 
-                elem = new TriElement((uint)lb.number, (uint)rb.number, (uint)rt.number);
+                elem = new TriElement((uint)lb.ID, (uint)rb.ID, (uint)rt.ID);
 
                 AreaElems.Add(elem);
 
                 BoundElementsMark.Add(waterLevel);
-                belem = new TwoElement(rt.number, lt.number);
+                belem = new TwoElement(rt.ID, lt.ID);
                 BoundElems.Add(belem);
 
                 BoundElementsMark.Add(bottom);
-                belem = new TwoElement(lb.number, rb.number);
+                belem = new TwoElement(lb.ID, rb.ID);
                 BoundElems.Add(belem);
 
-                CoordsX[lb.number] = lb.x;
-                CoordsY[lb.number] = lb.y;
-                CoordsX[rt.number] = rt.x;
-                CoordsY[rt.number] = rt.y;
-                CoordsX[rb.number] = rb.x;
-                CoordsY[rb.number] = rb.y;
-
+                CoordsX[lb.ID] = lb.x;
+                CoordsY[lb.ID] = lb.y;
+                CoordsX[rt.ID] = rt.x;
+                CoordsY[rt.ID] = rt.y;
+                CoordsX[rb.ID] = rb.x;
+                CoordsY[rb.ID] = rb.y;
 
                 // создание левой границы сетки после 1 КЭ
                 HNumbKnot[] knotsTmp = new HNumbKnot[2];
                 knotsTmp[0] = new HNumbKnot(rb);
                 knotsTmp[1] = new HNumbKnot(rt);
                 // герерация сетки в затопленной части
-                
+                riverGates[0] = new int[Count];
+                riverGates[0][0] = lb.ID;
                 for (int i = 1; i < Count; i++)
+                {
+                    riverGates[i] = new int[knotsTmp.Length];
+                    for (int j = 0; j < knotsTmp.Length; j++)
+                        riverGates[i][j] = (int)knotsTmp[j].ID;
                     knotsTmp = DevideStripe(knotsTmp, i, Count);
+                }
 
                 // замыкание
                 if (dryRight != true)
@@ -193,17 +198,17 @@ namespace MeshGeneratorsLib.StripGenerator
                     {
                         if (i != knotsTmp.Length - 2)
                         {
-                            BoundKnots.Add(knotsTmp[i + 1].number);
-                            if (AxisOfSymmetry == true)
+                            BoundKnots.Add(knotsTmp[i + 1].ID);
+                            if (Option.AxisOfSymmetry == true)
                                 BoundKnotsMark.Add(vertRight);
                             else
                                 BoundKnotsMark.Add(bottom);
                         }
-                        if (AxisOfSymmetry == true)
+                        if (Option.AxisOfSymmetry == true)
                             BoundElementsMark.Add(vertRight);
                         else
                             BoundKnotsMark.Add(bottom);
-                        belem = new TwoElement(knotsTmp[i + 1].number, knotsTmp[i].number);
+                        belem = new TwoElement(knotsTmp[i + 1].ID, knotsTmp[i].ID);
                         BoundElems.Add(belem);
                     }
                 }
@@ -288,12 +293,12 @@ namespace MeshGeneratorsLib.StripGenerator
             // увеличиваем счетчик узлов
             CountKnots++;
             // запоминаем созданный донный узел в массиве граничных узлов
-            BoundKnots.Add(rightKnots[0].number);
+            BoundKnots.Add(rightKnots[0].ID);
             // устанавливаем флаг данного узла
-            BoundKnotsMark.Add(rightKnots[0].type);
+            BoundKnotsMark.Add(rightKnots[0].marker);
             // создаем граничный элемент 
             BoundElementsMark.Add(bottom);
-            belem = new TwoElement(leftKnots[0].number, rightKnots[0].number);
+            belem = new TwoElement(leftKnots[0].ID, rightKnots[0].ID);
             BoundElems.Add(belem);
             // создаем узлы правой стороны
             int k = 1; // k - счетчик узлов на правой стороне
@@ -307,16 +312,16 @@ namespace MeshGeneratorsLib.StripGenerator
             {
                 rightKnots[k] = new HNumbKnot(top.x, top.y, waterLevel, CountKnots++);
                 // создаем граничный узел и флаг на свободной поверхности
-                BoundKnots.Add(rightKnots[k].number);
-                BoundKnotsMark.Add(rightKnots[k].type);
+                BoundKnots.Add(rightKnots[k].ID);
+                BoundKnotsMark.Add(rightKnots[k].marker);
                 // создаем ГЭ на свободной поверхности
                 BoundElementsMark.Add(waterLevel);
-                belem = new TwoElement(rightKnots[k].number, leftKnots[leftKnots.Length - 1].number);
+                belem = new TwoElement(rightKnots[k].ID, leftKnots[leftKnots.Length - 1].ID);
                 BoundElems.Add(belem);
             }
             else  // правый угол
             {
-                belem = new TwoElement(rightKnots[0].number, leftKnots[leftKnots.Length - 1].number);
+                belem = new TwoElement(rightKnots[0].ID, leftKnots[leftKnots.Length - 1].ID);
                 // создаем ГЭ на свободной поверхности
                 BoundElementsMark.Add(waterLevel);
                 BoundElems.Add(belem);
@@ -373,16 +378,16 @@ namespace MeshGeneratorsLib.StripGenerator
                     B = leftKnots[leftKnots.Length - 2];
                     A = leftKnots[leftKnots.Length - 1];
                     D = rightKnots[rightKnots.Length - 1];
-                    CoordsX[D.number] = D.x;
-                    CoordsY[D.number] = D.y;
+                    CoordsX[D.ID] = D.x;
+                    CoordsY[D.ID] = D.y;
                     // формируем
-                    elem = new TriElement(A.number, B.number, D.number);
+                    elem = new TriElement(A.ID, B.ID, D.ID);
                     AreaElems.Add(elem);
 
                     if (dknot == 2)
                     {
                         C = leftKnots[leftKnots.Length - 3];
-                        elem = new TriElement(C.number, D.number, B.number);
+                        elem = new TriElement(C.ID, D.ID, B.ID);
                         AreaElems.Add(elem);
                     }
                 }
@@ -409,12 +414,12 @@ namespace MeshGeneratorsLib.StripGenerator
                         B = rightKnots[rightKnots.Length - 1];
                         C = rightKnots[leftKnots.Length - 1];
 
-                        CoordsX[B.number] = B.x;
-                        CoordsY[B.number] = B.y;
-                        CoordsX[C.number] = C.x;
-                        CoordsY[C.number] = C.y;
+                        CoordsX[B.ID] = B.x;
+                        CoordsY[B.ID] = B.y;
+                        CoordsX[C.ID] = C.x;
+                        CoordsY[C.ID] = C.y;
 
-                        elem = new TriElement(A.number, C.number, B.number);
+                        elem = new TriElement(A.ID, C.ID, B.ID);
                         AreaElems.Add(elem);
                     }
                 }
@@ -424,14 +429,14 @@ namespace MeshGeneratorsLib.StripGenerator
 
         protected void SetElems(HNumbKnot A, HNumbKnot B, HNumbKnot C, HNumbKnot D)
         {
-            CoordsX[A.number] = A.x;
-            CoordsY[A.number] = A.y;
-            CoordsX[B.number] = B.x;
-            CoordsY[B.number] = B.y;
-            CoordsX[C.number] = C.x;
-            CoordsY[C.number] = C.y;
-            CoordsX[D.number] = D.x;
-            CoordsY[D.number] = D.y;
+            CoordsX[A.ID] = A.x;
+            CoordsY[A.ID] = A.y;
+            CoordsX[B.ID] = B.x;
+            CoordsY[B.ID] = B.y;
+            CoordsX[C.ID] = C.x;
+            CoordsY[C.ID] = C.y;
+            CoordsX[D.ID] = D.x;
+            CoordsY[D.ID] = D.y;
 
             double dBD = HNumbKnot.Length(B, D);
             double dAC = HNumbKnot.Length(A, C);
@@ -443,9 +448,9 @@ namespace MeshGeneratorsLib.StripGenerator
                 //  |2 \ | 
                 //  A----D
                 //   формируем
-                elem = new TriElement(A.number, D.number, B.number);
+                elem = new TriElement(A.ID, D.ID, B.ID);
                 AreaElems.Add(elem);
-                elem = new TriElement(C.number, B.number, D.number);
+                elem = new TriElement(C.ID, B.ID, D.ID);
                 AreaElems.Add(elem);
             }
             else
@@ -455,9 +460,9 @@ namespace MeshGeneratorsLib.StripGenerator
                 //  |/ 2 | 
                 //  A----D
                 //   формируем
-                elem = new TriElement(B.number, A.number, C.number);
+                elem = new TriElement(B.ID, A.ID, C.ID);
                 AreaElems.Add(elem);
-                elem = new TriElement(A.number, D.number, C.number);
+                elem = new TriElement(A.ID, D.ID, C.ID);
                 AreaElems.Add(elem);
             }
         }
