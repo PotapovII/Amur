@@ -28,7 +28,7 @@ namespace RiverLib
     /// Граничные условия на верхней границе области
     /// </summary>
     [Serializable]
-    public enum RoofCondition
+    public enum TauBondaryCondition
     {
         slip = 0,
         adhesion = 1

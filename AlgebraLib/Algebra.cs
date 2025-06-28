@@ -76,6 +76,14 @@ namespace AlgebraLib
         {
             SetAlgebra(a, FN);
         }
+        public Algebra(uint FN)
+        {
+            SetAlgebra(null, FN);
+        }
+        public Algebra()
+        {
+            SetAlgebra(null, 1);
+        }
         //---------------------------------------------------------------------------
         #region Переопределяемые методы
         /// <summary>
@@ -214,16 +222,13 @@ namespace AlgebraLib
         /// <param name="R">результат</param>
         /// <param name="X">умножаемый вектор</param>
         /// <param name="IsRight">знак операции = +/- 1</param>
-        abstract public void getResidual(ref double[] R, double[] X, int IsRight = 1);
+        abstract public void GetResidual(ref double[] R, double[] X, int IsRight = 1);
         /// <summary>
         /// Вывод САУ на КОНСОЛЬ
         /// </summary>
         /// <param name="flag">количество знаков мантисы</param>
         /// <param name="color">длина цветового блока</param>
         public abstract void Print(int flag = 0, int color = 1);
-
         #endregion
-
-        //---------------------------------------------------------------------------
     }
 }

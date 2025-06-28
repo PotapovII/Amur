@@ -360,5 +360,42 @@ namespace GeometryLib.Locators
 
             return true;
         }
+
+        /// <summary>
+        /// Проверить существование точки пересечения двух отрезков
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsCrossing(IHPoint v11, IHPoint v12, IHPoint v21, IHPoint v22)
+        {
+            if (HPoint.Equals(v11, v22) ||
+                HPoint.Equals(v11, v21) ||
+                HPoint.Equals(v12, v22) ||
+                HPoint.Equals(v12, v21))
+                return true;
+
+            Vector3 cut1 = new Vector3(v12.X - v11.X, v12.X - v11.X);
+            Vector3 cut2 = new Vector3(v22.X - v21.X, v22.Y - v21.Y);
+
+            Vector3 prod1 = Vector3.Cross(cut1, new Vector3(v21.X - v11.X, v21.Y - v11.Y));
+            Vector3 prod2 = Vector3.Cross(cut1, new Vector3(v22.X - v11.X, v22.Y - v11.Y));
+
+            // Отсекаем пограничные случаи
+            if (Math.Sign(prod1.Z) == Math.Sign(prod2.Z) ||
+               MEM.Equals(prod1.Z, 0) == true ||
+               MEM.Equals(prod1.Z, 0) == true)
+                return false;
+
+            prod1 = Vector3.Cross(cut2, new Vector3(v11.X- v21.X, v11.Y - v21.Y));
+            prod2 = Vector3.Cross(cut2, new Vector3(v12.X - v21.X, v12.Y - v21.Y));
+
+            // Отсекаем пограничные случаи
+            if (Math.Sign(prod1.Z) == Math.Sign(prod2.Z) ||
+                MEM.Equals(prod1.Z, 0) == true ||
+                MEM.Equals(prod1.Z, 0) == true)
+                return false;
+
+            return true;
+        }
+
     }
 }

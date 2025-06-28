@@ -28,7 +28,7 @@ namespace EddyViscosityLib
         public override void SetTask(IMesh mesh, IAlgebra algebra, IMeshWrapper wMesh = null)
         {
             base.SetTask(mesh, algebra, wMesh);
-            wMesh.CalkDistance(ref Distance,ref Hp); 
+            wMesh.CalkDistance(ref Distance,ref Hp, typeTask); 
         }
     }
 }

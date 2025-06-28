@@ -59,7 +59,7 @@ namespace AlgebraLib
                 int i, j, k, ip;
                 int y, Pivot;
                 double norm_A = 0.0;
-                double Elem, Pr, t;
+                double Value, Pr, t;
                 double[] vy = work;
                 double ek, ynorm, znorm;
 
@@ -80,10 +80,10 @@ namespace AlgebraLib
                     Pivot = y;
                     for (i = y + 1; i < FN; i++)
                     {
-                        Elem = Math.Abs(Matrix[i][y]);
-                        if (Elem >= Max)
+                        Value = Math.Abs(Matrix[i][y]);
+                        if (Value >= Max)
                         {
-                            Max = Elem;
+                            Max = Value;
                             Pivot = i;
                         }
                     }

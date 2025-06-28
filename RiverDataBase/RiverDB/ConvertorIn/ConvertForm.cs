@@ -108,6 +108,8 @@
             convertDBToolStripMenuItem_Click(sender, e);
         }
 
+
+
         private void convertDBToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (list.Count > 0)
@@ -133,7 +135,8 @@
                         string strCom = "update[dbo].knot set knot_latitude = forknot_latitude," +
                         "knot_longitude = forknot_longitude, knot_datetime = " +
                         "forknot_datetime,knot_fulldepth = forknot_fulldepth, knot_temperature =" +
-                        "forknot_temperature from knot, forknot where knot_datetime = forknot_datetime";
+                        "forknot_temperature from knot, forknot where knot_datetime = forknot_datetime," +
+                        "knot_N = forknot_latitude, knot_E = forknot_longitude";
                         // если успешно, обновляем поля
                         ConnectDB.DoSqlTransactionCommand(strCom);
                         // отрисовка
@@ -174,7 +177,17 @@
 
         private void updateButton_Click(object sender, EventArgs e)
         {
-            convertDBToolStripMenuItem_Click(sender, e);
+            Sin();
+        }
+        private void Sin()
+        {
+            string strCom = "update[dbo].knot set knot_latitude = forknot_latitude," +
+            "knot_longitude = forknot_longitude, knot_datetime = " +
+            "forknot_datetime,knot_fulldepth = forknot_fulldepth, knot_temperature =" +
+            "forknot_temperature from knot, forknot where knot_datetime = forknot_datetime," +
+            "knot_N = forknot_latitude, knot_E = forknot_longitude";
+            // если успешно, обновляем поля
+            ConnectDB.DoSqlTransactionCommand(strCom);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)

@@ -88,8 +88,9 @@
         {
             this.bottom_x = fx;
             this.bottom_y = fy;
+            int[][] riverGates = null;
             // генерация сетки
-            mesh = sg.CreateMesh(ref GR, waterLevel, bottom_x, bottom_y);
+            mesh = sg.CreateMesh(ref GR, ref riverGates, waterLevel, bottom_x, bottom_y);
             right = sg.Right();
             left = sg.Left();
             if (mu == null)

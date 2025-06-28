@@ -30,10 +30,10 @@ namespace EddyViscosityLib
         /// Обертка для функций стенки учитывающая tri сетку
         /// </summary>
         protected WallData wallData = null;
-        /// <summary>
-        /// Матрица масс
-        /// </summary>
-        protected double[,,] MMM = null;
+        ///// <summary>
+        ///// Матрица масс
+        ///// </summary>
+        //protected double[,,] MMM = null;
         /// <summary>
         /// вихревую вязкость приведенная
         /// </summary>
@@ -107,29 +107,30 @@ namespace EddyViscosityLib
             MEM.Alloc(mesh.CountKnots, ref Mut_old);
             MEM.Alloc(mesh.CountKnots, ref MRight);
             MEM.Alloc(mesh.CountBoundKnots, ref bcIndex);
+            
             for (int i = 0; i < Index.Length; i++)
                 bcIndex[i] = (uint)(Index[i]);
 
             mWRiverDistance = new MWRiverDistance(mesh, Params.channelForms);
             distance = mWRiverDistance.GetDistance();
             // Матрица масс трерьего ранга
-            MMM = new double[cu, cu, cu];
-            for (int i = 0; i < cu; i++)
-                for (int j = 0; j < cu; j++)
-                    for (int k = 0; k < cu; k++)
-                        MMM[i, j, k] = 2;
-            for (int i = 0; i < cu; i++)
-                MMM[i, i, i] = 4;
-            MMM[0, 1, 2] = 1;
-            MMM[0, 2, 1] = 1;
-            MMM[1, 0, 2] = 1;
-            MMM[1, 2, 0] = 1;
-            MMM[2, 0, 1] = 1;
-            MMM[2, 1, 0] = 1;
-            for (int i = 0; i < cu; i++)
-                for (int j = 0; j < cu; j++)
-                    for (int k = 0; k < cu; k++)
-                        MMM[i, j, k] = MMM[i, j, k] / 60.0;
+            //MMM = new double[cu, cu, cu];
+            //for (int i = 0; i < cu; i++)
+            //    for (int j = 0; j < cu; j++)
+            //        for (int k = 0; k < cu; k++)
+            //            MMM[i, j, k] = 2;
+            //for (int i = 0; i < cu; i++)
+            //    MMM[i, i, i] = 4;
+            //MMM[0, 1, 2] = 1;
+            //MMM[0, 2, 1] = 1;
+            //MMM[1, 0, 2] = 1;
+            //MMM[1, 2, 0] = 1;
+            //MMM[2, 0, 1] = 1;
+            //MMM[2, 1, 0] = 1;
+            //for (int i = 0; i < cu; i++)
+            //    for (int j = 0; j < cu; j++)
+            //        for (int k = 0; k < cu; k++)
+            //            MMM[i, j, k] = MMM[i, j, k] / 60.0;
             for (int i = 0; i < Mut.Length; i++)
             {
                 Mut[i] = 1000 * SPhysics.mu;

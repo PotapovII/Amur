@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            RenderLib.ColorSchemeFields colorSchemeFields4 = new RenderLib.ColorSchemeFields();
+            RenderLib.ColorSchemeFields colorSchemeFields2 = new RenderLib.ColorSchemeFields();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GDI_EditControlClouds));
-            RenderLib.RenderOptionsFields renderOptionsFields4 = new RenderLib.RenderOptionsFields();
+            RenderLib.RenderOptionsFields renderOptionsFields2 = new RenderLib.RenderOptionsFields();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btShow = new System.Windows.Forms.Button();
             this.tabControlOption = new System.Windows.Forms.TabControl();
@@ -143,6 +143,8 @@
             this.textBoxY = new System.Windows.Forms.TextBox();
             this.textBoxX = new System.Windows.Forms.TextBox();
             this.tp_Areas = new System.Windows.Forms.TabPage();
+            this.label42 = new System.Windows.Forms.Label();
+            this.label41 = new System.Windows.Forms.Label();
             this.tbIce = new System.Windows.Forms.TextBox();
             this.tbKs = new System.Windows.Forms.TextBox();
             this.btUpDateFig = new System.Windows.Forms.Button();
@@ -160,7 +162,6 @@
             this.btDelFig = new System.Windows.Forms.Button();
             this.btSelectBM = new System.Windows.Forms.Button();
             this.btDelKnot = new System.Windows.Forms.Button();
-            this.renderControl1 = new RenderLib.CPRenderControlFields();
             this.panel1 = new System.Windows.Forms.Panel();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
@@ -176,8 +177,9 @@
             this.tSS_Max = new System.Windows.Forms.ToolStripStatusLabel();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.label41 = new System.Windows.Forms.Label();
-            this.label42 = new System.Windows.Forms.Label();
+            this.renderControl1 = new RenderLib.CPRenderControlFields();
+            this.bt_Hbed = new System.Windows.Forms.TextBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             this.tabControlOption.SuspendLayout();
             this.tabObjects.SuspendLayout();
@@ -1577,6 +1579,8 @@
             // 
             // tp_Areas
             // 
+            this.tp_Areas.Controls.Add(this.checkBox1);
+            this.tp_Areas.Controls.Add(this.bt_Hbed);
             this.tp_Areas.Controls.Add(this.label42);
             this.tp_Areas.Controls.Add(this.label41);
             this.tp_Areas.Controls.Add(this.tbIce);
@@ -1600,6 +1604,24 @@
             this.tp_Areas.Text = "Контуры";
             this.tp_Areas.UseVisualStyleBackColor = true;
             // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(23, 253);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(120, 20);
+            this.label42.TabIndex = 127;
+            this.label42.Text = "толщина льда";
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Location = new System.Drawing.Point(20, 227);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(160, 20);
+            this.label41.TabIndex = 126;
+            this.label41.Text = "шероховатость дна";
+            // 
             // tbIce
             // 
             this.tbIce.Location = new System.Drawing.Point(191, 252);
@@ -1620,7 +1642,7 @@
             // 
             this.btUpDateFig.BackColor = System.Drawing.Color.WhiteSmoke;
             this.btUpDateFig.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btUpDateFig.Location = new System.Drawing.Point(190, 279);
+            this.btUpDateFig.Location = new System.Drawing.Point(191, 186);
             this.btUpDateFig.Name = "btUpDateFig";
             this.btUpDateFig.Size = new System.Drawing.Size(99, 30);
             this.btUpDateFig.TabIndex = 121;
@@ -1661,7 +1683,7 @@
             this.panel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.panel4.Location = new System.Drawing.Point(10, 136);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(285, 82);
+            this.panel4.Size = new System.Drawing.Size(170, 82);
             this.panel4.TabIndex = 9;
             // 
             // rbSubArea
@@ -1791,27 +1813,6 @@
             this.btDelKnot.UseVisualStyleBackColor = false;
             this.btDelKnot.Click += new System.EventHandler(this.btDelKnot_Click);
             // 
-            // renderControl1
-            // 
-            this.renderControl1.BackColor = System.Drawing.Color.White;
-            colorSchemeFields4.Background = System.Drawing.Color.White;
-            colorSchemeFields4.FontKnot = new System.Drawing.Font("Arial", 8F);
-            colorSchemeFields4.FontReper = new System.Drawing.Font("Arial", 8F);
-            colorSchemeFields4.FontValue = null;
-            colorSchemeFields4.formatTextReper = ((uint)(2u));
-            this.renderControl1.colorScheme = colorSchemeFields4;
-            this.renderControl1.IndexTask = 0;
-            this.renderControl1.Location = new System.Drawing.Point(218, 3);
-            this.renderControl1.Name = "renderControl1";
-            this.renderControl1.Points = new System.Drawing.PointF[] {
-        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points"))),
-        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points1")))};
-            this.renderControl1.renderOptions = renderOptionsFields4;
-            this.renderControl1.Size = new System.Drawing.Size(32, 22);
-            this.renderControl1.TabIndex = 0;
-            this.renderControl1.Text = "renderControl1";
-            this.renderControl1.Visible = false;
-            // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1894,23 +1895,44 @@
             // 
             this.openFileDialog2.FileName = "openFileDialog2";
             // 
-            // label41
+            // renderControl1
             // 
-            this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(20, 227);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(160, 20);
-            this.label41.TabIndex = 126;
-            this.label41.Text = "шероховатость дна";
+            this.renderControl1.BackColor = System.Drawing.Color.White;
+            colorSchemeFields2.Background = System.Drawing.Color.White;
+            colorSchemeFields2.FontKnot = new System.Drawing.Font("Arial", 8F);
+            colorSchemeFields2.FontReper = new System.Drawing.Font("Arial", 8F);
+            colorSchemeFields2.FontValue = null;
+            colorSchemeFields2.formatTextReper = ((uint)(2u));
+            this.renderControl1.colorScheme = colorSchemeFields2;
+            this.renderControl1.IndexTask = 0;
+            this.renderControl1.Location = new System.Drawing.Point(218, 3);
+            this.renderControl1.Name = "renderControl1";
+            this.renderControl1.Points = new System.Drawing.PointF[] {
+        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points"))),
+        ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points1")))};
+            this.renderControl1.renderOptions = renderOptionsFields2;
+            this.renderControl1.Size = new System.Drawing.Size(32, 22);
+            this.renderControl1.TabIndex = 0;
+            this.renderControl1.Text = "renderControl1";
+            this.renderControl1.Visible = false;
             // 
-            // label42
+            // bt_Hbed
             // 
-            this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(23, 253);
-            this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(120, 20);
-            this.label42.TabIndex = 127;
-            this.label42.Text = "толщина льда";
+            this.bt_Hbed.Location = new System.Drawing.Point(191, 281);
+            this.bt_Hbed.Name = "bt_Hbed";
+            this.bt_Hbed.Size = new System.Drawing.Size(98, 26);
+            this.bt_Hbed.TabIndex = 128;
+            this.bt_Hbed.Text = "0.0";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(24, 281);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(88, 24);
+            this.checkBox1.TabIndex = 130;
+            this.checkBox1.Text = "глубина";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // GDI_EditControlClouds
             // 
@@ -2118,5 +2140,7 @@
         private System.Windows.Forms.TextBox tbKs;
         private System.Windows.Forms.Label label41;
         private System.Windows.Forms.Label label42;
+        private System.Windows.Forms.TextBox bt_Hbed;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

@@ -20,7 +20,7 @@ namespace AlgebraLib
     using System;
     using CommonLib;
     /// <summary>
-    /// ОО: Класс решатель САУ методом сопряженных градиентов
+    /// ОО: Класс решатель САУ методом GMRES
     /// с хранением матрицы в формате CRS
     /// и поддержкой интерфейса алгебры для работы с КЭ задачами
     /// </summary>
@@ -72,7 +72,7 @@ namespace AlgebraLib
         //    for (int i = 0; i < N; i++)
         //    {
         //        if (Matrix[i].Count == 1)
-        //            Value[i] = Right[i] / Matrix[i].Row[0].Elem;
+        //            Value[i] = Right[i] / Matrix[i].Row[0].Value;
         //    }
         //}
         /// <summary>
@@ -89,7 +89,7 @@ namespace AlgebraLib
             {
                 R[i] = 0;
                 for (int idx = 0; idx < Matrix[i].Count; idx++)
-                    R[i] -= Matrix[i].Row[idx].Elem * X[Matrix[i].Row[idx].Knot];
+                    R[i] -= Matrix[i].Row[idx].Value * X[Matrix[i].Row[idx].IndexColumn];
                 R[i] += Right[i];
             }
             // Вычисляем R = M^-1 * (B - A*X)
@@ -137,7 +137,7 @@ namespace AlgebraLib
                         {
                             XX[i] = 0;
                             for (int idx = 0; idx < Matrix[i].Count; idx++)
-                                XX[i] += Matrix[i].Row[idx].Elem * V[j, Matrix[i].Row[idx].Knot];
+                                XX[i] += Matrix[i].Row[idx].Value * V[j, Matrix[i].Row[idx].IndexColumn];
                         }
                         CalkErrorPrecond(XX, ref YY);
                         for (int i = 0; i < FN; i++)
@@ -149,7 +149,7 @@ namespace AlgebraLib
                         {
                             W[j, i] = 0;
                             for (int idx = 0; idx < Matrix[i].Count; idx++)
-                                W[j, i] += Matrix[i].Row[idx].Elem * V[j, Matrix[i].Row[idx].Knot];
+                                W[j, i] += Matrix[i].Row[idx].Value * V[j, Matrix[i].Row[idx].IndexColumn];
                         }
                     }
                     // W = M^-1 * W
@@ -236,7 +236,7 @@ namespace AlgebraLib
                 {
                     R[i] = 0;
                     for (int idx = 0; idx < Matrix[i].Count; idx++)
-                        R[i] -= Matrix[i].Row[idx].Elem * X[Matrix[i].Row[idx].Knot];
+                        R[i] -= Matrix[i].Row[idx].Value * X[Matrix[i].Row[idx].IndexColumn];
                     R[i] += Right[i];
                 }
                 // Вычисляем R = M^-1 * (B - A*X)

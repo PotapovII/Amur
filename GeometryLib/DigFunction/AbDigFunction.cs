@@ -335,5 +335,19 @@ namespace GeometryLib
                 fun[1][i] = y0[i];
             }
         }
+
+        /// <summary>
+        /// Аргумент хх содержится в строгом диапазоне функции
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        public bool Contains(double x)
+        {
+            if(x0[0]<=x && x <x0[x0.Count-1]) 
+                return true;
+            else 
+                return false;
+
+        }
     }
 }

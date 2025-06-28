@@ -127,7 +127,7 @@ namespace AlgebraLib
             P = MEM.PAlloc2DClear(imax, jmax, P);
             AP = MEM.PAlloc2DClear(imax, jmax, AP);
             X = SetBCondition(X);         // X => X0 - начальное условие
-            R = getResidual(R, X);   // R = A*X0
+            R = GetResidual(R, X);   // R = A*X0
                                      // R0 = A*X0 - F             // вектор ошибки
             Parallel.For(ist, imax, (i, state) =>
             {
@@ -152,7 +152,7 @@ namespace AlgebraLib
             int iters;
             for (iters = 0; iters < MaxIter; iters++)
             {
-                AP = getResidual(AP, P);  // AP = A * P
+                AP = GetResidual(AP, P);  // AP = A * P
                                           // граничные условия
                                           // AP && BCond
                 AP = SetBConditionAP(AP);
@@ -238,7 +238,7 @@ namespace AlgebraLib
         /// <param name="R">результат</param>
         /// <param name="X">умножаемый вектор</param>
         /// <param name="IsRight">знак операции = +/- 1</param>
-        public double[][] getResidual(double[][] R, double[][] X, int IsRight = 1)
+        public double[][] GetResidual(double[][] R, double[][] X, int IsRight = 1)
         {
             // Расчет вертикальных коэффициентов As[i][j], An[i][j]
             //             1       imax  

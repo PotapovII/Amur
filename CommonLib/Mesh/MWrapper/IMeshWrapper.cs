@@ -124,7 +124,7 @@ namespace CommonLib.Mesh
         /// Вычисление минимального растояния от узла до стенки
         /// В плпнпх - хеширование узлов на масштабе глубины
         /// </summary>
-        void CalkDistance(ref double[] distance, ref double[] Hp);
+        void CalkDistance(ref double[] distance, ref double[] Hp, TypeTask typeTask);
         /// <summary>
         /// Площадь сечения
         /// </summary>

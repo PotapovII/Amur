@@ -46,12 +46,12 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.insertButton = new System.Windows.Forms.ToolStripButton();
             this.btInsertData = new System.Windows.Forms.ToolStripButton();
             this.ts_ClearBadData = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.tsb_VelocityMark = new System.Windows.Forms.ToolStripButton();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -226,23 +226,6 @@
             this.toolStrip1.TabIndex = 605;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.lbExp);
-            this.panel1.Controls.Add(this.cListBoxDates);
-            this.panel1.Controls.Add(this.cListBoxDatesGPX);
-            this.panel1.Location = new System.Drawing.Point(5, 52);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(905, 576);
-            this.panel1.TabIndex = 606;
-            // 
             // insertButton
             // 
             this.insertButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -261,7 +244,6 @@
             this.btInsertData.Name = "btInsertData";
             this.btInsertData.Size = new System.Drawing.Size(28, 28);
             this.btInsertData.Text = "Синхронизация в БД";
-            this.btInsertData.Visible = false;
             this.btInsertData.Click += new System.EventHandler(this.updateButton_Click);
             // 
             // ts_ClearBadData
@@ -294,6 +276,23 @@
             this.tsb_VelocityMark.Size = new System.Drawing.Size(28, 28);
             this.tsb_VelocityMark.Text = "Маркировка скоростных узлов";
             this.tsb_VelocityMark.Click += new System.EventHandler(this.tsb_VelocityMark_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.lbExp);
+            this.panel1.Controls.Add(this.cListBoxDates);
+            this.panel1.Controls.Add(this.cListBoxDatesGPX);
+            this.panel1.Location = new System.Drawing.Point(5, 52);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(905, 576);
+            this.panel1.TabIndex = 606;
             // 
             // ConvertForm
             // 

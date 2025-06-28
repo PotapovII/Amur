@@ -889,6 +889,7 @@ namespace TriMeshGeneratorLib
             return limits;
         }
         int[] check = null;
+        
         /// <summary>
         /// поиск треугольника по узлу
         /// </summary>
@@ -1035,7 +1036,6 @@ namespace TriMeshGeneratorLib
         {
             RVNode nodeP;
             RVSegment nSegP;
-
             if (Distance > 0.99)
                 Distance = 0.99;
             if (Distance < 0.01)
@@ -1054,7 +1054,6 @@ namespace TriMeshGeneratorLib
             segP.SetNode(1, nodeP);
             segmentsList.SetCurrentItem(segP);
             segmentsList.Insert(nSegP);
-
             RVSegment sp = (RVSegment)segmentsList.FirstItem();
             if (sp == segP)
                 return sp;
@@ -1063,12 +1062,18 @@ namespace TriMeshGeneratorLib
             return sp;
         }
 
-
         //	Puts one RVNode into the RVMeshIrregular (from physics spec).
         //	Requires a previously triangulated data RVMeshIrregular, bedMesh,
         //	which masks inactive areas and provides interpolation data.
         //	Resulting nodeis in tmpNodesList which can be later accepted into nodesList or rejected.
         //	The number of CountNodes created are returned.
+
+        // Помещает один узел Vnode в нерегулярную сетку RV (из спецификации physics).
+        // Требуется предварительно триангулированная сетка RV Mesh нерегулярной формы,
+        // bedMesh, которая маскирует неактивные области и предоставляет данные для интерполяции.
+        // Результирующий узел находится в списке узлов tmp,
+        // который позже может быть принят в список узлов или отклонен.
+        // Возвращается количество созданных узлов.
         public RVNode AddOneNode(double x, double y, RVMeshIrregular boundTIN, RVMeshIrregular bedMesh)
         {
             int nGoodNodes = 0;
@@ -1113,7 +1118,6 @@ namespace TriMeshGeneratorLib
             tmpNodesList.Add(node);
             return node;
         }
-
         /// <summary>
         /// Добавлена строка для проверки нулевого nsegP. Если да, то возвращает 2.
         /// </summary>
@@ -1153,7 +1157,8 @@ namespace TriMeshGeneratorLib
                     segP = NextBreakLinesList;
                 }
             }
-            if ((node.Fixed == RVFixedNodeFlag.floatingNode) || (node.Fixed == RVFixedNodeFlag.slidingNode))
+            if ((node.Fixed == RVFixedNodeFlag.floatingNode) || 
+                (node.Fixed == RVFixedNodeFlag.slidingNode))
             {
                 node.Fixed = RVFixedNodeFlag.deletedNode;
                 return 1;
@@ -1181,7 +1186,6 @@ namespace TriMeshGeneratorLib
 
             int j, index = 0, iin = 0;
             bias = Math.Sqrt(bias);
-
                 
             xNew = new double[nodesList.Count];
             yNew = new double[nodesList.Count];

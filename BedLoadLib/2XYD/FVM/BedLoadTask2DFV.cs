@@ -38,8 +38,6 @@ namespace BedLoadLib
     [Serializable]
     public class BedLoadTask2DFV : ABedLoadTask_2D<BedLoadParams2D>, IBedLoadTask
     {
-
-
         /// <summary>
         /// Создает экземпляр класса
         /// </summary>

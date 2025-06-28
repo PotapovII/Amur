@@ -101,7 +101,7 @@ namespace AlgebraLib
         /// <param name="X">результат</param>
         /// <param name="Value">умножаемый вектор</param>
         /// <returns></returns>
-        public double[] getResidual(double[] X, double[] Value, int IsRight = 1)
+        public double[] GetResidual(double[] X, double[] Value, int IsRight = 1)
         {
             for (int i = 0; i < X.Length; i++)
                 X[i] = 0;
@@ -145,7 +145,7 @@ namespace AlgebraLib
         /// <param name="X">результат</param>
         /// <param name="Value">умножаемый вектор</param>
         /// <returns></returns>
-        public override void getResidual(ref double[] X, double[] Value, int IsRight = 1)
+        public override void GetResidual(ref double[] X, double[] Value, int IsRight = 1)
         {
             for (int i = 0; i < X.Length; i++)
                 X[i] = 0;
@@ -211,8 +211,8 @@ namespace AlgebraLib
         /// <param name="Adress">Глабальные адреса</param>
         public override void AddToMatrix(double[][] LMartix, uint[] Adress)
         {
-            HLMatrix Elem = new HLMatrix(LMartix, Adress);
-            Matrixs[CountMatrix++] = Elem;
+            HLMatrix Value = new HLMatrix(LMartix, Adress);
+            Matrixs[CountMatrix++] = Value;
         }
         /// <summary>
         /// Формирование САУ по строкам
@@ -311,7 +311,7 @@ namespace AlgebraLib
             // граничные условия
             SetCondition(ref X);         // X0
             SetCondition(ref P);         // X0
-            R = getResidual(R, P);  // R = A*X0
+            R = GetResidual(R, P);  // R = A*X0
             R = SumVector(Right, -1, R); // R0 = A*X0 - F           // p
             // начальное приближение
             for (uint i = 0; i < FN; i++)
@@ -320,7 +320,7 @@ namespace AlgebraLib
             int iters = 0;
             for (iters = 0; iters < 1000000000; iters++)
             {
-                AP = getResidual(AP, P); // AP = A * P
+                AP = GetResidual(AP, P); // AP = A * P
                                          // граничные условия
                                          // AP && BCond
                 for (int i = 0; i < BnConditions.Length; i++)

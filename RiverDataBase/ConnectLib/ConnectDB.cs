@@ -312,7 +312,7 @@ namespace ConnectLib
                     // подтверждаем транзакцию
                     transaction.Commit();
                     Console.WriteLine("Данные добавлены в базу данных");
-                    list.Clear();
+                    //list.Clear();
                     Message = "В базу данных добавлено " + list.Count.ToString() + " записей из xls";
                 }
                 catch (Exception ex)

@@ -41,8 +41,8 @@ namespace AlgebraLib
             //double maxMatrix = 0;
             //for (int i = 0; i < FN; i++)
             //    for (int j = 0; j < FN; j++)
-            //        if (maxMatrix < Math.Abs(Matrix[i].Row[j].Elem))
-            //            maxMatrix = Math.Abs(Matrix[i].Row[j].Elem);
+            //        if (maxMatrix < Math.Abs(Matrix[i].Row[j].Value))
+            //            maxMatrix = Math.Abs(Matrix[i].Row[j].Value);
             //// Решение СЛУ
             //uint numSel = 1;
             //double a;
@@ -170,7 +170,7 @@ namespace AlgebraLib
                 for (int i = 0; i < N; i++)
                 {
                     for (int j = 0; j < Matrix[i].Count; j++)
-                        Console.Write("   " + Matrix[i][j].Knot.ToString() + " : " + Matrix[i].Row[j].Elem.ToString("F4"));
+                        Console.Write("   " + Matrix[i][j].IndexColumn.ToString() + " : " + Matrix[i].Row[j].Value.ToString("F4"));
                     Console.WriteLine();
                 }
                 Console.WriteLine("Right");

@@ -136,8 +136,6 @@ namespace MeshAdapterLib
             IFEMesh feMesh = mg.Create();
             return feMesh;
         }
-
-
         // ======================================================
         //       Система координат        Обход узлов
         //     dy                                     i
@@ -247,7 +245,6 @@ namespace MeshAdapterLib
                 mesh.BoundKnots[k++] = (int)map[i, 0];
             }
         }
-
         public static void GetRectangleTriMesh_XY(ref ComplecsMesh mesh, int Nx, int Ny, double dx, double dy)
         {
             mesh = new ComplecsMesh();
@@ -342,7 +339,6 @@ namespace MeshAdapterLib
                 mesh.BoundKnots[k++] = (int)map[i, 0];
             }
         }
-
         public static void GetRectangleTriMesh_XY(ref IMesh mesh, int Nx, int Ny, double L, double H)
         {
             ComplecsMesh cmesh = null;
@@ -351,14 +347,12 @@ namespace MeshAdapterLib
             GetRectangleTriMesh_XY(ref cmesh, Nx, Ny, dx, dy);
             mesh = cmesh;
         }
-
         public static void GetRectangleTriMesh(ref TriMesh mesh, int Nx, int Ny, double L, double H, int flag = 0)
         {
             double dx = L / (Nx - 1);
             double dy = H / (Ny - 1);
             GetRectangleTriMesh(ref mesh, dx, dy, Nx, Ny, flag);
         }
-
         public static void GetRectangleTriMesh(ref TriMesh mesh, double dx, double dy, int Nx, int Ny, int flag = 0)
         {
             mesh = new TriMesh();

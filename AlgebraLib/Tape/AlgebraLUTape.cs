@@ -333,7 +333,7 @@ namespace AlgebraLib
         /// <summary>
         /// Операция определения невязки R = Matrix X - Right
         /// </summary>
-        public override void getResidual(ref double[] R, double[] X, int IsRight)
+        public override void GetResidual(ref double[] R, double[] X, int IsRight)
         {
             MEM.Alloc<double>((int)FN, ref R);
             band_mult_col(X, ref R);

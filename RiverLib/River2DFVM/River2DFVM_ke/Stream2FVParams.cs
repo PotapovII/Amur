@@ -206,7 +206,7 @@ namespace RiverLib.Patankar
         [DisplayName("ГУ на крышке")]
         [Description("Граничные условия для скоростей на верхней границе области")]
         [Category("Задача")]
-        public RoofCondition bcIndex { get; set; }
+        public TauBondaryCondition bcIndex { get; set; }
 
         [DisplayName("метод СЛАУ")]
         [Description("Тип метода для решения СЛАУ")]
@@ -411,7 +411,7 @@ namespace RiverLib.Patankar
                 flatTermoTask = false;
             
             NonLinearIterations = 15;
-            bcIndex = RoofCondition.adhesion;
+            bcIndex = TauBondaryCondition.adhesion;
             typeMAlgebra = TypeMAlgebra.TriDiagMat_Algorithm;
 
             topBottom = true;
@@ -461,7 +461,7 @@ namespace RiverLib.Patankar
             bottomWaveAmplitude = LOG.GetDouble(file.ReadLine());
             wavePeriod = LOG.GetInt(file.ReadLine());
             NonLinearIterations = LOG.GetInt(file.ReadLine());
-            bcIndex = (RoofCondition)LOG.GetInt(file.ReadLine());
+            bcIndex = (TauBondaryCondition)LOG.GetInt(file.ReadLine());
             typeMAlgebra = (TypeMAlgebra)LOG.GetInt(file.ReadLine());
             topBottom = LOG.GetBool(file.ReadLine());
             leftRight = LOG.GetBool(file.ReadLine());

@@ -122,6 +122,7 @@ namespace NPRiverLib.APRiver_1XD
             return fn;
         }
         #region методы предстартовой подготовки задачи
+
         /// <summary>
         /// Установка адаптеров для КЭ сетки и алгебры
         /// </summary>

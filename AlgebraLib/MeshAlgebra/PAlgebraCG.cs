@@ -132,7 +132,7 @@ namespace AlgebraLib
             MEM.Alloc2DClear(imax, jmax, ref AP);
             SetBCondition(ref X);         // X => X0 - начальное условие
             // SetBCondition(ref P);         // X0
-            getResidual(ref R, X);  // R = A*X0
+            GetResidual(ref R, X);  // R = A*X0
                                     // R0 = A*X0 - F             // вектор ошибки
             for (int i = ist; i < imax; i++)
                 for (int j = jst; j < jmax; j++)
@@ -148,7 +148,7 @@ namespace AlgebraLib
             int iters;
             for (iters = 0; iters < MaxIter; iters++)
             {
-                getResidual(ref AP, P);  // AP = A * P
+                GetResidual(ref AP, P);  // AP = A * P
                                          // граничные условия
                                          // AP && BCond
                 SetBConditionAP(ref AP);
@@ -217,7 +217,7 @@ namespace AlgebraLib
         /// <param name="R">результат</param>
         /// <param name="X">умножаемый вектор</param>
         /// <param name="IsRight">знак операции = +/- 1</param>
-        public void getResidual(ref double[][] R, double[][] X, int IsRight = 1)
+        public void GetResidual(ref double[][] R, double[][] X, int IsRight = 1)
         {
             // Расчет вертикальных коэффициентов As[i][j], An[i][j]
             //             1       imax  

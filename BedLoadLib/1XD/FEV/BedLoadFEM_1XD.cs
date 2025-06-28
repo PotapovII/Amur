@@ -471,7 +471,7 @@ namespace BedLoadLib
                 if (CountDryWet > 0 && DryWetMech == true)
                     Ralgebra.BoundConditions(DryWetZeta, DryWetNumbers);
 
-                Ralgebra.getResidual(ref MRight, Zeta0, 0);
+                Ralgebra.GetResidual(ref MRight, Zeta0, 0);
                 if (algebra as SparseAlgebra != null)
                 {
                     ((SparseAlgebra)algebra).CheckMas(MRight, "MRight");

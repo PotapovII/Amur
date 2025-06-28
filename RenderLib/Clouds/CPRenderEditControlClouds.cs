@@ -857,11 +857,12 @@ namespace RenderLib
         /// <summary>
         /// Установка атрибутов контура
         /// </summary>
-        public void SetAtributes(int index, double ice, double ks)
+        public void SetAtributes(int index, double ice, double ks, double h)
         {
             IMFigura fig = Area[index];
             fig.ks = ks;
             fig.Ice = ice;
+            fig.h = h;
         }
         /// <summary>
         /// Удалить фигуры

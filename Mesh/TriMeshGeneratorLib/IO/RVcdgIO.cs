@@ -18,27 +18,27 @@ namespace TriMeshGeneratorLib
         { "Ver", "Count", "Boundary", "RVElement", "Node", "ID", "no" };
 
         public static int CountLines = 0;
-        public static string[] GetLines(StreamReader file)
-        {
-            for (; ; CountLines++)
-            {
-                string line = file.ReadLine();
-                if (line == null)
-                    return null;
-                string[] lines = line.Split(new char[] { ' ', '\t' }, 
-                            StringSplitOptions.RemoveEmptyEntries);
-                if (lines.Length == 0) continue;
-                if (keyWord.Contains(lines[0]))
-                {
-                    //    Logger.Instance.Info(line); 
-                }
-                else
-                {
-                    //  Logger.Instance.Info(lines.Length.ToString());
-                    return lines;
-                }
-            }
-        }
+        //public static string[] GetLines(StreamReader file)
+        //{
+        //    for (; ; CountLines++)
+        //    {
+        //        string line = file.ReadLine();
+        //        if (line == null)
+        //            return null;
+        //        string[] lines = line.Split(new char[] { ' ', '\t' }, 
+        //                    StringSplitOptions.RemoveEmptyEntries);
+        //        if (lines.Length == 0) continue;
+        //        if (keyWord.Contains(lines[0]))
+        //        {
+        //            //    Logger.Instance.Info(line); 
+        //        }
+        //        else
+        //        {
+        //            //  Logger.Instance.Info(lines.Length.ToString());
+        //            return lines;
+        //        }
+        //    }
+        //}
         /// <summary>
         /// поиск в строке
         /// </summary>
@@ -102,11 +102,8 @@ namespace TriMeshGeneratorLib
                 string[] lines = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
                 if (lines.Length >= size)
                 {
-                    // Logger.Instance.Info(lines.Length.ToString());
                     return lines;
                 }
-                //else
-                //   Logger.Instance.Info(line);
             }
         }
 

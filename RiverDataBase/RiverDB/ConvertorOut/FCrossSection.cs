@@ -524,7 +524,7 @@ namespace RiverDB.ConvertorOut
                 /// сечения створа
                 int[][] riverGates = null;
                 IMesh mesh = meshGenerator.CreateMesh(ref WetBed,ref riverGates, waterLevel, bottom_x, bottom_y);
-                ShowMesh(mesh);
+                ShowMesh(mesh, crossFunctions);
             } 
             catch(Exception ex) 
             {
@@ -535,7 +535,7 @@ namespace RiverDB.ConvertorOut
         /// Отобразить сетку в отдельном окне
         /// </summary>
         /// <param name="meshRiver"></param>
-        public void ShowMesh(IMesh mesh)
+        public void ShowMesh(IMesh mesh, IDigFunction[] curves = null)
         {
             if (mesh != null)
             {
@@ -545,10 +545,15 @@ namespace RiverDB.ConvertorOut
                 double[] y = mesh.GetCoords(1);
                 data.Add("Координата Х", x);
                 data.Add("Координата Y", y);
+                if(curves != null)
+                {
+                    for(int i=0; i<curves.Length; i++)
+                        if (curves[i] != null)
+                            data.AddCurve(curves[i]);
+                }
                 Form form = new ViForm(data);
                 form.Show();
             }
-
         }
 
         private void rbAmur_CheckedChanged(object sender, EventArgs e)

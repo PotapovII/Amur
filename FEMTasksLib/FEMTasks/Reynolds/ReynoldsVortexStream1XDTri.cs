@@ -43,6 +43,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
     using CommonLib.Mesh;
     using CommonLib.Physics;
     using CommonLib.Function;
+    using FEMTasksLib.FEMTasks.Utils;
 
     /// <summary>
     ///  ОО: Решатель для задачи Рейнольдс на трехузловой сетке
@@ -109,6 +110,10 @@ namespace FEMTasksLib.FEMTasks.VortexStream
         /// адреса функии тока на границе
         /// </summary>
         protected double[] bcValuePhi = null;
+        /// <summary>
+        /// ГУ на выходе 0 - дирехле однород. 1 - нейман однород.
+        /// </summary>
+        protected int bcOut = 0;
         /// <summary>
         /// адреса функии тока на границе
         /// </summary>
@@ -186,10 +191,11 @@ namespace FEMTasksLib.FEMTasks.VortexStream
         /// </summary>
         /// <param name="NLine">иераций по нелинейности</param>
         /// <param name="bcTypeOnWL">ГУ на WL 0 - скольжение 1 - прилипание</param>
+        /// <param name="bcOut">ГУ на выходе 0 - дирехле однород. 1 - нейман однород.</param>
         /// <param name="VelosityUy">скорости на входк и выходе</param>
         /// <param name="bcPhi">функция тока на на входк и выходе</param>
         /// <param name="theta">параметр неявности для схемы по времени</param>
-        public ReynoldsVortexStream1XDTri(int NLine, int bcTypeOnWL,
+        public ReynoldsVortexStream1XDTri(int NLine, int bcTypeOnWL, int bcOut,
             IDigFunction[] VelosityUy, IDigFunction[] bcPhi, double theta = 0.5) 
         {
             cs = 2;
@@ -198,6 +204,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
             this.NL_max = NLine;
             this.VelosityUy = VelosityUy;
             this.bcPhi = bcPhi;
+            this.bcOut = bcOut;
             this.bcTypeOnWL = bcTypeOnWL;
             flagStart = true;
         }
@@ -219,7 +226,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
 
             Count = cs * cu;
             CountU = cs * mesh.CountKnots;
-            MEM.Alloc(mesh.CountBoundKnots, ref bcIndex);
+            //MEM.Alloc(mesh.CountBoundKnots, ref bcIndex);
             MEM.Alloc(mesh.CountKnots, ref tmpBcValuePhi);
             MEM.Alloc(mesh.CountKnots, ref Vy);
             MEM.Alloc(mesh.CountKnots, ref Vz);
@@ -229,26 +236,35 @@ namespace FEMTasksLib.FEMTasks.VortexStream
             MEM.Alloc(cs * mesh.CountKnots, ref result_old);
             MEM.Alloc(cs * mesh.CountKnots, ref MRight);
             MEM.Alloc(cs * mesh.CountKnots, ref result_cur);
+            
             if (algebra == null)
                 algebra = new AlgebraGauss((uint)CountU);
+            
             int[] bkm = mesh.GetBoundKnotsMark();
+
             int CountBK = 0;
+            // исключаем дырки и узлы на выходе из области
             for (int i = 0; i < Marker.Length; i++)
-                if (Marker[i] < MarkHoles)
-                    CountBK++;
+                if (bcOut == 1 && Marker[i] != 1 || bcOut == 0)
+                    if (Marker[i] < MarkHoles)
+                        CountBK++;
+
             MEM.Alloc(CountBK, ref bcIndex);
             MEM.Alloc(CountBK, ref bcValuePhi);
+            
             int k = 0;
             for (int i = 0; i < Marker.Length; i++)
-                if (Marker[i] < MarkHoles)
-                    bcIndex[k++] = (uint)(Index[i] * cs);
+                if (bcOut == 1 && Marker[i] != 1 || bcOut == 0)
+                    if (Marker[i] < MarkHoles)
+                        bcIndex[k++] = (uint)(Index[i] * cs);
+
             MEM.Alloc(algebra.N, ref ColAdress);
             for (uint i = 0; i < ColAdress.Length; i++)
                 ColAdress[i] = i;
+            
             Ralgebra = algebra.Clone();
             if (bcTypeOnWL == 0)
             {
-                            
                 uint i1;
                 uint i2;
                 int CountElVortexWL = 0;
@@ -336,7 +352,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                         }
                     }
                     // получем значения адресов неизвестных
-                    GetAdress(knots, ref adressBound);
+                    FEMUtils.GetAdress(knots, ref adressBound);
                     // добавление вновь сформированной ЛЖМ в ГМЖ
                     algebra.AddToMatrix(LaplMatrix, adressBound);
                 }
@@ -458,7 +474,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                                 }
                             }
                             // получем значения адресов неизвестных
-                            GetAdress(knots, ref adressBound);
+                            FEMUtils.GetAdress(knots, ref adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
                             algebra.AddToMatrix(LaplMatrix, adressBound);
                         }
@@ -619,7 +635,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                                 }
                             }
                             // получем значения адресов неизвестных
-                            GetAdress(knots, ref adressBound);
+                            FEMUtils.GetAdress(knots, ref adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
                             algebra.AddToMatrix(LaplMatrix, adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
@@ -628,7 +644,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                     }
                     testflag = 1;
                     // Расчет
-                    Ralgebra.getResidual(ref MRight, result_old, 0);
+                    Ralgebra.GetResidual(ref MRight, result_old, 0);
                     testflag = 2;
                     algebra.CopyRight(MRight);
                     testflag = 3;
@@ -748,9 +764,11 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                 tmpBcValuePhi[idx] = bPhi2;
             }
 
+            int ii = 0;
             for (int i = 0; i < Index.Length; i++)
-                if (Marker[i] < MarkHoles)
-                    bcValuePhi[i] = tmpBcValuePhi[Index[i]];
+                if (bcOut == 1 && Marker[i] != 1 || bcOut == 0)
+                    if (Marker[i] < MarkHoles)
+                        bcValuePhi[ii++] = tmpBcValuePhi[Index[i]];
         }
         /// <summary>
         /// Выполнение ГУ

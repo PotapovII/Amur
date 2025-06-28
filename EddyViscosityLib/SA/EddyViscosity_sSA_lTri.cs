@@ -15,6 +15,7 @@ namespace EddyViscosityLib
     using MemLogLib;
     using FEMTasksLib.FEMTasks.VortexStream;
     using CommonLib;
+    using FEMTasksLib.FEMTasks.Utils;
 
     /// <summary>
     /// Стационарная модель  Спаларта-Аллмареса 
@@ -239,7 +240,7 @@ namespace EddyViscosityLib
 
 
                         // получем значения адресов неизвестных
-                        GetAdress(knots, ref adressBound, cs);
+                        FEMUtils.GetAdress(knots, ref adressBound, cs);
                         // добавление вновь сформированной ЛЖМ в ГМЖ
                         algebra.AddToMatrix(LaplMatrix, adressBound);
                         // добавление вновь сформированной ЛЖМ в ГМЖ

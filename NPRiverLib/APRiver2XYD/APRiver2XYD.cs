@@ -85,6 +85,14 @@ namespace NPRiverLib.APRiver2XYD
         /// Вихревая вязкость
         /// </summary>
         public double[] _Mu;
+        /// <summary>
+        /// Донная шероховатость
+        /// </summary>
+        public double[] _ks;
+        /// <summary>
+        /// Толщина ледяного покрова
+        /// </summary>
+        public double[] _Ise;
         #endregion
         public APRiver2XYD(TParam p) : base(p, TypeTask.streamXY2D)
         {
@@ -111,20 +119,25 @@ namespace NPRiverLib.APRiver2XYD
             MEM.Alloc(mesh.CountKnots, ref _Eta);
             MEM.Alloc(mesh.CountKnots, ref _Mu);
 
+            MEM.Alloc(mesh.CountKnots, ref _ks);
+            MEM.Alloc(mesh.CountKnots, ref _Ise);
+
             unknowns.Add(new Unknown("Глубина потока", _h, TypeFunForm.Form_2D_Triangle_L1));
             unknowns.Add(new Unknown("Расход потока по x", _qx, TypeFunForm.Form_2D_Triangle_L1));
             unknowns.Add(new Unknown("Расход потока по у", _qy, TypeFunForm.Form_2D_Triangle_L1));
-            unknowns.Add(new CalkPapams("Расход потока", _qx, _qy, TypeFunForm.Form_2D_Rectangle_L1));
+            unknowns.Add(new CalkPapams("Расход потока", _qx, _qy, TypeFunForm.Form_2D_Triangle_L1));
             unknowns.Add(new Unknown("Скорость потока по x", _Ux, TypeFunForm.Form_2D_Triangle_L1));
             unknowns.Add(new Unknown("Скорость потока по у", _Uy, TypeFunForm.Form_2D_Triangle_L1));
-            unknowns.Add(new CalkPapams("Скорость потока", _Ux, _Uy, TypeFunForm.Form_2D_Rectangle_L1));
+            unknowns.Add(new CalkPapams("Скорость потока", _Ux, _Uy, TypeFunForm.Form_2D_Triangle_L1));
+            unknowns.Add(new Unknown("Донная шероховатость", _ks, TypeFunForm.Form_2D_Triangle_L1));
+            unknowns.Add(new Unknown("Толщина ледяного покрова", _Ise, TypeFunForm.Form_2D_Triangle_L1));
 
-            unknowns.Add(new CalkPapams("Поле напряжений T_xy", _TauX, TypeFunForm.Form_2D_Rectangle_L1));
-            unknowns.Add(new CalkPapams("Поле напряжений T_xz", _TauY, TypeFunForm.Form_2D_Rectangle_L1));
-            unknowns.Add(new CalkPapams("Поле напряжений", _TauX, _TauY, TypeFunForm.Form_2D_Rectangle_L1));
-            unknowns.Add(new CalkPapams("Отметки дна", _Zeta, TypeFunForm.Form_2D_Rectangle_L1));
-            unknowns.Add(new CalkPapams("Свободная поверхность", _Eta, TypeFunForm.Form_2D_Rectangle_L1));
-            unknowns.Add(new CalkPapams("Вихревая вязкость", _Mu, TypeFunForm.Form_2D_Rectangle_L1));
+            unknowns.Add(new CalkPapams("Поле напряжений T_xy", _TauX, TypeFunForm.Form_2D_Triangle_L1));
+            unknowns.Add(new CalkPapams("Поле напряжений T_xz", _TauY, TypeFunForm.Form_2D_Triangle_L1));
+            unknowns.Add(new CalkPapams("Поле напряжений", _TauX, _TauY, TypeFunForm.Form_2D_Triangle_L1));
+            unknowns.Add(new CalkPapams("Отметки дна", _Zeta, TypeFunForm.Form_2D_Triangle_L1));
+            unknowns.Add(new CalkPapams("Свободная поверхность", _Eta, TypeFunForm.Form_2D_Triangle_L1));
+            unknowns.Add(new CalkPapams("Вихревая вязкость", _Mu, TypeFunForm.Form_2D_Triangle_L1));
         }
         /// <summary>
         /// Получить шероховатость дна

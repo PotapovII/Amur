@@ -507,7 +507,7 @@
       <FileName>APRiver1XD\FVM_ke_River2D\PatankarParams1XD.cs</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="NPRiverLib.APRiver_1XD.River2D_FVM_ke.RoofCondition" Collapsed="true">
+  <Enum Name="NPRiverLib.APRiver_1XD.River2D_FVM_ke.TauBondaryCondition" Collapsed="true">
     <Position X="8.5" Y="19" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>

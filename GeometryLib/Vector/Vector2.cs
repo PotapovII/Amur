@@ -16,6 +16,10 @@ namespace GeometryLib.Vector
     using System.Runtime.CompilerServices;
 
     using CommonLib.Geometry;
+    using MemLogLib;
+    using System.Collections.Generic;
+    using CommonLib.Areas;
+
     /// <summary>
     /// Представляет двухмерный вещественный вектор с полями двойной точности.
     /// </summary>
@@ -955,6 +959,32 @@ namespace GeometryLib.Vector
         {
             return !(left == right);
         }
+        /// <summary>
+        /// Копирование массива точек в массив векторов 
+        /// </summary>
+        public static void Copy(ref Vector2[] arr, IHPoint[] source)
+        {
+            MEM.Alloc(source.Length, ref arr);
+            for (int i = 0; i < arr.Length; i++)
+                arr[i] = new Vector2(source[i].X, source[i].Y);
+        }
+        /// <summary>
+        /// Копирование списка точек в массив векторов 
+        /// </summary>
+        public static void Copy(ref Vector2[] arr, List<IHPoint> source)
+        {
+            MEM.Alloc(source.Count, ref arr);
+            for (int i = 0; i < arr.Length; i++)
+                arr[i] = new Vector2(source[i].X, source[i].Y);
+        }
+        /// <summary>
+        /// Копирование списка точек в массив векторов 
+        /// </summary>
+        public static void Copy(ref Vector2[] arr, List<IMPoint> source)
+        {
+            MEM.Alloc(source.Count, ref arr);
+            for (int i = 0; i < arr.Length; i++)
+                arr[i] = new Vector2(source[i].X, source[i].Y);
+        }
     }
-
 }

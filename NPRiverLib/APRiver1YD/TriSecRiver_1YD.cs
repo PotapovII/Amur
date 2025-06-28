@@ -191,8 +191,15 @@ namespace NPRiverLib.APRiver1YD
                     CalkTauBed(ref tau);
                     MEM.Copy(ref eddyViscosity0, eddyViscosity);
                     flagErr = 5;
-                    if (Params.CalkConcentration != BCalkConcentration.NotCalkConcentration)
+                    if (Params.CalkConcentration != BCalkConcentration.NotCalkConcentration && Params.ReTask < 3)
                     {
+                        if (taskCon == null)
+                        {
+                            MEM.Alloc(mesh.CountKnots, ref concentration, "concentration");
+                            MEM.Alloc(mesh.CountKnots, ref Gcon, "concentration");
+                            taskCon = new ReynoldsConcentrationTri(1, 0, typeTask);
+                            taskCon.SetTask(mesh, algebra, wMesh);
+                        }
                         taskCon.SolveTaskConcentS(ref concentration, eddyViscosity, Phi, tau, (int)Params.CalkConcentration);
                         for (int i =0; i< concentration.Length; i++)
                             Gcon[i] = concentration[i] * taskPV.Vy[i];

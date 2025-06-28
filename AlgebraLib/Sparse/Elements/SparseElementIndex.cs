@@ -18,14 +18,14 @@ namespace AlgebraLib
         /// <summary>
         /// индекс строки которая имеет не нулевой элемент в данном столбце
         /// </summary>
-        public int Knot;
+        public int IndexColumn;
         /// <summary>
         /// индекс элемента в упакованной строке матрицы
         /// </summary>
         public int j;
-        public SparseElementIndex(int Knot, int j)
+        public SparseElementIndex(int IndexColumn, int j)
         {
-            this.Knot = Knot;
+            this.IndexColumn = IndexColumn;
             this.j = j;
         }
     }

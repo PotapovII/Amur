@@ -14,6 +14,7 @@ namespace EddyViscosityLib
     using System;
     using MemLogLib;
     using CommonLib.EddyViscosity;
+    using FEMTasksLib.FEMTasks.Utils;
 
     #region Классы группы моделей K-E
     /// <summary>
@@ -196,7 +197,7 @@ namespace EddyViscosityLib
                             LocalRight[li + 1] = 0;
                         }
                         // получем значения адресов неизвестных
-                        GetAdress(knots, ref adressBound);
+                        FEMUtils.GetAdress(knots, ref adressBound);
                         // добавление вновь сформированной ЛЖМ в ГМЖ
                         algebra.AddToMatrix(LaplMatrix, adressBound);
                         // добавление вновь сформированной ЛЖМ в ГМЖ
@@ -205,7 +206,7 @@ namespace EddyViscosityLib
                         algebra.AddToRight(LocalRight, adressBound);
                     }
                     // Расчет
-                    Ralgebra.getResidual(ref MRight, result_old, 0);
+                    Ralgebra.GetResidual(ref MRight, result_old, 0);
                     algebra.CopyRight(MRight);
 
                     // Выполнение граничных условий для функции вихря
@@ -398,7 +399,7 @@ namespace EddyViscosityLib
                             LocalRight[li + 1] = 0;
                         }
                         // получем значения адресов неизвестных
-                        GetAdress(knots, ref adressBound);
+                        FEMUtils.GetAdress(knots, ref adressBound);
                         // добавление вновь сформированной ЛЖМ в ГМЖ
                         algebra.AddToMatrix(LaplMatrix, adressBound);
                         // добавление вновь сформированной ЛПЧ в ГМЖ
@@ -562,7 +563,7 @@ namespace EddyViscosityLib
                             LocalRight[ai] = Lb * eMu_p * pk;
                         }
                         // получем значения адресов неизвестных
-                        GetAdress(knots, ref adressBound, cs);
+                        FEMUtils.GetAdress(knots, ref adressBound, cs);
                         // добавление вновь сформированной ЛЖМ в ГМЖ
                         algebra.AddToMatrix(LaplMatrix, adressBound);
                         // добавление вновь сформированной ЛЖМ в ГМЖ
@@ -654,7 +655,7 @@ namespace EddyViscosityLib
                             LocalRight[ai] = La * eKen * C_mu * C_e1 * pk;
                         }
                         // получем значения адресов неизвестных
-                        GetAdress(knots, ref adressBound, cs);
+                        FEMUtils.GetAdress(knots, ref adressBound, cs);
                         // добавление вновь сформированной ЛЖМ в ГМЖ
                         algebra.AddToMatrix(LaplMatrix, adressBound);
                         algebra.AddToRight(LocalRight, adressBound);
@@ -896,7 +897,7 @@ namespace EddyViscosityLib
                             LocalRight[ai] = Lb * eMu_p * pk;
                         }
                         // получем значения адресов неизвестных
-                        GetAdress(knots, ref adressBound, cs);
+                        FEMUtils.GetAdress(knots, ref adressBound, cs);
                         // добавление вновь сформированной ЛЖМ в ГМЖ
                         algebra.AddToMatrix(LaplMatrix, adressBound);
                         // добавление вновь сформированной ЛЖМ в ГМЖ
@@ -904,7 +905,7 @@ namespace EddyViscosityLib
                         algebra.AddToRight(LocalRight, adressBound);
                     }
                     // Расчет
-                    Ralgebra.getResidual(ref MRight, Ken_old, 0);
+                    Ralgebra.GetResidual(ref MRight, Ken_old, 0);
                     algebra.CopyRight(MRight);
                     // Выполнение граничных условий для функции вихря
                     // VortexBC();
@@ -988,7 +989,7 @@ namespace EddyViscosityLib
                             LocalRight[ai] = La * eKen * C_mu * C_e1 * pk;
                         }
                         // получем значения адресов неизвестных
-                        GetAdress(knots, ref adressBound, cs);
+                        FEMUtils.GetAdress(knots, ref adressBound, cs);
                         // добавление вновь сформированной ЛЖМ в ГМЖ
                         algebra.AddToMatrix(LaplMatrix, adressBound);
                         // добавление вновь сформированной ЛЖМ в ГМЖ
@@ -997,7 +998,7 @@ namespace EddyViscosityLib
                         algebra.AddToRight(LocalRight, adressBound);
                     }
                     // Расчет
-                    Ralgebra.getResidual(ref MRight, Eps_old, 0);
+                    Ralgebra.GetResidual(ref MRight, Eps_old, 0);
                     algebra.CopyRight(MRight);
 
                     // Выполнение граничных условий для функции вихря

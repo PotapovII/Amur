@@ -556,6 +556,10 @@ namespace RiverDB.ConvertorOut
                         int ii = (i + 1) % segments.Count;
                         int mi = (segments.Count + i - 1) % segments.Count;
                         // маркер границы сегмента
+                        // 0 - узел области
+                        // 1 - берег
+                        // 2 - приток
+                        // 3 - отток
                         int Marker = segments[i].Marker;
                         CloudKnot knot = null;
                         if (segments[i].CountKnots == 2)
@@ -565,12 +569,14 @@ namespace RiverDB.ConvertorOut
                             av.attributes[AtrCK.idx_Hs] = av.attributes[AtrCK.idx_H] - Hs;
                             av.attributes[AtrCK.idx_Ice] = fig.Ice;
                             av.attributes[AtrCK.idx_ks] = fig.ks;
-                            newPoints.Add(av); 
+                            newPoints.Add(av);
                             ID++;
                             segs.Add(Marker);
                         }
                         else
                         {
+                            //if (Marker == 3)
+                            //    Marker = Marker;
                             CloudKnot pA = (CloudKnot)segments[i].pointA.Point;
                             CloudKnot pB = (CloudKnot)segments[i].pointB.Point;
                             pA.Attributes[AtrCK.idx_Ice] = fig.Ice;
@@ -604,7 +610,6 @@ namespace RiverDB.ConvertorOut
                                 // интерполяция по берегу
                                 knot = CloudKnot.Interpolation(pA, pB, j * ds, Marker);
                                 if (Marker > 1 || fig.FType == FigureType.FigureSubArea)
-                                // if (Marker > 1)
                                 {
                                     // интерполяция атрибутов в области
                                     if (uMmesh == null)
@@ -631,15 +636,12 @@ namespace RiverDB.ConvertorOut
                                                 {
                                                     knot.Attributes[ki] = 0;
                                                     for (int kk = 0; kk < N.Length; kk++)
-                                                    {
                                                         knot.Attributes[ki] += N[kk] * clp[kk].Attributes[ki];
-                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
-
                                 Vertex vertex = ConvertCloudKnotToVertex(ID, Marker, knot);
                                 vertex.attributes[1] = vertex.attributes[0] - Hs;
                                 newPoints.Add(vertex); ID++;
@@ -672,30 +674,6 @@ namespace RiverDB.ConvertorOut
                         cloudPoints.Add(seg);
                     }
                     #endregion
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            try
-            {
-                // Проход по контурам фигур
-                for (int area = 0; area < Area.Count; area++)
-                {
-                    IMFigura fig = Area.Figures[area];
-                    if (fig.FType == FigureType.FigureSubArea)
-                    {
-                        List<Vertex> Points = cloudPoints.Points;
-                        foreach (var v in Points)
-                        {
-                            if (fig.Contains(v.X, v.Y) == true)
-                            {
-                                v.Attributes[AtrCK.idx_ks] = fig.ks;
-                                v.Attributes[AtrCK.idx_Ice] = fig.Ice;
-                            }
-                        }
-                    }
                 }
             }
             catch (Exception ex)

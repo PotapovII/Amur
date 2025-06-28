@@ -38,6 +38,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 namespace FEMTasksLib
 {
     using CommonLib;
+    using FEMTasksLib.FEMTasks.Utils;
     using MemLogLib;
     using MeshLib;
     using System;
@@ -114,7 +115,7 @@ namespace FEMTasksLib
                         LocalRight[ai + 1] += Q * ff.N[ai] * DWJ;     // вертикальная объемня нагрузка
                 }
                 // получем массив адресов для BC
-                GetAdress(knots, ref adressBound, cs);
+                FEMUtils.GetAdress(knots, ref adressBound, cs);
                 // добавление вновь сформированной ЛЖМ в ГМЖ
                 algebra.AddToMatrix(LaplMatrix, adressBound);
                 // добавление вновь сформированной ЛПЧ в ГПЧ
@@ -123,7 +124,7 @@ namespace FEMTasksLib
             // получить граничные узлы
             uint[] bound = mesh.GetBoundKnotsByMarker(0);
             // получить адреса
-            GetAdress(bound, ref adressBound, cs);
+            FEMUtils.GetAdress(bound, ref adressBound, cs);
             // установить ГУ
             algebra.BoundConditions(0.0, adressBound);
             //algebra.Print();

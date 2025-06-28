@@ -270,7 +270,7 @@ namespace RiverLib.River2D.Algebra
         /// <param name="R">результат</param>
         /// <param name="X">умножаемый вектор</param>
         /// <param name="IsRight">знак операции = +/- 1</param>
-        public void getResidual(ref double[] R, double[] X, int IsRight = 1) { }
+        public void GetResidual(ref double[] R, double[] X, int IsRight = 1) { }
         /// <summary>
         /// Решение СЛУ
         /// </summary>

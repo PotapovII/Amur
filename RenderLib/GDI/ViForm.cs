@@ -10,6 +10,8 @@ using System.Windows.Forms;
 namespace RenderLib
 {
     using CommonLib;
+    using MeshLib;
+
     public partial class ViForm : Form
     {
         public bool CloseDO = false;
@@ -45,6 +47,23 @@ namespace RenderLib
         {
             Text = txt;
             Show();
+        }
+        public static void ShowMesh(IMesh mesh)
+        {
+
+            if (mesh != null)
+            {
+                SavePoint data = new SavePoint();
+                data.SetSavePoint(0, mesh);
+                double[] xx = mesh.GetCoords(0);
+                double[] yy = mesh.GetCoords(1);
+                data.Add("Координата Х", xx);
+                data.Add("Координата Y", yy);
+                data.Add("Координаты ХY", xx, yy);
+                Form form = new ViForm(data);
+                form.Show();
+            }
+
         }
     }
 }

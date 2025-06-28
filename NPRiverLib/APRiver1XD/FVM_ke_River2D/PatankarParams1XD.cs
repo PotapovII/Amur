@@ -23,6 +23,8 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
     using MemLogLib;
     using CommonLib;
     using CommonLib.EConverter;
+    using CommonLib.Tasks;
+
     /// <summary>
     /// Геометрия расчетной области
     /// </summary>
@@ -57,6 +59,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         [Description("Синосоидальная центральная часть дна")]
         L1_L2sin_L3
     }
+
     /// <summary>
     /// типы спец. рашателей задачи алгебры
     /// </summary>
@@ -97,18 +100,6 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         OffsetStreamJet0_8h,
         [Description("Взвешенная струя - ровное дно 16.5h")]
         OffsetStreamJet0_16_5h
-    }
-
-    /// <summary>
-    /// Граничные условия на верхней границе области
-    /// </summary>
-    [Serializable]
-    public enum RoofCondition
-    {
-        [Description("Скольжение по крышке")]
-        slip = 0,
-        [Description("Прилипание на крышке")]
-        adhesion = 1
     }
     /// <summary>
     /// ОО: Физические параметры модели к-e
@@ -298,7 +289,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
         [Description("Граничные условия для скоростей на верхней границе области")]
         [Category("Задача")]
         [TypeConverter(typeof(MyEnumConverter))]
-        public RoofCondition bcIndex { get; set; }
+        public TauBondaryCondition bcIndex { get; set; }
         /// <summary>
         /// типы задачи по входной струе
         /// </summary>
@@ -758,7 +749,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
                 flatTermoTask = false;
             
             NonLinearIterations = 15;
-            bcIndex = RoofCondition.adhesion;
+            bcIndex = TauBondaryCondition.adhesion;
             typeMAlgebra = TypeMAlgebra.TriDiagMat_Algorithm;
 
             topBottom = true;
@@ -858,7 +849,7 @@ namespace NPRiverLib.APRiver_1XD.River2D_FVM_ke
             wavePeriod = LOG.GetInt(file.ReadLine());
             NonLinearIterations = LOG.GetInt(file.ReadLine());
             typeStreamTask = (TypeStreamTask)LOG.GetInt(file.ReadLine());
-            bcIndex = (RoofCondition)LOG.GetInt(file.ReadLine());
+            bcIndex = (TauBondaryCondition)LOG.GetInt(file.ReadLine());
             typeMAlgebra = (TypeMAlgebra)LOG.GetInt(file.ReadLine());
             topBottom = LOG.GetBool(file.ReadLine());
             leftRight = LOG.GetBool(file.ReadLine());

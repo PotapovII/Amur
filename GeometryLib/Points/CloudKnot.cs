@@ -244,7 +244,7 @@ namespace GeometryLib
         public static CloudKnot ReadCloudKnot(string[] mas, int position)
         {
             string p1 = mas[position];
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 10; i++)
                 p1 += " " + mas[position + 1 + i];
             CloudKnot A = Parse(p1);
             return A;

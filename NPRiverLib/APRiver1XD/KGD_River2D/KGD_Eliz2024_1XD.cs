@@ -1437,47 +1437,46 @@ namespace NPRiverLib.APRiver1XD.KGD_River2D
                         // основной цикл по конечным элементам
                         // вычисляем локальные матрицы жесткости и производим сборку глобальной матрицы жесткости
                         // OrderablePartitioner<Tuple<int, int>> OrdPartitioner_Tau = Partitioner.Create(0, mesh.CountElements);
-                        Parallel.ForEach(OrdPartCountElems,
-                              (range, loopState) =>
-                              {
-                                  for (int fe = range.Item1; fe < range.Item2; fe++)
-                                      //for (int fe = 0; fe < mesh.CountElements; fe++)
-                                  {
-                                          // выделяем массивы для локальных матриц жесткости
-                                      double[][] M = new double[3][];
-                                      for (int k = 0; k < 3; k++)
-                                      {
-                                          M[k] = new double[3];
-                                      }
-                                          //и номера его вершин
-                                      uint[] LKnots = mesh.AreaElems[fe];
-                                          // нахождение площади треугольника
-                                      double LSk = wrapper.Sk[fe];
-                                          // расчитываем геометрию элемента 
-                                      double Lb1 = wrapper.b1[fe];
-                                      double Lb2 = wrapper.b2[fe];
-                                      double Lb3 = wrapper.b3[fe];
-                                      double Lc1 = wrapper.c1[fe];
-                                      double Lc2 = wrapper.c2[fe];
-                                      double Lc3 = wrapper.c3[fe];
-                                          // расчет локальной матрицы жесткости для диффузионного члена
-                                      M[0][0] = -LSk * (Lb1 * Lb1 + Lc1 * Lc1);
-                                      M[0][1] = -LSk * (Lb1 * Lb2 + Lc1 * Lc2);
-                                      M[0][2] = -LSk * (Lb1 * Lb3 + Lc1 * Lc3);
+                        Parallel.ForEach(OrdPartCountElems, (range, loopState) =>
+                        {
+                            for (int fe = range.Item1; fe < range.Item2; fe++)
+                            //for (int fe = 0; fe < mesh.CountElements; fe++)
+                            {
+                                // выделяем массивы для локальных матриц жесткости
+                                double[][] M = new double[3][];
+                                for (int k = 0; k < 3; k++)
+                                {
+                                    M[k] = new double[3];
+                                }
+                                //и номера его вершин
+                                uint[] LKnots = mesh.AreaElems[fe];
+                                // нахождение площади треугольника
+                                double LSk = wrapper.Sk[fe];
+                                // расчитываем геометрию элемента 
+                                double Lb1 = wrapper.b1[fe];
+                                double Lb2 = wrapper.b2[fe];
+                                double Lb3 = wrapper.b3[fe];
+                                double Lc1 = wrapper.c1[fe];
+                                double Lc2 = wrapper.c2[fe];
+                                double Lc3 = wrapper.c3[fe];
+                                // расчет локальной матрицы жесткости для диффузионного члена
+                                M[0][0] = -LSk * (Lb1 * Lb1 + Lc1 * Lc1);
+                                M[0][1] = -LSk * (Lb1 * Lb2 + Lc1 * Lc2);
+                                M[0][2] = -LSk * (Lb1 * Lb3 + Lc1 * Lc3);
 
-                                      M[1][0] = -LSk * (Lb2 * Lb1 + Lc2 * Lc1);
-                                      M[1][1] = -LSk * (Lb2 * Lb2 + Lc2 * Lc2);
-                                      M[1][2] = -LSk * (Lb2 * Lb3 + Lc2 * Lc3);
+                                M[1][0] = -LSk * (Lb2 * Lb1 + Lc2 * Lc1);
+                                M[1][1] = -LSk * (Lb2 * Lb2 + Lc2 * Lc2);
+                                M[1][2] = -LSk * (Lb2 * Lb3 + Lc2 * Lc3);
 
-                                      M[2][0] = -LSk * (Lb3 * Lb1 + Lc3 * Lc1);
-                                      M[2][1] = -LSk * (Lb3 * Lb2 + Lc3 * Lc2);
-                                      M[2][2] = -LSk * (Lb3 * Lb3 + Lc3 * Lc3);
-                                      //int[] Knots = { (int)LKnots[0], (int)LKnots[1], (int)LKnots[2] };
-                                      lock (lockThis)
-                                          algebra.AddToMatrix(M, LKnots);
-                                  }
+                                M[2][0] = -LSk * (Lb3 * Lb1 + Lc3 * Lc1);
+                                M[2][1] = -LSk * (Lb3 * Lb2 + Lc3 * Lc2);
+                                M[2][2] = -LSk * (Lb3 * Lb3 + Lc3 * Lc3);
+                                //int[] Knots = { (int)LKnots[0], (int)LKnots[1], (int)LKnots[2] };
+                                lock (lockThis)
+                                    algebra.AddToMatrix(M, LKnots);
+                            }
 
-                              });
+                        });
                         R = new double[CountKnots];
                         //сборка правой части
                         Parallel.ForEach(OrdPartCountElems,

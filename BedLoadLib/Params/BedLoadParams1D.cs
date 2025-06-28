@@ -27,23 +27,8 @@ namespace BedLoadLib
     /// расчете донных деформаций
     /// </summary>
     [Serializable]
-    public class BedLoadParams1D : ITProperty<BedLoadParams1D>
+    public class BedLoadParams1D : ABedLoadParams, ITProperty<BedLoadParams1D>
     {
-        /// <summary>
-        /// Учет лавинного осыпания дна
-        /// </summary>
-        [DisplayName("Учет лавинного осыпания дна")]
-        [Category("Настройка физической модели")]
-        [TypeConverter(typeof(MyEnumConverter))]
-        public AvalancheType isAvalanche { get; set; }
-
-        /// <summary>
-        /// Модель движения донного матеиала
-        /// </summary>
-        [DisplayName("Модель движения донного матеиала")]
-        [Category("Настройка физической модели")]
-        [TypeConverter(typeof(MyEnumConverter))]
-        public TypeBLModel blm { get; set; }
         /// <summary>
         /// Тип граничных условий на входе в область
         /// </summary>
@@ -57,37 +42,13 @@ namespace BedLoadLib
         [Category("Граничные условия")]
         public BoundCondition1D BCondOut { get; set; }
         /// <summary>
-        /// Сохранять расход наносов
-        /// </summary>
-        [DisplayName("Сохранять расход наносов")]
-        [Description("Сохранять расход наносов")]
-        [Category("Управление выводом")]
-        [TypeConverter(typeof(BooleanTypeConverterSave))]
-        public bool sedimentShow { get; set; }
-        /// <summary>
-        /// Расход наносов по механизмам движения донного материала
-        /// </summary>
-        protected const int idxTransit = 0, idxZeta = 1, idxAll = 2, idxPress = 3;
-        /// <summary>
         /// Значение параметров по умолчанию
         /// </summary>
-        public BedLoadParams1D()
+        public BedLoadParams1D() : base()
         {
-            isAvalanche = AvalancheType.AvalancheSimple;
-            blm = TypeBLModel.BLModel_2021;
             BCondIn = new BoundCondition1D(TypeBoundCond.Neumann, 0);
             BCondOut = new BoundCondition1D(TypeBoundCond.Neumann, 0);
-            sedimentShow = false;
         }
-
-        #region Вычисляемые параметры задачи
-        /// <summary>
-        /// Пересчет зависимых параметров задачи
-        /// </summary>
-        public virtual void InitBedLoad()
-        {
-        }
-        #endregion
         /// <summary>
         /// Конструктор копирования
         /// </summary>
@@ -100,28 +61,26 @@ namespace BedLoadLib
         /// Установка свойств задачи
         /// </summary>
         /// <param name="p"></param>
-        public virtual void SetParams(object p)
+        public override void SetParams(object p)
         {
+            base.SetParams(p);
             SetParams((BedLoadParams1D)p);
         }
-        public virtual object GetParams()
+        public override object GetParams()
         {
-            return (BedLoadParams1D)this;
+            return new BedLoadParams1D(this);
         }
         /// <summary>
         /// Установка параметров
         /// </summary>
         /// <param name="p"></param>
-        public void SetParams(BedLoadParams1D p)
+        public override void SetParams(BedLoadParams1D p)
         {
-            blm = p.blm;
             BCondIn = p.BCondIn;
             BCondOut = p.BCondOut;
-            isAvalanche = p.isAvalanche;
-            sedimentShow = p.sedimentShow;
             InitBedLoad();
         }
-        public virtual void LoadParams(string fileName = "")
+        public override void LoadParams(string fileName = "")
         {
             string message = "Файл парамеров задачи - доные деформации - не обнаружен";
             WR.LoadParams(Load, message, fileName);
@@ -130,7 +89,7 @@ namespace BedLoadLib
         /// Чтение параметров задачи из файла
         /// </summary>
         /// <param name="file"></param>
-        public virtual void Load(StreamReader file)
+        public override void Load(StreamReader file)
         {
             try
             {
@@ -142,9 +101,7 @@ namespace BedLoadLib
                 ta = (TypeBoundCond)LOG.GetInt(file.ReadLine());
                 va = LOG.GetDouble(file.ReadLine());
                 BCondOut = new BoundCondition1D(ta, va);
-                isAvalanche = (AvalancheType)LOG.GetInt(file.ReadLine());
-                blm = (TypeBLModel)LOG.GetInt(file.ReadLine());
-                sedimentShow = LOG.GetBool(file.ReadLine());
+                base.Load(file);
             }
             catch (Exception ee)
             {
@@ -155,10 +112,10 @@ namespace BedLoadLib
             // Пересчет зависимых параметров
             InitBedLoad();
         }
-        public virtual BedLoadParams1D Clone(BedLoadParams1D p)
+        public override BedLoadParams1D Clone(BedLoadParams1D p)
         {
             return new BedLoadParams1D(p);
         }
-        public virtual void InitParamsForMesh(int CountKnots, int CountElements) { }
     }
+
 }

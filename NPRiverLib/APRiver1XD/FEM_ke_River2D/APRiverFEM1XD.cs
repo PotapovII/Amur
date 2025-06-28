@@ -10,17 +10,10 @@
 //---------------------------------------------------------------------------
 namespace NPRiverLib.APRiver_1XD
 {
-    using MemLogLib;
+    using System;
+
     using CommonLib;
     using MeshGeneratorsLib.StripGenerator;
-
-    using System;
-    using System.Linq;
-    using CommonLib.Geometry;
-    using GeometryLib;
-    using NPRiverLib.APRiver_1XD;
-    using CommonLib.Function;
-
     /// <summary>
     ///  ОО: Определение класса APRiverFEM1YD - расчет полей скорости, 
     ///  вязкости и напряжений в живом сечении потока методом КЭ 

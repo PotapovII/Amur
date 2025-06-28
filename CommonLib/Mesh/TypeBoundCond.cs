@@ -68,6 +68,11 @@ namespace CommonLib
         [Description("Транзит dz/dt=0")]
         Transit = 4,
         /// <summary>
+        /// Однородные первого рода
+        /// </summary>
+        [Description("Дирихле")]
+        Dirichlet0 = 5,
+        /// <summary>
         /// не возможно определить граничные условия
         /// внутреннии грани элементов
         /// </summary>

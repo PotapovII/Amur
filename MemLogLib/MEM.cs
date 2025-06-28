@@ -15,6 +15,8 @@ namespace MemLogLib
     using System.Globalization;
     using System.Threading.Tasks;
     using System.Collections.Generic;
+    using System.Collections.Concurrent;
+
     /// <summary>
     /// Работа с памятью
     /// </summary>
@@ -983,6 +985,15 @@ namespace MemLogLib
                 Logger.Instance.Exception(exp);
             }
         }
+        public static void Alloc2DIdentity(int N, ref double[][] A)
+        {
+            Alloc2D(N, N, ref A);
+            for (int i = 0; i < N; i++)
+                for (int j = 0; j < N; j++)
+                    A[i][j] = 0;
+            for (int i = 0; i < N; i++)
+                A[i][i] = 1;
+        }
 
         public static T[,] NewMassRec2D<T>(int Nx, int Ny)
         {
@@ -1130,7 +1141,7 @@ namespace MemLogLib
         public static int CountUniqueElems(double[] x)
         {
             double[] xx = null;
-            xx = MEM.Copy(xx, x);
+            xx = Copy(xx, x);
             Array.Sort(xx);
             int CountX = 1;
             int k = 0;
@@ -1259,10 +1270,117 @@ namespace MemLogLib
         {
             return mas.Cast<int>().ToArray();
         }
+        #endregion
+        #region Скалярное произведение
 
+        /// <summary>
+        /// Скалярное произведение (евклидово)
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns></returns>
+        public static double Dot(double[] v1, double[] v2)
+        {
+            double sum = 0;
+            for (int i = 0; i < v1.Length; i++)
+                sum += v1[i] * v2[i];
+            return sum;
+        }
+        /// <summary>
+        /// Скалярное произведение (евклидово)
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns></returns>
+        public static double Dot_PL(double[] v1, double[] v2)
+        {
+            double sum = 0;
+            Parallel.For(0, v1.Length, () => 0.0, (i, state, localSum) =>
+            {
+                return localSum + v1[i] * v2[i];
+            },
+            localSum => { lock (v1) sum += localSum; });
+            return sum;
+        }
+
+        /// <summary>
+        /// Скалярное произведение (евклидово)
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public static double Dot_PR(double[] v1, double[] v2)
+        {
+            double totalSum = 0;
+            OrderablePartitioner<Tuple<int, int>> OrdPart = Partitioner.Create(0, v1.Length);
+            // используем concurrentbag для безопасного добавления сумм
+            var localSums = new ConcurrentBag<double>();
+            Parallel.ForEach(OrdPart, (range, loopState) =>
+            {
+                double localsum = 0;
+                for (int i = range.Item1; i < range.Item2; i++)
+                {
+                    localsum += v1[i]* v2[i];
+                }
+                // добавляем локальную сумму в concurrentbag
+                localSums.Add(localsum);
+            });
+            // объединяем все локальные суммы
+            totalSum = localSums.Sum();
+            return Math.Sqrt(totalSum);
+        }
+
+        /// <summary>
+        /// Норма вектора (евклидова)
+        /// </summary>
+        /// <param name="v"></param>
+        public static double Norm(double[] v)
+        {
+            double sum = 0;
+            for(int i = 0; i < v.Length; i++)
+                sum += v[i] * v[i];
+            return Math.Sqrt(sum);
+        }
+        /// <summary>
+        /// Норма вектора(евклидова)
+        /// </summary>
+        /// <param name="v"></param>
+        public static double NormE_PL(double[] v)
+        {
+            double sum = 0;
+            Parallel.For(0, v.Length, () => 0.0, (i, state, localSum) =>
+            {
+                return localSum + v[i] * v[i];
+            },
+            localSum => { lock (v) sum += localSum; });
+            return Math.Sqrt(sum);
+        }
+        /// <summary>
+        /// Норма вектора (евклидова)
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public static double NormE_PR(double[] v)
+        {
+            double totalSum = 0;
+            OrderablePartitioner<Tuple<int, int>> OrdPart = Partitioner.Create(0, v.Length);
+            // используем concurrentbag для безопасного добавления сумм
+            var localSums = new ConcurrentBag<double>();
+            Parallel.ForEach(OrdPart, (range, loopState) =>
+            {
+                double localsum = 0;
+                for (int i = range.Item1; i < range.Item2; i++)
+                {
+                    localsum += v[i] * v[i];
+                }
+                // добавляем локальную сумму в concurrentbag
+                localSums.Add(localsum);
+            });
+            // объединяем все локальные суммы
+            totalSum = localSums.Sum();
+            return Math.Sqrt(totalSum);
+        }
 
         #endregion
-
         #region Копирование данных, работа с памятью
         /// <summary>
         /// реверс поля в двумерном массиве
@@ -1340,7 +1458,24 @@ namespace MemLogLib
             for (int i = 0; i < arr.Length; i++)
                 arr[i] = (1 - relax) * arr[i] + relax * source[i];
         }
-        
+        public static void Copy(ref int[] arr, int[] source)
+        {
+            Alloc(source.Length, ref arr);
+            for (int i = 0; i < arr.Length; i++)
+                arr[i] = source[i];
+        }
+        public static void Copy(ref uint[] arr, uint[] source)
+        {
+            Alloc(source.Length, ref arr);
+            for (int i = 0; i < arr.Length; i++)
+                arr[i] = source[i];
+        }
+        public static void Copy(ref bool[] arr, bool[] source)
+        {
+            Alloc(source.Length, ref arr);
+            for (int i = 0; i < arr.Length; i++)
+                arr[i] = source[i];
+        }
 
         /// <summary>
         /// Копирование двухмерного массива

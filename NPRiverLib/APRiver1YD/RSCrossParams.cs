@@ -279,7 +279,7 @@ namespace NPRiverLib.APRiver1YD.Params
         #endregion
 
         #region + 01 05 2025 ОО: Флаг для расчета задачи взвешенных наносов
-        [TypeConverter(typeof(BooleanTypeConverterYN))]
+        [TypeConverter(typeof(MyEnumConverter))]
         [DisplayName("Расчет взвешенных наносов")]
         [Description("Флаг для расчета взвешенных наносов Да - true, Нет -false")]
         [Category("Задача")]

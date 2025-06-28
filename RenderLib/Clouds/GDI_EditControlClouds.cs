@@ -701,7 +701,8 @@ namespace RenderLib
                     control.SetFType(listBoxFig.SelectedIndex, FigureType.FigureSubArea);
                     double ice = double.Parse(tbIce.Text, MEM.formatter);
                     double ks = double.Parse(tbKs.Text, MEM.formatter);
-                    control.SetAtributes(listBoxFig.SelectedIndex, ice, ks);
+                    double h = double.Parse(bt_Hbed.Text, MEM.formatter);
+                    control.SetAtributes(listBoxFig.SelectedIndex, ice, ks, h);
                 }
             }
         }

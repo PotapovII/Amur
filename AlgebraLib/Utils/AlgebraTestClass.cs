@@ -12,10 +12,13 @@ namespace AlgebraLib
     using System;
     using System.Diagnostics;
     using System.Linq;
+    using NPRiverLib.APRiver2XYD.River2DSW;
+    using AlgebraLib.Sparse.River;
+
     /// <summary>
     /// ОО: Класс с тестовыми примерами
     /// </summary>
-    class AlgebraTestClass
+    public class AlgebraTestClass
     {
         /// <summary>
         /// Порядок СЛАУ
@@ -155,8 +158,6 @@ namespace AlgebraLib
             LOG.Print("Общее время расчета ", s);
             return s;
         }
-
-
         /// <summary>
         /// Двухмерная задача пуассона решаемая МКЭ (квадратные КЭ 1Х1)
         /// </summary>
@@ -298,8 +299,10 @@ namespace AlgebraLib
             //       V j          
             int ist = 1;
             int jst = 1;
-            double V = 0, U = 0;
-            double L = 1, H = 1;
+            double V = 1, U = 0;
+            double LL = 1.0;
+            double L = LL / (Nx - 1);
+            double H = L;
             double rho = 1000;
             double gam = 1;
             double q = 100;
@@ -415,11 +418,11 @@ namespace AlgebraLib
                     map[i, j] = k++;
             int NE = (int)((Nx - 1) * (Ny - 1));
 
-            LOG.Print("Ap", Ap, 3);
-            LOG.Print("Ae", Ae, 3);
-            LOG.Print("Aw", Aw, 3);
-            LOG.Print("An", An, 3);
-            LOG.Print("As ", As, 3);
+            //LOG.Print("Ap", Ap, 3);
+            //LOG.Print("Ae", Ae, 3);
+            //LOG.Print("Aw", Aw, 3);
+            //LOG.Print("An", An, 3);
+            //LOG.Print("As ", As, 3);
             try
             {
 
@@ -487,7 +490,6 @@ namespace AlgebraLib
                 Console.WriteLine("Ошибка " + ep.Message);
             }
         }
-
         public static void Main()
         {
             IAlgebra algebra = null;
@@ -547,16 +549,11 @@ namespace AlgebraLib
             }
             Console.Read();
         }
-
-        public static void Main1()
+        public static void TestA(int Nx,int Ny, int dimention = 2,int typeTest = 1,int PrintFlag = 0)
         {
             IAlgebra algebra = null;
-            Nx = 40;
-            Ny = 40;
             uint N = AlgebraTestClass.N;
             // размерность задачи
-            int dimention = 2;
-            int typeTest = 1;
             // номер метода
             Console.WriteLine(" Nx = {0}, Ny = {1}", Nx, Ny);
             int method = 1;
@@ -579,7 +576,88 @@ namespace AlgebraLib
                         algebra = new AlgebraGauss(N);
                         break;
                     case 4:
-                        algebra = new AlgebraGaussTape(N, Nx + 2);
+                        algebra = new AlgebraGaussTape(N,(uint)Nx + 2);
+                        break;
+                    case 5:
+                        algebra = new AlgebraCholetsky(N);
+                        break;
+                    case 6:
+                        algebra = new AlgebraGMRESS(N);
+                        break;
+                    case 7:
+                        algebra = new SparseAlgebraCG(N);
+                        break;
+                    case 8:
+                        algebra = new SparseAlgebraBeCG(N);
+                        break;
+                    case 9:
+                        algebra = new SparseAlgebraGMRES(N);
+                        break;
+                    case 10:
+                        algebra = new AlgebraGauss(N);
+                        break;
+                    case 11:
+                        algebra = new AlgebraCG_FEM(N, CountFE);
+                        break;
+                    case 12:
+                        algebra = new AlgebraRiver();
+                        break;
+                }
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("==========================================================");
+                Console.WriteLine("Название метода :" + algebra.Name);
+                Console.WriteLine("==========================================================");
+                Console.ForegroundColor = ConsoleColor.White;
+                if (dimention == 1)
+                {
+                    Test_1D_PoissonTask(algebra);
+                    IAlgebraResult result = algebra.Result;
+                    result.Print();
+                }
+                else
+                {
+                    if (typeTest == 0)
+                    {
+                        Test_2D_PoissonTask(algebra);
+                        IAlgebraResult result = algebra.Result;
+                        result.Print();
+                    }
+                    else
+                    {
+                        Test_2D_MassTransfer(algebra);
+                        IAlgebraResult result = algebra.Result;
+                        result.Print();
+                    }
+                }
+            }
+            Console.Read();
+        }
+        public static void TestB(int method, int Nx, int Ny, int dimention = 2, int typeTest = 1, int PrintFlag = 0)
+        {
+            IAlgebra algebra = null;
+            uint N = AlgebraTestClass.N;
+            // размерность задачи
+            // номер метода
+            Console.WriteLine(" Nx = {0}, Ny = {1}", Nx, Ny);
+            {
+                Console.WriteLine();
+                LOG.TPrint("Индекс метода в тесте", method);
+                switch (method)
+                {
+                    case 0:
+                        algebra = new AlgebraLU(N);
+                        break;
+                    case 1:
+                        algebra = new AlgebraLUMax(N);
+                        break;
+                    case 2:
+                        algebra = new AlgebraLUTape(N, (int)Nx + 1, (int)Nx + 1);
+                        break;
+                    case 3:
+                        algebra = new AlgebraGauss(N);
+                        break;
+                    case 4:
+                        algebra = new AlgebraGaussTape(N, (uint)Nx + 2);
                         break;
                     case 5:
                         algebra = new AlgebraCholetsky(N);
@@ -606,6 +684,11 @@ namespace AlgebraLib
                         //algebra = new SparseAlgebraGaussStr(N);
                         break;
                 }
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("==========================================================");
+                Console.WriteLine("Название метода :" + algebra.Name);
+                Console.WriteLine("==========================================================");
+                Console.ForegroundColor = ConsoleColor.White;
                 if (dimention == 1)
                 {
                     Test_1D_PoissonTask(algebra);
@@ -630,7 +713,6 @@ namespace AlgebraLib
             }
             Console.Read();
         }
-
         /// <summary>
         /// Тесты на построение предобуславливателей ILU(1)
         /// </summary>
@@ -806,6 +888,161 @@ namespace AlgebraLib
             LOG.Print("A", A, 3);
             LOG.Print("IAL", AL, 3);
             LOG.Print("IAU", AU, 3);
+        }
+    }
+
+    public class AlgebraTestManager
+    {
+        /// <summary>
+        /// Тестируемые алгебры
+        /// </summary>
+        public static void PrintAName()
+        {
+            int Nx = 5;
+            int Ny = 5;
+            uint CountFE = 5;
+            IAlgebra algebra = null;
+            uint N = AlgebraTestClass.N;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("==========================================================");
+            Console.WriteLine(" Выберете тестируемую алгебру");
+            Console.WriteLine("==========================================================");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine();
+            int method = 1;
+            for (method = 0; method < 13; method++)
+            {
+                switch (method)
+                {
+                    case 0:
+                        algebra = new AlgebraLU(N);
+                        break;
+                    case 1:
+                        algebra = new AlgebraLUMax(N);
+                        break;
+                    case 2:
+                        algebra = new AlgebraGauss(N);
+                        break;
+                    case 3:
+                        algebra = new AlgebraCholetsky(N);
+                        break;
+                    case 4:
+                        algebra = new AlgebraGMRESS(N);
+                        break;
+                    case 5:
+                        algebra = new AlgebraGauss(N);
+                        break;
+                    case 6:
+                        algebra = new AlgebraLUTape(N, (int)Nx + 1, (int)Nx + 1);
+                        break;
+                    case 7:
+                        algebra = new AlgebraGaussTape(N, (uint)Nx + 2);
+                        break;
+                    case 8:
+                        algebra = new SparseAlgebraCG(N);
+                        break;
+                    case 9:
+                        algebra = new SparseAlgebraBeCG(N);
+                        break;
+                    case 10:
+                        algebra = new SparseAlgebraGMRES(N);
+                        break;
+                    case 11:
+                        algebra = new AlgebraCG_FEM(N, CountFE);
+                        break;
+                    case 12:
+                        algebra = new SparseMatrixSolver(N, 20, 1, 20, 1000);
+                        break;
+                }
+                Console.WriteLine(method.ToString()+ ": " + algebra.Name);
+            }
+        }
+        /// <summary>
+        /// Создание экземпляра алгебры
+        /// </summary>
+        public static IAlgebra CreateAlgebra(int idx, int Nx = 5, int Ny = 5, int cs = 1, int mK = 5, uint CountFE = 5)
+        {
+            IAlgebra algebra = null;
+            uint N = (uint)(Nx * Ny * cs);
+            Console.WriteLine();
+            switch (idx)
+            {
+                case 0:
+                    algebra = new AlgebraLU(N);
+                    break;
+                case 1:
+                    algebra = new AlgebraLUMax(N);
+                    break;
+                case 2:
+                    algebra = new AlgebraGauss(N);
+                    break;
+                case 3:
+                    algebra = new AlgebraCholetsky(N);
+                    break;
+                case 4:
+                    algebra = new AlgebraGMRESS(N);
+                    break;
+                case 5:
+                    algebra = new AlgebraGauss(N);
+                    break;
+                case 6:
+                    algebra = new AlgebraLUTape(N, (int)Nx + 1, (int)Nx + 1);
+                    break;
+                case 7:
+                    algebra = new AlgebraGaussTape(N, (uint)Nx + 2);
+                    break;
+                case 8:
+                    algebra = new SparseAlgebraCG(N);
+                    break;
+                case 9:
+                    algebra = new SparseAlgebraBeCG(N);
+                    break;
+                case 10:
+                    algebra = new SparseAlgebraGMRES(N);
+                    break;
+                case 11:
+                    algebra = new AlgebraCG_FEM(N, CountFE);
+                    break;
+                case 12:
+                    algebra = new SparseMatrixSolver(N, 20, 1, 20, 1000);
+                break;
+            }
+            return algebra;
+        }
+        public static void TestA(IAlgebra algebra, int Nx, int Ny, int dimention = 2, int typeTest = 1, int PrintFlag = 0)
+        {
+            AlgebraTestClass.Nx = (uint)Nx;
+            AlgebraTestClass.Ny = (uint)Ny;
+            // размерность задачи
+            // номер метода
+            Console.WriteLine(" Nx = {0}, Ny = {1}", Nx, Ny);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("==========================================================");
+            Console.WriteLine("Название метода :" + algebra.Name);
+            Console.WriteLine("==========================================================");
+            Console.ForegroundColor = ConsoleColor.White;
+            if (dimention == 1)
+            {
+                AlgebraTestClass.Test_1D_PoissonTask(algebra);
+                IAlgebraResult result = algebra.Result;
+                result.Print();
+            }
+            else
+            {
+                if (typeTest == 0)
+                {
+                    AlgebraTestClass.Test_2D_PoissonTask(algebra);
+                    IAlgebraResult result = algebra.Result;
+                    result.Print();
+                }
+                else
+                {
+                    AlgebraTestClass.Test_2D_MassTransfer(algebra);
+                    IAlgebraResult result = algebra.Result;
+                    result.Print();
+                }
+            }
+            Console.Read();
         }
     }
 }

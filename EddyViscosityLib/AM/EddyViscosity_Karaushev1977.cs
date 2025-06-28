@@ -33,38 +33,60 @@ namespace EddyViscosityLib
         {
             try
             {
-                double Area = wMesh.GetArea();
-                double Bottom = wMesh.GetBottom();
-                double R0 = Area / Bottom;
-                double Q = wMesh.RiverFlowRate(Ux, ref Area);
-                double U0 = Q / Area;
-                double mCs = SPhysics.PHYS.Cs(R0) * Math.Sqrt(GRAV);
-                double U1 = Math.Sqrt(GRAV * R0 * J);
-                double mM = 0.7 * mCs + 1.92 * Math.Sqrt(GRAV);
-                double sU = Ux.Sum();
-                if (Ux != null && Vy != null && Vz != null && sU>0)
+                if (typeTask == TypeTask.streamX1D)
                 {
+                    int dim = 1;
+                    double minH = 0;
+                    double maxH = 0;
+                    mesh.MinMax(dim, ref minH, ref maxH);
+                    double alpha = 0.1;
+                    double H = maxH - minH;
+                    double Cs = SPhysics.PHYS.Cs(H);
+                    double M = 0.7 * Cs + 6.0;
+                    double V0 = GRAV * H / (M * Cs);
                     for (int node = 0; node < mesh.CountKnots; node++)
                     {
-                        double mU = Math.Sqrt(Ux[node] * Ux[node] + Vy[node] * Vy[node] + Vz[node] * Vz[node]);
-                        double mu_t0 = rho_w * (mU / U0) * U1 * GRAV * R0 / (mM * mCs);
+                        double mU = alpha * Math.Sqrt(Vy[node] * Vy[node] + Vz[node] * Vz[node]);
+                        double mu_t0 = rho_w * V0 * mU;
                         eddyViscosity[node] = mu_t0 + mu;
                     }
                 }
-                else
+                if (typeTask == TypeTask.streamY1D)
                 {
-                    if( MEM.Equals(sU,0)==true)
+
+                    double Area = wMesh.GetArea();
+                    double Bottom = wMesh.GetBottom();
+                    double R0 = Area / Bottom;
+                    double Q = wMesh.RiverFlowRate(Ux, ref Area);
+                    double U0 = Q / Area;
+                    double mCs = SPhysics.PHYS.Cs(R0) * Math.Sqrt(GRAV);
+                    double U1 = Math.Sqrt(GRAV * R0 * J);
+                    double mM = 0.7 * mCs + 1.92 * Math.Sqrt(GRAV);
+                    double sU = Ux.Sum();
+                    if (Ux != null && Vy != null && Vz != null && sU > 0)
+                    {
                         for (int node = 0; node < mesh.CountKnots; node++)
                         {
-                            double mu_t0 = rho_w * U1 * GRAV * R0 / (mM * mCs);
+                            double mU = Math.Sqrt(Ux[node] * Ux[node] + Vy[node] * Vy[node] + Vz[node] * Vz[node]);
+                            double mu_t0 = rho_w * (mU / U0) * U1 * GRAV * R0 / (mM * mCs);
                             eddyViscosity[node] = mu_t0 + mu;
                         }
+                    }
                     else
-                        for (int node = 0; node < mesh.CountKnots; node++)
-                        {
-                            double mu_t0 = rho_w * (Ux[node] / U0) * U1 * GRAV * R0 / (mM * mCs);
-                            eddyViscosity[node] = mu_t0 + mu;
-                        }
+                    {
+                        if (MEM.Equals(sU, 0) == true)
+                            for (int node = 0; node < mesh.CountKnots; node++)
+                            {
+                                double mu_t0 = rho_w * U1 * GRAV * R0 / (mM * mCs);
+                                eddyViscosity[node] = mu_t0 + mu;
+                            }
+                        else
+                            for (int node = 0; node < mesh.CountKnots; node++)
+                            {
+                                double mu_t0 = rho_w * (Ux[node] / U0) * U1 * GRAV * R0 / (mM * mCs);
+                                eddyViscosity[node] = mu_t0 + mu;
+                            }
+                    }
                 }
             }
             catch (Exception ee)

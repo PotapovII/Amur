@@ -44,6 +44,7 @@ namespace TestSUPG
     using CommonLib.Function;
     using FEMTasksLib.FEMTasks.VortexStream;
     using NPRiverLib.APRiver2XYD.River2DSW;
+    using FEMTasksLib.FEMTasks.Utils;
 
     [Serializable]
     public delegate void CalkTask(ref double[] X);
@@ -267,7 +268,7 @@ namespace TestSUPG
                     double Se = S[elem];
 
                     // получем значения адресов неизвестных
-                    GetAdress(knots, ref adressBound);
+                    FEMUtils.GetAdress(knots, ref adressBound);
 
                     if (SigmaTask == 0)
                     {
@@ -442,14 +443,14 @@ namespace TestSUPG
                             }
 
                             // получем значения адресов неизвестных
-                            GetAdress(knots, ref adressBound);
+                            FEMUtils.GetAdress(knots, ref adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
                             algebra.AddToMatrix(LaplMatrix, adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
                             Ralgebra.AddToMatrix(RMatrix, adressBound);
                         }
                         // Расчет
-                        Ralgebra.getResidual(ref MRight, result_old, 0);
+                        Ralgebra.GetResidual(ref MRight, result_old, 0);
                         algebra.CopyRight(MRight);
                         // Выполнение граничных условий для функции вихря
                         VortexBC();
@@ -578,14 +579,14 @@ namespace TestSUPG
                                 }
                             }
                             // получем значения адресов неизвестных
-                            GetAdress(knots, ref adressBound);
+                            FEMUtils.GetAdress(knots, ref adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
                             algebra.AddToMatrix(LaplMatrix, adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
                             Ralgebra.AddToMatrix(RMatrix, adressBound);
                         }
                         // Расчет
-                        Ralgebra.getResidual(ref MRight, result_old, 0);
+                        Ralgebra.GetResidual(ref MRight, result_old, 0);
                         algebra.CopyRight(MRight);
                         // Выполнение граничных условий для функции вихря
                         VortexBC();

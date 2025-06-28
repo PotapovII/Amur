@@ -86,6 +86,10 @@
       <Project>{754d1a25-333c-4be5-b275-60b22f3e3cb8}</Project>
       <Name>RiverDB</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RiverLib\RiverLib.csproj">
+      <Project>{9ac6e045-03a5-4c7c-a597-d245ea7e2c04}</Project>
+      <Name>RiverLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

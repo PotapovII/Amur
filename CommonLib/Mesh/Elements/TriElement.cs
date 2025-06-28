@@ -47,15 +47,15 @@ namespace CommonLib
     public struct TriElement
     {
         /// <summary>
-        /// Первая точка треугольника
+        /// Первый узел треугольника
         /// </summary>
         public uint Vertex1;
         /// <summary>
-        /// Вторая точка треугольника
+        /// Второй узел треугольника
         /// </summary>
         public uint Vertex2;
         /// <summary>
-        /// Третья точка треугольника
+        /// Третий узел треугольника
         /// </summary>
         public uint Vertex3;
         /// <summary>

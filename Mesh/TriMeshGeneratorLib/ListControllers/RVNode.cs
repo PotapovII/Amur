@@ -12,8 +12,6 @@ namespace TriMeshGeneratorLib
     using CommonLib.Mesh.RVData;
     using System;
     using System.IO;
-
-
     /// <summary>
     /// Узел КЭ сетки
     /// </summary>

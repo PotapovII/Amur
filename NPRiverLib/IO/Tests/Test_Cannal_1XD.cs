@@ -25,11 +25,12 @@ namespace NPRiverLib.IO._1XD.Tests
     using NPRiverLib.APRiver_1XD;
     using NPRiverLib.APRiver_1XD.River2D_FVM_ke;
     using CommonLib.BedLoad;
+    using CommonLib.Tasks;
 
     /// <summary>
     /// Список тестов для задачи в створе
     /// </summary>
-    public class Test_Cannal_1XD
+    public class Test_Cannal_PW_1XD
     {
         /// <summary>
         /// Названия тестов для задачи в створе
@@ -56,8 +57,10 @@ namespace NPRiverLib.IO._1XD.Tests
             list.Add("Канал с дыркой (нс Стокс)");      // 10
             list.Add("Канал с дыркой (ст Рейнольдс)");  // 11
 
-            list.Add("Прямой канал - русло (Стокс)");        // 12
-            list.Add("Прямой канал - русло (Рейнольдс)");    // 13
+            list.Add("Канал с волнистым дном и соплом (Стокс)");        // 12
+            list.Add("Канал с волнистым дном и соплом (Рейнольдс)");    // 13
+
+
             return list;
         }
         public static void GetTest(ref IRiver river, uint testTaskID = 0)
@@ -84,6 +87,7 @@ namespace NPRiverLib.IO._1XD.Tests
             out int[][] riverGates
             )
         {
+            mesh = null;
             riverGates = null;
             // создание и чтение свойств задачи                
             p = new FEMParams_1XD()
@@ -92,12 +96,11 @@ namespace NPRiverLib.IO._1XD.Tests
                 FE_X = 80,
                 // Количество КЭ для давления по Х
                 FE_Y = 30,
-                // Тип формы дна
-                typeBedForm = TypeBedForm.PlaneForm,
-                // Амплитуда донной поверхности
-                bottomWaveAmplitude = 0,
-                // Количество донных волн
-                wavePeriod = 1,
+                // Граничные условия для скоростей на верхней границе области
+                bcTypeOnWL = TauBondaryCondition.adhesion,
+                // граничные условия на выходе из канала
+                outBC = TypeBoundCond.Neumann0,
+                //outBC = TypeBoundCond.Dirichlet0,
                 // Количество инераций по движению узлов границы
                 CountBoundaryMove = 1,
                 // Длина водотока на 1 участке (вход потока)
@@ -126,12 +129,9 @@ namespace NPRiverLib.IO._1XD.Tests
                 V2_inlet = 1,
                 // Скорость в 3 придонном слое
                 V3_inlet = 0,
-                // Граничные условия для скоростей на верхней границе области
-                bcTypeOnWL = RoofCondition.adhesion,
-                // типы задачи по входной струе
-                typeStreamTask = TypeStreamTask.StreamFromShield,
-                // 
-                typeMAlgebra = TypeMAlgebra.CGD_Algorithm,
+                // решатель
+                //typeAlgebra = TypeAlgebra.GMRES_P_Sparce,
+                typeAlgebra = TypeAlgebra.LUTape,
                 // Растояние струи от стенки
                 LV = 0,
                 // Смешение струи от стенки
@@ -164,11 +164,12 @@ namespace NPRiverLib.IO._1XD.Tests
                 // Параметр неявности схемы при шаге по времениПараметр неявности схемы при шаге по времени
                 theta = 0.5,
                 // Постоянная вихревая вязкость
-                mu_const = 4,
+                mu_const = 1,
                 // модель турбулентной вязкости
                 turbViscType = ETurbViscType.EddyViscosityConst,
                 // Флаг для расчета взвешенных наносов 
-                CalkConcentration = BCalkConcentration.NeCalkConcentration
+                //CalkConcentration = BCalkConcentration.NeCalkConcentration
+                CalkConcentration = BCalkConcentration.NotCalkConcentration
             };
             if (testTaskID % 2 == 1) // стационарные у-я Рейнольдса 
                 p.ReTask = 1;
@@ -324,6 +325,8 @@ namespace NPRiverLib.IO._1XD.Tests
                         Geometry = new FunctionСhannelStep(Nx, L, L1, L2, 0, H1);
                         Geometry.GetFunctionData(ref xx, ref yy, Nx);
                         mesh = sg.CreateMesh(ref WetBed, ref riverGates, H, xx, yy, Nx);
+                        
+
                     }
                     catch (Exception ex)
                     {
@@ -351,10 +354,11 @@ namespace NPRiverLib.IO._1XD.Tests
                         Console.WriteLine(ex.Message);
                     }
                     break;
-                case 10: // Канал с дыркой
+                case 10: // Канал с волнистым дном и соплом
                 case 11:
                     try
                     {
+
                         CreateMesh.GetRectangleTriMesh(ref triMesh, p.FE_X, p.FE_Y, p.Lx, p.Ly, 1);
                         double y0 = 0, Phi_0 = 0;
                         double y1 = p.Ly / 3, Phi_H3 = 14.0 / 81 * p.V2_inlet * p.Ly;
@@ -377,27 +381,125 @@ namespace NPRiverLib.IO._1XD.Tests
                 case 13:
                     try
                     {
+                        int Ny = 400;
                         // Количество КЭ для давления по Х
-                        p.FE_X = 280;
-                        // p.Wen1 = 1.0;
-                        // Глубина 2 участка
-                        p.Wen2 = 100.0;
-                        // Глубина 3 участка
-                        //p.Wen3 = 1.0;
+                        p.FE_X = Ny;
 
-                        p.bcTypeOnWL = RoofCondition.slip;
-                        p.CalkConcentration = BCalkConcentration.DirCalkConcentration;
+                        p.Len1 = 0.025;
+                        p.Len2 = 0.05;
+                        p.Len3 = 0.325 - p.Len1- p.Len2;
+                        p.Wen1 = 0.15;
+                        p.Wen2 = 0.5;
+                        p.Wen3 = 3.2;
+                        
+                        p.mu_const = 2;
+
+                        p.V1_inlet = 0;
+                        p.V2_inlet = 1;
+                        p.V3_inlet = 0;
+
+                        double h = p.Len1;
+                        double b = p.Len2;
+                        
+                        double LX = p.Lx;
+                        double L1 = p.Wen1;
+                        double L2 = p.Wen2;
+
+                        double H = p.Ly;
+
+                        double V0 = p.V2_inlet;
+                        double V1 = V0*b/H;
+                                                
+                        double[] xx = null;
+                        double[] yy = null;
+
+                        MEM.Alloc(Ny, ref xx);
+                        MEM.Alloc(Ny, ref yy);
+
+                        IStripMeshGenerator sg = null;
+
+                        CrossStripMeshOption op = new CrossStripMeshOption(SimpleMarkerArea.boxCrossSectionB,
+                                                    TypeMesh.Triangle, 5);
+                        double[] ox1 = { 0, L1 };
+                        double[] ox2 = { L1, L1 + L2 };
+                        double[] ox3 = { L1 + L2, p.Lx };
+                        double[] oy = { 0, 0 };
+                        double dx = LX / (Ny - 1);
+                        IDigFunction left_fun = new DigFunction(ox1, oy, "Дно");
+                        //IDigFunction centr_fun = new  DigFunction(ox2, oy, "Дно");
+                        double NN = 1;
+                        double amplitude = - 0.25;
+                        IDigFunction centr_fun = new FunctionSin(b * amplitude, NN, ox2, oy);
+                        IDigFunction right_fun = new DigFunction(ox3, oy, "Дно");
+                        IDigFunction[] fs = { left_fun, centr_fun, right_fun };
+                        IDigFunction fun = new PieceDigFunction(fs);
+                        for (int i = 0; i < xx.Length; i++)
+                        {
+                            double x = dx * i;
+                            xx[i] = x;
+                            yy[i] = fun.FunctionValue(x);
+                        }
+                        op.b = b;
+                        op.h = h;
+                        double WetBed = 0, WaterLevel = H;
+                        //StripGenMeshType.
+                        sg = SMGManager.GetMeshGenerator((StripGenMeshType)3, op);
+                        mesh = sg.CreateMesh(ref WetBed, ref riverGates, WaterLevel, xx, yy, Ny);
+
                         //p.CalkConcentration = BCalkConcentration.NeCalkConcentration;
-
                         CreateMesh.GetRectangleTriMesh(ref triMesh, p.FE_X, p.FE_Y, p.Lx, p.Ly, 1);
-                        double y0 = 0, Phi_0 = 0;
-                        double y1 = p.Ly / 3, Phi_H3 = 8.0 / 81 * p.V2_inlet * p.Ly;
-                        double y2 = 2 * p.Ly / 3, Phi_2H3 = 28.0 / 81 * p.V2_inlet * p.Ly;
-                        double y3 = p.Ly, Phi_H = 2.0 / 3.0 * p.V2_inlet * p.Ly;
+
+
+                        //double y0 = 0, Phi_0 = 0;
+                        //double y1 = p.Ly / 3, Phi_H3 = 14.0 / 81 * p.V2_inlet * p.Ly;
+                        //double y2 = 2 * p.Ly / 3, Phi_2H3 = 40.0 / 81 * p.V2_inlet * p.Ly;
+                        //double y3 = p.Ly, Phi_H = 2.0 / 3.0 * p.V2_inlet * p.Ly;
+
+                        //double y0 = 0, Phi_0 = 0;
+                        //double y1 = p.Ly / 3, Phi_H3 = 14.0 / 81 * p.V2_inlet * p.Ly;
+                        //double y2 = 2 * p.Ly / 3, Phi_2H3 = 40.0 / 81 * p.V2_inlet * p.Ly;
+                        //double y3 = p.Ly, Phi_H = 2.0 / 3.0 * p.V2_inlet * p.Ly;
+
+
+                        double y0, Phi_0, y1, Phi_H3, y2, Phi_2H3, y3, Phi_H;
+                        double Q = V0 * b;
+
+                        y0 = h;                    
+                        y1 = h + b / 3;            
+                        y2 = h + 2 * b / 3;        
+                        y3 = h + b;
+                        // симметрия
+                        Phi_0 = 0;
+                        Phi_H3 = 14.0 / 81 * Q;
+                        Phi_2H3 = 40.0 / 81 * Q;
+                        Phi_H = 2.0 / 3.0 * Q;
+
                         // функция тока на входе
                         bcPhi[0] = new DigFunctionPolynom(y0, Phi_0, y1, Phi_H3, y2, Phi_2H3, y3, Phi_H);
+
+                        
+
+                        // симметрия
+                        y0 = 0;              
+                        y1 = H / 3;          
+                        y2 = 2 * H / 3;      
+                        y3 = H;              
+
+                        Phi_0 = 0;
+                        Phi_H3 = 14.0 / 81 * Q;
+                        Phi_2H3 = 40.0 / 81 * Q;
+                        Phi_H = 2.0 / 3.0 * Q;
+
                         // функция тока на выходе
                         bcPhi[1] = new DigFunctionPolynom(y0, Phi_0, y1, Phi_H3, y2, Phi_2H3, y3, Phi_H);
+
+                        p.bcTypeOnWL = TauBondaryCondition.slip;
+                        p.CalkConcentration = BCalkConcentration.DirCalkConcentration;
+                        p.turbViscType = ETurbViscType.Karaushev1977;
+                        p.turbViscType = ETurbViscType.VanDriest1956;
+                        p.typeAlgebra = TypeAlgebra.GMRES_P_Sparce;
+                        //p.typeAlgebra = TypeAlgebra.LUTape;
+
                     }
                     catch (Exception ex)
                     {
@@ -405,7 +507,8 @@ namespace NPRiverLib.IO._1XD.Tests
                     }
                     break;
             }
-            mesh = triMesh;
+            if(mesh == null)
+                mesh = triMesh;
             // Заглушка по скоростям
             BCVelosity = new IDigFunction[2];
         }

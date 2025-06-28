@@ -302,7 +302,7 @@ namespace MeshLib.Wrappers
         /// Вычисление минимального растояния от узла до стенки
         /// В плпнпх - хеширование узлов на масштабе глубины
         /// </summary>
-        public void CalkDistance(ref double[] distance, ref double[] Hp)
+        public void CalkDistance(ref double[] distance, ref double[] Hp, TypeTask typeTask)
         {
             try
             {
@@ -324,7 +324,13 @@ namespace MeshLib.Wrappers
 
                     for (int belem = 0; belem < mesh.CountBoundElements; belem++)
                     {
-                        if (BoundElementsMark[belem] != 2)
+                        bool flag = true;
+                        if (BoundElementsMark[belem] == 2)
+                            flag = false;
+                        if (typeTask == TypeTask.streamX1D)
+                            if (BoundElementsMark[belem] == 1 || BoundElementsMark[belem] == 3)
+                                flag = false;
+                        if (flag == true)
                         {
                             uint i = BoundElems[belem].Vertex1;
                             uint j = BoundElems[belem].Vertex2;
@@ -342,28 +348,6 @@ namespace MeshLib.Wrappers
                     }
                     if (r_min > Hmax)
                     {
-                        //double r_minC = double.MaxValue;
-                        //for (int belem = 0; belem < mesh.CountBoundElements; belem++)
-                        //{
-                        //    if (BoundElementsMark[belem] != 2)
-                        //    {
-                        //        uint i = BoundElems[belem].Vertex1;
-                        //        uint j = BoundElems[belem].Vertex2;
-                        //        var Pl = new HPoint(X[nod] - X[i], Y[nod] - Y[i]);
-                        //        var Pp = new HPoint(X[nod] - X[j], Y[nod] - Y[j]);
-                        //        var minE = Math.Min(Pl.Length(), Pp.Length());
-                        //        if (r_minC > minE)
-                        //        {
-                        //            r_minC = minE;
-                        //            idx = belem;
-                        //            if (MEM.Equals(r_minC, 0) == true)
-                        //                break;
-                        //        }
-                        //    }
-                        //}
-                        //uint ii = BoundElems[idx].Vertex1;
-                        //var PA = new HPoint(X[nod] - X[ii], Y[nod] - Y[ii]);
-                        //r_min = Math.Abs(HPoint.Dot(PA, bNormals[idx]));
                         double r_minC = double.MaxValue;
                         int belemLast = 0;
                         for (int belem = 0; belem < mesh.CountBoundElements; belem++)

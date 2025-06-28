@@ -1,13 +1,12 @@
 ﻿namespace TriMeshGeneratorLib
 {
-    using CommonLib;
-    using RenderLib;
-    using GeometryLib;
     using System;
     using System.IO;
     using System.Windows.Forms;
+
     using MeshLib;
-    using System.Collections.Generic;
+    using CommonLib;
+    using RenderLib;
 
     public class Client
     {
@@ -41,7 +40,7 @@
                 hmesh.GeneratingEdges();
             }
             double[][] values = null;
-            IMesh  mesh1 = RVMeshAdapter.MeshFrontRenumberation(hmesh, ref values);
+            IMesh mesh1 = RVMeshAdapter.MeshFrontRenumberation(hmesh, ref values);
             ShowMesh(mesh1);
 
             hmesh.SmoothMesh(1, hmesh, 0);

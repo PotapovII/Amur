@@ -135,7 +135,7 @@ namespace GeometryLib.Geometry
         {
             string[] mas = (line.Trim()).Split(' ');
             CloudKnot A = CloudKnot.ReadCloudKnot(mas, 0);
-            CloudKnot B = CloudKnot.ReadCloudKnot(mas, 10);
+            CloudKnot B = CloudKnot.ReadCloudKnot(mas, 11);
             CloudKnotLine Line = new CloudKnotLine(A, B);
             return Line;
         }

@@ -51,32 +51,4 @@ namespace CommonLib
         /// </summary>
         IFENods Parse(string line);
     }
-    ///// <summary>
-    ///// Узел со значением
-    ///// </summary>
-    //public interface IFENodsScal : IFENods
-    //{
-    //    /// <summary>
-    //    /// Значение
-    //    /// </summary>
-    //    double Value { get; set; }
-    //    /// <summary>
-    //    /// Чтение простого объекта из строки
-    //    /// </summary>
-    //    new IFENodsScal Parse(string line);
-    //}
-    ///// <summary>
-    ///// Узел со значением
-    ///// </summary>
-    //public interface IFENodsValues : IFENods
-    //{
-    //    /// <summary>
-    //    /// Значение
-    //    /// </summary>
-    //    double[] Values { get; set; }
-    //    /// <summary>
-    //    /// Чтение простого объекта из строки
-    //    /// </summary>
-    //    new  IFENodsValues Parse(string line);
-    //}
 }

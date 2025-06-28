@@ -168,8 +168,8 @@ namespace BedLoadLib
                         SparseRow row = algebra.Matrix[i];
                         for (int j = 0; j < row.Row.Count; j++)
                         {
-                            ki = row[j].Knot;
-                            elem = row[j].Elem;
+                            ki = row[j].IndexColumn;
+                            elem = row[j].Value;
                             //Console.Write(" {0:F4} ", elem);
                             if (ki == i)
                                 dij = elem;

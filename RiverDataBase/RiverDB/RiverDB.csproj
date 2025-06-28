@@ -287,6 +287,9 @@
     <Content Include="LinkStr\pathconfig.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\SaveBed.bmp" />
+    <None Include="Resources\prev24.png" />
+    <None Include="Resources\next24.png" />
     <None Include="Resources\SaveCrossLineB.bmp" />
     <None Include="Resources\LoadCrossLineB.bmp" />
     <None Include="Resources\LoadCrossLine.bmp" />

@@ -240,6 +240,10 @@ namespace RiverLib
         /// </summary>
         public double[] tau;
         /// <summary>
+        /// Узлы створов
+        /// </summary>
+        int[][] riverGates;
+        /// <summary>
         /// Алгебра для КЭ задачи
         /// </summary>
         [NonSerialized]
@@ -858,7 +862,7 @@ namespace RiverLib
             this.bottom_x = fx;
             this.bottom_y = fy;
             // генерация сетки
-            mesh = sg.CreateMesh(ref GR, waterLevel, bottom_x, bottom_y);
+            mesh = sg.CreateMesh(ref GR, ref riverGates, waterLevel, bottom_x, bottom_y);
             IPointsA.SetInt(1 + (int)mesh.typeRangeMesh, TypeFunForm.Form_2D_Triangle_L1);
             IPointsB.SetInt(1 + (int)mesh.typeRangeMesh, TypeFunForm.Form_2D_Rectangle_L1);
             right = sg.Right();

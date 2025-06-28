@@ -27,6 +27,24 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
         [Description("Не учет сил Кориолиса")]
         CoriolisNo
     }
+
+    /// <summary>
+    /// Тип решателя
+    /// </summary>
+    [Serializable]
+    public enum AlgebraSolver
+    {
+        /// <summary>
+        /// LU ленточны в плотной упаковке
+        /// </summary>
+        [Description("LU ленточный с упаковкой")]
+        LUTape = 0,
+        /// <summary>
+        /// Параллельный GMRES CRS c предобуславливанием ILU(1)
+        /// </summary>
+        [Description("Параллельный GMRES CRS c предобуславливанием ILU(1)")]
+        ILГ1_GMRES_Parallel
+    }
     /// <summary>
     ///  ОО: Параметры для класса River2D 
     /// </summary>
@@ -86,8 +104,6 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
         [DisplayName("Минимальная глубина для расчета расхода грунтовых вод")]
         [Category("Алгоритм")]
         public double H_minGroundWater { get; set; }
-
-
         // ========================== Физика ========================== 
         /// <summary>
         /// Плотность воды
@@ -125,6 +141,28 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
         [DisplayName("Широта в которой распалагается расчетная область (градусы)")]
         [Category("Физичесие параметры")]
         public double latitudeArea { get; set; }
+
+        #region + 01 06 2025
+        /// <summary>
+        /// Тип решателя СЛАУ
+        /// </summary>
+        [DisplayName("Тип решателя СЛАУ")]
+        [Category("Алгебра")]
+        [TypeConverter(typeof(MyEnumConverter))]
+        public AlgebraSolver algebraSolver { get; set; }
+        /// <summary>
+        /// Размерность Гессиана в GMRES
+        /// </summary>
+        [DisplayName("Тип решателя СЛАУ")]
+        [Category("Алгебра")]
+        public uint GMRES_M { get; set; }
+        /// <summary>
+        /// Размерность Гессиана в GMRES
+        /// </summary>
+        [DisplayName("Максимальное количество итераций")]
+        [Category("Алгебра")]
+        public uint MaxIteration { get; set; }
+        #endregion
         public ParamsRiver2XYD()
         {
             maxSolСorrection = 0.05;
@@ -142,10 +180,16 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
             iceCoeff = 0.96;
             latitudeArea = 60;
             Coriolis = ECoriolis.CoriolisNo;
+            // + 01 06 2025
+            //algebraSolver = AlgebraSolver.LUTape;
+            //algebraSolver = AlgebraSolver.ILГ1_GMRES_Parallel;
+            algebraSolver = AlgebraSolver.LUTape;
+            GMRES_M = 25;
+            MaxIteration = 1000;
         }
         public ParamsRiver2XYD(ParamsRiver2XYD p)
         {
-           Set(new ParamsRiver2XYD());
+           Set(p);
         }
         public void Set(ParamsRiver2XYD p)
         {
@@ -164,6 +208,10 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
             iceCoeff = p.iceCoeff;
             latitudeArea = p.latitudeArea;
             Coriolis=p.Coriolis;
+            // + 01 06 2025
+            algebraSolver = p.algebraSolver;
+            GMRES_M = p.GMRES_M;
+            MaxIteration = p.MaxIteration;
         }
         /// <summary>
         /// свойств задачи

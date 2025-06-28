@@ -120,18 +120,18 @@ namespace FEMTasksLib
         /// <param name="bound"></param>
         /// <param name="adressBound"></param>
         /// <param name="cs"></param>
-        public void GetAdress(uint[] bound, ref uint[] adressBound, int cs = 2, uint shift = 0)
-        {
-            MEM.Alloc<uint>(bound.Length * cs, ref adressBound, "adressBound");
-            if (cs == 1)
-                adressBound = bound;
-            for (int ai = 0; ai < bound.Length; ai++)
-            {
-                int li = cs * ai;
-                for (uint i = 0; i < cs; i++)
-                    adressBound[li + i] = bound[ai] * (uint)cs + i + shift;
-            }
-        }
+        //public void GetAdress(uint[] bound, ref uint[] adressBound, int cs = 2, uint shift = 0)
+        //{
+        //    MEM.Alloc<uint>(bound.Length * cs, ref adressBound, "adressBound");
+        //    if (cs == 1)
+        //        adressBound = bound;
+        //    for (int ai = 0; ai < bound.Length; ai++)
+        //    {
+        //        int li = cs * ai;
+        //        for (uint i = 0; i < cs; i++)
+        //            adressBound[li + i] = bound[ai] * (uint)cs + i + shift;
+        //    }
+        //}
         /// <summary>
         /// Решение задачи
         /// </summary>

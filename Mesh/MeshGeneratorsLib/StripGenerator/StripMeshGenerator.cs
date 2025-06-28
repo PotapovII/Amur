@@ -320,12 +320,39 @@ namespace MeshGeneratorsLib.StripGenerator
                     CountKnots++;
                 }
                 //  Левая стенка канала
-                for (int j = 0; j < CountL - 1; j++)
+                //for (int j = 0; j < CountL - 1; j++)
+                //{
+                //    mesh.BoundKnots[CountKnots] = (int)map[iL][j];
+                //    mesh.BoundKnotsMark[CountKnots] = WallL;
+                //    CountKnots++;
+                //}
+
+
+
+                if (Option.markerArea != SimpleMarkerArea.boxCrossSectionB)
                 {
-                    mesh.BoundKnots[CountKnots] = (int)map[iL][j];
-                    mesh.BoundKnotsMark[CountKnots] = WallL;
-                    CountKnots++;
+                    for (int j = 0; j < CountL - 1; j++)
+                    {
+                        mesh.BoundKnots[CountKnots] = (int)map[iL][j];
+                        mesh.BoundKnotsMark[CountKnots] = WallL;
+                        CountKnots++;
+                    }
                 }
+                else
+                {
+                    for (int j = 0; j < CountL - 1; j++)
+                    {
+                        mesh.BoundKnots[CountKnots] = (int)map[iL][j];
+                        if (mapZ[iL][j] < Option.h)
+                            mesh.BoundKnotsMark[CountKnots] = 0;
+                        else if (mapZ[iL][j] >= Option.h + Option.b)
+                            mesh.BoundKnotsMark[CountKnots] = 2;
+                        else
+                            mesh.BoundKnotsMark[CountKnots] = WallL;
+                        CountKnots++;
+                    }
+                }
+
                 // дно канала
                 for (int i = 0; i < Count; i++)
                 {
@@ -351,16 +378,51 @@ namespace MeshGeneratorsLib.StripGenerator
                     mesh.BoundElementsMark[belem] = 2;
                     belem++;
                 }
+                ////  Левая стенка канала
+                //for (int j = 0; j < CountL - 1; j++)
+                //{
+                //    mesh.BoundElems[belem] = new uint[2]
+                //    {
+                //         map[iL][j], map[iL][j+1]
+                //    };
+                //    mesh.BoundElementsMark[belem] = WallL;
+                //    belem++;
+                //}
+
                 //  Левая стенка канала
-                for (int j = 0; j < CountL - 1; j++)
+                if (Option.markerArea != SimpleMarkerArea.boxCrossSectionB)
                 {
-                    mesh.BoundElems[belem] = new uint[2]
+                    for (int j = 0; j < CountL - 1; j++)
                     {
+                        mesh.BoundElems[belem] = new uint[2]
+                        {
                          map[iL][j], map[iL][j+1]
-                    };
-                    mesh.BoundElementsMark[belem] = WallL;
-                    belem++;
+                        };
+                        mesh.BoundElementsMark[belem] = WallL;
+                        belem++;
+                    }
                 }
+                else
+                {
+                    for (int j = 0; j < CountL - 1; j++)
+                    {
+                        mesh.BoundElems[belem] = new uint[2]
+                        {
+                         map[iL][j], map[iL][j+1]
+                        };
+                        mesh.BoundElementsMark[belem] = WallL;
+                        double ce = 0.5 * (mapZ[iL][j] + mapZ[iL][j + 1]);
+                        if (ce < Option.h)
+                            mesh.BoundElementsMark[belem] = 0;
+                        else if (ce >= Option.h + Option.b)
+                            mesh.BoundElementsMark[belem] = 2;
+                        else
+                            mesh.BoundElementsMark[belem] = WallL;
+                        belem++;
+                    }
+                }
+
+
                 // дно канала
                 for (int i = 0; i < Count - 1; i++)
                 {

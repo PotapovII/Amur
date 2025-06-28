@@ -13,11 +13,33 @@ namespace NPRiverLib.APRiver_1XD
 
     using MemLogLib;
     using CommonLib;
-    using CommonLib.EConverter;
-    using NPRiverLib.APRiver_1XD.River2D_FVM_ke;
-    using CommonLib.EddyViscosity;
+    using CommonLib.Tasks;
     using CommonLib.BedLoad;
+    using CommonLib.EConverter;
+    using CommonLib.EddyViscosity;
 
+    /// <summary>
+    /// Тип решателя
+    /// </summary>
+    [Serializable]
+    public enum TypeAlgebra
+    {
+        /// <summary>
+        /// решатель  САУ ленточным методом LU разложения 
+        /// </summary>
+        [Description("решатель САУ методом Ленточный LU")]
+        LUTape,
+        /// <summary>
+        /// решатель САУ методом GMRES
+        /// </summary>
+        [Description("решатель САУ методом GMRES")]
+        GMRES_P_Sparce,
+        /// <summary>
+        /// решатель САУ методом би сопряженных градиентов
+        /// </summary>
+        [Description("решатель САУ методом би сопряженных градиентов")]
+        BeCGM_Sparce
+    }
     /// <summary>
     /// ОО: Физические параметры модели к-e
     /// </summary>
@@ -47,28 +69,30 @@ namespace NPRiverLib.APRiver_1XD
         [Description("Количество КЭ по Y")]
         [Category("Сетка")]
         public int FE_Y { get; set; }
-        /// <summary>
-        /// Тип формы дна
-        /// </summary>
-        [DisplayName("Начальной формы дна")]
-        [Description("Начальной формы донной поверхности")]
-        [Category("Начальная форма дна")]
-        [TypeConverter(typeof(MyEnumConverter))]
-        public TypeBedForm typeBedForm { get; set; }
-        /// <summary>
-        /// Амплитуда донной поверхности
-        /// </summary>
-        [DisplayName("Амплитуда дна")]
-        [Description("Амплитуда донных волн на 2 участке (м)")]
-        [Category("Начальная форма дна")]
-        public double bottomWaveAmplitude { get; set; }
-        /// <summary>
-        /// Количество донных волн
-        /// </summary>
-        [DisplayName("Количество волн")]
-        [Description("Количество донных волн на 2 участке")]
-        [Category("Начальная форма дна")]
-        public int wavePeriod { get; set; }
+
+
+        ///// <summary>
+        ///// Тип формы дна
+        ///// </summary>
+        //[DisplayName("Начальной формы дна")]
+        //[Description("Начальной формы донной поверхности")]
+        //[Category("Начальная форма дна")]
+        //[TypeConverter(typeof(MyEnumConverter))]
+        //public TypeBedForm typeBedForm { get; set; }
+        ///// <summary>
+        ///// Амплитуда донной поверхности
+        ///// </summary>
+        //[DisplayName("Амплитуда дна")]
+        //[Description("Амплитуда донных волн на 2 участке (м)")]
+        //[Category("Начальная форма дна")]
+        //public double bottomWaveAmplitude { get; set; }
+        ///// <summary>
+        ///// Количество донных волн
+        ///// </summary>
+        //[DisplayName("Количество волн")]
+        //[Description("Количество донных волн на 2 участке")]
+        //[Category("Начальная форма дна")]
+        //public int wavePeriod { get; set; }
         /// <summary>
         /// Количество инераций по движению узлов границы
         /// </summary>
@@ -79,54 +103,55 @@ namespace NPRiverLib.APRiver_1XD
         /// <summary>
         /// Ширина расчетной области  -> по X
         /// </summary>
-        [DisplayName("Глубина водотока")]
+        [DisplayName("Длина водотока")]
         [Category("Геометрия области")]
         public double Lx { get { return Wen1 + Wen2 + Wen3; } }
         /// <summary>
         /// Высота расчетной области -> по Y
         /// </summary>
-        [DisplayName("Длина водотока")]
+        [DisplayName("Глубина водотока")]
         [Category("Геометрия области")]
         public double Ly { get {  return Len1 + Len2 + Len3; } }
         /// <summary>
         /// Длина водотока на 1 участке (вход потока)
         /// </summary>
-        [DisplayName("Длина 1 участка")]
-        [Description("Длина водотока на 1 участке")]
+        [DisplayName("Глубина  1 участка")]
+        [Description("Глубина  водотока на 1 участке")]
         [Category("Геометрия области")]
         public double Len1 { get; set; }
         /// <summary>
         /// Длина водотока на 3 участке (центр)
         /// </summary>
-        [DisplayName("Длина 2 участка")]
-        [Description("Длина водотока на 3 участке (центр)")]
+        [DisplayName("Глубина  2 участка")]
+        [Description("Глубина  водотока на 3 участке (центр)")]
         [Category("Геометрия области")]
         public double Len2 { get; set; }
         /// <summary>
         /// Длина водотока на 3 участке (истечение)
         /// </summary>
-        [DisplayName("Длина 3 участка")]
-        [Description("Длина водотока на 3 участке (истечение)")]
+        [DisplayName("Глубина  3 участка")]
+        [Description("Глубина  водотока на 3 участке (истечение)")]
         [Category("Геометрия области")]
         public double Len3 { get; set; }
         /// <summary>
         /// Глубина водотока 1 придонный участок
         /// </summary>
-        [DisplayName("Глубина 1 участка")]
-        [Description("Глубина водотока 1 придонный участок")]
+        [DisplayName("Длина  1 участка")]
+        [Description("Длина  водотока 1 придонный участок")]
         [Category("Геометрия области")]
         public double Wen1 { get; set; }
         /// <summary>
         /// Глубина 2 участка
         /// </summary>
-        [DisplayName("Глубина 2 участка")]
+        [DisplayName("Длина  2 участка")]
+        [Description("Длина водотока 2 участок")]
         [Category("Геометрия области")]
         public double Wen2 { get; set; }
         /// <summary>
         /// Глубина 3 участка
         /// </summary>
-        [DisplayName("Глубина 3 участка")]
-        [Description("Глубина водотока 1 приповерхностный участок")]
+        [DisplayName("Длина  3 участка")]
+        [Description("Длина  водотока 3 приповерхностный участок")]
         [Category("Геометрия области")]
         public double Wen3 { get; set; }
         /// <summary>
@@ -140,23 +165,23 @@ namespace NPRiverLib.APRiver_1XD
         /// <summary>
         /// Температура в 1 слое
         /// </summary>
-        [DisplayName("Температура 1 слой")]
-        [Description("Температура в 1 слое (С)")]
-        [Category("Граничные условия на втоке")]
+        [DisplayName("Концентрация 1 слой")]
+        [Description("Концентрация в 1 слое (С)")]
+        [Category("Граничные условия притока")]
         public double t1 { get; set; }
         /// <summary>
         /// Температура в 2 слое
         /// </summary>
-        [DisplayName("Температура 2 слой")]
-        [Description("Температура в 2 слое (С)")]
-        [Category("Граничные условия на втоке")]
+        [DisplayName("Концентрация 2 слой")]
+        [Description("Концентрация в 2 слое (С)")]
+        [Category("Граничные условия притока")]
         public double t2 { get; set; }
         /// <summary>
         /// Температура в 3 слое
         /// </summary>
-        [DisplayName("Температура 3 слой")]
-        [Description("Температура в 3 слое (С)")]
-        [Category("Граничные условия на втоке")]
+        [DisplayName("Концентрация 3 слой")]
+        [Description("Концентрация в 3 слое (С)")]
+        [Category("Граничные условия притока")]
         public double t3 { get; set; }
         /// <summary>
         /// Скорость в 1 придонном слое
@@ -186,21 +211,26 @@ namespace NPRiverLib.APRiver_1XD
         [Description("Граничные условия для скоростей на верхней границе области")]
         [Category("Задача")]
         [TypeConverter(typeof(MyEnumConverter))]
-        public RoofCondition bcTypeOnWL { get; set; }
-        /// <summary>
-        /// типы задачи по входной струе
-        /// </summary>
-        [DisplayName("Тип струи на входе")]
-        [Description("Тип струи на входе по умолчанию")]
+        public TauBondaryCondition bcTypeOnWL { get; set; }
+        [DisplayName("Граничыне условия на выходе из канала")]
+        [Description("Граничыне условия на выходе из канала")]
         [Category("Задача")]
         [TypeConverter(typeof(MyEnumConverter))]
-        public TypeStreamTask typeStreamTask { get; set; }
+        public TypeBoundCond outBC { get; set; }
+        ///// <summary>
+        ///// типы задачи по входной струе
+        ///// </summary>
+        //[DisplayName("Тип струи на входе")]
+        //[Description("Тип струи на входе по умолчанию")]
+        //[Category("Задача")]
+        //[TypeConverter(typeof(MyEnumConverter))]
+        //public TypeStreamTask typeStreamTask { get; set; }
 
         [DisplayName("Тип задачи")]
         [Description("Определение типа входной струи")]
         [Category("Задача")]
         [TypeConverter(typeof(MyEnumConverter))] 
-        public TypeMAlgebra typeMAlgebra { get; set; }
+        public TypeAlgebra typeAlgebra { get; set; }
         /// <summary>
         /// Растояние струи от стенки
         /// </summary>
@@ -301,6 +331,7 @@ namespace NPRiverLib.APRiver_1XD
         /// нестационар/стационар
         /// </summary>
         [DisplayName("Тип гидродинамики 0 - нестационарные 1 - стационарные у-я Рейнольдса 2 - Стокс")]
+        [TypeConverter(typeof(MyEnumConverter))]
         [Category("Задача")]
         public int ReTask { get; set; }
         /// <summary>
@@ -309,6 +340,9 @@ namespace NPRiverLib.APRiver_1XD
         [DisplayName("Количество итераций по нелинейности на текущем шаге по времени")]
         [Category("Алгоритм")]
         public int NLine { get; set; }
+        /// <summary>
+        /// Неявности схемы при шаге по времени
+        /// </summary>
         [DisplayName("Параметр неявности схемы при шаге по времени")]
         [Category("Задача")]
         public double theta { get; set; }
@@ -321,13 +355,13 @@ namespace NPRiverLib.APRiver_1XD
         /// <summary>
         /// модель турбулентной вязкости
         /// </summary>
-        [DisplayName("модель турбулентной вязкости")]
+        [DisplayName("Модель турбулентной вязкости")]
         [Category("Задача")]
         [TypeConverter(typeof(MyEnumConverter))]
         public ETurbViscType turbViscType { get; set; }
 
         #region + 01 05 2025 ОО: Флаг для расчета задачи взвешенных наносов
-        [TypeConverter(typeof(BooleanTypeConverterYN))]
+        [TypeConverter(typeof(MyEnumConverter))]
         [DisplayName("Расчет взвешенных наносов")]
         [Description("Флаг для расчета взвешенных наносов Да - true, Нет -false")]
         [Category("Задача")]
@@ -367,17 +401,18 @@ namespace NPRiverLib.APRiver_1XD
             shiftV = true;
 
             TaskIndex = 0;
+            outBC = TypeBoundCond.Dirichlet0;
+            ////typeBedForm = TypeBedForm.PlaneForm;
             //typeBedForm = TypeBedForm.PlaneForm;
-            typeBedForm = TypeBedForm.PlaneForm;
-            //typeStreamTask = TypeStreamTask.OffsetStreamJet0_1h;
-            //typeStreamTask = TypeStreamTask.OffsetStreamJet0_2h;
+            ////typeStreamTask = TypeStreamTask.OffsetStreamJet0_1h;
+            ////typeStreamTask = TypeStreamTask.OffsetStreamJet0_2h;
 
-            // R. Karki 2007
-            //typeStreamTask = TypeStreamTask.OffsetStreamJet0_2h;
-            typeStreamTask = TypeStreamTask.OffsetStreamJet0_1h;
+            //// R. Karki 2007
+            ////typeStreamTask = TypeStreamTask.OffsetStreamJet0_2h;
+            //typeStreamTask = TypeStreamTask.OffsetStreamJet0_1h;
 
             CountBoundaryMove = 5;
-            wavePeriod = 1;
+        //    wavePeriod = 1;
 
             bedLoadStart_X0 = false;
             bedLoadTauPlus = true;
@@ -390,8 +425,8 @@ namespace NPRiverLib.APRiver_1XD
             
            
             NonLinearIterations = 15;
-            bcTypeOnWL = RoofCondition.adhesion;
-            typeMAlgebra = TypeMAlgebra.TriDiagMat_Algorithm;
+            bcTypeOnWL = TauBondaryCondition.adhesion;
+            typeAlgebra = TypeAlgebra.LUTape;
 
             topBottom = true;
             leftRight = false;
@@ -419,8 +454,9 @@ namespace NPRiverLib.APRiver_1XD
             TaskIndex = ps.TaskIndex;
             FE_X = ps.FE_X;
             FE_Y = ps.FE_Y;
-            
-            typeBedForm = ps.typeBedForm;
+
+            // typeBedForm = ps.typeBedForm;
+            outBC=ps.outBC;
             CountBoundaryMove = ps.CountBoundaryMove;
 
             LV = ps.LV;
@@ -433,8 +469,8 @@ namespace NPRiverLib.APRiver_1XD
             Wen1 = ps.Wen1;
             Wen2 = ps.Wen2;
             Wen3 = ps.Wen3;
-            bottomWaveAmplitude = ps.bottomWaveAmplitude;
-            wavePeriod = ps.wavePeriod;
+            //bottomWaveAmplitude = ps.bottomWaveAmplitude;
+            //wavePeriod = ps.wavePeriod;
 
             t1 = ps.t1;
             t2 = ps.t2;
@@ -448,8 +484,8 @@ namespace NPRiverLib.APRiver_1XD
             bedLoadTauPlus = ps.bedLoadTauPlus;
 
             NonLinearIterations = ps.NonLinearIterations;
-            typeMAlgebra = ps.typeMAlgebra;
-            typeStreamTask = ps.typeStreamTask;
+            typeAlgebra = ps.typeAlgebra;
+          //  typeStreamTask = ps.typeStreamTask;
 
             topBottom = ps.topBottom;
             leftRight = ps.leftRight;
@@ -492,15 +528,13 @@ namespace NPRiverLib.APRiver_1XD
             t3 = LOG.GetDouble(file.ReadLine());
 
             TemperOrConcentration = LOG.GetBool(file.ReadLine());
-             
-            typeBedForm = (TypeBedForm) LOG.GetInt(file.ReadLine());
+
+            
+            outBC = (TypeBoundCond)LOG.GetInt(file.ReadLine());
             CountBoundaryMove = LOG.GetInt(file.ReadLine());
-            bottomWaveAmplitude = LOG.GetDouble(file.ReadLine());
-            wavePeriod = LOG.GetInt(file.ReadLine());
             NonLinearIterations = LOG.GetInt(file.ReadLine());
-            typeStreamTask = (TypeStreamTask)LOG.GetInt(file.ReadLine());
-            bcTypeOnWL = (RoofCondition)LOG.GetInt(file.ReadLine());
-            typeMAlgebra = (TypeMAlgebra)LOG.GetInt(file.ReadLine());
+            bcTypeOnWL = (TauBondaryCondition)LOG.GetInt(file.ReadLine());
+            typeAlgebra = (TypeAlgebra)LOG.GetInt(file.ReadLine());
             topBottom = LOG.GetBool(file.ReadLine());
             leftRight = LOG.GetBool(file.ReadLine());
             localFilterBLMesh = LOG.GetBool(file.ReadLine());

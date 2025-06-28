@@ -66,7 +66,12 @@ namespace CommonLib.Function
         /// Полином 3 порядка
         /// </summary>
         [Description("Сплайн интерполяция")]
-        polynom3
+        polynom3,
+        /// <summary>
+        /// состоит из массива функций
+        /// </summary>
+        [Description("Кусочная функция")]
+        Piece
     }
     /// <summary>
     /// ОО: Данные для функциональных зависимостей
@@ -154,5 +159,11 @@ namespace CommonLib.Function
         /// <param name="fun"></param>
         /// <param name="N">количество</param>
         void GetBase(ref double[][] fun, int N = 0);
+        /// <summary>
+        /// Аргумент хх содержится в строгом диапазоне функции
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        bool Contains(double x);
     }
 }

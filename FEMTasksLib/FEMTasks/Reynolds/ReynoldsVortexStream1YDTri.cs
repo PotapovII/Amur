@@ -41,6 +41,8 @@ namespace FEMTasksLib.FEMTasks.VortexStream
     using CommonLib.Physics;
     using CommonLib.Function;
     using AlgebraLib;
+    using FEMTasksLib.FEMTasks.Utils;
+
     /// <summary>
     ///  ОО: Решатель для задачи Рейнольдс на трехузловой сетке,
     ///  для задачи (вынужденной конвекции/с учетом центробежных сил) в
@@ -242,7 +244,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                     double Se = S[elem];
                     double Se3 = Se / 3;
                     // получем значения адресов неизвестных
-                    GetAdress(knots, ref adressBound);
+                    FEMUtils.GetAdress(knots, ref adressBound);
 
                     if (SigmaTask == 0)
                     {
@@ -482,7 +484,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                                 algebra.AddToRight(LocalRight, adressBound);
                             }
                             // получем значения адресов неизвестных
-                            GetAdress(knots, ref adressBound);
+                            FEMUtils.GetAdress(knots, ref adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
                             algebra.AddToMatrix(LaplMatrix, adressBound);
                         }
@@ -698,7 +700,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                                     algebra.AddToRight(LocalRight, adressBound);
                                 }
                                 // получем значения адресов неизвестных
-                                GetAdress(knots, ref adressBound);
+                                FEMUtils.GetAdress(knots, ref adressBound);
                                 // добавление вновь сформированной ЛЖМ в ГМЖ
                                 algebra.AddToMatrix(LaplMatrix, adressBound);
                                 // добавление вновь сформированной ЛЖМ в ГМЖ
@@ -785,7 +787,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                                 algebra.AddToRight(LocalRight, adressBound);
 
                                 // получем значения адресов неизвестных
-                                GetAdress(knots, ref adressBound);
+                                FEMUtils.GetAdress(knots, ref adressBound);
                                 // добавление вновь сформированной ЛЖМ в ГМЖ
                                 algebra.AddToMatrix(LaplMatrix, adressBound);
                                 // добавление вновь сформированной ЛЖМ в ГМЖ
@@ -795,7 +797,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
 
                         testflag = 1;
                         // Расчет
-                        Ralgebra.getResidual(ref MRight, result_old, 0);
+                        Ralgebra.GetResidual(ref MRight, result_old, 0);
                         testflag = 2;
                         algebra.CopyRight(MRight);
                         testflag = 3;

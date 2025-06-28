@@ -29,6 +29,8 @@ namespace ChannelProcessLib
     using NPRiverLib.APRiver1XD.KGD_River2D;
     
     using NPRiverLib.APRiver2XYD.River2DSW;
+    using RiverLib;
+
     /// <summary>
     /// Менеджер решателей для задач расчета речного потока
     /// </summary>
@@ -56,6 +58,7 @@ namespace ChannelProcessLib
             // течение под цилиндром
             tasks.Add(new RiverBEMCircleMesh1XD(new RiverBEMParams1XD()));
             #endregion
+
             #region 1YD течение в створе реки
                 tasks.Add(new TriSecRiver_1YD());
                 tasks.Add(new TriSecRiverTask1YBase());
@@ -63,12 +66,12 @@ namespace ChannelProcessLib
                 tasks.Add(new TriSroSecRiverTask1YD());
                 //tasks.Add(new TriRoseRiverTask1YD());
 
-                //tasks.Add(new RiverSectionalQuad(new RiverStreamQuadParams()));
-                //tasks.Add(new RiverSectionaChannel(new RiverStreamQuadParams()));
-                //tasks.Add(new RiverSectionaChannelQuad(new RiverStreamQuadParams()));
+                tasks.Add(new RiverSectionalQuad(new RiverStreamQuadParams()));
+                tasks.Add(new RiverSectionaChannel(new RiverStreamQuadParams()));
+                tasks.Add(new RiverSectionaChannelQuad(new RiverStreamQuadParams()));
        //         tasks.Add(new RiverSectionaChannelTrapez(new RiverStreamQuadParams()));
-                //tasks.Add(new RiverSectionalQuad_SV(new RiverStreamQuadParams()));
-                //tasks.Add(new RiverSectionalQuad_Phi(new RiverStreamQuadParams()));
+                tasks.Add(new RiverSectionalQuad_SV(new RiverStreamQuadParams()));
+                tasks.Add(new RiverSectionalQuad_Phi(new RiverStreamQuadParams()));
 
             #endregion
 

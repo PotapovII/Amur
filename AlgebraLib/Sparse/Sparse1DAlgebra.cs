@@ -484,7 +484,7 @@
         /// <param name="R">результат</param>
         /// <param name="X">умножаемый вектор</param>
         /// <param name="IsRight">знак операции = +/- 1</param>
-        public override void getResidual(ref double[] R, double[] X, int IsRight = 1)
+        public override void GetResidual(ref double[] R, double[] X, int IsRight = 1)
         {
 
         }

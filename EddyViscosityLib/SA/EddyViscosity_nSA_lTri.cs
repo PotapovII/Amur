@@ -15,7 +15,8 @@ namespace EddyViscosityLib
 
     using System;
     using MemLogLib;
-    
+    using FEMTasksLib.FEMTasks.Utils;
+
     /// <summary>
     /// Нестационарная модель  Спаларта-Аллмареса 
     /// </summary>
@@ -186,7 +187,7 @@ namespace EddyViscosityLib
                                            + dt * theta * Lb * C_b2 / Sigma * (dMutdy_old * dMutdy_old + dMutdz_old * dMutdz_old) * Se;
                         }
                         // получем значения адресов неизвестных
-                        GetAdress(knots, ref adressBound, cs);
+                        FEMUtils.GetAdress(knots, ref adressBound, cs);
                         // добавление вновь сформированной ЛЖМ в ГМЖ
                         algebra.AddToMatrix(LaplMatrix, adressBound);
                         // добавление вновь сформированной ЛЖМ в ГМЖ
@@ -196,7 +197,7 @@ namespace EddyViscosityLib
                     }
                     wMesh.ConvertField(ref mQ_mut, eQ_mut);
 
-                    Ralgebra.getResidual(ref MRight, Mut_old, 0);
+                    Ralgebra.GetResidual(ref MRight, Mut_old, 0);
                     algebra.CopyRight(MRight);
                     // Выполнение граничных условий для функции вихря
                     // VortexBC();

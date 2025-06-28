@@ -203,7 +203,7 @@ namespace AlgebraLib
         /// <param name="R">невязка</param>
         /// <param name="X">решение</param>
         /// <param name="IsRight"></param>
-        public override void getResidual(ref double[] R, double[] X, int IsRight = 1)
+        public override void GetResidual(ref double[] R, double[] X, int IsRight = 1)
         {
             if (R == null)
                 R = new double[FN];

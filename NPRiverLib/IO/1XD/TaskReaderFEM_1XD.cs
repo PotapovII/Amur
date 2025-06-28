@@ -67,7 +67,7 @@ namespace NPRiverLib.IO
             }
             else
             {
-                Test_Cannal_1XD.GetTest(ref river, testID);
+                Test_Cannal_PW_1XD.GetTest(ref river, testID);
             }
         }
         /// <summary>
@@ -161,6 +161,6 @@ namespace NPRiverLib.IO
         /// Создает список тестовых задач для загрузчика по умолчанию
         /// </summary>
         /// <returns></returns>
-        public override List<string> GetTestsName() => Test_Cannal_1XD.GetTestsName();
+        public override List<string> GetTestsName() => Test_Cannal_PW_1XD.GetTestsName();
     }
 }

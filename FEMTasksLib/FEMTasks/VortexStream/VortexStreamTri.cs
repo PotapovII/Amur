@@ -46,6 +46,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
 
     using System;
     using CommonLib.Function;
+    using FEMTasksLib.FEMTasks.Utils;
 
     /// <summary>
     ///  ОО: Решатель для задачи Ламе на трехузловой сетке
@@ -246,7 +247,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                     double Se = S[elem];
 
                     // получем значения адресов неизвестных
-                    GetAdress(knots, ref adressBound);
+                    FEMUtils.GetAdress(knots, ref adressBound);
 
                     if (SigmaTask == 0)
                     {
@@ -404,7 +405,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                                 }
                             }
                             // получем значения адресов неизвестных
-                            GetAdress(knots, ref adressBound);
+                            FEMUtils.GetAdress(knots, ref adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
                             algebra.AddToMatrix(JMatrix, adressBound);
                         }
@@ -554,7 +555,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                                 }
                             }
                             // получем значения адресов неизвестных
-                            GetAdress(knots, ref adressBound);
+                            FEMUtils.GetAdress(knots, ref adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
                             algebra.AddToMatrix(JMatrix, adressBound);
                         }
@@ -688,7 +689,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                                 LocalRight[li + 1] = Rvortex;
                             }
                             // получем значения адресов неизвестных
-                            GetAdress(knots, ref adressBound);
+                            FEMUtils.GetAdress(knots, ref adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
                             algebra.AddToMatrix(JMatrix, adressBound);
                             algebra.AddToRight(LocalRight, adressBound);

@@ -92,6 +92,10 @@ namespace CommonLib.Areas
         /// шероховатость дна
         /// </summary>
         double ks { get; set; }
+        /// <summary>
+        /// глубина контура использовать для для берегов или фиктивных в русел
+        /// </summary>
+        double h { get; set; }
         #endregion
         /// <summary>
         /// Точки контура

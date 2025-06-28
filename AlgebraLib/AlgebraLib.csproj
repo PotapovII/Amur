@@ -47,6 +47,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algebra.cs" />
+    <Compile Include="Archive\CSR1В\Class1.cs" />
+    <Compile Include="Archive\GPT\QRDecomposition_Ax_b.cs" />
+    <Compile Include="Archive\GPT\QRDecomposition.cs" />
+    <Compile Include="Archive\GPT\GMRES_P.cs" />
+    <Compile Include="Archive\GPT\GMRES_1.cs" />
+    <Compile Include="Archive\GPT\SparseMatrix.cs" />
+    <Compile Include="Archive\GPT\GMRES_0.cs" />
+    <Compile Include="Sparse\Elements\SparseAlgebra.cs" />
+    <Compile Include="Sparse\River\GMRES\ASparseMatrixSolver.cs" />
+    <Compile Include="Sparse\River\GMRES\IMP\SparseMatrixSolverTest.cs" />
+    <Compile Include="Sparse\River\GMRES\IMP\SparseMatrixSolver.cs" />
+    <Compile Include="Sparse\River\GMRES\SparseAlgebraRiver.cs" />
+    <Compile Include="Sparse\River\LU\AlgebraRiverUn.cs" />
+    <Compile Include="Sparse\River\LU\AlgebraRiver.cs" />
+    <Compile Include="Sparse\Elements\SparseMatrix.cs" />
+    <Compile Include="Sparse\SparseAlgebraGMRES_P.cs" />
     <Compile Include="Tape\Algebra3DTape.cs" />
     <Compile Include="ManagerAlgebra.cs" />
     <Compile Include="Tape\AlgebraSweepTriDiagonal.cs" />
@@ -63,11 +79,10 @@
     <Compile Include="MeshAlgebra\PTPSolver.cs" />
     <Compile Include="MeshAlgebra\TPSolver.cs" />
     <Compile Include="Sparse\Sparse1DAlgebra.cs" />
-    <Compile Include="Sparse\SparseAlgebraGMRES_P.cs" />
     <Compile Include="Sparse\Elements\SparseElementIndex.cs" />
     <Compile Include="Sparse\Elements\SparseColIndex.cs" />
-    <Compile Include="CSR1В\Class1.cs" />
-    <Compile Include="AOther\GmresSolver.cs" />
+    <Compile Include="Archive\CSR1В\EEE.cs" />
+    <Compile Include="Archive\AOther\GmresSolver.cs" />
     <Compile Include="Full\AFullAlgebra.cs" />
     <Compile Include="Utils\AlgebraAdapter.cs" />
     <Compile Include="Utils\AlgebraTestClass.cs" />
@@ -76,13 +91,13 @@
     <Compile Include="Sparse\SparseAlgebraGaussStr.cs" />
     <Compile Include="Sparse\SparseAlgebraGMRES.cs" />
     <Compile Include="Sparse\SparseAlgebraCG.cs" />
-    <Compile Include="Sparse\Elements\SparseAlgebra.cs" />
     <Compile Include="Sparse\Elements\SparseRow.cs" />
     <Compile Include="Sparse\Elements\SparseElement.cs" />
     <Compile Include="Full\AlgebraGauss.cs" />
     <Compile Include="Tape\AlgebraGaussTape.cs" />
     <Compile Include="AlgebraCG_FEM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\AlgebraUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommonLib\CommonLib.csproj">
@@ -94,6 +109,5 @@
       <Name>MemLogLib</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

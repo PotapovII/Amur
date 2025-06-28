@@ -31,6 +31,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 //---------------------------------------------------------------------------
 namespace FEMTasksLib
 {
+    using FEMTasksLib.FEMTasks.Utils;
     using MemLogLib;
     using System;
 
@@ -102,7 +103,7 @@ namespace FEMTasksLib
                     }
                 }
                 // получкемк адресов 
-                GetAdress(knots, ref adressBound);
+                FEMUtils.GetAdress(knots, ref adressBound);
                 // добавление вновь сформированной ЛЖМ в ГМЖ
                 algebra.AddToMatrix(LaplMatrix, adressBound);
                 // вычисление ЛПЧ от объемных сил
@@ -119,7 +120,7 @@ namespace FEMTasksLib
             // получить граничные узлы
             uint[] bound = mesh.GetBoundKnotsByMarker(indexBC);
             // получить адреса
-            GetAdress(bound, ref adressBound);
+            FEMUtils.GetAdress(bound, ref adressBound);
             // установить ГУ
             algebra.BoundConditions(0.0, adressBound);
             //algebra.Print();

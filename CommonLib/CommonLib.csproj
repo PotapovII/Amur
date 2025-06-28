@@ -78,6 +78,7 @@
     <Compile Include="Geometry\IHEdge.cs" />
     <Compile Include="Geometry\IHFigure.cs" />
     <Compile Include="IO\IBaseFormater.cs" />
+    <Compile Include="Mesh\Elements\Triangles.cs" />
     <Compile Include="Mesh\FVM\ISFacet.cs" />
     <Compile Include="Mesh\MWrapper\IMWCrossSection.cs" />
     <Compile Include="Mesh\MWrapper\IMWDistance.cs" />
@@ -111,7 +112,6 @@
     <Compile Include="Mesh\FVM\IFVComMesh.cs" />
     <Compile Include="Mesh\FVM\IFVElement.cs" />
     <Compile Include="Mesh\FVM\IFVFacet.cs" />
-    <Compile Include="Mesh\FEM\IFEBorder.cs" />
     <Compile Include="Mesh\ILink.cs" />
     <Compile Include="IO\ProxyTaskFormat.cs" />
     <Compile Include="Mesh\FVM1\IFVMeshTetra4.cs" />
@@ -137,6 +137,7 @@
     <Compile Include="Render\IRenderMesh.cs" />
     <Compile Include="Render\ISaveCloud.cs" />
     <Compile Include="River\IBoundCondition.cs" />
+    <Compile Include="Tasks\TauBondaryCondition.cs" />
     <Compile Include="Tasks\ETaskStatus.cs" />
     <Compile Include="Tasks\IBaseCalculationDomain.cs" />
     <Compile Include="Tasks\ITProperty.cs" />

@@ -13,7 +13,7 @@ namespace TriMeshGeneratorLib
     using System;
     using System.Globalization;
     using System.IO;
-    class RVCdgIOut
+    public class RVCdgIOut
     {
         /// <summary>
         /// Загружаемая сетка задачи

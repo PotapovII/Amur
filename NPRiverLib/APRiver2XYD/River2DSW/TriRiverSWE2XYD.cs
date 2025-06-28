@@ -29,6 +29,11 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
     using System.Collections.Generic;
     using GeometryLib;
     using CommonLib.Function;
+    using AlgebraLib;
+    using FEMTasksLib.FEMTasks.Utils;
+    using System.Xml.Linq;
+    using System.Text.RegularExpressions;
+    using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
     /// <summary>
     /// Решение плановой задачи мелкой воды методом конечных элементов
@@ -36,6 +41,11 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
     [Serializable]
     public class TriRiverSWE2XYD : APRiverFEM2XYD
     {
+        /// <summary>
+        /// адреса адреса неизвестных в матрице алгебны
+        /// </summary>
+        protected uint[] addressesOfUnknown = null;
+        protected uint[] addressesOfUnknownBE = null;
         /// <summary>
         /// ограничители для ГУ
         /// </summary>
@@ -53,6 +63,14 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
         /// </summary>
         public override IMesh BedMesh() => meshRiver;
         public override IMesh Mesh() => meshRiver;
+        /// <summary>
+        /// Площадь вокруг узла
+        /// </summary>
+        protected double[] SNodeArea = null;
+        /// <summary>
+        /// Площадь КЭ деленная на три 
+        /// </summary>
+        protected double[] SElemArea3 = null;
         /// <summary>
         /// Имена файлов с данными для задачи гидродинамики
         /// </summary>
@@ -153,22 +171,41 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
         public override void Set(IMesh mesh, IAlgebra a = null)
         {
             meshRiver = (TriRiverMesh)mesh;
-            if(a==null)
-                algebra = new AlgebraRiver(meshRiver);
-            else
-                algebra = a;
+            algebra = a;
+            SetAlgebra();
             base.Set(mesh, algebra);
             pIntegration.SetInt(0 + (int)meshRiver.typeRangeMesh, meshRiver.First);
             bpIntegration.SetInt(1 + (int)meshRiver.typeRangeMesh, TypeFunForm.Form_1D_L1);
+
+            MEM.Alloc(mesh.CountKnots, ref SNodeArea, 0);
+            MEM.Alloc(mesh.CountElements, ref SElemArea3, 0);
+            // цикл по конечным элементам
+            for (uint elem = 0; elem < meshRiver.CountElements; elem++)
+            {
+                TriElementRiver te = meshRiver.AreaElems[elem];
+                double S3 = meshRiver.ElemSquare(elem) / 3;
+                SElemArea3[elem] = S3;
+                SNodeArea[te.Vertex1] += S3;
+                SNodeArea[te.Vertex2] += S3;
+                SNodeArea[te.Vertex3] += S3;
+            }
+        }
+        protected void SetAlgebra()
+        {
+            if (algebra == null)
+            {
+                if (Params.algebraSolver == AlgebraSolver.LUTape)
+                    algebra = new AlgebraRiverUn(meshRiver);
+                else
+                    algebra = new SparseAlgebraGMRES_P((uint)(meshRiver.CountKnots * CountUnknow),
+                        Params.GMRES_M, true, Params.MaxIteration);
+            }
         }
         public void SetNeighbour(IMesh mesh, IAlgebra a = null)
         {
             Set(mesh);
             FindNeighbour();
         }
-
-        
-
         /// <summary>
         /// расчет изменений полей (h,u,v) за один шаг по времени 
         /// </summary>
@@ -176,15 +213,11 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
         public override void SolverStep()
         { 
             if (meshRiver == null) return;
-            if (algebra == null)
-                algebra = new AlgebraRiver(meshRiver);
+            SetAlgebra();
             MEM.AllocClear((int)algebra.N, ref result);
             // ограничители
             //double[,] BWM = new double[CountUnknow, 2];
             MEM.Alloc(CountUnknow, 2, ref BWM);
-
-            if (meshRiver == null) return;
-            // формирование ГМЖ ГПЧ ГММ для всех конечных элементов 
             time += dtime;
             // обновление граничных условий
             BoundaryConditionUpdate();
@@ -204,7 +237,7 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                 // очистка массивов ЛМЖ ММ...
                 ClearLocal();
 
-                RiverNode[] elemNodes = { meshRiver.nodes[meshRiver.AreaElems[elem].Vertex1],
+                RiverNode[] element = { meshRiver.nodes[meshRiver.AreaElems[elem].Vertex1],
                                          meshRiver.nodes[meshRiver.AreaElems[elem].Vertex2],
                                          meshRiver.nodes[meshRiver.AreaElems[elem].Vertex3] };
                 // получить узлы КЭ
@@ -215,7 +248,7 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                 FunN.SetGeoCoords(x, y);
                 FunL.SetGeoCoords(x, y);
 
-                if (riverBankGaussPoints.CheckRiverBankDryWet(elemNodes) == 1)
+                if (riverBankGaussPoints.CheckRiverBankDryWet(element) == 1)
                 {
                     TriElementRiver currentFElement = meshRiver.AreaElems[elem];
                     // плучить точки интегрирования для полузатопленного КЭ
@@ -238,8 +271,8 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                     // береговые ограничители
                     for (uint nod = 0; nod < CountElementKnots; nod++)
                     {
-                        BWM[nod, 0] = FunctionLimiters(elemNodes, nod, 0);
-                        BWM[nod, 1] = FunctionLimiters(elemNodes, nod, 1);
+                        BWM[nod, 0] = FunctionLimiters(element, nod, 0);
+                        BWM[nod, 1] = FunctionLimiters(element, nod, 1);
                     }
                     // функции формы с усеченными по ограничителям производными 
                     FunL.CalkDiffForm(pIntegration.xi[pi], pIntegration.eta[pi], BWM);
@@ -249,7 +282,7 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                         SumWeight += pIntegration.weight[i];
                     // формирование матриц (жесткости, масс, Якоби) и правой части
                     // в точках интегрирования
-                    СomputationFiniteElementWetRiverBed(pi, elem, FunN, FunL, elemNodes, SumWeight);
+                    СomputationFiniteElementWetRiverBed(pi, elem, FunN, FunL, element, SumWeight);
                 }
                 #region реализация веменной схемы и метода Ньютона (1 итерация)
                 double theta = Params.theta; 
@@ -262,7 +295,7 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                         {
                             int k = j * CountUnknow + jj;
                             SMatrix[i][k] /= dtime;
-                            FRight[i] += (SMatrix[i][k] - mtheta * KMatrix[i][k]) * elemNodes[j].uo[jj];
+                            FRight[i] += (SMatrix[i][k] - mtheta * KMatrix[i][k]) * element[j].uo[jj];
                             SMatrix[i][k] += theta * KMatrix[i][k];
                         }
                     }
@@ -274,16 +307,18 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                         for (int jj = 0; jj < CountUnknow; jj++)
                         {
                             int k = j * CountUnknow + jj;
-                            FRight[i] -= SMatrix[i][k] * elemNodes[j].u[jj];
+                            FRight[i] -= SMatrix[i][k] * element[j].u[jj];
                             SMatrix[i][k] += theta * JMatrix[i][k];
                         }
                     }
                 }
                 #endregion
+                
+                FEMUtils.GetAdress(knots, ref addressesOfUnknown, CountUnknow);
                 // добавление вновь сформированной ЛЖМ в ГМЖ
-                algebra.AddToMatrix(SMatrix, knots);
+                algebra.AddToMatrix(SMatrix, addressesOfUnknown);
                 // добавление вновь сформированной ЛПЧ в ГПЧ
-                algebra.AddToRight(FRight, knots);
+                algebra.AddToRight(FRight, addressesOfUnknown);
             }
             #endregion
             // ===========================================================================
@@ -350,12 +385,13 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                         }
                     }
                 }
+                FEMUtils.GetAdress(bknots, ref addressesOfUnknownBE, CountUnknow);
                 // Сборка глобальных матриц жесткости(левой и правой) и глобальной правой части
                 // добавление вновь сформированной ЛЖМ в ГМЖ
-                algebra.AddToMatrix(SMatrix, bknots);
+                algebra.AddToMatrix(SMatrix, addressesOfUnknownBE);
 
                 // добавление вновь сформированной ЛПЧ в ГПЧ
-                algebra.AddToRight(FRight, bknots);
+                algebra.AddToRight(FRight, addressesOfUnknownBE);
             }
             #endregion
             // ===========================================================================
@@ -438,10 +474,11 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                                     }
                                 }
                             }
+                            FEMUtils.GetAdress(knots, ref addressesOfUnknown, CountUnknow);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
-                            algebra.AddToMatrix(SMatrix, knots);
+                            algebra.AddToMatrix(SMatrix, addressesOfUnknown);
                             // добавление вновь сформированной ЛПЧ в ГПЧ
-                            algebra.AddToRight(FRight, knots);
+                            algebra.AddToRight(FRight, addressesOfUnknown);
                             //
                             iV = CountUnknow;
                             iN = CountElementKnots;
@@ -509,6 +546,7 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                 qx /= CountElementKnots;
                 qy /= CountElementKnots;
                 hice /= CountElementKnots;
+
                 double h_clear = h - hice;
                 double Ks = ks;
                 double Ux = 0, Uy = 0;
@@ -814,14 +852,14 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                             Ha = bElement.Eta - elemNodes[i].zeta;
                             // диагональные элементы матрицы
                             KMatrix[i * CountUnknow][i * CountUnknow] += 1.0E12;
-                            // правая часть
-                            FRight[i * CountUnknow] += 1.0E12 * Ha;
                             KMatrix[i * CountUnknow + 1][i * CountUnknow + 1] += 1.0E12;
                             KMatrix[i * CountUnknow + 2][i * CountUnknow + 2] += 1.0E12;
+                            // правая часть
+                            FRight[i * CountUnknow] += 1.0E12 * Ha;
                             if ((Ha - tice) > Params.H_minGroundWater)
                             {
                                 FRight[i * CountUnknow + 1] += 1.0E12 * (-(Ha - tice) * Math.Sqrt((Ha - tice) * GRAV) * dy / dS);
-                                FRight[i * CountUnknow + 2] += 1.0E12 * ((Ha - tice) * Math.Sqrt((Ha - tice) * GRAV) * dx / dS);
+                                FRight[i * CountUnknow + 2] += 1.0E12 * ( (Ha - tice) * Math.Sqrt((Ha - tice) * GRAV) * dx / dS);
                             }
                             else
                             {
@@ -1031,7 +1069,7 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
         /// <param name="FunN">функции формы симплекса</param>
         /// <param name="elemNodes">узлы КЭ</param>
         /// <param name="FunNDetJ">детерминант матрицы якоби умноженный на вес в точке интегрирования</param>
-        void СalculationFiniteElementDryRiverBed(AbFunForm FunN, RiverNode[] elemNodes, double FunNDetJ)
+       protected void СalculationFiniteElementDryRiverBed(AbFunForm FunN, RiverNode[] elemNodes, double FunNDetJ)
         {
             double Sox = 0.0, Soy = 0.0;
             // расчет уклонов
@@ -1069,7 +1107,7 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
         /// <param name="elemNodes">узлы КЭ</param>
         /// <param name="SumWeight">сумма весов схемы интегрирования</param>
         /// <returns></returns>
-        double СomputationFiniteElementWetRiverBed(int pi, uint elem, AbFunForm FunN, AbFunForm FunL, RiverNode[] elemNodes, double SumWeight)
+        protected double СomputationFiniteElementWetRiverBed(int pi, uint elem, AbFunForm FunN, AbFunForm FunL, RiverNode[] elemNodes, double SumWeight)
         {
             double UV, cx, cy, cs, us, vs;
             double Cstar, Qxnew, Qynew, Hnew, Unew, Vnew, Sox, Soy, ff, root, nu, Htemp;
@@ -1317,7 +1355,6 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                 Ax[2][1] = Vold;
                 Ax[2][2] = Uold;
 
-
                 Ay[0][0] = 0.0;
                 Ay[0][1] = 0.0;
                 Ay[0][2] = 1.0;
@@ -1362,22 +1399,10 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                         wx[row][col] = CalkDotMatrix(UI, Ax, row, col, CountUnknow);
                         wy[row][col] = CalkDotMatrix(UI, Ay, row, col, CountUnknow);
                     }
-
-                #region Нигде не используется
-                // цикл по функциям формы
-                //for (int i = 0; i < CountElementKnots; i++)
-                //{
-                //    // циклы по узлам
-                //    for (int l = 0; l < CountUnknow; l++)
-                //        for (int m = 0; m < CountUnknow; m++)
-                //            um[l][m] = wx[l][m] * FunL.DN_x[i] + wy[l][m] * FunL.DN_y[i];
-                //}
-                #endregion
             }
             Params.UpWindCoeff = UWTemp;
             // diffusion terms 
             Ph = Math.Sqrt(2.0 * dUdx * dUdx + (dUdy + dVdx) * (dUdy + dVdx) + 2.0 * dVdy * dVdy);
-
             //dec = dHdx * Qxnew + dHdy * Qynew;
             if (Cstar > 1.0)
                 nu = Params.turbulentVisCoeff * root / Cstar + MEM.Error8 * Hold * Hold * Ph;
@@ -1401,6 +1426,7 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
             dyy[1][1] = nu;
             dyy[2][0] = -Vnew * (2.0 * nu);
             dyy[2][2] = 2.0 * nu;
+
             dnudH = -nu / Cstar * dCdH;
             if (root > 0.0)
             {
@@ -1420,10 +1446,12 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
             JMYdH = ((GRAV + 2 * Vnew * Vnew / H_clear) * dHdy
                       - 2 * Vnew / H_clear * dQYdy + 2 * Unew * Vnew / H_clear * dHdx
                       - Unew / H_clear * dQYdx - Vnew / H_clear * dQXdx) + dnf[2][0];
+
             JMXdQX = -2 * Unew / H_clear * dHdx + 2 / H_clear * dQXdx - Vnew / H_clear * dHdy + dQYdy / H_clear + dnf[1][1];
             JMYdQX = -Vnew / H_clear * dHdx + dQYdx / H_clear + dnf[2][1];
             JMXdQY = -Unew / H_clear * dHdy + dQXdy / H_clear + dnf[1][2];
             JMYdQY = -2 * Vnew / H_clear * dHdy + 2 / H_clear * dQYdy - Unew / H_clear * dHdx + dQXdx / H_clear + dnf[2][2];
+            
             // цикл по функциям формы
             for (int i = 0; i < CountElementKnots; i++)
             {
@@ -2108,23 +2136,23 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
         /// <summary>
         /// Перекидывает решение из центров КЭ в узлы КЭ
         /// </summary>
-        public override void UpdateVelocities() // Called by transient() Вызывается transient ()
+        public /* override */ void UpdateVelocities_old() // updateVelocities : Called by transient() 
         {
-            MEM.Alloc(meshRiver.CountKnots, ref M,  0);
+            MEM.Alloc(meshRiver.CountKnots, ref M, 0);
             MEM.Alloc(meshRiver.CountKnots, ref FH, 0);
             MEM.Alloc(meshRiver.CountKnots, ref FU, 0);
             MEM.Alloc(meshRiver.CountKnots, ref FV, 0);
-
             int i, j, iRow;
-            double qx, qy, H, tice, depth; 
+            double qx, qy, H, tice, depth;
             // получить функции формы
             AbFunForm FF = FunFormsManager.CreateKernel(meshRiver.First);
             // цикл по конечным элементам
             for (uint elem = 0; elem < meshRiver.CountElements; elem++)
             {
-                RiverNode[] elemNodes = { meshRiver.nodes[meshRiver.AreaElems[elem].Vertex1],
-                                          meshRiver.nodes[meshRiver.AreaElems[elem].Vertex2],
-                                          meshRiver.nodes[meshRiver.AreaElems[elem].Vertex3] };
+                TriElementRiver currentFElement = meshRiver.AreaElems[elem];
+                RiverNode[] nodes = { meshRiver.nodes[currentFElement.Vertex1],
+                                      meshRiver.nodes[currentFElement.Vertex2],
+                                      meshRiver.nodes[currentFElement.Vertex3] };
                 // получить координаты узлов КЭ
                 meshRiver.GetElemCoords(elem, ref x, ref y);
                 // установка координат узлов в функции формы
@@ -2142,10 +2170,8 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                 }
                 // получаем расположение и веса точек интегрирования Гаусса в
                 // зависимости от глубины и льда
-                if (riverBankGaussPoints.CheckRiverBankDryWet(elemNodes) == 1)
+                if (riverBankGaussPoints.CheckRiverBankDryWet(nodes) == 1)
                 {
-                    // береговой КЭ
-                    TriElementRiver currentFElement = meshRiver.AreaElems[elem];
                     // плучить точки интегрирования для полузатопленного КЭ
                     riverBankGaussPoints.GetMixedGPS(meshRiver.nodes, currentFElement, ref pIntegration, CountElementKnots);
                 }
@@ -2164,7 +2190,7 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                     H = tice = qx = qy = 0;// curvature = 0;
                     for (j = 0; j < CountElementKnots; j++)
                     {
-                        RiverNode nodeP = elemNodes[j];
+                        RiverNode nodeP = nodes[j];
                         H += FF.N[j] * nodeP.h;
                         tice += FF.N[j] * nodeP.Hice;
                         qx += FF.N[j] * nodeP.qx;
@@ -2179,12 +2205,14 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                             ME[i][j] += FF.N[i] * FF.N[j] * DWJ;// gfp.detJ;
                         }
                         depth = H - tice;
-                        // фильтрация скоростей по текущей глубине
+                        // фильтрация скоростей по текущей глубине в текущей точке интегрирования
                         if (depth > Params.H_minGroundWater)
                         {
+                            double Ux = qx / depth;
+                            double Uy = qy / depth;
                             FHE[i] += FF.N[i] * depth * DWJ;
-                            FUE[i] += FF.N[i] * qx / depth * DWJ;
-                            FVE[i] += FF.N[i] * qy / depth * DWJ;
+                            FUE[i] += FF.N[i] * Ux * DWJ;
+                            FVE[i] += FF.N[i] * Uy * DWJ;
                         }
                     }
                 }
@@ -2192,7 +2220,7 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                 // объединяя матрицу ME в глобальный вектор M
                 for (i = 0; i < CountElementKnots; i++)
                 {
-                    iRow = elemNodes[i].i;
+                    iRow = nodes[i].i;
                     // собираем матрицу масс в диагональную матрицу 
                     for (j = 0; j < CountElementKnots; j++)
                     {
@@ -2208,11 +2236,78 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
             for (int iNode = 0; iNode < meshRiver.CountKnots; iNode++)
             {
                 RiverNode nodeP = meshRiver.nodes[iNode];
-                nodeP.hd =  FH[iNode] / M[iNode];
+                nodeP.hd = FH[iNode] / M[iNode];
                 nodeP.udx = FU[iNode] / M[iNode];
                 nodeP.udy = FV[iNode] / M[iNode];
             }
         }
+
+
+        /// <summary>
+        /// Вычисление поля скорости по расходу и глубине 
+        /// Перенос значений скорости и глубины из центров КЭ в узлы КЭ
+        /// </summary>
+        public override void UpdateVelocities() 
+        {
+            MEM.Alloc(meshRiver.CountKnots, ref FH, 0);
+            MEM.Alloc(meshRiver.CountKnots, ref FU, 0);
+            MEM.Alloc(meshRiver.CountKnots, ref FV, 0);
+            // цикл по конечным элементам
+            for (uint elem = 0; elem < meshRiver.CountElements; elem++)
+            {
+                TriElementRiver te = meshRiver.AreaElems[elem];
+                RiverNode[] element = {   meshRiver.nodes[te.Vertex1],
+                                          meshRiver.nodes[te.Vertex2],
+                                          meshRiver.nodes[te.Vertex3] };
+                double mH   = (element[0].h + element[1].h + element[2].h)/3;
+                double tIce = (element[0].Hice + element[1].Hice + element[2].Hice)/3;
+                double mDepth = mH - tIce;
+                double mUx, mUy;
+                // фильтрация скоростей по текущей глубине
+                if (mDepth < Params.H_minGroundWater)
+                {
+                    mUx = 0; 
+                    mUy = 0;
+                }
+                else
+                {
+                    double mQx = (element[0].qx + element[1].qx + element[2].qx) / 3;
+                    double mQy = (element[0].qy + element[1].qy + element[2].qy) / 3;
+                    mUx = mQx / mDepth;
+                    mUy = mQy / mDepth;
+                }
+                // получить координаты узлов КЭ
+                //double S3 = meshRiver.ElemSquare(elem) / 3;
+                //SArea[te.Vertex1] += S3;
+                //SArea[te.Vertex2] += S3;
+                //SArea[te.Vertex3] += S3;
+                double S3 = SElemArea3[elem];
+                //MEM.Alloc(mesh.CountBoundKnots, ref SNodeArea, 0);
+                //MEM.Alloc(mesh.CountElements, ref SElemArea3, 0);
+
+                FH[te.Vertex1] += S3 * mDepth;
+                FH[te.Vertex2] += S3 * mDepth;
+                FH[te.Vertex3] += S3 * mDepth;
+
+                FU[te.Vertex1] += S3 * mUx;
+                FU[te.Vertex2] += S3 * mUx;
+                FU[te.Vertex3] += S3 * mUx;
+
+                FV[te.Vertex1] += S3 * mUy;
+                FV[te.Vertex2] += S3 * mUy;
+                FV[te.Vertex3] += S3 * mUy;
+            }
+            //  обновить узловые глубины и скорости,
+            for (int iNode = 0; iNode < meshRiver.CountKnots; iNode++)
+            {
+                RiverNode node = meshRiver.nodes[iNode];
+                node.hd  = FH[iNode] / SNodeArea[iNode];
+                node.udx = FU[iNode] / SNodeArea[iNode];
+                node.udy = FV[iNode] / SNodeArea[iNode];
+            }
+        }
+
+
         /// <summary>
         /// функция для установки старых значений(uo, uoo)
         /// </summary>
@@ -2220,14 +2315,15 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
         {
             for (int i = 0; i < meshRiver.CountKnots; i++)
             {
-                RiverNode elemNodes = meshRiver.nodes[i];
-                // порядок сохранения глубины и расходов различный
-                elemNodes.h00 = elemNodes.h0;// h
-                elemNodes.h0 = elemNodes.h;  // h
-                elemNodes.qx00 = elemNodes.qx0;// qx
-                elemNodes.qx0 = elemNodes.qx;  // qx
-                elemNodes.qy00 = elemNodes.qy0;// qy
-                elemNodes.qy0 = elemNodes.qy;  // qy
+                meshRiver.nodes[i].SetOldValues();
+                //RiverNode element = meshRiver.nodes[i];
+                //// порядок сохранения глубины и расходов различный
+                //element.h00 = element.h0;// h
+                //element.h0 = element.h;  // h
+                //element.qx00 = element.qx0;// qx
+                //element.qx0 = element.qx;  // qx
+                //element.qy00 = element.qy0;// qy
+                //element.qy0 = element.qy;  // qy
             }
         }
         /// <summary>

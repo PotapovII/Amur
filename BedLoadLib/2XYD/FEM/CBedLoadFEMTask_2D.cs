@@ -483,7 +483,7 @@ namespace BedLoadLib
                     Ralgebra.BoundConditions(DryWetZeta, DryWetNumbers);
                 #endregion
 
-                Ralgebra.getResidual(ref MRight, Zeta0, 0);
+                Ralgebra.GetResidual(ref MRight, Zeta0, 0);
 #if DEBUG        
                 SparseAlgebra ckalgebra = algebra as SparseAlgebra;
                 if (ckalgebra != null)

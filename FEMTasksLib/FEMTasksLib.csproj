@@ -55,6 +55,7 @@
     <Compile Include="BoundLabel.cs" />
     <Compile Include="FEMTasks\Reynolds\ReynoldsConcentrationTri.cs" />
     <Compile Include="FEMTasks\Reynolds\ReynoldsVortexStream1XDTri.cs" />
+    <Compile Include="FEMTasks\Utils\FEMUtils.cs" />
     <Compile Include="СontinuumMechanics.cs" />
     <Compile Include="FEComplexTask\AComplexFEMTask.cs" />
     <Compile Include="FEComplexTask\ATriFEMTask.cs" />

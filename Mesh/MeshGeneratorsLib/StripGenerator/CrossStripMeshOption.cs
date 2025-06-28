@@ -45,6 +45,11 @@ namespace MeshGeneratorsLib.StripGenerator
         /// Маркеры: bed 0, right 1, WL 2 , left 3
         /// </summary>
         boxCrossSection = 4,
+        /// <summary>
+        /// Проточный канал с вертикальными боковыми стенками 
+        /// Маркеры: bed 0, right 1, WL 2 , left 3
+        /// </summary>
+        boxCrossSectionB = 5,
     }
 
     /// <summary>
@@ -76,8 +81,21 @@ namespace MeshGeneratorsLib.StripGenerator
         /// </summary>
         public SimpleMarkerArea markerArea;
 
+        #region только для SimpleMarkerArea.boxCrossSectionB
+        /// <summary>
+        /// возвышение входного сопла над дном в левом вертикальном сечении области
+        /// </summary>
+        public double h;
+        /// <summary>
+        /// калибр входного сопла
+        /// </summary>
+        public double b;
+        #endregion
+
         public CrossStripMeshOption(SimpleMarkerArea markerArea, TypeMesh typeMesh, int boundaryClose)
         {
+            h = 0;
+            b = 0;
             this.typeMesh = typeMesh;
             this.BoundaryClose = boundaryClose;
             this.markerArea = markerArea;

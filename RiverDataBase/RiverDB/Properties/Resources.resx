@@ -127,8 +127,8 @@
   <data name="NCloud" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NCloud.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DelNodes1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DelNodes.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="BEditNodes1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BEditNodes.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SaveA1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SaveA.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -145,11 +145,17 @@
   <data name="MeshCloud4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MeshCloud.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="prev24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\prev24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LoadCrossLineB" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LoadCrossLineB.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CrossLine" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CrossLine.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Nodes" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Nodes.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="PrevNodes1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\PrevNodes.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="EditNodes2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\EditNodes.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -208,9 +214,6 @@
   <data name="DelFig" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DelFig.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="LoadCrossLine" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\LoadCrossLine.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="BSNodes" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BSNodes.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -231,6 +234,12 @@
   </data>
   <data name="Load" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Load.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SaveCrossLineB" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SaveCrossLineB.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="next24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\next24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Cloud1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Cloud.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -271,6 +280,9 @@
   <data name="NCloud4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NCloud.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="SaveA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SaveA.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Амур" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Амур.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -280,8 +292,8 @@
   <data name="BSNodes1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BSNodes.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SaveA" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SaveA.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="LoadCrossLine" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LoadCrossLine.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="MeshCount" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MeshCount.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -334,6 +346,9 @@
   <data name="BNodes1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BNodes.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="next241" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\next24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="BLoadNodes2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BLoadNodes.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -373,8 +388,8 @@
   <data name="FCloud1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FCloud.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CrossLine" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CrossLine.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="PrevNodes1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PrevNodes.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="BEditNodes2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BEditNodes.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -382,8 +397,8 @@
   <data name="PrevNodes2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PrevNodes.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="BEditNodes1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BEditNodes.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="DelNodes1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DelNodes.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="АмурСтвор1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\АмурСтвор.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -421,10 +436,7 @@
   <data name="BLoadNodes1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BLoadNodes.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="LoadCrossLineB" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\LoadCrossLineB.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SaveCrossLineB" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SaveCrossLineB.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="SaveBed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SaveBed.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

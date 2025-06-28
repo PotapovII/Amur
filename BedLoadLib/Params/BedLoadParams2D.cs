@@ -15,61 +15,25 @@
 namespace BedLoadLib
 {
     using System;
-    using System.IO;
     using CommonLib;
-    using MemLogLib;
     /// <summary>
     /// ОО: Параметры задачи используемые при 
     /// расчете донных деформаций
     /// </summary>
     [Serializable]
-    public class BedLoadParams2D : BedLoadParams1D, ITProperty<BedLoadParams2D>
+    public class BedLoadParams2DFEM : ABedLoadParams, ITProperty<BedLoadParams2D>
     {
         /// <summary>
         /// Значение параметров по умолчанию
         /// </summary>
-        public BedLoadParams2D():base(){}
-
+        public BedLoadParams2DFEM() : base() { }
         /// <summary>
         /// Конструктор копирования
         /// </summary>
         /// <param name="p"></param>
-        public BedLoadParams2D(BedLoadParams2D p)
+        public BedLoadParams2DFEM(BedLoadParams2D p)
         {
             SetParams(p);
-        }
-        /// <summary>
-        /// Установка параметров
-        /// </summary>
-        /// <param name="p"></param>
-        public void SetParams(BedLoadParams2D p)
-        {
-            base.SetParams(p);
-            InitBedLoad();
-        }
-        public override void LoadParams(string fileName = "")
-        {
-            string message = "Файл парамеров задачи - доные деформации - не обнаружен";
-            WR.LoadParams(Load, message, fileName);
-        }
-        /// <summary>
-        /// Чтение параметров задачи из файла
-        /// </summary>
-        /// <param name="file"></param>
-        public override void Load(StreamReader file)
-        {
-            try
-            {
-                base .Load(file);
-            }
-            catch (Exception ee)
-            {
-                Logger.Instance.Exception(ee);
-                Logger.Instance.Info("Не согласованность версии программы и файла данных");
-                Logger.Instance.Info("Использованы параметры по умолчанию");
-            }
-            // Пересчет зависимых параметров
-            InitBedLoad();
         }
         public BedLoadParams2D Clone(BedLoadParams2D p)
         {
@@ -77,3 +41,4 @@ namespace BedLoadLib
         }
     }
 }
+

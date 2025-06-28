@@ -10,6 +10,9 @@
 //                  перенос с C++ ==> C#
 //                       18.04.2021    
 //---------------------------------------------------------------------------
+//               Изменение имен полей класса
+//                       31.05.2025
+//---------------------------------------------------------------------------
 using System;
 
 namespace AlgebraLib
@@ -22,33 +25,34 @@ namespace AlgebraLib
         /// <summary>
         /// значение ненулевого элемента в строке
         /// </summary>
-        public double Elem;
+        public double Value;
         /// <summary>
-        /// индекс (j) ненулевого элемента в строке
+        /// Индекс столбца (j) (ненулевого элемента в строке)
         /// </summary>
-        public int Knot;
+        public int IndexColumn;
         public SparseElement() { }
         public SparseElement(SparseElement e)
         {
-            Elem = e.Elem; Knot = e.Knot;
+            Value = e.Value; IndexColumn = e.IndexColumn;
         }
-        public SparseElement(double _Elem, int _Knot)
+        public SparseElement(double Value, int IndexColumn)
         {
-            Elem = _Elem; Knot = _Knot;
+            this.Value = Value;
+            this.IndexColumn = IndexColumn;
         }
         public static bool operator <=(SparseElement a, SparseElement b)
         {
-            return a.Knot <= b.Knot;
+            return a.IndexColumn <= b.IndexColumn;
         }
         public static bool operator >=(SparseElement a, SparseElement b)
         {
-            return a.Knot >= b.Knot;
+            return a.IndexColumn >= b.IndexColumn;
         }
         public int CompareTo(SparseElement b)
         {
-            if (Knot > b.Knot)
+            if (IndexColumn > b.IndexColumn)
                 return 1;
-            else if (Knot < b.Knot)
+            else if (IndexColumn < b.IndexColumn)
                 return -1;
             else
                 return 0;

@@ -68,7 +68,7 @@ namespace AlgebraLib
             MEM.AllocClear((int)FN, ref R);
             MEM.AllocClear((int)FN, ref P);
             MEM.AllocClear((int)FN, ref AP);
-            getResidual(ref R, X);  // R = A*X0
+            GetResidual(ref R, X);  // R = A*X0
             // R0 = A*X0 - F             // вектор ошибки
             for (uint i = 0; i < Right.Length; i++)
                 R[i] -= Right[i];
@@ -80,7 +80,7 @@ namespace AlgebraLib
             uint Maxiters = 2 * FN;
             for (iters = 0; iters < Maxiters; iters++)
             {
-                getResidual(ref AP, P);  // AP = A * P
+                GetResidual(ref AP, P);  // AP = A * P
                                          // граничные условия
                                          // AP && BCond
                 for (int i = 0; i < N; i++)

@@ -783,6 +783,26 @@ namespace RiverDB.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap next24 {
+            get {
+                object obj = ResourceManager.GetObject("next24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap next241 {
+            get {
+                object obj = ResourceManager.GetObject("next241", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap NextNodes {
             get {
                 object obj = ResourceManager.GetObject("NextNodes", resourceCulture);
@@ -836,6 +856,16 @@ namespace RiverDB.Properties {
         internal static System.Drawing.Bitmap Nodes2 {
             get {
                 object obj = ResourceManager.GetObject("Nodes2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap prev24 {
+            get {
+                object obj = ResourceManager.GetObject("prev24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -926,6 +956,16 @@ namespace RiverDB.Properties {
         internal static System.Drawing.Bitmap SaveB1 {
             get {
                 object obj = ResourceManager.GetObject("SaveB1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SaveBed {
+            get {
+                object obj = ResourceManager.GetObject("SaveBed", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

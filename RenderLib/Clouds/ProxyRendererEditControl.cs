@@ -279,9 +279,9 @@ namespace RenderLib
         /// <summary>
         /// Установка атрибутов контура
         /// </summary>
-        public void SetAtributes(int index, double ice, double ks)
+        public void SetAtributes(int index, double ice, double ks, double h)
         {
-            renderer.SetAtributes(index, ice, ks);
+            renderer.SetAtributes(index, ice, ks, h);
         }
         /// <summary>
         /// Удалить фигуры

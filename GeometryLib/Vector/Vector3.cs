@@ -51,6 +51,12 @@ namespace GeometryLib.Vector
             Y = y;
             Z = z;
         }
+        public Vector3(double x, double y)
+        {
+            X = x;
+            Y = y;
+            Z = 0;
+        }
         public Vector3(IHPoint p)
         {
             X = p.X;

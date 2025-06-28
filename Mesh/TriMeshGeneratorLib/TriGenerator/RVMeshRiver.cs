@@ -1064,6 +1064,8 @@ namespace TriMeshGeneratorLib
                 getElm(file);
             for (int k = 0; k < CountBoundElements; k++)
                 getBElm(file);
+            // заголовок    
+            string[] headlines = RVcdgIO.GetLines(file, 6);
             for (int l = 0; l < CountBoundSegs; l++)
                 getBSeg(file);
             ReadBreakLinesList(file);
@@ -1074,7 +1076,7 @@ namespace TriMeshGeneratorLib
         /// <param name="f"></param>
         public void GetNode(StreamReader f)
         {
-            string[] lines = RVcdgIO.GetLines(f);
+            string[] lines = RVcdgIO.GetLines(f, 8);
             if (lines == null) return;
             int idx = 0;
             int n = int.Parse(lines[idx++].Trim());
@@ -1108,7 +1110,7 @@ namespace TriMeshGeneratorLib
         }
         public void getBElm(StreamReader f)
         {
-            string[] lines = RVcdgIO.GetLines(f);
+            string[] lines = RVcdgIO.GetLines(f, 15);
             if (lines == null) return;
             int n = int.Parse(lines[0].Trim());
             int typeBFV = int.Parse(lines[1].Trim());
@@ -1131,7 +1133,7 @@ namespace TriMeshGeneratorLib
         }
         public void getElm(StreamReader f)
         {
-            string[] lines = RVcdgIO.GetLines(f);
+            string[] lines = RVcdgIO.GetLines(f, 9);
             if(lines == null) return;
             int n = int.Parse(lines[0].Trim());
             int typeFFV = int.Parse(lines[1].Trim());
@@ -1144,7 +1146,7 @@ namespace TriMeshGeneratorLib
         }
         public void getBSeg(StreamReader f)
         {
-            string[] lines = RVcdgIO.GetLines(f);
+            string[] lines = RVcdgIO.GetLines(f, 6);
             if (lines == null) return;
             int n = int.Parse(lines[0].Trim());
             int code = int.Parse(lines[1].Trim());

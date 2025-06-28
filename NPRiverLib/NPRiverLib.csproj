@@ -83,7 +83,6 @@
     <Compile Include="APRiver2XYD\River2DFST\ParRiverSWE_FCT.cs" />
     <Compile Include="APRiver2XYD\River2DFST\RiverSWE_FCT_2XYD.cs" />
     <Compile Include="APRiver2XYD\River2DFST\SWE_FCTParams_2XYD.cs" />
-    <Compile Include="APRiver2XYD\River2DSW\Algebra\RiverAlgebra.cs" />
     <Compile Include="APRiver2XYD\River2DSW\APRiverFEM2XYD.cs" />
     <Compile Include="APRiver2XYD\River2DSW\ParamsRiver2XYD.cs" />
     <Compile Include="APRiver2XYD\River2DSW\RiverMesh\RiverBankGaussPoints.cs" />
@@ -91,7 +90,6 @@
     <Compile Include="APRiver2XYD\River2DSW\RiverMesh\BoundElementRiver.cs" />
     <Compile Include="APRiver2XYD\River2DSW\RiverMesh\BoundSegmentRiver.cs" />
     <Compile Include="APRiver2XYD\River2DSW\RiverMesh\GaussPoints.cs" />
-    <Compile Include="APRiver2XYD\River2DSW\RiverMesh\RiverNode.cs" />
     <Compile Include="APRiver2XYD\River2DSW\RiverMesh\TriElementRiver.cs" />
     <Compile Include="APRiver2XYD\River2DSW\RiverMesh\TriRiverMesh.cs" />
     <Compile Include="ABaseTask\ARiverEmpty.cs" />
@@ -193,6 +191,7 @@
     <Content Include="APRiver1YD\Data\NameTaskGeometry.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="IO\Tests\TestDoc\Тесты.doc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="APRiver2XYD\River2DSW\_DOC\Дополнения.doc" />

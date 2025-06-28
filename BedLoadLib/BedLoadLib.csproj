@@ -83,8 +83,10 @@
     <Compile Include="Avalanche\OLD\Avalanche2DQuad.cs" />
     <Compile Include="Avalanche\SAvalanche.cs" />
     <Compile Include="Avalanche\AvalancheType.cs" />
+    <Compile Include="Params\ABedLoadParams.cs" />
     <Compile Include="Params\BedLoadParams1D.cs" />
     <Compile Include="Params\BedLoadParams1D_MIX.cs" />
+    <Compile Include="Params\BedLoadParams2D1.cs" />
     <Compile Include="Params\BedLoadParams2D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Solver.cs" />

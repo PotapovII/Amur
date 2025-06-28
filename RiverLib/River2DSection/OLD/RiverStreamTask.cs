@@ -120,6 +120,8 @@ namespace RiverLib
         /// Поле напряжений - модуль
         /// </summary>
         public double[] tau;
+
+        int[][] riverGates = null;
         /// <summary>
         /// Алгебра для КЭ задачи
         /// </summary>
@@ -409,7 +411,7 @@ namespace RiverLib
             this.x = x;
             this.y = y;
             // генерация сетки
-            mesh = sg.CreateMesh(ref GR,WaterLevel, x, y);
+            mesh = sg.CreateMesh(ref GR, ref riverGates, WaterLevel, x, y);
             right = sg.Right();
             left = sg.Left();
             // получение ширины ленты для алгебры

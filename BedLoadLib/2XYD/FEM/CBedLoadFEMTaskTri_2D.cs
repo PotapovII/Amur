@@ -536,7 +536,7 @@ namespace BedLoadLib
                 //((SparseAlgebra)algebra).CheckMas(Zeta0, "Zeta0");
                 #endregion
 
-                Ralgebra.getResidual(ref MRight, Zeta0, 0);
+                Ralgebra.GetResidual(ref MRight, Zeta0, 0);
 #if DEBUG        
                 //((SparseAlgebra)algebra).Debug = true;
                 SparseAlgebra ckalgebra = algebra as SparseAlgebra;

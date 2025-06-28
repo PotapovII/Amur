@@ -163,7 +163,7 @@ namespace FEMTasksLib
                 // добавление вновь сформированной ЛПЧ в ГПЧ
                 algebra.AddToRight(LocalRight, knots);
             }
-            Ralgebra.getResidual(ref MRight, result, 0);
+            Ralgebra.GetResidual(ref MRight, result, 0);
             algebra.CopyRight(MRight);
             //Удовлетворение ГУ
             uint[] bound = mesh.GetBoundKnotsByMarker(indexBC);

@@ -173,5 +173,14 @@ namespace GeometryLib
             Value = f.FunctionValue(0);
             name = f.Name;
         }
+        /// <summary>
+        /// Аргумент хх содержится в строгом диапазоне функции
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        public bool Contains(double x)
+        {
+            return false;
+        }
     }
 }

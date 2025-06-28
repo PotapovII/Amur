@@ -214,8 +214,13 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                     BoundElementRiver be = belems[i];
                     tmpA[be.Vertex1] = be;
                 }
-                tmpB[0] = tmpA[0];
-                tmpB[0].ID = 0;
+                for (int i = 0; i < belems.Length; i++)
+                    if (tmpA[i] != null)
+                    {
+                        tmpB[0] = tmpA[i];
+                        tmpB[0].ID = 0;
+                        break;
+                    }
                 for (int i = 1; i < belems.Length; i++)
                 {
                     tmpB[i] = tmpA[tmpB[i - 1].Vertex2];

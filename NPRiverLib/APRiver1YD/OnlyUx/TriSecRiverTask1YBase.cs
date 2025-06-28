@@ -836,16 +836,16 @@ namespace NPRiverLib.APRiver1YD
                         //                // вычислить глобальыне производные в точках интегрирования
                         //                ff.CalkDiffForm(pIntegration.xi[pi], pIntegration.eta[pi]);
                         //                // получть произведение якобиана и веса для точки интегрирования
-                        //                double DWJ = ff.DetJ * pIntegration.weight[pi];
+                        //                double detJ = ff.DetJ * pIntegration.weight[pi];
                         //                // локальная матрица жесткости                    
                         //                for (int ai = 0; ai < cu; ai++)
                         //                    for (int aj = 0; aj < cu; aj++)
-                        //                        LaplMatrix[ai][aj] += (Mu0 + Mu) * (ff.DN_x[ai] * ff.DN_x[aj] + ff.DN_y[ai] * ff.DN_y[aj]) * DWJ;
+                        //                        LaplMatrix[ai][aj] += (Mu0 + Mu) * (ff.DN_x[ai] * ff.DN_x[aj] + ff.DN_y[ai] * ff.DN_y[aj]) * detJ;
                         //                // Вычисление ЛПЧ
 
                         //                for (int ai = 0; ai < cu; ai++)
                         //                {
-                        //                    LocalRight[ai] += rho_w * (Pv - Dv) * ff.N[ai] * DWJ;
+                        //                    LocalRight[ai] += rho_w * (Pv - Dv) * ff.N[ai] * detJ;
                         //                }
                         //                SPv += Pv; SDv += Dv; gU += dUUV2;
                         //            }

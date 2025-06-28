@@ -14,12 +14,12 @@
 //---------------------------------------------------------------------------
 namespace AlgebraLib
 {
-    using MemLogLib;
-    using CommonLib;
     using System;
     using System.Linq;
     using System.Collections.Generic;
 
+    using MemLogLib;
+    using CommonLib;
     /// <summary>
     /// ОО: Класс матрицы в формате CRS
     /// с поддержкой интерфейса алгебры для работы с КЭ задачами
@@ -63,15 +63,16 @@ namespace AlgebraLib
                     Matrix.Add(new SparseRow());
                 if (isPrecond == true)
                 {
-                    Y = new double[FN];
-                    diagonalRow = new int[FN];
-                    diagonalCol = new int[FN];
-                    MatrixColIndex = new List<SparseColIndex>((int)FN);
-                    ILU = new List<SparseRow>();
-                    for (int i = 0; i < FN; i++)
-                    {
-                        MatrixColIndex.Add(new SparseColIndex());
-                    }
+                    //Y = new double[FN];
+                    //diagonalRow = new int[FN];
+                    //diagonalCol = new int[FN];
+                    MEM.Alloc(FN, ref Y);
+                    MEM.Alloc(FN, ref diagonalRow);
+                    MEM.Alloc(FN, ref diagonalCol);
+                    //ILU = new List<SparseRow>();
+                    //MatrixColIndex = new List<SparseColIndex>((int)FN);
+                    //for (int i = 0; i < FN; i++)
+                    //    MatrixColIndex.Add(new SparseColIndex());
                 }
             }
             catch (Exception ex)
@@ -90,26 +91,89 @@ namespace AlgebraLib
                 Matrix[i].Row.Clear();
                 Right[i] = 0;
             }
-            if (isPrecond == true)
-            {
-                for (int i = 0; i < ILU.Count; i++)
-                    ILU[i].Row.Clear();
-                for (int i = 0; i < N; i++)
-                {
-                    MatrixColIndex[i].Clear();
-                }
-            }
+            //if (isPrecond == true)
+            //{
+            //    for (int i = 0; i < ILU.Count; i++)
+            //        ILU[i].Row.Clear();
+            //    for (int i = 0; i < N; i++)
+            //    {
+            //        MatrixColIndex[i].Clear();
+            //    }
+            //}
         }
         #region Методы для вычисления матрицы предобуславливания
+        public virtual void CreatePrecondMatrix()
+        {
+            int i = 0, ii, j, e, row_i, row_i0, j0;
+            try
+            {
+                ILU = new List<SparseRow>();
+            MatrixColIndex = new List<SparseColIndex>((int)FN);
+            for (i = 0; i < FN; i++)
+                MatrixColIndex.Add(new SparseColIndex());
+
+            for (int row = 0; row < FN; row++)
+                for (j = 0; j < Matrix[row].Row.Count; j++)
+                {
+                    int col = Matrix[row].Row[j].IndexColumn;
+                    MatrixColIndex[col].Col.Add(new SparseElementIndex(row, j));
+                    if (row == col)
+                    {
+                        diagonalRow[row] = j;
+                        diagonalCol[col] = MatrixColIndex[col].Col.Count - 1;
+                    }
+                }
+
+                // копируем матрицу Matrix в ILU
+                for (i = 0; i < FN; i++)
+                    ILU.Add(new SparseRow(Matrix[i]));
+                double sum;
+
+                for (i = 0; i < FN; i++)
+                {
+                    // получаем строку ILU
+                    SparseRow a = ILU[i];
+                    // получаем индекс диагонального элемента матрицы
+                    // копируем все элементы строки от диагонали ко конца строки
+                    // в столбец
+                    for (j = diagonalRow[i]; j < a.Count; j++)
+                    {
+                        SparseColIndex b = MatrixColIndex[a.Row[j].IndexColumn];
+                        sum = MultMatrix(a, b, i, i);
+                        ILU[i].Row[j].Value = Matrix[i].Row[j].Value - sum;
+                    }
+                    //  индексы i столбца
+                    SparseColIndex ci = MatrixColIndex[i];
+                    ii = diagonalCol[i];
+                    row_i0 = ci[ii].IndexColumn;
+                    j0 = ci[ii].j;
+                    double aii = 1 / ILU[row_i0].Row[j0].Value;
+                    for (e = diagonalCol[i] + 1; e < ci.Count; e++)
+                    {
+                        row_i = ci[e].IndexColumn;
+                        j = ci[e].j;
+                        SparseRow aj = ILU[row_i];
+                        sum = MultMatrix(aj, ci, i, i);
+                        ILU[row_i].Row[j].Value = aii * (Matrix[row_i].Row[j].Value - sum);
+                    }
+                    //Print("Matrix ILU", ILU);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(i);
+            }
+        }
+
         /// <summary>
         /// Построение образа неулевых индексов по колонкам матрицы
         /// </summary>
-        public void CreateMatrixColIndex()
+        public  void CreateMatrixColIndex()
         {
-            for (int row = 0; row < N; row++)
+            for (int row = 0; row < FN; row++)
                 for (int j = 0; j < Matrix[row].Row.Count; j++)
                 {
-                    int col = Matrix[row].Row[j].Knot;
+                    int col = Matrix[row].Row[j].IndexColumn;
                     MatrixColIndex[col].Col.Add(new SparseElementIndex(row, j));
                     if (row == col)
                     {
@@ -118,6 +182,55 @@ namespace AlgebraLib
                     }
                 }
         }
+        /// <summary>
+        /// Декомпозиция матрицы на A => ILU
+        /// </summary>
+        public virtual void DecompositionPrecondMatrix()
+        {
+            int i = 0, ii, j, e, row_i, row_i0, j0;
+            try
+            {
+                // копируем матрицу Matrix в ILU
+                for (i = 0; i < FN; i++)
+                    ILU.Add(new SparseRow(Matrix[i]));
+                double sum;
+
+                for (i = 0; i < FN; i++)
+                {
+                    // получаем строку ILU
+                    SparseRow a = ILU[i];
+                    // получаем индекс диагонального элемента матрицы
+                    // копируем все элементы строки от диагонали ко конца строки
+                    // в столбец
+                    for (j = diagonalRow[i]; j < a.Count; j++)
+                    {
+                        SparseColIndex b = MatrixColIndex[a.Row[j].IndexColumn];
+                        sum = MultMatrix(a, b, i, i);
+                        ILU[i].Row[j].Value = Matrix[i].Row[j].Value - sum;
+                    }
+                    //  индексы i столбца
+                    SparseColIndex ci = MatrixColIndex[i];
+                    ii = diagonalCol[i];
+                    row_i0 = ci[ii].IndexColumn;
+                    j0 = ci[ii].j;
+                    double aii = 1 / ILU[row_i0].Row[j0].Value;
+                    for (e = diagonalCol[i] + 1; e < ci.Count; e++)
+                    {
+                        row_i = ci[e].IndexColumn;
+                        j = ci[e].j;
+                        SparseRow aj = ILU[row_i];
+                        sum = MultMatrix(aj, ci, i, i);
+                        ILU[row_i].Row[j].Value = aii * (Matrix[row_i].Row[j].Value - sum);
+                    }
+                    //Print("Matrix ILU", ILU);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(i);
+            }
+        }
+
         /// <summary>
         /// Умножение строки матрицы на ее столбец c ограничениями
         /// </summary>
@@ -133,8 +246,8 @@ namespace AlgebraLib
             double sum = 0;
             while (col < a.Count && row < b.Count)
             {
-                int posx = a[col].Knot;
-                int posy = b[row].Knot;
+                int posx = a[col].IndexColumn;
+                int posy = b[row].IndexColumn;
 
                 if (posx >= colCount)
                     break;
@@ -143,7 +256,7 @@ namespace AlgebraLib
 
                 if (posx == posy)
                 {
-                    sum += a[col].Elem * ILU[posy].Row[b[row].j].Elem;
+                    sum += a[col].Value * ILU[posy].Row[b[row].j].Value;
                     col++;
                     row++;
                 }
@@ -159,53 +272,6 @@ namespace AlgebraLib
             return sum;
         }
 
-        /// <summary>
-        /// Декомпозиция матрицы на A => ILU
-        /// </summary>
-        public void DecompositionPrecondMatrix()
-        {
-            int i=0, ii, j, e, row_i, row_i0, j0;
-            try
-            {
-                // копируем матрицу Matrix в ILU
-                for (i = 0; i < FN; i++)
-                    ILU.Add(new SparseRow(Matrix[i]));
-                double sum;
-                for (i = 0; i < FN; i++)
-                {
-                    // получаем строку ILU
-                    SparseRow a = ILU[i];
-                    // получаем индекс диагонального элемента матрицы
-                    // копируем все элементы строки от диагонали ко конца строки
-                    // в столбец
-                    for (j = diagonalRow[i]; j < a.Count; j++)
-                    {
-                        SparseColIndex b = MatrixColIndex[a.Row[j].Knot];
-                        sum = MultMatrix(a, b, i, i);
-                        ILU[i].Row[j].Elem = Matrix[i].Row[j].Elem - sum;
-                    }
-                    //  индексы i столбца
-                    SparseColIndex ci = MatrixColIndex[i];
-                    ii = diagonalCol[i];
-                    row_i0 = ci[ii].Knot;
-                    j0 = ci[ii].j;
-                    double aii = 1 / ILU[row_i0].Row[j0].Elem;
-                    for (e = diagonalCol[i] + 1; e < ci.Count; e++)
-                    {
-                        row_i = ci[e].Knot;
-                        j = ci[e].j;
-                        SparseRow aj = ILU[row_i];
-                        sum = MultMatrix(aj, ci, i, i);
-                        ILU[row_i].Row[j].Elem = aii * (Matrix[row_i].Row[j].Elem - sum);
-                    }
-                    //Print("Matrix ILU", ILU);
-                }
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(i);
-            }
-        }
 
         /// <summary>
         ///  умножение вектора ошибки на матрицу r' = M^-1 r
@@ -214,32 +280,23 @@ namespace AlgebraLib
         /// <param name="X"></param>
         public void CalkErrorPrecond(double[] R, ref double[] PR)
         {
-            double t;
             MEM.AllocClear(FN, ref Y);
             for (int i = 0; i < FN; i++)
             {
                 double sum = 0;
                 SparseRow a = ILU[i];
                 for (int j = 0; j < diagonalRow[i]; j++)
-                {
-                    int k = a.Row[j].Knot;
-                    sum += a.Row[j].Elem * Y[k];
-                }
+                    sum += a.Row[j].Value * Y[a.Row[j].IndexColumn];
                 Y[i] = R[i] - sum;
             }
-            // find solution of Ux = y
+            // find solution of U x = y
             for (int i = (int)FN - 1; i >= 0; i--)
             {
                 SparseRow a = ILU[i];
-                int jd = diagonalRow[i];
-                t = 1.0 / a.Row[jd].Elem;
                 double sum = 0;
                 for (int j = diagonalRow[i] + 1; j < a.Count; j++)
-                {
-                    int k = a.Row[j].Knot;
-                    sum += a.Row[j].Elem * PR[k];
-                }
-                PR[i] = t * (Y[i] - sum);
+                    sum += a.Row[j].Value * PR[a.Row[j].IndexColumn];
+                PR[i] = (Y[i] - sum) / a.Row[diagonalRow[i]].Value;
             }
         }
         /// <summary>
@@ -295,13 +352,14 @@ namespace AlgebraLib
             // нормировка системы для малых значений матрицы и правой части
             SystemNormalization();
             if (isPrecond == true)
-            {
-                // Построение образа неулевых индексов по колонкам матрицы
-                CreateMatrixColIndex();
-                // расчет матрицы предобуславливателя
-                DecompositionPrecondMatrix();
-            }
-            SetBCondition(ref X);         // X => X0 - начальное условие
+                CreatePrecondMatrix();
+            //{
+            //    // Построение образа неулевых индексов по колонкам матрицы
+            //    CreateMatrixColIndex();
+            //    // расчет матрицы предобуславливателя
+            //    DecompositionPrecondMatrix();
+            //}
+            SetBCondition(ref X);   // X => X0 - начальное условие
             base.Solve(ref X);
         }
         /// <summary>
@@ -375,12 +433,12 @@ namespace AlgebraLib
         /// Установка граничных условий
         /// </summary>
         /// <param name="Value"></param>
-        protected void SetBCondition(ref double[] Value)
+        protected virtual void SetBCondition(ref double[] Value)
         {
             for (int i = 0; i < N; i++)
             {
                 if (Matrix[i].Count == 1)
-                    Value[i] = Right[i] / Matrix[i].Row[0].Elem;
+                    Value[i] = Right[i] / Matrix[i].Row[0].Value;
             }
         }
 
@@ -390,7 +448,7 @@ namespace AlgebraLib
         /// <param name="R">результат</param>
         /// <param name="X">умножаемый вектор</param>
         /// <param name="IsRight">знак операции = +/- 1</param>
-        public override void getResidual(ref double[] R, double[] X, int IsRight = 1)
+        public override void GetResidual(ref double[] R, double[] X, int IsRight = 1)
         {
             MEM.Alloc((int)FN, ref R);
             for (int i = 0; i < Matrix.Count; i++)
@@ -398,8 +456,8 @@ namespace AlgebraLib
                 double sum = 0;
                 for (int j = 0; j < Matrix[i].Row.Count; j++)
                 {
-                    int k = Matrix[i].Row[j].Knot;
-                    sum += Matrix[i].Row[j].Elem * X[k];
+                    int k = Matrix[i].Row[j].IndexColumn;
+                    sum += Matrix[i].Row[j].Value * X[k];
                 }
                 R[i] = sum;
             }
@@ -421,8 +479,8 @@ namespace AlgebraLib
             {
                 for (aj = 0; aj < Matrix[ai].Count; aj++)
                 {
-                    if (double.IsNaN(Matrix[ai].Row[aj].Elem) == true
-                        || double.IsInfinity(Matrix[ai].Row[aj].Elem))
+                    if (double.IsNaN(Matrix[ai].Row[aj].Value) == true
+                        || double.IsInfinity(Matrix[ai].Row[aj].Value))
                         Console.WriteLine(" i = {0}, j = {1}", ai, aj);
                 }
             }
@@ -462,7 +520,7 @@ namespace AlgebraLib
                     if (Matrix[i].Count == 0)
                         Console.WriteLine("Строка {0} пустая!", i);
                     for (int j = 0; j < Matrix[i].Count; j++)
-                        Console.Write(" " + Matrix[i][j].Elem.ToString("F4"));
+                        Console.Write(" " + Matrix[i][j].Value.ToString("F4"));
                     Console.WriteLine();
                 }
                 Console.WriteLine("Right");
@@ -476,7 +534,7 @@ namespace AlgebraLib
                 for (int i = 0; i < N; i++)
                 {
                     for (int j = 0; j < Matrix[i].Count; j++)
-                        Console.Write("   " + Matrix[i][j].Knot.ToString() + " : " + Matrix[i].Row[j].Elem.ToString("F4"));
+                        Console.Write("   " + Matrix[i][j].IndexColumn.ToString() + " : " + Matrix[i].Row[j].Value.ToString("F4"));
                     Console.WriteLine();
                 }
                 Console.WriteLine("Right");

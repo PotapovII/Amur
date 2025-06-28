@@ -90,7 +90,7 @@ namespace AlgebraLib
             MEM.AllocClear((int)FN, ref As);
             MEM.AllocClear((int)FN, ref Ap);
             MEM.AllocClear((int)FN, ref Ax);
-            getResidual(ref Ax, X);  // Ax = A*X
+            GetResidual(ref Ax, X);  // Ax = A*X
             // R = F - A*X              // вектор ошибки
             for (uint i = 0; i < Right.Length; i++)
                 R[i] = Right[i] - Ax[i];
@@ -106,11 +106,11 @@ namespace AlgebraLib
                 Beta = Rho / Rho0 * Alpha / Omega;
                 for (int j = 0; j < N; j++)
                     P[j] = R[j] + Beta * (P[j] - Omega * Ap[j]);
-                getResidual(ref Ap, P);
+                GetResidual(ref Ap, P);
                 Alpha = Rho / MultyVector(RB, Ap);
                 for (int j = 0; j < N; j++)
                     S[j] = R[j] - Alpha * Ap[j];
-                getResidual(ref As, S);
+                GetResidual(ref As, S);
                 Omega = MultyVector(As, S) / MultyVector(As, As);
                 for (int j = 0; j < N; j++)
                 {
@@ -121,7 +121,7 @@ namespace AlgebraLib
                 //if (iters % 1000 == 0)
                 //{
                 //    // R = A*X - F             // вектор ошибки
-                //    getResidual(ref Ax, X);  // R = A*X
+                //    GetResidual(ref Ax, X);  // R = A*X
                 //    for (uint k = 0; k < Right.Length; k++)
                 //        R[k] = Right[k] - Ax[k];
                 //}

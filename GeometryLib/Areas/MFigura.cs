@@ -9,11 +9,13 @@
 //---------------------------------------------------------------------------
 namespace GeometryLib.Areas
 {
+    using System.IO;
+    using System.Linq;
+    using System.Collections.Generic;
+
+    using TestsUtils;
     using CommonLib.Areas;
     using CommonLib.Geometry;
-    using System.Collections.Generic;
-    using System.IO;
-    using TestsUtils;
 
     /// <summary>
     /// Контурная фигура
@@ -53,6 +55,10 @@ namespace GeometryLib.Areas
         /// шероховатость дна
         /// </summary>
         public double ks { get; set; }
+        /// <summary>
+        /// глубина контура использовать для для берегов или фиктивных в русел
+        /// </summary>
+        public double h { get; set; }
         #endregion
         /// <summary>
         /// Точки контура
@@ -62,6 +68,10 @@ namespace GeometryLib.Areas
         /// Точки контура
         /// </summary>
         protected List<IMPoint> points = new List<IMPoint>();
+        /// <summary>
+        /// Внешная по отношении к фигуре точка
+        /// </summary>
+        protected HPoint p_out = null;
         /// <summary>
         /// Список сегментов фигуры
         /// </summary>
@@ -90,6 +100,7 @@ namespace GeometryLib.Areas
         public void SetPoint(int idx, IMPoint p)
         {
             points[idx % points.Count] = p;
+            UpDate(p);
         }
         /// <summary>
         /// Получить узел
@@ -113,7 +124,7 @@ namespace GeometryLib.Areas
         }
         public Figura(string Name,int FID, List<HPoint> ps, 
             FigureType ft = FigureType.FigureContur,
-            double ks = 0.1, double Ice = 0)
+            double ks = 0.1, double Ice = 0, double h = 0)
         {
             this.FID = FID;
             this.Name = Name;
@@ -121,16 +132,19 @@ namespace GeometryLib.Areas
             this.FType = ft;
             this.ks = ks;
             this.Ice = Ice;
+            this.h = h;
             for (int i = 0; i < ps.Count; i++)
             {
                 string name = "point" + i.ToString();
                 IMPoint pp = new MPoint(name, ps[i], this);
                 this.points.Add(pp);
             }
+            double max = Points.Max(x => x.X);
+            p_out = new HPoint(2 * max, 0);
         }
         public Figura(string Name, int FID, List<CloudKnot> ps, 
                     FigureType ft = FigureType.FigureContur,
-                    double ks = 0.1, double Ice = 0)
+                    double ks = 0.1, double Ice = 0, double h = 0)
         {
             this.FID = FID;
             this.Name = Name;
@@ -138,12 +152,15 @@ namespace GeometryLib.Areas
             this.FType = ft;
             this.ks = ks;
             this.Ice = Ice;
+            this.h = h;
             for (int i = 0; i < ps.Count; i++)
             {
                 string name = "point" + i.ToString();
                 IMPoint pp = new MPoint(name, ps[i], this);
                 this.points.Add(pp);
             }
+            double max = Points.Max(x => x.X);
+            p_out = new HPoint(2 * max, 0);
         }
         public Figura(Figura fig, bool ext = false) 
         {
@@ -153,6 +170,8 @@ namespace GeometryLib.Areas
             this.FType = fig.FType;
             this.Ice = fig.Ice;
             this.ks = fig.ks;
+            this.h = fig.h;
+            this.p_out = new HPoint(fig.p_out);
             if (ext == false)
             {
                 this.points.AddRange(fig.points);
@@ -199,12 +218,29 @@ namespace GeometryLib.Areas
             return idx;
         }
         /// <summary>
+        /// Обновление внешней точки контура
+        /// </summary>
+        /// <param name="point"></param>
+        protected void UpDate(IHPoint point)
+        {
+            if (p_out == null)
+                p_out = new HPoint(2 * point.X, 0);
+            else
+                if (point.X > p_out.X)
+                    p_out = new HPoint(2 * point.X, 0);
+        }
+
+        /// <summary>
         /// Взять/дать узел в фигуре
         /// </summary>
         public IMPoint this[int index]
         {
             get => points[(int)index];
-            set => points[(int)index] = value;
+            set
+            {
+                points[(int)index] = value;
+                UpDate(value);
+            }
         }
         /// <summary>
         /// Добавить точку в контур
@@ -216,6 +252,7 @@ namespace GeometryLib.Areas
             IMPoint p = new MPoint(name, point, this);
             points.Add(p);
             segmentStatus = false;
+            UpDate(point);
         }
         public void Add(CloudKnot point)
         {
@@ -223,6 +260,7 @@ namespace GeometryLib.Areas
             IMPoint p = new MPoint(name, point, this);
             points.Add(p);
             segmentStatus = false;
+            UpDate(point);
         }
         /// <summary>
         /// Добавить точку в контур
@@ -232,6 +270,7 @@ namespace GeometryLib.Areas
         {
             points.Add(new MPoint(point));
             segmentStatus = false;
+            UpDate(point);
         }
         /// <summary>
         /// Убрать точку из контур
@@ -249,14 +288,15 @@ namespace GeometryLib.Areas
             points.Clear();
             segments.Clear();
             segmentStatus = false;
+            p_out = null;
         }
-
+        
         /// <summary>
         /// Принадлежит ли точка полигону фигуры
         /// </summary>
         public bool Contains(IHPoint point)
         {
-            return LocPolygon2D.Contains(point, Points);
+            return LocPolygon2D.Contains((HPoint)point, p_out, Points);
         }
         /// <summary>
         /// Принадлежит ли точка полигону фигуры
@@ -264,7 +304,7 @@ namespace GeometryLib.Areas
         public bool Contains(double x, double y)
         {
             IHPoint point = new HPoint(x, y);
-            return LocPolygon2D.Contains(point, Points);
+            return Contains(point);
         }
         ///// <summary>
         ///// Сохранение области
@@ -336,6 +376,7 @@ namespace GeometryLib.Areas
             str += " " + (points.Count).ToString();
             str += " " + Ice.ToString("F6");
             str += " " + ks.ToString("F6");
+            str += " " + h.ToString("F6");
             file.WriteLine(str);
             for (int i = 0; i < points.Count; i++)
             {
@@ -365,7 +406,7 @@ namespace GeometryLib.Areas
             int Count = int.Parse(mas[3]);
             double Ice = double.Parse(mas[4]);
             double ks = double.Parse(mas[5]);
-
+            double h = double.Parse(mas[6]);
             for (int i = 0; i < Count; i++)
             {
                 line = file.ReadLine();

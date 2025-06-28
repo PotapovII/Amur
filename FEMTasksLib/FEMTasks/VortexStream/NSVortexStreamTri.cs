@@ -41,6 +41,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
     using System;
     using CommonLib.Physics;
     using CommonLib.Mesh;
+    using FEMTasksLib.FEMTasks.Utils;
 
     /// <summary>
     ///  ОО: Решатель для задачи Ламе на трехузловой сетке
@@ -228,14 +229,14 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                                 }
                             }
                             // получем значения адресов неизвестных
-                            GetAdress(knots, ref adressBound);
+                            FEMUtils.GetAdress(knots, ref adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
                             algebra.AddToMatrix(LaplMatrix, adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
                             Ralgebra.AddToMatrix(RMatrix, adressBound);
                         }
                         // Расчет
-                        Ralgebra.getResidual(ref MRight, result_old, 0);
+                        Ralgebra.GetResidual(ref MRight, result_old, 0);
                         algebra.CopyRight(MRight);
                         //double Right;
                         //uint idx;
@@ -416,14 +417,14 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                                 }
                             }
                             // получем значения адресов неизвестных
-                            GetAdress(knots, ref adressBound);
+                            FEMUtils.GetAdress(knots, ref adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
                             algebra.AddToMatrix(LaplMatrix, adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
                             Ralgebra.AddToMatrix(RMatrix, adressBound);
                         }
                         // Расчет
-                        Ralgebra.getResidual(ref MRight, result_old, 0);
+                        Ralgebra.GetResidual(ref MRight, result_old, 0);
                         algebra.CopyRight(MRight);
                         //double Right;
                         //uint idx;
@@ -575,14 +576,14 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                                 }
                             }
                             // получем значения адресов неизвестных
-                            GetAdress(knots, ref adressBound);
+                            FEMUtils.GetAdress(knots, ref adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
                             algebra.AddToMatrix(LaplMatrix, adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
                             Ralgebra.AddToMatrix(RMatrix, adressBound);
                         }
                         // Расчет
-                        Ralgebra.getResidual(ref MRight, result_old, 0);
+                        Ralgebra.GetResidual(ref MRight, result_old, 0);
                         algebra.CopyRight(MRight);
                         //double Right;
                         //uint idx;

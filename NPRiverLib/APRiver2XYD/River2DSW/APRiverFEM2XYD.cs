@@ -253,6 +253,9 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                 _Eta[i] = _Zeta[i] + _h[i];
                 _qx[i] = nodes[i].qx;
                 _qy[i] = nodes[i].qy;
+                _ks[i] = nodes[i].ks;
+                _Ise[i] = nodes[i].h_ise;
+
                 if (_h[i] < MEM.Error2)
                 {
                     _Ux[i] = 0;

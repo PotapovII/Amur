@@ -268,7 +268,7 @@ namespace RenderLib
         /// <summary>
         /// Установка атрибутов контура
         /// </summary>
-        void SetAtributes(int index, double ice, double ks);
+        void SetAtributes(int index, double ice, double ks, double h);
         /// <summary>
         /// Удалить фигуры
         /// </summary>
