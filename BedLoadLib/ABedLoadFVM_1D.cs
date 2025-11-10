@@ -23,6 +23,9 @@ namespace BedLoadLib
     public abstract class ABedLoadFVM_1D<TParam> :
         ABedLoad<TParam> where TParam : class, ITProperty<TParam>
     {
+        double tanphi = SPhysics.PHYS.tanphi;
+        double G1 = SPhysics.PHYS.G1;
+        double tau0 = SPhysics.PHYS.tau0;
         /// <summary>
         /// версия дата последних изменений интерфейса задачи
         /// </summary>
@@ -99,6 +102,11 @@ namespace BedLoadLib
         /// </summary>
         public int[] DryWetEelm = null;
         /// <summary>
+        /// Придонные критические напряжения
+        /// </summary>
+        protected double[] mTau0 = null;
+        protected double[] mG1 = null;
+        /// <summary>
         /// длина расчетной области
         /// </summary>
         protected double L;
@@ -131,7 +139,6 @@ namespace BedLoadLib
         /// <param name="Zeta0">начальный уровень дна</param>
         public override void SetTask(IMesh mesh, double[] Zeta0, double[] Roughness, IBoundaryConditions BConditions)
         {
-            double tanphi = SPhysics.PHYS.tanphi;
             if (mesh.CountElements == 0) return;
             base.SetTask(mesh, Zeta0, Roughness, BConditions);
             this.x = mesh.GetCoords(0);
@@ -165,31 +172,49 @@ namespace BedLoadLib
             MEM.Alloc(mesh.CountElements, ref tau0Elem);
             MEM.Alloc(mesh.CountElements, ref zetaElem);
 
-            avalanche = new Avalanche1DX_Old(mesh, tanphi, 0.6);
+            avalanche = new Avalanche1D_Simple(mesh, tanphi, 0.6);
 
             eTaskReady = ETaskStatus.TaskReady;
+            MEM.Alloc(N, ref mTau0);
+            MEM.Alloc(N, ref mTanPhi);
+            MEM.Alloc(N, ref mG1);
+
+            if (Roughness != null)
+            {
+                for (int i = 0; i < N; i++)
+                {
+                    SPhysics.PHYS.GetLocalBedLoadParams(Roughness[i], ref mTau0[i], ref mTanPhi[i], ref mG1[i]);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < N; i++)
+                {
+                    mTau0[i] = tau0;
+                    mTanPhi[i] = tanphi;
+                    mG1[i] = G1;
+                }
+            }
         }
 
-        /// <summary>
-        /// Вычисление числа Курранта
-        /// </summary>
-        /// <returns></returns>
-        public double Kurant()
-        {
-            double G1 = SPhysics.PHYS.G1;
-            double tau0 = SPhysics.PHYS.tau0;
-            double kurant;
-            double minL = double.MaxValue;
-            for (int i = 0; i < x.Length - 1; i++)
-            {
-                double dx = x[i + 1] - x[i];
-                if (dx < minL)
-                    minL = dx;
-            }
-            double minD = G1 * tau0 * Math.Sqrt(tau0);
-            kurant = minL / (2.0 * minD);
-            return kurant;
-        }
+        ///// <summary>
+        ///// Вычисление числа Курранта
+        ///// </summary>
+        ///// <returns></returns>
+        //public double Kurant()
+        //{
+        //    double kurant;
+        //    double minL = double.MaxValue;
+        //    for (int i = 0; i < x.Length - 1; i++)
+        //    {
+        //        double dx = x[i + 1] - x[i];
+        //        if (dx < minL)
+        //            minL = dx;
+        //    }
+        //    double minD = G1 * tau0 * Math.Sqrt(tau0);
+        //    kurant = minL / (2.0 * minD);
+        //    return kurant;
+        //}
         /// <summary>
         /// Масштаб расхода от уклона дна
         /// </summary>

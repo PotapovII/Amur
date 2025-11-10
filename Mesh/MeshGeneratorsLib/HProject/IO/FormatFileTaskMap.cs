@@ -60,7 +60,7 @@ namespace MeshGeneratorsLib.IO
         /// </summary>
         /// <param name="filename">Путь к файлу для чтения..</param>
         /// <returns>Экземпляр интерфейса<see cref="IMesh" /> interface.</returns>
-        public override void Read(string filename, ref IHTaskMap taskMap, uint testID = 0)
+        public override string Read(string filename, ref IHTaskMap taskMap, uint testID = 0)
         {
             if (IsSupported(path + filename) == true)
             {
@@ -148,7 +148,7 @@ namespace MeshGeneratorsLib.IO
             }
             else
                 throw new NotSupportedException("Could not load '" + filename + "' file.");
-
+            return filename;
         }
 
         /// <summary>

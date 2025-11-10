@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2019 - 2024  Potapov Igor Ivanovich, Khabarovsk
+Copyright (c) 2019 - 2025  Potapov Igor Ivanovich, Khabarovsk
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -46,13 +46,16 @@ namespace CommonLib.IO
         /// </summary>
         /// <param name="filename">Путь к файлу для чтения..</param>
         /// <returns>Экземпляр интерфейса<see cref="IMesh" /> interface.</returns>
-        void Read(string filename, ref Type mesh, uint testID = 0);
+        /// <param name="task"></param>
+        /// <param name="testID"></param>
+        /// <returns>(Название задачи) + имя файла</returns>
+        string Read(string filename, ref Type task, uint testID = 0);
         /// <summary>
         /// Сохраняем сетку на диск.
         /// </summary>
-        /// <param name="mesh">Экземпляр интерфейса<see cref="IMesh" /> interface.</param>
+        /// <param name="task">Экземпляр интерфейса<see cref="IMesh" /> interface.</param>
         /// <param name="filename">Путь к файлу для сохранения.</param>
-        void Write(Type mesh, string filename);
+        void Write(Type task, string filename);
         /// <summary>
         /// Создает список тестовых задач для загрузчика по умолчанию
         /// </summary>

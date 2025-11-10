@@ -13,6 +13,7 @@ namespace NPRiverLib.APRiver_1XD
     using System;
 
     using CommonLib;
+    using MemLogLib;
     using MeshGeneratorsLib.StripGenerator;
     /// <summary>
     ///  ОО: Определение класса APRiverFEM1YD - расчет полей скорости, 
@@ -160,74 +161,6 @@ namespace NPRiverLib.APRiver_1XD
         //    /// Сдвиговые напряжения средние
         //    tauMid = tau.Sum() / tau.Length;
         //    return tau;
-        //}
-
-        ///// <summary>
-        ///// Нахождение полей напряжений и их сглаживание по методу Галеркина
-        ///// </summary>
-        //protected void SolveTaus()
-        //{
-        //    try
-        //    {
-        //        double[] x = { 0, 0, 0 };
-        //        double[] y = { 0, 0, 0 };
-        //        double[] u = { 0, 0, 0 };
-        //        double S;
-        //        uint[] knots = { 0, 0, 0 };
-        //        double[] Selem = new double[mesh.CountElements];
-        //        double[] tmpTausZ = new double[mesh.CountElements];
-        //        double[] tmpTausY = new double[mesh.CountElements];
-        //        for (int i = 0; i < TauZ.Length; i++)
-        //        {
-        //            TauY[i] = 0;
-        //            TauZ[i] = 0;
-        //        }
-        //        for (uint i = 0; i < mesh.CountElements; i++)
-        //        {
-        //            mesh.ElementKnots(i, ref knots);
-        //            mesh.GetElemCoords(i, ref x, ref y);
-        //            // получить среднюю вязкость на КЭ
-        //            double Mu = (eddyViscosity[knots[0]] + eddyViscosity[knots[1]] + eddyViscosity[knots[2]]) / 3;
-        //            //Mu = mesh.ElementMidleValues(eddyViscosity, i);
-        //            // площадь КЭ
-        //            S = mesh.ElemSquare(i);
-        //            // деформации
-        //            double dN0dz = (x[2] - x[1]) / (2 * S);
-        //            double dN1dz = (x[0] - x[2]) / (2 * S);
-        //            double dN2dz = (x[1] - x[0]) / (2 * S);
-
-        //            double dN0dy = (y[1] - y[2]) / (2 * S);
-        //            double dN1dy = (y[2] - y[0]) / (2 * S);
-        //            double dN2dy = (y[0] - y[1]) / (2 * S);
-
-        //            double Ez = (u[0] * (x[2] - x[1]) + u[1] * (x[0] - x[2]) + u[2] * (x[1] - x[0]));
-        //            double Ey = (u[0] * (y[1] - y[2]) + u[1] * (y[2] - y[0]) + u[2] * (y[0] - y[1]));
-        //            // 
-        //            tmpTausZ[i] = Mu * Ez / (2 * S);
-        //            tmpTausY[i] = Mu * Ey / (2 * S);
-
-        //            Selem[(int)knots[0]] += S / 3;
-        //            Selem[(int)knots[1]] += S / 3;
-        //            Selem[(int)knots[2]] += S / 3;
-
-        //            TauZ[(int)knots[0]] += S * tmpTausZ[i] / 3;
-        //            TauZ[(int)knots[1]] += S * tmpTausZ[i] / 3;
-        //            TauZ[(int)knots[2]] += S * tmpTausZ[i] / 3;
-
-        //            TauY[(int)knots[0]] += S * tmpTausY[i] / 3;
-        //            TauY[(int)knots[1]] += S * tmpTausY[i] / 3;
-        //            TauY[(int)knots[2]] += S * tmpTausY[i] / 3;
-        //        }
-        //        for (int i = 0; i < TauZ.Length; i++)
-        //        {
-        //            TauY[i] /= Selem[i];
-        //            TauZ[i] /= Selem[i];
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logger.Instance.Exception(ex);
-        //    }
         //}
 
         #endregion

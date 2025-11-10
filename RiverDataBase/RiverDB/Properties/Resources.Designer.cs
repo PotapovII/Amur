@@ -663,6 +663,16 @@ namespace RiverDB.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap MeshAnalise {
+            get {
+                object obj = ResourceManager.GetObject("MeshAnalise", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap MeshCloud {
             get {
                 object obj = ResourceManager.GetObject("MeshCloud", resourceCulture);
@@ -783,6 +793,16 @@ namespace RiverDB.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Next {
+            get {
+                object obj = ResourceManager.GetObject("Next", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap next24 {
             get {
                 object obj = ResourceManager.GetObject("next24", resourceCulture);
@@ -796,6 +816,16 @@ namespace RiverDB.Properties {
         internal static System.Drawing.Bitmap next241 {
             get {
                 object obj = ResourceManager.GetObject("next241", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap next242 {
+            get {
+                object obj = ResourceManager.GetObject("next242", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -863,9 +893,29 @@ namespace RiverDB.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Prev {
+            get {
+                object obj = ResourceManager.GetObject("Prev", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap prev24 {
             get {
                 object obj = ResourceManager.GetObject("prev24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap prev241 {
+            get {
+                object obj = ResourceManager.GetObject("prev241", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

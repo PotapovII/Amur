@@ -63,6 +63,14 @@ namespace BedLoadLib
         /// </summary>
         protected double[] Gy;
         /// <summary>
+        /// Поток наносов по Х в улах
+        /// </summary>
+        protected double[] Gxtr;
+        /// <summary>
+        /// Поток наносов по У в улах
+        /// </summary>
+        protected double[] Gytr;
+        /// <summary>
         /// Площадь КО связанного с узлом
         /// </summary>
         protected double[] Sknot;
@@ -166,6 +174,8 @@ namespace BedLoadLib
             MEM.Alloc<double>(mesh.CountKnots, ref Tau);
             MEM.Alloc<double>(mesh.CountKnots, ref Gx);
             MEM.Alloc<double>(mesh.CountKnots, ref Gy);
+            MEM.Alloc<double>(mesh.CountKnots, ref Gxtr);
+            MEM.Alloc<double>(mesh.CountKnots, ref Gytr);
             MEM.Alloc<double>(mesh.CountKnots, ref Sknot);
             MEM.Alloc<double>(mesh.CountElements, ref GxE);
             MEM.Alloc<double>(mesh.CountElements, ref GyE);
@@ -251,10 +261,13 @@ namespace BedLoadLib
         /// <param name="P">придонное давление</param>
         /// <returns>новая форма дна</returns>
         /// </summary>
+        double[] _tauX=null, _tauY = null;
         public override void CalkZetaFDM(ref double[] Zeta, double[] tauX, double[] tauY, double[] P = null, double[][] CS = null)
         {
             try
             {
+                _tauX = tauX; _tauY = tauY;
+
                 double s = SPhysics.PHYS.s;
                 double tanphi = SPhysics.PHYS.tanphi;
                 double tau0 = SPhysics.PHYS.tau0;
@@ -271,6 +284,8 @@ namespace BedLoadLib
                     Sknot[i] = 0;
                     Gx[i] = 0;
                     Gy[i] = 0;
+                    Gxtr[i] = 0;
+                    Gytr[i] = 0;
                 }
 
                 #region // расчет неразмываемых узлов
@@ -353,7 +368,7 @@ namespace BedLoadLib
                         tau[elem] = Math.Sqrt(tauX[elem] * tauX[elem] + tauY[elem] * tauY[elem]);
                         mTx = tauX[elem];
                         mTy = tauY[elem];
-                        if (tau[elem] > eZeta)
+                        if (tau[elem] > MEM.Error5)
                         {
                             cosA = tauX[elem] / tau[elem];
                             sinA = tauY[elem] / tau[elem];
@@ -451,25 +466,42 @@ namespace BedLoadLib
                     BB[0, 1] = cs2 * (B[elem] - ss * D[elem]);
                     BB[1, 0] = cs2 * (B[elem] - ss * D[elem]);
                     BB[1, 1] = ss * D[elem] * cos2 + B[elem] * sin2;
+
                     // ?
                     H[0, 0] = -D[elem] / s * sin2 - C[elem] * cos2;
                     H[0, 1] = cs2 * (D[elem] / s - C[elem]);
                     H[1, 0] = cs2 * (D[elem] / s - C[elem]);
                     H[1, 1] = -D[elem] / s * cos2 - C[elem] * sin2;
 
-
                     #region Вычисление потоков на элементе и их разброс в узлы
+                    //GxE[elem] = G0 * (A[elem] * cosA - BB[0, 0] * dZetadX - BB[0, 1] * dZetadY);
+                    //GyE[elem] = G0 * (A[elem] * sinA - BB[1, 0] * dZetadX - BB[1, 1] * dZetadY);
+                    double Gtx = G0 * A[elem] * cosA;
+                    double Gty = G0 * A[elem] * sinA;
+
                     GxE[elem] = G0 * (A[elem] * cosA - BB[0, 0] * dZetadX - BB[0, 1] * dZetadY);
                     GyE[elem] = G0 * (A[elem] * sinA - BB[1, 0] * dZetadX - BB[1, 1] * dZetadY);
+
                     Sknot[knots[0]] += S / 3;
                     Sknot[knots[1]] += S / 3;
                     Sknot[knots[2]] += S / 3;
+
                     Gx[knots[0]] += GxE[elem] * S / 3;
                     Gx[knots[1]] += GxE[elem] * S / 3;
                     Gx[knots[2]] += GxE[elem] * S / 3;
+
                     Gy[knots[0]] += GyE[elem] * S / 3;
                     Gy[knots[1]] += GyE[elem] * S / 3;
                     Gy[knots[2]] += GyE[elem] * S / 3;
+
+                    Gxtr[knots[0]] += Gtx * S / 3;
+                    Gxtr[knots[1]] += Gtx * S / 3;
+                    Gxtr[knots[2]] += Gtx * S / 3;
+
+                    Gytr[knots[0]] += Gty * S / 3;
+                    Gytr[knots[1]] += Gty * S / 3;
+                    Gytr[knots[2]] += Gty * S / 3;
+
                     #endregion
 
                     // вычисление ЛЖМ
@@ -511,6 +543,8 @@ namespace BedLoadLib
                 {
                     Gx[i] = Gx[i] / Sknot[i];
                     Gy[i] = Gy[i] / Sknot[i];
+                    Gxtr[i] = Gxtr[i] / Sknot[i];
+                    Gytr[i] = Gytr[i] / Sknot[i];
                 }
 
                 #region отладка + ГУ
@@ -629,6 +663,15 @@ namespace BedLoadLib
                 sp.Add("Поток Gx", Gx);
                 sp.Add("Поток Gy", Gy);
                 sp.Add("Поток G", Gx, Gy);
+                sp.Add("Поток Gx транзитный", Gxtr);
+                sp.Add("Поток Gy транзитный", Gytr);
+                sp.Add("Поток G транзитный", Gxtr, Gytr);
+                if (_tauX != null && _tauY != null)
+                {
+                    sp.Add("Поток _tauX", _tauX);
+                    sp.Add("Поток _tauY", _tauY);
+                    sp.Add("Поток _tau", _tauX, _tauY);
+                }
             }
         }
     }

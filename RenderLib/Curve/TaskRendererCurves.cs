@@ -129,7 +129,7 @@ namespace RenderLib
                 //Pen pen = new Pen(Color.Black, 2);
                 for (index = 0; index < Count; index++)
                 {
-                    var curve = graphicsData.curves[index];
+                    GraphicsCurve curve = graphicsData.curves[index];
                     if (curve.Check == false)
                         continue;
                     PointF p0, p1;

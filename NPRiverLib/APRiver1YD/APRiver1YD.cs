@@ -26,6 +26,8 @@ namespace NPRiverLib.APRiver1YD
     using System.Collections.Generic;
     using CommonLib.Mesh;
     using MeshLib.Wrappers;
+    using CommonLib.IO;
+    using CommonLib.Physics;
 
 
     /// <summary>
@@ -129,33 +131,25 @@ namespace NPRiverLib.APRiver1YD
         /// </summary>
         protected IMeshWrapper wMesh;
         /// <summary>
-        ///  начальная геометрия русла
+        /// Данные о задаче в створе канала
         /// </summary>
-        protected IDigFunction Geometry;
-        /// <summary>
-        /// уровни(нь) свободной поверхности потока
-        /// </summary>
-        protected IDigFunction WaterLevels;
-        /// <summary>
-        /// расход потока
-        /// </summary>
-        protected IDigFunction FlowRate;
+        public CrossSectionData csData = null;
         /// <summary>
         /// Шероховатость дна
         /// </summary>
-        protected IDigFunction Roughness;
+        protected double[] roughness = null;
         /// <summary>
-        /// Шероховатость дна
+        /// Углы естественного откоса  
         /// </summary>
-        protected double[] roughness;
+        protected double[] mTanPhi = null;
+        /// <summary>
+        /// Напряжния удельного сцепления
+        /// </summary>
+        protected double[] mTau_Adhesion = null;
         /// <summary>
         /// Шероховатость дна
         /// </summary>
         protected double roughness0 = 0.001;
-        /// <summary>
-        /// Данные о створе
-        /// </summary>
-        public IDigFunction[] crossFunctions = null; 
         /// <summary>
         /// Параметры задачи зависимые от времени
         /// </summary>
@@ -196,10 +190,13 @@ namespace NPRiverLib.APRiver1YD
             if (roughness == null)
             {
                 IMesh bmesh = BedMesh();
-                MEM.Alloc(bottom_x.Length, ref roughness);
-                for(int i = 0; i < bottom_x.Length; i++) 
+                MEM.Alloc(bottom_x.Length, ref roughness, 0.1);
+                if (csData.Roughness != null)
                 {
-                    roughness[i] = Roughness.FunctionValue(bottom_x[i]);
+                    for (int i = 0; i < bottom_x.Length; i++)
+                    {
+                        roughness[i] = csData.Roughness.FunctionValue(bottom_x[i]);
+                    }
                 }
             }
             MEM.Copy(ref roug, roughness);
@@ -210,25 +207,43 @@ namespace NPRiverLib.APRiver1YD
         /// <param name="file">имя файла</param>
         public override void LoadData(StreamReader file)
         {
-            // геометрия дна
-            Geometry = new DigFunction();
-            // свободная поверхность
-            WaterLevels = new DigFunction();
-            // расход потока
-            FlowRate = new DigFunction();
-            //
             evolution.Clear();
-            // геометрия дна
-            Geometry.Load(file);
-            // свободная поверхность
-            WaterLevels.Load(file);
-            // расход потока
-            FlowRate.Load(file);
+            // Данные о задаче в створе канала
+            csData = new CrossSectionData();
+            // Данные о задаче в створе канала
+            csData.Load(file);
             // инициализация задачи
             InitTask();
             // готовность задачи
             eTaskReady = ETaskStatus.LoadAreaData;
-            crossFunctions = new IDigFunction[3]{ Geometry, WaterLevels, FlowRate };
+        }
+        /// <summary>
+        /// Вернуть буффер обмена параметрами
+        /// </summary>
+        /// <param name="args"></param>
+        public override void GetRiverTaskArgs(ref ITaskArgs args) 
+        {
+            IMesh bmesh = BedMesh();
+            if (mTanPhi == null || mTanPhi?.Length != bottom_x.Length)
+            {
+                MEM.Alloc(bottom_x.Length, ref roughness, 0.1);
+                MEM.Alloc(bottom_x.Length, ref mTanPhi, SPhysics.PHYS.tanphi);
+                MEM.Alloc(bottom_x.Length, ref mTau_Adhesion, 0);
+                if (csData.Roughness != null)
+                {
+                    for (int i = 0; i < bottom_x.Length; i++)
+                    {
+                        roughness[i] = csData.Roughness.FunctionValue(bottom_x[i]);
+                        mTanPhi[i] = csData.TanPhi.FunctionValue(bottom_x[i]);
+                        mTau_Adhesion[i] = csData.Tau_Adhesion.FunctionValue(bottom_x[i]);
+                    }
+                }
+            }
+            TaskArgs a = new TaskArgs();
+            a.Add("mTanPhi", mTanPhi);
+            a.Add("mTau_Adhesion", mTau_Adhesion);
+            a.Add("mRoughness", roughness);
+            args = a;
         }
         /// <summary>
         /// Загрузка задачи из тестовых данных
@@ -237,17 +252,12 @@ namespace NPRiverLib.APRiver1YD
         public override void LoadData(IDigFunction[] crossFunctions)
         {
             evolution.Clear();
-            // геометрия дна
-            Geometry = crossFunctions[0];
-            // свободная поверхность
-            WaterLevels = crossFunctions[1];
-            // расход потока
-            FlowRate = crossFunctions[2];
+            // Данные о задаче в створе канала
+            csData = new CrossSectionData(crossFunctions);
             // инициализация задачи
             InitTask();
             // готовность задачи
             eTaskReady = ETaskStatus.LoadAreaData;
-            this.crossFunctions = new IDigFunction[3] { Geometry, WaterLevels, FlowRate };
         }
 
         /// <summary>

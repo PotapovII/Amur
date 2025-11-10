@@ -28,6 +28,11 @@ namespace RiverLib.River2D
     public class River2D : ParamsRiver, IRiver
     {
         /// <summary>
+        /// Получить буффер обмена параметрами
+        /// </summary>
+        /// <param name="args"></param>
+        public virtual void GetRiverTaskArgs(ref ITaskArgs args) { args = null; }
+        /// <summary>
         /// Готовность задачи к расчету
         /// </summary>
         public bool TaskReady() => true;

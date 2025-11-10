@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2019 - 2024  Potapov Igor Ivanovich, Khabarovsk
+Copyright (c) 2019 - 2025  Potapov Igor Ivanovich, Khabarovsk
 
 Permission is hereby granted, free of charge, to any person
 obtaining dNdx copy of this software and associated documentation
@@ -200,7 +200,6 @@ namespace FEMTasksLib.FEMTasks.VortexStream
             MEM.Alloc(cs * mesh.CountKnots, ref result_old);
             MEM.Alloc(cs * mesh.CountKnots, ref MRight);
             MEM.Alloc(cs * mesh.CountKnots, ref result_cur);
-
             if (algebra == null)
                 algebra = new AlgebraGauss((uint)CountU);
 
@@ -363,7 +362,6 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                     {
                         testflag = 0;
                         // расчет функции тока и функции вихря
-
                         Console.WriteLine("Calk Phi & Vortex in st Reynolds problem: шаг по нелинейности: " + nIdx.ToString());
                         MEM.Alloc((int)algebra.N, ref result);
                         algebra.Clear();
@@ -374,6 +372,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                             ee = elem;
                             // локальная матрица часть СЛАУ
                             MEM.Alloc2DClear(Count, ref LaplMatrix);
+                            MEM.AllocClear(Count, ref LocalRight);
                             double[] b = dNdx[elem];
                             double[] c = dNdy[elem];
                             uint i0 = eKnots[elem].Vertex1;
@@ -381,6 +380,8 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                             uint i2 = eKnots[elem].Vertex3;
                             // получить узлы КЭ
                             uint[] knots = { i0, i1, i2 };
+                            // получем значения адресов неизвестных
+                            FEMUtils.GetAdress(knots, ref adressBound);
                             double Se = S[elem];
                             double eMu = (eddyViscosity[i0] + eddyViscosity[i1] + eddyViscosity[i2]) / 3.0;
                             double Ax = 0;
@@ -483,8 +484,6 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                                 }
                                 algebra.AddToRight(LocalRight, adressBound);
                             }
-                            // получем значения адресов неизвестных
-                            FEMUtils.GetAdress(knots, ref adressBound);
                             // добавление вновь сформированной ЛЖМ в ГМЖ
                             algebra.AddToMatrix(LaplMatrix, adressBound);
                         }
@@ -547,21 +546,26 @@ namespace FEMTasksLib.FEMTasks.VortexStream
         {
             uint ee = 0;
             uint testflag = 0;
-            uint NLine10 = 10;
+            uint NLine10 = 3;
             try
             {
                 MEM.MemCopy(ref result_cur, result_old);
+                for (int i = 0; i < mesh.CountKnots; i++)
+                {
+                    Phi[i] = result_cur[2 * i];
+                    Vortex[i] = result_cur[2 * i + 1];
+                }
                 // итераций по нелинейности на текущем шаге по времени
                 for (int nIdx = 0; nIdx < NLine10; nIdx++)
                 {
-                    if (flagStart == true)
-                    {
-                        // На первом шаге решаем задачу Стокса
-                        SolveStokesTask(ref _Phi, ref _Vortex, eddyViscosity, Ux);
-                        MEM.MemCopy(ref result_old, result);
-                        flagStart = false;
-                    }
-                    else
+                    //if (flagStart == true)
+                    //{
+                    //    // На первом шаге решаем задачу Стокса
+                    //    SolveStokesTask(ref _Phi, ref _Vortex, eddyViscosity, Ux);
+                    //    MEM.MemCopy(ref result_old, result);
+                    //    flagStart = false;
+                    //}
+                    //else
                     {
                         testflag = 0;
                         // расчет функции тока и функции вихря
@@ -570,10 +574,8 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                         algebra.Clear();
                         Ralgebra.Clear();
                         int li, lj;
-                        int Count = cu * cs;
-                        //
+                        //int Count = cu * cs;
                         bool old = false;
-                        //
                         if (old == true) // Старый вариант
                         {
                             for (uint elem = 0; elem < mesh.CountElements; elem++)
@@ -714,6 +716,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                                 ee = elem;
                                 // локальная матрица часть СЛАУ
                                 MEM.Alloc2DClear(Count, ref LaplMatrix);
+                                MEM.AllocClear(Count, ref LocalRight);
                                 MEM.Alloc2DClear(Count, ref RMatrix);
                                 double[] b = dNdx[elem];
                                 double[] c = dNdy[elem];
@@ -782,8 +785,9 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                                         RMatrix[li + 1][lj + 1] = rho_w * _M_ab - dt * theta * (C_agb - D_agb + eMu * K_ab + RD_ab);
                                     }
                                     LocalRight[li] = 0;
-                                    LocalRight[li + 1] = (rho_w * c[ai] * Se3 * Ux2 / Radius) * SigmaTask;
+                                    LocalRight[li + 1] = dt * (rho_w * c[ai] * Se3 * Ux2 / Radius) * SigmaTask;
                                 }
+                                FEMUtils.GetAdress(knots, ref adressBound);
                                 algebra.AddToRight(LocalRight, adressBound);
 
                                 // получем значения адресов неизвестных
@@ -833,7 +837,20 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                             epsVortex += (result_cur[i] - result[i]) * (result_cur[i] - result[i]);
                         }
                         double residual = Math.Sqrt(epsVortex / normVortex);
-                        Console.WriteLine("n {0} residual {1}", nIdx, residual);
+                        if (residual < MEM.Error5)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("n {0} residual {1}", nIdx, residual);
+                            Console.ForegroundColor = ConsoleColor.White;
+                            break;
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("n {0} residual {1}", nIdx, residual);
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        
                         if (residual < MEM.Error4)
                             break;
                         MEM.MemCopy(ref result_cur, result);

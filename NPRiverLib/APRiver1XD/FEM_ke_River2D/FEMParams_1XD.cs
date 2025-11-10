@@ -366,6 +366,12 @@ namespace NPRiverLib.APRiver_1XD
         [Description("Флаг для расчета взвешенных наносов Да - true, Нет -false")]
         [Category("Задача")]
         public BCalkConcentration CalkConcentration { get; set; } = BCalkConcentration.NeCalkConcentration;
+
+        [TypeConverter(typeof(BooleanTypeConverterYN))]
+        [DisplayName("Обнулять скорости на донной поверхности")]
+        [Description("Обнулять скорости на донной поверхности для расчета напряжений Да - true, Нет - false")]
+        [Category("Задача")]
+        public bool VelocityBedZerro { get; set; } = false;
         #endregion
 
 
@@ -444,6 +450,8 @@ namespace NPRiverLib.APRiver_1XD
             turbViscType = ETurbViscType.Boussinesq1865;
             // + 01 05 2025
             CalkConcentration = BCalkConcentration.NotCalkConcentration;
+            // + 19 07 2025
+            VelocityBedZerro = true;
         }
         /// <summary>
         /// установка параметров
@@ -505,6 +513,9 @@ namespace NPRiverLib.APRiver_1XD
             turbViscType = ps.turbViscType;
             // + 01 05 2025
             CalkConcentration = ps.CalkConcentration;
+            // + 19 07 2025
+            VelocityBedZerro = ps.VelocityBedZerro;
+
         }
         /// <summary>
         /// Чтение параметров задачи из файла
@@ -526,10 +537,7 @@ namespace NPRiverLib.APRiver_1XD
             t1 = LOG.GetDouble(file.ReadLine());
             t2 = LOG.GetDouble(file.ReadLine());
             t3 = LOG.GetDouble(file.ReadLine());
-
             TemperOrConcentration = LOG.GetBool(file.ReadLine());
-
-            
             outBC = (TypeBoundCond)LOG.GetInt(file.ReadLine());
             CountBoundaryMove = LOG.GetInt(file.ReadLine());
             NonLinearIterations = LOG.GetInt(file.ReadLine());
@@ -553,7 +561,8 @@ namespace NPRiverLib.APRiver_1XD
             turbViscType = (ETurbViscType)LOG.GetInt(file.ReadLine());
             // + 01 05 2025
             CalkConcentration = (BCalkConcentration)LOG.GetInt(file.ReadLine());
-
+            // + 19 07 2025
+            VelocityBedZerro = LOG.GetBool(file.ReadLine());
         }
         public virtual void Save(StreamReader file)
         {

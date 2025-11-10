@@ -46,6 +46,8 @@
             this.rbAmur = new System.Windows.Forms.RadioButton();
             this.rbPemza = new System.Windows.Forms.RadioButton();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btWaterlevelA = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.pnRF.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -193,7 +195,7 @@
             this.pnRF.Controls.Add(this.rbAmur);
             this.pnRF.Controls.Add(this.rbPemza);
             this.pnRF.Controls.Add(this.btRiverFlow);
-            this.pnRF.Location = new System.Drawing.Point(290, 136);
+            this.pnRF.Location = new System.Drawing.Point(291, 169);
             this.pnRF.Name = "pnRF";
             this.pnRF.Size = new System.Drawing.Size(192, 148);
             this.pnRF.TabIndex = 529;
@@ -236,6 +238,8 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel2.Controls.Add(this.button1);
+            this.panel2.Controls.Add(this.btWaterlevelA);
             this.panel2.Controls.Add(this.pnRF);
             this.panel2.Controls.Add(this.btLoadRateWL);
             this.panel2.Controls.Add(this.label2);
@@ -250,6 +254,27 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(490, 565);
             this.panel2.TabIndex = 530;
+            // 
+            // btWaterlevelA
+            // 
+            this.btWaterlevelA.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btWaterlevelA.Location = new System.Drawing.Point(291, 134);
+            this.btWaterlevelA.Name = "btWaterlevelA";
+            this.btWaterlevelA.Size = new System.Drawing.Size(192, 29);
+            this.btWaterlevelA.TabIndex = 530;
+            this.btWaterlevelA.Text = "Графики уровней (a)";
+            this.btWaterlevelA.UseVisualStyleBackColor = true;
+            this.btWaterlevelA.Click += new System.EventHandler(this.btWaterlevelA_Click);
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
+            this.button1.Location = new System.Drawing.Point(327, 372);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(135, 91);
+            this.button1.TabIndex = 527;
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // FormReportWL
             // 
@@ -291,5 +316,7 @@
         private System.Windows.Forms.RadioButton rbAmur;
         private System.Windows.Forms.RadioButton rbPemza;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button btWaterlevelA;
+        private System.Windows.Forms.Button button1;
     }
 }

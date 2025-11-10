@@ -42,7 +42,7 @@ namespace RiverLib.IO
         /// </summary>
         /// <param name="filename">Путь к файлу для чтения..</param>
         /// <returns>Экземпляр интерфейса<see cref="IMesh" /> interface.</returns>
-        public override void Read(string filename, ref IRiver river, uint testID = 0)
+        public override string Read(string filename, ref IRiver river, uint testID = 0)
         {
             RiverEmptyXY2D river2D = river as RiverEmptyXY2D;
             if (river2D == null)
@@ -350,7 +350,7 @@ namespace RiverLib.IO
             }
             else
                 throw new NotSupportedException("Could not load '" + filename + "' file.");
-
+            return river.Name + ": " + filename;
         }
 
         /// <summary>

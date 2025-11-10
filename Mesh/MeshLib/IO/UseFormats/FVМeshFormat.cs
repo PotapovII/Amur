@@ -31,7 +31,7 @@ namespace MeshLib
         /// </summary>
         /// <param name="filename">Путь к файлу для чтения..</param>
         /// <returns>Экземпляр интерфейса<see cref="IMesh" /> interface.</returns>
-        public void Read(string filename, ref IMesh mesh, uint testID = 0)
+        public string Read(string filename, ref IMesh mesh, uint testID = 0)
         {
             string ext = Path.GetExtension(filename);
 
@@ -41,7 +41,7 @@ namespace MeshLib
                 tmf.Read(filename, ref mesh);
                 FVComMesh fvmesh = new FVComMesh(mesh);
                 mesh = fvmesh;
-                return;
+                return filename;
             }
             if (ext == ".fmsh")
             {
@@ -70,7 +70,7 @@ namespace MeshLib
                 row++;
                 FVComMesh fvmesh = new FVComMesh(cmesh);
                 mesh = fvmesh;
-                return;
+                return filename;
             }
             //if (ext == ".node")
             //{

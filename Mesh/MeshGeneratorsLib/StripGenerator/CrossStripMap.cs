@@ -90,126 +90,140 @@ namespace MeshGeneratorsLib.StripGenerator
         public void CreateMap(TSpline spline, double WaterLevel, double ymin,
             int Count, double width, HKnot left, HKnot right, bool dryLeft, bool dryRight)
         {
-            // шаг сетки по створу
-            double dy = width / (Count - 1);
-            // левая координата створа
-            double y0 = left.X;
-            // глубина максимальная
-            double H = WaterLevel - ymin;
-            // максимальное количество узлов по глубине
-            int CountH = (int)(H / dy) + 1;
-            if (CountH < 5)
-                CountH = 5;
-                //throw new Exception("Сетка вырождена по напрявлению Z");
-            this.dy = dy;
-            this.y0 = y0;
-            this.Count = Count;
-            this.CountH = CountH;
-            this.WaterLevel = WaterLevel;
-            MEM.Alloc(Count, ref map1D);
-            MEM.Alloc(Count, CountH, ref map);
-            MEM.Alloc(Count, CountH, ref mapZ);
-            CountKnots = 0;
-
-            for (int i = 0; i < Count; i++)
+            try
             {
-                // координата текущего столбца
-                double y = y0 + dy * i;
-                // вычисляем уровень дна
-                double zeta = spline.Value(y);
-                // находим глубину 
-                double h = WaterLevel - zeta;
-                if(dryLeft == true && i == 0)
-                    map1D[i] = 1;
-                else
-                if (dryRight == true && i == Count - 1)
-                    map1D[i] = 1;
-                else
+                // шаг сетки по створу
+                double dy = width / (Count - 1);
+                // левая координата створа
+                double y0 = left.X;
+                // глубина максимальная
+                double H = WaterLevel - ymin;
+                // максимальное количество узлов по глубине
+                int CountH = (int)(H / dy) + 1;
+                if (CountH < 5)
+                    CountH = 5;
+                //throw new Exception("Сетка вырождена по напрявлению Z");
+                this.dy = dy;
+                this.y0 = y0;
+                this.Count = Count;
+                this.CountH = CountH;
+                this.WaterLevel = WaterLevel;
+                MEM.Alloc(Count, ref map1D);
+                MEM.Alloc(Count, CountH, ref map);
+                MEM.Alloc(Count, CountH, ref mapZ);
+                CountKnots = 0;
+                uint CountMax = (uint)mapZ[0].Length - 1;
+                for (int i = 0; i < Count; i++)
                 {
-                    // находим количество узлов на вертикали
-                    uint n = (uint)Math.Abs(h / dy) + 1;
-                    if (n == 1) n = 2;
-                    if (i == 0)
-                        map1D[i] = n;
+                    // координата текущего столбца
+                    double y = y0 + dy * i;
+                    // вычисляем уровень дна
+                    double zeta = spline.Value(y);
+                    // находим глубину 
+                    double h = WaterLevel - zeta;
+                    if (dryLeft == true && i == 0)
+                        map1D[i] = 1;
+                    else
+                    if (dryRight == true && i == Count - 1)
+                        map1D[i] = 1;
                     else
                     {
-                        if (map1D[i - 1] == n)
+                        // находим количество узлов на вертикали
+                        uint n = (uint)Math.Abs(h / dy) + 1;
+                        if (n == 1) n = 2;
+                        if (i == 0)
                             map1D[i] = n;
                         else
-                            if (map1D[i - 1] > n)
-                            map1D[i] = map1D[i - 1] - 1;
-                        else
-                            map1D[i] = map1D[i - 1] + 1;
-                    }
-                }
-            }
-            switch (BoundaryClose)
-            {
-                case 0: // обратное сглаживание - артефактная сетка на крутых берегах
-                    if (Math.Abs(map1D[Count - 1] - map1D[Count - 2]) > 1)
-                    {
-                        // цикл коррекции
-                        for (int i = Count - 1; i > 0; i--)
                         {
-                            int dn = (int)map1D[i] - (int)map1D[i - 1];
-                            if (Math.Abs(dn) > 1)
-                            {
-                                if (dn > 0)
-                                    map1D[i - 1] = map1D[i] - 1;
-                                else
-                                    map1D[i - 1] = map1D[i] + 1;
-                            }
-
+                            if (map1D[i - 1] == n)
+                                map1D[i] = n;
+                            else
+                                if (map1D[i - 1] > n)
+                                map1D[i] = map1D[i - 1] - 1;
+                            else
+                                map1D[i] = map1D[i - 1] + 1;
                         }
                     }
-                    break;
-                case 1:
-                    if (Math.Abs(map1D[Count - 1] - map1D[Count - 2]) > 2)
-                    {
-                        // цикл коррекции
-                        for (int i = Count - 1; i > 0; i--)
-                        {
-                            int dn = (int)map1D[i] - (int)map1D[i - 1];
-                            if (Math.Abs(dn) > 2)
-                            {
-                                if (dn > 0)
-                                    map1D[i - 1] = map1D[i] - 2;
-                                else
-                                    map1D[i - 1] = map1D[i] + 2;
-                            }
-
-                        }
-                    }
-                    break;
-            }
-
-            for (int i = 0; i < Count; i++)
-            {
-                // координата текущего столбца
-                double y = y0 + dy * i;
-                // вычисляем уровень дна
-                double zeta = spline.Value(y);
-                // находим глубину 
-                double h = WaterLevel - zeta;
-
-                // находим количество узлов на вертикали
-                uint n = map1D[i];
-                if (n == 1)
-                {
-                    mapZ[i][0] = WaterLevel;
-                    map[i][0] = CountKnots;
-                    CountKnots++;
                 }
-                else
+                switch (BoundaryClose)
                 {
-                    double dh = h / (n - 1);
-                    for (int j = 0; j < n; j++)
+                    case 0: // обратное сглаживание - артефактная сетка на крутых берегах
+                        if (Math.Abs(map1D[Count - 1] - map1D[Count - 2]) > 1)
+                        {
+                            // цикл коррекции
+                            for (int i = Count - 1; i > 0; i--)
+                            {
+                                int dn = (int)map1D[i] - (int)map1D[i - 1];
+                                if (Math.Abs(dn) > 1)
+                                {
+                                    if (dn > 0)
+                                        map1D[i - 1] = map1D[i] - 1;
+                                    else
+                                    {
+                                        
+                                        map1D[i - 1] = map1D[i] + 1;
+                                    }
+                                }
+                            }
+                            for (int i = Count - 1; i > 0; i--)
+                                if (map1D[i - 1] > CountMax)
+                                    map1D[i - 1] = CountMax;
+                        }
+                        break;
+                    case 1:
+                        if (Math.Abs(map1D[Count - 1] - map1D[Count - 2]) > 2)
+                        {
+                            // цикл коррекции
+                            for (int i = Count - 1; i > 0; i--)
+                            {
+                                int dn = (int)map1D[i] - (int)map1D[i - 1];
+                                if (Math.Abs(dn) > 2)
+                                {
+                                    if (dn > 0)
+                                        map1D[i - 1] = map1D[i] - 2;
+                                    else
+                                        map1D[i - 1] = map1D[i] + 2;
+                                }
+
+                            }
+                        }
+                        break;
+                }
+
+                for (int i = 0; i < Count; i++)
+                {
+                    // координата текущего столбца
+                    double y = y0 + dy * i;
+                    // вычисляем уровень дна
+                    double zeta = spline.Value(y);
+                    // находим глубину 
+                    double h = WaterLevel - zeta;
+
+                    // находим количество узлов на вертикали
+                    uint n = map1D[i];
+                    if (n == 1)
                     {
-                        mapZ[i][j] = WaterLevel - dh * j;
-                        map[i][j] = CountKnots;
+                        mapZ[i][0] = WaterLevel;
+                        map[i][0] = CountKnots;
                         CountKnots++;
                     }
+                    else
+                    {
+                        double dh = h / (n - 1);
+                        for (int j = 0; j < n; j++)
+                        {
+                            mapZ[i][j] = WaterLevel - dh * j;
+                            map[i][j] = CountKnots;
+                            CountKnots++;
+                        }
+                    }
                 }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                //Logger.m
             }
         }
 

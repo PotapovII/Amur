@@ -41,7 +41,7 @@ namespace NPRiverLib.IO
             SupportImport = true;
             SupportExport = true;
         }
-        public override void Read(string filename, ref IRiver river, uint testID = 0)
+        public override string Read(string filename, ref IRiver river, uint testID = 0)
         {
             // расширение файла
             if (testID == 0) // Загрузка по умолчанию
@@ -51,7 +51,7 @@ namespace NPRiverLib.IO
                 {
                     case Ext_prf:
                         Read_prf(filename, ref river);
-                        break;
+                        return river.Name + ": " + filename;
                 }
             }
             else
@@ -62,13 +62,17 @@ namespace NPRiverLib.IO
                 filter += " All files (*.*)|*.*";
                 ofd.Filter = filter;
                 if (ofd.ShowDialog() == DialogResult.OK)
+                {
                     Read_prf(ofd.FileName, ref river);
-                return;
+                    return river.Name + ": " + filename;
+                }
             }
             else
             {
                 Test_Cannal_PW_1XD.GetTest(ref river, testID);
+                return river.Name;
             }
+            return "Тестовая задача не выбрана";
         }
         /// <summary>
         /// Сохраняем сетку на диск речной формат данных 1DX для створа

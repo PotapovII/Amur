@@ -39,7 +39,8 @@ namespace RiverDB.ConvertorOut
     using ConnectLib;
     using RiverDB.ConvertorIn;
     using MeshLib.Locators;
-
+    using CommonLib.Function;
+    using RiverDB.RAnalytics;
 
     public partial class FCreateCloudMesh : Form
     {
@@ -376,9 +377,12 @@ namespace RiverDB.ConvertorOut
                     }
                 }
                 var Ve = points[points.Count - 1].Attributes[3];
-                points[points.Count - 1].Attributes[3] = Ve * velOld.x;
-                points[points.Count - 1].Attributes[4] = Ve * velOld.y;
-                points[points.Count - 1].timeGroupID = ID;
+                if (velOld != null)
+                {
+                    points[points.Count - 1].Attributes[3] = Ve * velOld.x;
+                    points[points.Count - 1].Attributes[4] = Ve * velOld.y;
+                    points[points.Count - 1].timeGroupID = ID;
+                }
                 Console.WriteLine(points[points.Count - 1].ToString());
             }
             return points;
@@ -396,18 +400,21 @@ namespace RiverDB.ConvertorOut
             try
             {
                 // Проход по контурам фигур
-                for (int area = 0; area < Area.Count; area++)
+                if (Area != null)
                 {
-                    IMFigura fig = Area.Figures[area];
-                    if (fig.FType == FigureType.FigureSubArea)
+                    for (int area = 0; area < Area.Count; area++)
                     {
-                        for (int i = 0; i < points.Count; i++)
+                        IMFigura fig = Area.Figures[area];
+                        if (fig.FType == FigureType.FigureSubArea)
                         {
-                            IHPoint p = new HPoint(points[i]);
-                            if (fig.Contains(p) == true)
+                            for (int i = 0; i < points.Count; i++)
                             {
-                                points[i].Attributes[AtrCK.idx_ks] = fig.ks;
-                                points[i].Attributes[AtrCK.idx_Ice] = fig.Ice;
+                                IHPoint p = new HPoint(points[i]);
+                                if (fig.Contains(p) == true)
+                                {
+                                    points[i].Attributes[AtrCK.idx_ks] = fig.ks;
+                                    points[i].Attributes[AtrCK.idx_Ice] = fig.Ice;
+                                }
                             }
                         }
                     }
@@ -1071,7 +1078,7 @@ namespace RiverDB.ConvertorOut
 
                     string Data = GetMeshData();
 
-                    FCrossSection form = new FCrossSection(s, Deapth, Vx, Vy, Vn, Vt, Data);
+                    FCrossSection form = new FCrossSection(crossLine, s, Deapth, Vn, Vt, Data);
                     form.Show();
                 }
                 else
@@ -2003,18 +2010,98 @@ namespace RiverDB.ConvertorOut
             //attribs[idx++] = double.Parse(tbKs.Text, MEM.formatter);
 
         }
+        /// <summary>
+        /// Анализ полей в створе
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsb_CrossAnalyses_Click(object sender, EventArgs e)
+        {
+            IHLine crossLine = gdI_EditControlClouds1.GetCrossLine();
+            bool dataFlag = false;
+            if (crossLine != null)
+            {
+                Area = gdI_EditControlClouds1.Area;
+                if (Area?.Ready() == false)
+                {
+                    tbMessage.Text = "Контуры области не определены";
+                    return;
+                }
+                HPoint A = new HPoint(crossLine.A);
+                HPoint B = new HPoint(crossLine.B);
+                if (A.X > B.X)
+                {
+                    HPoint C = A; A = B; B = C;
+                }
+                IHPoint[] points = { A, B };
+                // параметры сетки
+                SetCreateMeshOptions();
+                ISavePoint sp = new SavePoint("Створ");
+                for (int i = 0; i < cListBoxDates.Items.Count; i++)
+                {
+                    CheckState flag = cListBoxDates.GetItemCheckState(i);
+                    if (flag == CheckState.Checked)
+                    {
+                        string filter = " ( ";
+                        string d = cListBoxDates.Items[i].ToString();
+                        DateTime dataA = DateTime.Parse(d);
+                        string strData = dataA.ToString("yyyy-MM-dd ");
+                        filter += "'" + strData + "',";
+                        filter += " '2100.01.01' ) ";
+                        // фильтр для облака точек наблюдения
+                        pointsTable = GetSelectDataTable(filter);
+                        // облака данных для генератора сетки
+                        IPolygon cloudPoints = GetCloudPoints();
+                        //MeshNet meshRiver = (MeshNet)cloudPoints.Triangulate(options, quality);
+                        MeshNet cMesh = (MeshNet)cloudPoints.Triangulate(options, quality);
+                        if (crossLine != null && cMesh != null)
+                        {
+                            IFEMesh bmesh = null;
+                            double[][] values = null;
+                            MeshAdapter.ConvertFrontRenumberationAndCutting(ref bmesh, ref values, cMesh, Direction.toRight);
+                            double[] x = bmesh.GetCoords(0);
+                            double[] y = bmesh.GetCoords(1);
+                            ISavePoint spLine = new SavePoint("Тест");
+                            LocatorTriMeshFacet tLine = new LocatorTriMeshFacet(bmesh);
+                            tLine.SetCrossLine(points);
+                            int indxDeapth = 0; // измеренная глубина
+                            
+                            double[] s = null;
+                            double[] Deapth = null;
+                            double[] SDeapth = null;
+                            //tLine.GetCurve(values[indxDeapth], ref s, ref Deapth);
+                            indxDeapth = 1; // срезаная глубина
+                            tLine.GetCurve(values[indxDeapth], ref s, ref SDeapth);
+                            //if (s == null || Deapth == null)
+                            //    Logger.Instance.Error("Створ не определен", "btShowTargetLine_Click");
+                            //if(s != null && Deapth != null)
+                            //{
+                            //    IDigFunction DeapthDF = new DigFunction(s, Deapth, "Глубина створа на" + strData);
+                            //    sp.AddCurve(DeapthDF);
+                            //}
+                            if (s != null && SDeapth != null)
+                            {
+                                IDigFunction SDeapthDF = new DigFunction(s, SDeapth, "Ср.глубина на" + strData);
+                                sp.AddCurve(SDeapthDF);
+                            }
+                            //int indxVx = 3;
+                            //int indxVy = 4;
+                            // скорости на сободной поверхности потока
+                            //IDigFunction VelocityX = new DigFunction(s, values[indxVx], "Скорость по X на strData");
+                            //IDigFunction VelocityY = new DigFunction(s, values[indxVy], "Скорость по Y на strData");
+                            //sp.AddCurve(VelocityX);
+                            //sp.AddCurve(VelocityY);
+                            dataFlag = true;
+                        }
+                    }
+                }
+                if(dataFlag == true)
+                {
+                    FVCurves formCL = new FVCurves(sp);
+                    formCL.Show();
+                }
+            }
+        }
         #endregion
-        //private void button1_Click(object sender, EventArgs e)
-        //{
-        //    CreateAreaMesh();
-        //}
-        //private void btSaveCloud_Click(object sender, EventArgs e)
-        //{
-        //    SaveNodes();
-        //}
-        //private void btMrf_Click(object sender, EventArgs e)
-        //{
-        //    CreateFileTask2D();
-        //}
     }
 }

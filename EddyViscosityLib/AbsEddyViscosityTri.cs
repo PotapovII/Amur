@@ -189,6 +189,20 @@ namespace EddyViscosityLib
         /// <summary>
         /// Расчет вихревой вязкости 
         /// </summary>
+        /// <param name="eddyViscosity">вихревая вязкость</param>
+        /// <param name="Ux">осевая/окружная/осевая/скорость потока</param>
+        /// <param name="Vy">поперечная/радиальная скорость потока</param>
+        /// <param name="Vz">вертикальная скорость потока</param>
+        /// <param name="Phi">функция тока</param>
+        /// <param name="Vortex">вихрь</param>
+        /// <param name="dt">шаг по времени</param>
         public abstract void SolveTask(ref double[] eddyViscosity, double[] Ux, double[] Vy, double[] Vz, double[] Phi, double[] Vortex, double dt);
+        /// <summary>
+        /// Расчет вихревой вязкости 
+        /// </summary>
+        /// <param name="eddyViscosity">вихревая вязкость</param>
+        /// <param name="Ux">осевая/окружная/осевая/скорость потока</param>
+        /// <param name="dt">шаг по времени</param>
+        public abstract void SolveTask(ref double[] eddyViscosity, double[] Ux, double dt);
     }
 }

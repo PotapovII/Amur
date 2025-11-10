@@ -155,6 +155,10 @@
       <Project>{3330d65d-e283-47a3-b43c-ce8c4eb2b201}</Project>
       <Name>RenderLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RiverDataBase\RiverDB\RiverDB.csproj">
+      <Project>{754d1a25-333c-4be5-b275-60b22f3e3cb8}</Project>
+      <Name>RiverDB</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\Conf.txt">

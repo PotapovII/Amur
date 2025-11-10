@@ -38,18 +38,19 @@ namespace NPRiverLib.IO
         /// </summary>
         /// <param name="filename">Путь к файлу для чтения..</param>
         /// <returns>Экземпляр интерфейса<see cref="IMesh" /> interface.</returns>
-        public override void Read(string filename, ref IRiver river, uint testID = 0) 
+        public override string Read(string filename, ref IRiver river, uint testID = 0) 
         {
             if (river as RiverEmpty1XDCircle != null)
             {
                 ((RiverEmpty1XDCircle)river).DefaultCalculationDomain();
-                return;
+                return ((RiverEmpty1XDCircle)river).Name;
             }
             if (river as RiverEmpty1XDTest01 != null)
             {
                 ((RiverEmpty1XDTest01)river).DefaultCalculationDomain();
-                return;
+                return ((RiverEmpty1XDTest01)river).Name;
             }
+            return "Тестовая задача не выбрана";
         }
         /// <summary>
         /// Сохраняем сетку на диск.

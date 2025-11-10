@@ -29,8 +29,8 @@ namespace RenderLib
         /// </summary>
         private void InitializeComponent()
         {
-            RenderLib.ColorScheme colorScheme2 = new RenderLib.ColorScheme();
-            RenderLib.RenderOptionsCurves renderOptionsCurves2 = new RenderLib.RenderOptionsCurves();
+            RenderLib.ColorScheme colorScheme3 = new RenderLib.ColorScheme();
+            RenderLib.RenderOptionsCurves renderOptionsCurves3 = new RenderLib.RenderOptionsCurves();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btDel = new System.Windows.Forms.Button();
@@ -165,6 +165,9 @@ namespace RenderLib
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.saveFileDialog2 = new System.Windows.Forms.SaveFileDialog();
+            this.btSaveGD = new System.Windows.Forms.Button();
+            this.panel13 = new System.Windows.Forms.Panel();
+            this.btLoadGD = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -192,6 +195,7 @@ namespace RenderLib
             ((System.ComponentModel.ISupportInitialize)(this.nUD_formatText)).BeginInit();
             this.panel4.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.panel13.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -1315,6 +1319,7 @@ namespace RenderLib
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.Silver;
+            this.tabPage1.Controls.Add(this.panel13);
             this.tabPage1.Controls.Add(this.panel11);
             this.tabPage1.Controls.Add(this.panel4);
             this.tabPage1.Controls.Add(this.label21);
@@ -1367,7 +1372,7 @@ namespace RenderLib
             this.nUD_formatReper.Size = new System.Drawing.Size(36, 23);
             this.nUD_formatReper.TabIndex = 106;
             this.nUD_formatReper.Value = new decimal(new int[] {
-            6,
+            2,
             0,
             0,
             0});
@@ -1400,7 +1405,7 @@ namespace RenderLib
             this.nUD_formatText.Size = new System.Drawing.Size(37, 23);
             this.nUD_formatText.TabIndex = 100;
             this.nUD_formatText.Value = new decimal(new int[] {
-            6,
+            2,
             0,
             0,
             0});
@@ -1544,14 +1549,14 @@ namespace RenderLib
             // renderControl1
             // 
             this.renderControl1.BackColor = System.Drawing.Color.White;
-            colorScheme2.Background = System.Drawing.Color.White;
-            colorScheme2.FontReper = new System.Drawing.Font("Arial", 8F);
-            colorScheme2.FontValue = null;
-            colorScheme2.formatTextReper = ((uint)(2u));
-            this.renderControl1.colorScheme = colorScheme2;
+            colorScheme3.Background = System.Drawing.Color.White;
+            colorScheme3.FontReper = new System.Drawing.Font("Arial", 8F);
+            colorScheme3.FontValue = null;
+            colorScheme3.formatTextReper = ((uint)(2u));
+            this.renderControl1.colorScheme = colorScheme3;
             this.renderControl1.Location = new System.Drawing.Point(228, 3);
             this.renderControl1.Name = "renderControl1";
-            this.renderControl1.renderOptions = renderOptionsCurves2;
+            this.renderControl1.renderOptions = renderOptionsCurves3;
             this.renderControl1.Size = new System.Drawing.Size(25, 23);
             this.renderControl1.TabIndex = 0;
             this.renderControl1.Text = "renderControl1";
@@ -1669,6 +1674,40 @@ namespace RenderLib
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // btSaveGD
+            // 
+            this.btSaveGD.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btSaveGD.Location = new System.Drawing.Point(12, 14);
+            this.btSaveGD.Name = "btSaveGD";
+            this.btSaveGD.Size = new System.Drawing.Size(125, 29);
+            this.btSaveGD.TabIndex = 98;
+            this.btSaveGD.Text = "Сохранить";
+            this.btSaveGD.UseVisualStyleBackColor = true;
+            this.btSaveGD.Click += new System.EventHandler(this.btSaveGD_Click);
+            // 
+            // panel13
+            // 
+            this.panel13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel13.BackColor = System.Drawing.SystemColors.Control;
+            this.panel13.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel13.Controls.Add(this.btLoadGD);
+            this.panel13.Controls.Add(this.btSaveGD);
+            this.panel13.Location = new System.Drawing.Point(8, 181);
+            this.panel13.Name = "panel13";
+            this.panel13.Size = new System.Drawing.Size(287, 60);
+            this.panel13.TabIndex = 107;
+            // 
+            // btLoadGD
+            // 
+            this.btLoadGD.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btLoadGD.Location = new System.Drawing.Point(150, 14);
+            this.btLoadGD.Name = "btLoadGD";
+            this.btLoadGD.Size = new System.Drawing.Size(125, 29);
+            this.btLoadGD.TabIndex = 99;
+            this.btLoadGD.Text = "Загрузить";
+            this.btLoadGD.UseVisualStyleBackColor = true;
+            this.btLoadGD.Click += new System.EventHandler(this.btLoadGD_Click);
+            // 
             // GDI_Curves_Control
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1723,6 +1762,7 @@ namespace RenderLib
             this.panel4.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.panel13.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1866,5 +1906,8 @@ namespace RenderLib
         private System.Windows.Forms.Button tbCurveA;
         private System.Windows.Forms.TextBox tbError;
         private System.Windows.Forms.Button btCalkMeasure;
+        private System.Windows.Forms.Panel panel13;
+        private System.Windows.Forms.Button btLoadGD;
+        private System.Windows.Forms.Button btSaveGD;
     }
 }

@@ -38,6 +38,11 @@ namespace RiverLib
     public class WaterTaskEliz2020 : WElizParameter, IRiver
     {
         /// <summary>
+        /// Получить буффер обмена параметрами
+        /// </summary>
+        /// <param name="args"></param>
+        public virtual void GetRiverTaskArgs(ref ITaskArgs args) { args = null; }
+        /// <summary>
         /// Готовность задачи к расчету
         /// </summary>
         public bool TaskReady() => true;

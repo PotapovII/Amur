@@ -4,20 +4,18 @@
 //---------------------------------------------------------------------------
 //        кодировка : 04.10.2020 Потапов И.И. & Потапов Д.И.
 //---------------------------------------------------------------------------
+//       21.08.2025 + фильтрации
+//---------------------------------------------------------------------------
 namespace RiverDB.FormsDB
 {
     using System;
     using System.Data;
     using System.Linq;
     using System.Windows.Forms;
-
     using ConnectLib;
-
     public partial class Place : Form
     {
-        //public static string SConnection = MainForm.SConnection;//string SConnection = Settings.connectpath;
         PlaceUp form;
-        //public Microsoft.Office.Interop.Excel.Application excelapp = new Microsoft.Office.Interop.Excel.Application();
         public string TName;
         public string VName;
         int[] sizeColum;
@@ -123,6 +121,21 @@ namespace RiverDB.FormsDB
             double AllWidth = dataGridView1.Width;
             for (int i = 0; i < sizeColum.Length; i++)
                 dataGridView1.Columns[i].Width = (int)(sizeColum[i] * AllWidth / sum);
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            //char[] charsToTrim = { ' ' };
+            //string pole = textBox1.Text.Trim(charsToTrim);
+            //string strAccessSelect =
+            //    "select[place_id] as[код],[place_name]as[название],[place_x]as[x-координата],[place_y]as[y-координата]," +
+            //    "[place_height]as[отметка репера],[place_nullheight]as[положение нуля]" +
+            //    "from dbo.place where place_Name LIKE @POLE ";
+            //DataTable mapTable = ConnectDB.SelectTableBystrKey(strAccessSelect, TName, pole);
+            //dataGridView1.DataSource = mapTable;
+            //Place_Resize(sender, e);
+            //dataGridView1.RowHeadersVisible = false;
+            //dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
     }
 }

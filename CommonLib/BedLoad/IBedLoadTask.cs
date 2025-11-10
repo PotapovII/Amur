@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2019 - 2024  Potapov Igor Ivanovich, Khabarovsk
+Copyright (c) 2019 - 2025  Potapov Igor Ivanovich, Khabarovsk
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -36,9 +36,11 @@ OTHER DEALINGS IN THE SOFTWARE.
 //---------------------------------------------------------------------------
 namespace CommonLib.BedLoad
 {
+    
     using System;
     using System.ComponentModel;
-
+    
+    using CommonLib.IO;
     /// <summary>
     /// Модель движения донного матеиала
     /// </summary>
@@ -105,6 +107,11 @@ namespace CommonLib.BedLoad
         /// количество в обзем случае определяется через маркеры 
         /// границ сетеи</param>
         void SetTask(IMesh mesh, double[] Zeta0, double[] Roughness, IBoundaryConditions BConditions);
+        /// <summary>
+        /// Получить буффер обмена параметрами
+        /// </summary>
+        /// <param name="args"></param>
+        void SetTaskArgs(ITaskArgs args);
         /// <summary>
         /// Вычисление изменений формы донной поверхности 
         /// на одном шаге по времени по модели 

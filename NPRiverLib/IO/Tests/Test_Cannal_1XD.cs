@@ -23,7 +23,6 @@ namespace NPRiverLib.IO._1XD.Tests
     using MeshGeneratorsLib.StripGenerator;
 
     using NPRiverLib.APRiver_1XD;
-    using NPRiverLib.APRiver_1XD.River2D_FVM_ke;
     using CommonLib.BedLoad;
     using CommonLib.Tasks;
 
@@ -42,11 +41,11 @@ namespace NPRiverLib.IO._1XD.Tests
             list.Add("Загрузка по умолчанию");          // 0
             list.Add("Канал с выбранной нативной геометрией"); // 1
 
-            list.Add("Прямой канал - шель (Стокс)");        // 2
-            list.Add("Прямой канал - шель (Рейнольдс)");    // 3
+            list.Add("Прямой канал - шель (Рейнольдс)");    // 2
 
-            list.Add("Канал с уступом (Стокс)");     // 4
-            list.Add("Канал с уступом (Рейнольдс)"); // 5
+            list.Add("Канал с уступом (Стокс)");     // 3
+            list.Add("Канал с уступом (Рейнольдс)"); // 4
+            list.Add("Канал с уступом (Рейнольдс) dt");   // 5
 
             list.Add("Канал с плавным уступом (Стокс)");     // 6
             list.Add("Канал с плавным уступом (Рейнольдс)"); // 7
@@ -60,7 +59,12 @@ namespace NPRiverLib.IO._1XD.Tests
             list.Add("Канал с волнистым дном и соплом (Стокс)");        // 12
             list.Add("Канал с волнистым дном и соплом (Рейнольдс)");    // 13
 
-
+            list.Add("Канал Али h = 0.05 L = 0.36");    // 14
+            list.Add("Канал Али h = 0.05 L = 0.40");    // 15
+            list.Add("Канал Али h = 0.05 L = 0.5");    // 16
+            list.Add("Канал Али h = 0.05 L = 0.6");    // 17
+            list.Add("Канал Али h = 0.05 L = 0.7");    // 18
+            list.Add("Канал Али h = 0.05 L = 1.4");    // 19
             return list;
         }
         public static void GetTest(ref IRiver river, uint testTaskID = 0)
@@ -93,14 +97,14 @@ namespace NPRiverLib.IO._1XD.Tests
             p = new FEMParams_1XD()
             {
                 // Количество КЭ для давления по Х
-                FE_X = 80,
+                FE_X = 210,
                 // Количество КЭ для давления по Х
                 FE_Y = 30,
                 // Граничные условия для скоростей на верхней границе области
                 bcTypeOnWL = TauBondaryCondition.adhesion,
                 // граничные условия на выходе из канала
-                outBC = TypeBoundCond.Neumann0,
-                //outBC = TypeBoundCond.Dirichlet0,
+                //outBC = TypeBoundCond.Neumann0,
+                outBC = TypeBoundCond.Dirichlet0,
                 // Количество инераций по движению узлов границы
                 CountBoundaryMove = 1,
                 // Длина водотока на 1 участке (вход потока)
@@ -164,12 +168,15 @@ namespace NPRiverLib.IO._1XD.Tests
                 // Параметр неявности схемы при шаге по времениПараметр неявности схемы при шаге по времени
                 theta = 0.5,
                 // Постоянная вихревая вязкость
-                mu_const = 1,
+                mu_const = 10,
                 // модель турбулентной вязкости
                 turbViscType = ETurbViscType.EddyViscosityConst,
                 // Флаг для расчета взвешенных наносов 
                 //CalkConcentration = BCalkConcentration.NeCalkConcentration
-                CalkConcentration = BCalkConcentration.NotCalkConcentration
+                CalkConcentration = BCalkConcentration.NotCalkConcentration,
+                // + 19 07 2025
+                // Обнулять скорости на донной поверхности
+                VelocityBedZerro = false
             };
             if (testTaskID % 2 == 1) // стационарные у-я Рейнольдса 
                 p.ReTask = 1;
@@ -181,9 +188,9 @@ namespace NPRiverLib.IO._1XD.Tests
             {
                 // Прямой канал- шель
                 case 2:
-                case 3:
                     try
                     {
+                        p.ReTask = 1;
                         CreateMesh.GetRectangleTriMesh(ref triMesh, p.FE_X, p.FE_Y, p.Lx, p.Ly, 1);
                         
                         double y0 = 0, Phi_0 = 0;
@@ -194,22 +201,46 @@ namespace NPRiverLib.IO._1XD.Tests
                         bcPhi[0] = new DigFunctionPolynom(y0, Phi_0, y1, Phi_H3, y2, Phi_2H3, y3, Phi_H);
                         // функция тока на выходе
                         bcPhi[1] = new DigFunctionPolynom(y0, Phi_0, y1, Phi_H3, y2, Phi_2H3, y3, Phi_H);
-
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
                     break;
+                case 3: // Канал с уступом
                 case 4: // Канал с уступом
                 case 5:
                     try
                     {
-                        p.Len1 = 1;
-                        p.Len2 = 1;
-                        p.Wen1 = 4;
-                        p.Wen2 = 36;
-                        p.V2_inlet = 1;
+                        if (testTaskID == 3) p.ReTask = 2;  // Стокс
+                        if (testTaskID == 4) p.ReTask = 1;  // Навье - Стокс стац
+                        if (testTaskID == 5) p.ReTask = 0;  // Навье - Стокс нестац
+                        //
+                        p.Len1 = 0.52;
+                        p.Len2 = 0.49;
+                        p.Wen1 = 10;
+                        p.Wen2 = 30;
+                        //
+                        //p.Len1 = 1;
+                        //p.Len2 = 1;
+                        //p.Wen1 = 10;
+                        //p.Wen2 = 30;
+                        //p.V2_inlet = 1;
+                        //p.mu_const = 10;
+                        //
+                        //Re=10
+                        //p.mu_const = 20.8;
+                        //p.V2_inlet = 0.2;
+                        //Re=100
+                        //p.mu_const = 2.08;
+                        //p.V2_inlet = 0.2;
+                        //Re=389
+                        p.mu_const = 2.16;
+                        p.V2_inlet = 0.81;
+                        //Re=1000
+                        //p.mu_const = 1.872;
+                        //p.V2_inlet = 1.8;
+                        //
                         double H1 = p.Len1;
                         double H2 = p.Len2;
                         double H = H1 + H2;
@@ -249,10 +280,18 @@ namespace NPRiverLib.IO._1XD.Tests
                         bcPhi[1] = new DigFunctionPolynom(y0, Phi_0, y1, Phi_H3, y2, Phi_2H3, y3, Phi_H);
 
                         StepGenerator sg = new StepGenerator();
-                        int Nx1 = 20;
-                        int Nx2 = 120;
+                        //int Nx1 = 200;
+                        //int Ny1 = 10;
+                        ////
+                        //int Nx2 = 500;
+                        //int Ny2 = 10;
+                        //
+                        int Nx1 = 400;
                         int Ny1 = 20;
+                        //
+                        int Nx2 = 800;
                         int Ny2 = 20;
+                        //
                         sg.Set(Nx1, Nx2, Ny1, Ny2, H1, H2, L1, L2);
 
                         sg.GetMesh(ref triMesh);
@@ -429,7 +468,9 @@ namespace NPRiverLib.IO._1XD.Tests
                         //IDigFunction centr_fun = new  DigFunction(ox2, oy, "Дно");
                         double NN = 1;
                         double amplitude = - 0.25;
-                        IDigFunction centr_fun = new FunctionSin(b * amplitude, NN, ox2, oy);
+                        
+                        IDigFunction centr_fun = new FunctionSinDune(b * amplitude, NN, ox2, oy);
+                        //IDigFunction centr_fun = new FunctionSin(b * amplitude, NN, ox2, oy);
                         IDigFunction right_fun = new DigFunction(ox3, oy, "Дно");
                         IDigFunction[] fs = { left_fun, centr_fun, right_fun };
                         IDigFunction fun = new PieceDigFunction(fs);
@@ -449,21 +490,8 @@ namespace NPRiverLib.IO._1XD.Tests
                         //p.CalkConcentration = BCalkConcentration.NeCalkConcentration;
                         CreateMesh.GetRectangleTriMesh(ref triMesh, p.FE_X, p.FE_Y, p.Lx, p.Ly, 1);
 
-
-                        //double y0 = 0, Phi_0 = 0;
-                        //double y1 = p.Ly / 3, Phi_H3 = 14.0 / 81 * p.V2_inlet * p.Ly;
-                        //double y2 = 2 * p.Ly / 3, Phi_2H3 = 40.0 / 81 * p.V2_inlet * p.Ly;
-                        //double y3 = p.Ly, Phi_H = 2.0 / 3.0 * p.V2_inlet * p.Ly;
-
-                        //double y0 = 0, Phi_0 = 0;
-                        //double y1 = p.Ly / 3, Phi_H3 = 14.0 / 81 * p.V2_inlet * p.Ly;
-                        //double y2 = 2 * p.Ly / 3, Phi_2H3 = 40.0 / 81 * p.V2_inlet * p.Ly;
-                        //double y3 = p.Ly, Phi_H = 2.0 / 3.0 * p.V2_inlet * p.Ly;
-
-
                         double y0, Phi_0, y1, Phi_H3, y2, Phi_2H3, y3, Phi_H;
                         double Q = V0 * b;
-
                         y0 = h;                    
                         y1 = h + b / 3;            
                         y2 = h + 2 * b / 3;        
@@ -473,11 +501,8 @@ namespace NPRiverLib.IO._1XD.Tests
                         Phi_H3 = 14.0 / 81 * Q;
                         Phi_2H3 = 40.0 / 81 * Q;
                         Phi_H = 2.0 / 3.0 * Q;
-
                         // функция тока на входе
                         bcPhi[0] = new DigFunctionPolynom(y0, Phi_0, y1, Phi_H3, y2, Phi_2H3, y3, Phi_H);
-
-                        
 
                         // симметрия
                         y0 = 0;              
@@ -499,7 +524,227 @@ namespace NPRiverLib.IO._1XD.Tests
                         p.turbViscType = ETurbViscType.VanDriest1956;
                         p.typeAlgebra = TypeAlgebra.GMRES_P_Sparce;
                         //p.typeAlgebra = TypeAlgebra.LUTape;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    break;
+                // Прямой канал Али
+                case 14:
+                case 15:
+                case 16:
+                case 17:
+                case 18:
+                case 19:
+                    try
+                    {
+                        p.ReTask = 1;
+                        int Ny = 800;
+                        // Количество КЭ для давления по Х
+                        p.FE_X = Ny;
+                        //double amplitude = -0.03;
+                        //double Lambda = 0.35;
+                        //if (testTaskID == 15)
+                        //{
+                        //    amplitude = -0.06;
+                        //    Lambda = 0.5;
+                        //}
+                        //if (testTaskID == 16)
+                        //{
+                        //    amplitude = -0.09;
+                        //    Lambda = 0.65;
+                        //}
+                        bool Ali = false;
+                        double amplitude = 0;
+                        double Lambda = 0;
+                        
+                        // ширина струи 2
+                        double b_Jet = 0;
+                        // выстоа струи 1 вариант
+                        double h_Jet = 0;
+                        double kr = 0;
+                        double H_channal = 0;
+                        double L_fartuk = 0;
+                        double L_channnal = 0;
+                        if (Ali)
+                        {
+                            amplitude = 0;
+                            Lambda = 0.4;
+                            if (testTaskID == 15)
+                            {
+                                Lambda = 0.5;
+                            }
+                            if (testTaskID == 16)
+                            {
+                                Lambda = 0.6;
+                            }
+                            if (testTaskID == 17)
+                            {
+                                Lambda = 0.7;
+                            }
+                            if (testTaskID == 18)
+                            {
+                                Lambda = 0.9;
+                            }
+                            if (testTaskID == 19)
+                            {
+                                Lambda = 1.2;
+                            }
+                            // ширина струи 2
+                            b_Jet = 0.0118;
+                            // выстоа струи 1 вариант
+                            h_Jet = 0.0515 - b_Jet / 2;
+                            kr = -0.11;
+                            H_channal = 0.2;
+                            L_fartuk = 0.05;
+                            L_channnal = 3;
+                        }
+                        else // Dey
+                        {
+                            amplitude = 0;
+                            Lambda = 0.4;
+                            if (testTaskID == 15)
+                            {
+                                Lambda = 0.5;
+                            }
+                            if (testTaskID == 16)
+                            {
+                                Lambda = 0.6;
+                            }
+                            if (testTaskID == 17)
+                            {
+                                Lambda = 0.7;
+                            }
+                            if (testTaskID == 18)
+                            {
+                                Lambda = 0.9;
+                            }
+                            if (testTaskID == 19)
+                            {
+                                Lambda = 1.2;
+                            }
+                            // ширина струи 2
+                            b_Jet = 0.015;
+                            // выстоа струи 1 вариант
+                            h_Jet = 0.0715 - b_Jet / 2;
+                            kr = -0.07;
+                            H_channal = 0.163;
+                            L_fartuk = 0.4;
+                            L_channnal = 3;
+                        }
+                        
+                        amplitude = kr * Lambda;
 
+                        p.Len1 = h_Jet - b_Jet / 2;
+                        p.Len2 = b_Jet;
+                        p.Len3 = H_channal - p.Len1 - p.Len2;
+                        // выстоа струи 1 вариант
+                        //p.Wen1 = 0.075;
+                        // выстоа струи 2 вариант
+                        p.Wen1 = L_fartuk;
+                        p.Wen2 = Lambda; // 0.5;
+                        p.Wen3 = L_channnal - L_fartuk - Lambda;
+
+                        p.mu_const = 0.06;
+
+                        p.V1_inlet = 0;
+                        p.V2_inlet = 1.21;
+                        p.V3_inlet = 0;
+
+                        double h = p.Len1;
+                        double b = p.Len2;
+
+                        double LX = p.Lx;
+                        double L1 = p.Wen1;
+                        double L2 = p.Wen2;
+
+                        double H = p.Ly;
+                        double V0 = p.V2_inlet;
+                        double V1 = V0 * b / H;
+
+                        double[] xx = null;
+                        double[] yy = null;
+
+                        MEM.Alloc(Ny, ref xx);
+                        MEM.Alloc(Ny, ref yy);
+
+                        IStripMeshGenerator sg = null;
+
+                        CrossStripMeshOption op = new CrossStripMeshOption(SimpleMarkerArea.boxCrossSectionB,
+                                                    TypeMesh.Triangle, 5, true);
+                        double[] ox1 = { 0, L1 };
+                        double[] ox2 = { L1, L1 + L2 };
+                        double[] ox3 = { L1 + L2, p.Lx };
+                        double[] oy = { 0, 0 };
+                        double dx = LX / (Ny - 1);
+                        IDigFunction left_fun = new DigFunction(ox1, oy, "Дно");
+                        //IDigFunction centr_fun = new  DigFunction(ox2, oy, "Дно");
+                        double NN = 1;
+                        
+
+                        //IDigFunction centr_fun = new FunctionSinDune(amplitude, NN, ox2, oy);
+                        IDigFunction centr_fun = new FunctionSin(amplitude, NN, ox2, oy);
+                        IDigFunction right_fun = new DigFunction(ox3, oy, "Дно");
+                        IDigFunction[] fs = { left_fun, centr_fun, right_fun };
+                        IDigFunction fun = new PieceDigFunction(fs);
+                        for (int i = 0; i < xx.Length; i++)
+                        {
+                            double x = dx * i;
+                            xx[i] = x;
+                            yy[i] = fun.FunctionValue(x);
+                        }
+                        op.b = b;
+                        op.h = h;
+                        double WetBed = 0, WaterLevel = H;
+                        //StripGenMeshType.
+                        sg = SMGManager.GetMeshGenerator((StripGenMeshType)3, op);
+                        mesh = sg.CreateMesh(ref WetBed, ref riverGates, WaterLevel, xx, yy, Ny);
+
+                        //p.CalkConcentration = BCalkConcentration.NeCalkConcentration;
+                        CreateMesh.GetRectangleTriMesh(ref triMesh, p.FE_X, p.FE_Y, p.Lx, p.Ly, 1);
+
+                        double y0, Phi_0, y1, Phi_H3, y2, Phi_2H3, y3, Phi_H;
+                        double Q = V0 * b;
+                        y0 = h;
+                        y1 = h + b / 3;
+                        y2 = h + 2 * b / 3;
+                        y3 = h + b;
+                        // симметрия
+                        Phi_0 = 0;
+                        Phi_H3 = 14.0 / 81 * Q;
+                        Phi_2H3 = 40.0 / 81 * Q;
+                        Phi_H = 2.0 / 3.0 * Q;
+                        // функция тока на входе
+                        bcPhi[0] = new DigFunctionPolynom(y0, Phi_0, y1, Phi_H3, y2, Phi_2H3, y3, Phi_H);
+
+                        // симметрия
+                        y0 = 0;
+                        y1 = H / 3;
+                        y2 = 2 * H / 3;
+                        y3 = H;
+
+                        Phi_0 = 0;
+                        Phi_H3 = 14.0 / 81 * Q;
+                        Phi_2H3 = 40.0 / 81 * Q;
+                        Phi_H = 2.0 / 3.0 * Q;
+
+                        // функция тока на выходе
+                        bcPhi[1] = new DigFunctionPolynom(y0, Phi_0, y1, Phi_H3, y2, Phi_2H3, y3, Phi_H);
+
+                        p.bcTypeOnWL = TauBondaryCondition.slip;
+                        //p.CalkConcentration = BCalkConcentration.DirCalkConcentration;
+                        p.CalkConcentration = BCalkConcentration.NeCalkConcentration;
+                        //p.turbViscType = ETurbViscType.Karaushev1977;
+                        //p.turbViscType = ETurbViscType.Absi_2012;
+                        //p.turbViscType = ETurbViscType.VanDriest1956;
+                        p.turbViscType = ETurbViscType.Leo_C_van_Rijn1984;
+                        //p.turbViscType = ETurbViscType.PotapobII_2024;
+                        //p.turbViscType = ETurbViscType.EddyViscosityConst;
+                        p.typeAlgebra = TypeAlgebra.GMRES_P_Sparce;
+                        
+
+                        //p.typeAlgebra = TypeAlgebra.LUTape;
                     }
                     catch (Exception ex)
                     {

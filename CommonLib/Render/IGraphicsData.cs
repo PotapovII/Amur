@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2019 - 2024  Potapov Igor Ivanovich, Khabarovsk
+Copyright (c) 2019 - 2025  Potapov Igor Ivanovich, Khabarovsk
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -85,5 +85,17 @@ namespace CommonLib
         /// <param name="type"></param>
         /// <returns></returns>
         IGraphicsData GetSubIGraphicsData(TypeGraphicsCurve TGraphicsCurve, List<string> filter);
+        /// <summary>
+        /// Сериализация GraphicsData
+        /// </summary>
+        /// <param name="sp">точка сохранения</param>
+        /// <param name="NameSave">путь,имя файла</param>
+        void SerializableGraphicsData(IGraphicsData gd, string NameSave);
+        /// <summary>
+        /// Загрузка GraphicsData
+        /// </summary>
+        /// <param name="FileName">путь,имя файла</param>
+        /// <returns></returns>
+        IGraphicsData LoadGraphicsData(string FileName);
     }
 }

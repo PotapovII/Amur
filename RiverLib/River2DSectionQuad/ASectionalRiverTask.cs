@@ -683,6 +683,11 @@ namespace RiverLib
             this.algebra = algebra;
         }
         /// <summary>
+        /// Получить буффер обмена параметрами
+        /// </summary>
+        /// <param name="args"></param>
+        public virtual void GetRiverTaskArgs(ref ITaskArgs args) { args = null; }
+        /// <summary>
         /// Установка новых отметок дна
         /// </summary>
         /// <param name="zeta">отметки дна</param>

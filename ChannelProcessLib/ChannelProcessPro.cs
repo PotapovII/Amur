@@ -209,6 +209,11 @@ namespace ChannelProcessLib
         [NonSerialized]
         ILogger<IMessageItem> logger = Logger.Instance;
         /// <summary>
+        /// Буффер обмена
+        /// </summary>
+        [NonSerialized]
+        ITaskArgs args = null;
+        /// <summary>
         /// конструктор по умолчанию для чтения свойств задачи по умолчанию
         /// </summary>
         public ChannelProcessPro()
@@ -252,6 +257,7 @@ namespace ChannelProcessLib
             }
             else
             {
+                //bool Ready = riverTask.TaskReady();
                 // при готовности гидрадинамической задачи и наличии размыва создать связь
                 if (riverTask.TaskReady() == true && ps.bedErosion != EBedErosion.NoBedErosion)
                     BedLink();
@@ -313,8 +319,9 @@ namespace ChannelProcessLib
         /// <summary>
         /// Загрузка расчетной области по умолчанию
         /// </summary>
-        public void LoadComputationalDomainDefault(uint testTaskID)
+        public string LoadComputationalDomainDefault(uint testTaskID)
         {
+            string Title = "";
             try
             {
                 if (riverTask.TaskReady() == false)
@@ -322,7 +329,7 @@ namespace ChannelProcessLib
                     ITaskFileNames fn = riverTask.taskFileNemes();
                     IOFormater<IRiver> loader = riverTask.GetFormater();
                     // загрузка уровней дна, расходов, ...
-                    loader.Read(fn.NameRData, ref riverTask, testTaskID);
+                    Title = loader.Read(fn.NameRData, ref riverTask, testTaskID);
                     riverTask.GetZeta(ref Zeta);
                 }
                 IMesh mesh = riverTask.Mesh();
@@ -339,6 +346,7 @@ namespace ChannelProcessLib
                 Logger.Instance.Info("Ошибка при загрузке расчетной области задачи: ChannelProcess.LoadComputationalDomainDefault()");
                 Logger.Instance.Exception(ex);
             }
+            return Title;
         }
         /// <summary>
         /// передача данных о сетке и дне в задачу донных деформаций
@@ -382,13 +390,12 @@ namespace ChannelProcessLib
                     ps.dtime = riverTask.dtime;
                     ps.countRiver++;
                 }
-
-                IMesh bedMesh = null;
                 // расчет донных деформаций
                 if (ps.bedErosion != EBedErosion.NoBedErosion)
                 {
+                    IMesh bedMesh = null;
                     channelProcessError = ChannelProcessError.bedError;
-                     bedLoadTask.dtime = ps.dtime;
+                    bedLoadTask.dtime = ps.dtime;
                     // расчет  придонных касательных напряжений на дне
                     riverTask.GetTau(ref tauX, ref tauY, ref P, ref CS);
                     // ========== БИБЛИОТЕКА === BedLoadLib === 
@@ -401,6 +408,8 @@ namespace ChannelProcessLib
                     }
                     if (bedLoadTask.TaskReady() == true)
                     {
+                        riverTask.GetRiverTaskArgs(ref args);
+                        bedLoadTask.SetTaskArgs(args);
                         bedLoadTask.time = ps.time;
                         bedLoadTask.CalkZetaFDM(ref Zeta, tauX, tauY, P, CS);
                     }
@@ -485,7 +494,8 @@ namespace ChannelProcessLib
                     sps.ClearСurve(TypeGraphicsCurve.TimeCurve);
                     foreach (var c in curves)
                     {
-                        string tm = (((int)(1000 * ps.time)) / 1000).ToString() + "#";
+                        //string tm = (((int)(1000 * ps.time)) / 1000).ToString() + "#";
+                        string tm = ps.time.ToString("F0") + "#";
                         //string tm = time.ToString("F4") + " ";
                         c.Name = tm + c.Name;
                         sps.AddCurve(c);

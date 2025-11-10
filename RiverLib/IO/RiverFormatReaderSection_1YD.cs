@@ -36,7 +36,7 @@ namespace RiverLib.IO
             SupportImport = true;
             SupportExport = true;
         }
-        public override void Read(string filename, ref IRiver river, uint testID = 0)
+        public override string Read(string filename, ref IRiver river, uint testID = 0)
         {
             // расширение файла
             string FileEXT = Path.GetExtension(filename).ToLower();
@@ -44,9 +44,10 @@ namespace RiverLib.IO
             {
                 case Ext_RvY:
                     Read_RoseF(filename, ref river);
-                    return;
+                    return river.Name + ": " + filename;
             }
             Read_Rose(filename, ref river);
+            return river.Name + ": " + filename;
         }
         /// <summary>
         /// Сохраняем сетку на диск речной формат данных 1DX для створа

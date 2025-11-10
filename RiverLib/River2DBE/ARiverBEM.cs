@@ -25,7 +25,11 @@ namespace RiverLib
     [Serializable]
     public abstract class ARiverBEM : IRiver
     {
-
+        /// <summary>
+        /// Получить буффер обмена параметрами
+        /// </summary>
+        /// <param name="args"></param>
+        public virtual void GetRiverTaskArgs(ref ITaskArgs args) { args = null; }
         #region Параметры задачи
         protected RiverBECircleParams Params = new RiverBECircleParams();
         /// <summary>

@@ -281,7 +281,7 @@ namespace NPRiverLib.APRiver1YD
         int Nx, Ny;
         public FDMRiverSectionaChannel(RiverStreamQuadParams p) : base(p)
         {
-            Version = "TriSecRiverTask1YBase 02.01.2024";
+            Version = "CSRiver1_1YD_old 02.01.2024";
             name = "Расчет потока в трапецеидальном створе (np)";
         }
 
@@ -913,7 +913,7 @@ namespace NPRiverLib.APRiver1YD
             double waterLevel0 = waterLevel;
             if (Params.taskVariant == TaskVariant.flowRateFun)
             {
-                riverFlowRate = FlowRate.FunctionValue(time);
+                riverFlowRate = csData.FlowRate.FunctionValue(time);
                 if (time > 0)
                 {
                     double Ck = 0.1;
@@ -936,7 +936,7 @@ namespace NPRiverLib.APRiver1YD
             }
             else
             {
-                waterLevel = WaterLevels.FunctionValue(time);
+                waterLevel = csData.WaterLevels.FunctionValue(time);
             }
             if (MEM.Equals(waterLevel0, waterLevel, 0.001) != true)
                 return true;

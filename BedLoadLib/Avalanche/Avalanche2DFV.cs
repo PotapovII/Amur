@@ -20,7 +20,7 @@ namespace BedLoadLib
     /// формирующего склон.
     /// </summary>
     [Serializable]
-    public class Avalanche2DFV : AvalancheX
+    public class Avalanche2DFV : Avalanche1D
     {
         /// <summary>
         /// Сетка для КО методов
@@ -44,6 +44,10 @@ namespace BedLoadLib
                 if (LavinaTriangle(ref Z) == false)
                     break;
             }
+        }
+        public override void Lavina(ref double[] Z, double[] mtf)
+        {
+            Lavina(ref Z);
         }
         /// <summary>
         /// Метод лавинного обрушения правого склона, 

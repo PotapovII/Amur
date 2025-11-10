@@ -233,7 +233,7 @@ namespace NPRiverLib.APRiver1YD.Params
         [TypeConverter(typeof(MyEnumConverter))]
         public ECalkDynamicSpeed typeEddyViscosity { get; set; }
 
-        #region + 03 02 2025 ОО: Параметры для класса TriSecRiver_1YD 
+        #region + 03 02 2025 ОО: Параметры для класса CSRiver3_1YD 
         /// <summary>
         /// Количество итераций по нелинейности на текущем шаге по времени
         /// </summary>
@@ -283,7 +283,7 @@ namespace NPRiverLib.APRiver1YD.Params
         [DisplayName("Расчет взвешенных наносов")]
         [Description("Флаг для расчета взвешенных наносов Да - true, Нет -false")]
         [Category("Задача")]
-        public BCalkConcentration CalkConcentration { get; set; } = BCalkConcentration.NeCalkConcentration;
+        public BCalkConcentration CalkConcentration { get; set; } = BCalkConcentration.DirCalkConcentration;
         #endregion
         /// <summary>
         /// Нужен для менеджера задач / настройки по умолчанию

@@ -20,6 +20,7 @@ namespace BedLoadLib
     [Serializable]
     class SAvalanche
     {
+        #region Постоянный тангенс угла внутреннено трения
         /// <summary>
         /// Метод лавинного обрушения правого склонов 
         /// </summary>
@@ -50,11 +51,10 @@ namespace BedLoadLib
         public static void LavinaRight(double[] Z, double[] ds,
                                 double tf, double Relax, int Step)
         {
-
             int idx = 0;
             for (int i = 1; i < Z.Length; i++)
             {
-                double dh = (ds[i] - ds[i - 1]) * tf;
+                double dh = Math.Abs((ds[i] - ds[i - 1])) * tf;
                 double dz = Z[i] - Z[i - 1];
                 if (dz < 0)
                 {
@@ -87,7 +87,7 @@ namespace BedLoadLib
             int idx = 0;
             for (int i = 1; i < Z.Length; i++)
             {
-                double dh = (ds[i] - ds[i - 1]) * tf;
+                double dh = Math.Abs((ds[i] - ds[i - 1])) * tf;
                 int k = Z.Length - i - 1;
                 int kp = Z.Length - i;
                 double dz = Z[kp] - Z[k];
@@ -105,6 +105,95 @@ namespace BedLoadLib
                 }
             }
         }
+        #endregion
+        #region Переменный тангенс угла внутреннено трения
+        /// <summary>
+        /// Метод лавинного обрушения правого склонов 
+        /// </summary>
+        /// <param name="Z">массив донных отметок</param>
+        /// <param name="ds">координаты узлов</param>
+        /// <param name="tf">тангенс угла внутреннено трения **</param>
+        /// <param name="Step">шаг остановки процесса, 
+        /// при 0 лавина проходит полностью</param>
+        public static void Lavina(double[] Z, double[] ds,
+                         double[] tf, double Relax, int Step)
+        {
+            int NN = (int)(10.0 / (Relax + 0.1)) + 1;
+            for (int i = 0; i < NN; i++)
+            {
+                LavinaRight(Z, ds, tf, Relax, Step);
+                LavinaLeft(Z, ds, tf, Relax, Step);
+            }
+        }
+        /// <summary>
+        /// Метод лавинного обрушения правого склона, 
+        /// обрушение с правой стороны
+        /// </summary>
+        /// <param name="Z">массив донных отметок</param>
+        /// <param name="ds">координаты узлов</param>
+        /// <param name="tf">тангенс внутреннено трения **</param>
+        /// <param name="Step">шаг остановки процесса, 
+        /// при 0 лавина проходит полностью</param>
+        public static void LavinaRight(double[] Z, double[] ds,
+                                double[] tf, double Relax, int Step)
+        {
+            int idx = 0;
+            for (int i = 1; i < Z.Length; i++)
+            {
+                double dh = Math.Abs((ds[i] - ds[i - 1])) * (tf[i] + tf[i - 1]) * 0.5;
+                double dz = Z[i] - Z[i - 1];
+                if (dz < 0)
+                {
+                    if (-dz > dh)
+                    {
+                        double delta = (dh + dz) * Relax;
+                        Z[i] -= delta;
+                        Z[i - 1] += delta;
+                        idx++;
+                        if (idx == Step)
+                            break;
+                    }
+
+                }
+            }
+        }
+        /// <summary>
+        /// Метод лавинного обрушения правого склона,
+        /// обрушение с левой стороны
+        /// </summary>
+        /// <param name="Z">массив донных отметок</param>
+        /// <param name="tf">тангенс внутреннено трения **</param>
+        /// <param name="ds">координаты узлов</param>
+        /// <param name="Step">шаг остановки процесса, 
+        /// при 0 лавина проходит полностью</param>
+        public static void LavinaLeft(double[] Z, double[] ds,
+                            double[] tf, double Relax, int Step)
+        {
+
+            int idx = 0;
+            for (int i = 1; i < Z.Length; i++)
+            {
+                double dh = Math.Abs((ds[i] - ds[i - 1])) * (tf[i] + tf[i-1]) *0.5;
+                int k = Z.Length - i - 1;
+                int kp = Z.Length - i;
+                double dz = Z[kp] - Z[k];
+                if (dz > 0)
+                {
+                    if (dz > dh)
+                    {
+                        double delta = (dz - dh) * Relax;
+                        Z[k] += delta;
+                        Z[kp] -= delta;
+                        idx++;
+                        if (idx == Step)
+                            break;
+                    }
+                }
+            }
+        }
+        #endregion
+
+
         /// <summary>
         /// Метод лавинного обрушения склонов с учетом многофракционности материала
         /// </summary>

@@ -22,6 +22,7 @@ namespace BedLoadLib
     using System;
     using System.Collections.Generic;
     using CommonLib.BedLoad;
+    using CommonLib.IO;
 
     /// <summary>
     /// Абстактный класс задачи
@@ -223,17 +224,21 @@ namespace BedLoadLib
         /// <summary>
         /// шероховатость дна
         /// </summary>
-        public double[] Roughness = null;
+        public double[] mRoughness = null;
         /// <summary>
         /// Удельное сцепление песка/грунта
         /// of sand
         /// </summary>
-        public double[] Adhesion = null;
+        public double[] mTau_Adhesion = null;
         /// <summary>
         /// Удельное сцепление песка/грунта
         /// of sand
         /// </summary>
-        public bool AdhesionFlag = false;
+        public bool Tau_AdhesionFlag = false;
+        /// <summary>
+        /// приведенный угол внутреннего трения
+        /// </summary>
+        public double[] mTanPhi = null;
         #endregion
 
         /// <summary>
@@ -308,47 +313,47 @@ namespace BedLoadLib
             eTaskReady = ETaskStatus.CreateMesh;
             this.mesh = mesh;
             this.Zeta0 = Zeta0;
-            this.Roughness = Roughness;
+            this.mRoughness = Roughness;
             this.Count = mesh.CountKnots;
             this.BConditions = BConditions;
-            if (AdhesionFlag == true)
+            if (Tau_AdhesionFlag == true)
             {
                 if (Roughness != null)
                 {
-                    MEM.Alloc(Zeta0.Length, ref Adhesion);
+                    MEM.Alloc(Zeta0.Length, ref mTau_Adhesion);
                     for (int i = 0; i < Zeta0.Length; i++)
                     {
                         double d = Roughness[i] * 0.05;
-                        Adhesion[i] = SPhysics.GetAdhesion(d);
+                        mTau_Adhesion[i] = SPhysics.GetAdhesion(d);
                     }
                 }
             }
         }
 
-        protected void GigFuntion(IDigFunction[] crossFunctions)
-        {
-            foreach (var df in crossFunctions)
-            {
-                if(df.Name == "Roughness")
-                {
-                    var X = mesh.GetCoords(0);
-                    MEM.Alloc(X.Length, ref Roughness);
-                    for (int i = 0; i < Roughness.Length; i++)
-                    {
-                        Roughness[i] = df.FunctionValue(X[i]);
-                    }
-                }
-                if (df.Name == "Adhesion")
-                {
-                    var X = mesh.GetCoords(0);
-                    MEM.Alloc(X.Length, ref Adhesion);
-                    for (int i = 0; i < Adhesion.Length; i++)
-                    {
-                        Adhesion[i] = df.FunctionValue(X[i]);
-                    }
-                }
-            }
-        }
+        //protected void GigFuntion(IDigFunction[] crossFunctions)
+        //{
+        //    foreach (var df in crossFunctions)
+        //    {
+        //        if(df.Name == "Roughness")
+        //        {
+        //            var X = mesh.GetCoords(0);
+        //            MEM.Alloc(X.Length, ref Roughness);
+        //            for (int i = 0; i < Roughness.Length; i++)
+        //            {
+        //                Roughness[i] = df.FunctionValue(X[i]);
+        //            }
+        //        }
+        //        if (df.Name == "Tau_Adhesion")
+        //        {
+        //            var X = mesh.GetCoords(0);
+        //            MEM.Alloc(X.Length, ref Tau_Adhesion);
+        //            for (int i = 0; i < Tau_Adhesion.Length; i++)
+        //            {
+        //                Tau_Adhesion[i] = df.FunctionValue(X[i]);
+        //            }
+        //        }
+        //    }
+        //}
         /// <summary>
         /// Вычисление изменений формы донной поверхности 
         /// на одном шаге по времени по модели 
@@ -371,6 +376,11 @@ namespace BedLoadLib
         /// <param name="tau">придонное касательное напряжение</param>
         /// <param name="P">придонное давление</param>
         public abstract void Calk_Gs(ref double[][] Gs, ref double[][] dGs, double[] tau, double[] P = null);
+        /// <summary>
+        /// Получить буффер обмена параметрами
+        /// </summary>
+        /// <param name="args"></param>
+        public virtual void SetTaskArgs(ITaskArgs args) { }
         /// <summary>
         /// Создает экземпляр класса
         /// </summary>

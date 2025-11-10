@@ -12,6 +12,7 @@ namespace AlgebraLib
     using CommonLib;
     /// <summary>
     /// ОО: Решение системы A x = b с помощью LU разложения (для тестов без оптимизации)
+    /// симметричная матрице СЛАУ
     /// </summary>
     public class AlgebraLU : AFullAlgebra
     {

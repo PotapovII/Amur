@@ -4,28 +4,23 @@
 //                           Потапов И.И.
 //---------------------------------------------------------------------------
 //              кодировка : 03.03.2024 Потапов И.И.
-//                форматы ( RvX ) для створа реки
+//                форматы ( crf rvx ) для створа реки
 //---------------------------------------------------------------------------
 namespace NPRiverLib.IO
 {
     using System;
     using System.IO;
-    using System.Linq;
+    using System.Windows.Forms;
     using System.Collections.Generic;
 
-    
-    using CommonLib;
-    using CommonLib.IO;
-    using CommonLib.Physics;
-    using CommonLib.Function;
-    using CommonLib.EddyViscosity;
 
     using MemLogLib;
-    using GeometryLib;
+    using CommonLib;
+    using CommonLib.IO;
+    using CommonLib.Function;
+
     using NPRiverLib.APRiver1YD;
     using NPRiverLib.APRiver1YD.Params;
-    using MeshGeneratorsLib.StripGenerator;
-    using System.Windows.Forms;
     using NPRiverLib.IO._1XD.Tests;
 
     [Serializable]
@@ -40,15 +35,15 @@ namespace NPRiverLib.IO
         /// </summary>
         public override bool SupportExport { get; }
 
-        const string Ext_RvY = ".rvy";
-        const string Ext_Crf = ".crf";
+        public const string Ext_RvY = ".rvy";
+        public const string Ext_Crf = ".crf";
         public TaskReader1YD_RvY()
         {
             extString = new List<string>() { Ext_RvY, Ext_Crf };
             SupportImport = true;
             SupportExport = true;
         }
-        public override void Read(string filename, ref IRiver river, uint testID = 0)
+        public override string Read(string filename, ref IRiver river, uint testID = 0)
         {
             // расширение файла
             if (testID == 0) // Загрузка задачи по умолчанию
@@ -58,10 +53,10 @@ namespace NPRiverLib.IO
                 {
                     case Ext_RvY:
                         Read_RvY(filename, ref river);
-                        break;
+                        return river.Name + ": " + filename;
                     case Ext_Crf:
                         Read_Crf(filename, ref river);
-                        break;
+                        return river.Name + ": " + filename;
                 }
             }
             else
@@ -73,12 +68,18 @@ namespace NPRiverLib.IO
                     filter += " All files (*.*)|*.*";
                     ofd.Filter = filter;
                     if (ofd.ShowDialog() == DialogResult.OK)
+                    {
                         Read_Crf(ofd.FileName, ref river);
-                    return;
+                        return river.Name + ": " + filename;
+                    }
                 }
                 else
+                {
                     Test_CS_1YD.GetTest(ref river, testID);
+                    return river.Name;
+                }
             }
+            return "Тестовая задача не выбрана";
         }
         /// <summary>
         /// Сохраняем сетку на диск речной формат данных 1DX для створа
@@ -108,9 +109,10 @@ namespace NPRiverLib.IO
             {
                 using (StreamWriter file = new StreamWriter(filename))
                 {
-                    IDigFunction[] crossFunctions = river_1YD.crossFunctions;
-                    for (int i = 0; i < crossFunctions.Length; i++)
-                        crossFunctions[i].Save(file);
+                    river_1YD.csData.Save(file);
+                    //IDigFunction[] crossFunctions = river_1YD.csData.crossFunctions;
+                    //for (int i = 0; i < crossFunctions.Length; i++)
+                    //    crossFunctions[i].Save(file);
                     file.Close();
                 }
                 river = river_1YD;
@@ -129,10 +131,11 @@ namespace NPRiverLib.IO
             {
                 using (StreamWriter file = new StreamWriter(filename))
                 {
-                    IDigFunction[] crossFunctions = river_1YD.crossFunctions;
-                    for (int i=0; i< crossFunctions.Length; i++)
-                        crossFunctions[i].Save(file);
-                    file.Close();
+                    river_1YD.csData.Save(file);
+                    //IDigFunction[] crossFunctions = river_1YD.csData.crossFunctions;
+                    //for (int i=0; i< crossFunctions.Length; i++)
+                    //    crossFunctions[i].Save(file);
+                    //file.Close();
                 }
                 river = river_1YD;
             }
@@ -160,12 +163,12 @@ namespace NPRiverLib.IO
                     {
                         if(river_1YD as TriSroSecRiverTask1YD !=null)
                             river_1YD = river as TriSroSecRiverTask1YD;
-                        if (river_1YD as TriSecRiverTask1YD != null)
-                            river_1YD = river as TriSecRiverTask1YD;
-                        if (river_1YD as TriSecRiverTask1YBase != null)
-                            river_1YD = river as TriSecRiverTask1YBase;
-                        if (river_1YD as TriSecRiver_1YD != null)
-                            river_1YD = river as TriSecRiver_1YD;
+                        //if (river_1YD as TriSecRiverTask1YD != null)
+                        //    river_1YD = river as TriSecRiverTask1YD;
+                        if (river_1YD as CSRiver1_1YD_old != null)
+                            river_1YD = river as CSRiver1_1YD_old;
+                        if (river_1YD as CSRiver3_1YD != null)
+                            river_1YD = river as CSRiver3_1YD;
                         river_1YD.LoadData(file);
                         file.Close();
                     }
@@ -205,35 +208,10 @@ namespace NPRiverLib.IO
                         RSCrossParams p = new RSCrossParams();
                         p.Load(file);
                         river_1YD.SetParams(p);
-                        // геометрия дна
-                        IDigFunction Geometry = new DigFunction();
-                        // свободная поверхность
-                        IDigFunction WaterLevels = new DigFunction();
-                        // расход потока
-                        IDigFunction FlowRate = new DigFunction();
-                        // Нормальная скорость на WL
-                        IDigFunction VelosityUx = new DigFunction();
-                        // Радиальная скорость на WL
-                        IDigFunction VelosityUy = new DigFunction();
-                        // шероховатость дна
-                        IDigFunction Roughness = new DigFunction();
-                        // геометрия дна
-                        Geometry.Load(file);
-                        // свободная поверхность
-                        WaterLevels.Load(file);
-                        // расход потока
-                        FlowRate.Load(file);
-                        // Нормальная скорость на WL
-                        VelosityUx.Load(file);
-                        // Радиальная скорость на WL
-                        VelosityUy.Load(file);
-                        // шероховатость дна
-                        Roughness.Load(file);
-                        IDigFunction[] crossFunctions = new IDigFunction[6]
-                        {
-                            Geometry, WaterLevels, FlowRate, VelosityUx, VelosityUy, Roughness
-                        };
-                        river_1YD.LoadData(crossFunctions);
+                        /// Данные о створе
+                        CrossSectionData csData = new CrossSectionData();
+                        csData.Load(file);
+                        river_1YD.LoadData(csData.crossFunctions);
                         file.Close();
                     }
                     river = river_1YD;

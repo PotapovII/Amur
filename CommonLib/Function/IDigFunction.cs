@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2019 - 2024  Potapov Igor Ivanovich, Khabarovsk
+Copyright (c) 2019 - 2025  Potapov Igor Ivanovich, Khabarovsk
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -79,6 +79,10 @@ namespace CommonLib.Function
     /// </summary>
     public interface IDigFunction : IFunction1D
     {
+        /// <summary>
+        /// Количество опорных точек функции
+        /// </summary>
+        int Count { get; }
         /// <summary>
         /// Гладкость функции
         /// </summary>

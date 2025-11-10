@@ -31,6 +31,11 @@ namespace RiverLib
     [Serializable]
     public class RiverSectionalQuad_Phi : IRiver
     {
+        /// <summary>
+        /// Получить буффер обмена параметрами
+        /// </summary>
+        /// <param name="args"></param>
+        public virtual void GetRiverTaskArgs(ref ITaskArgs args) { args = null; }
         #region Параметры задачи
         /// <summary>
         /// Параметры задачи

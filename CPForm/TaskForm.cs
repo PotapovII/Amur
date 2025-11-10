@@ -28,6 +28,7 @@ namespace CPForm
 
     using RenderLib.PDG;
     using CommonLib.BedLoad;
+    using RiverDB.ConvertorOut;
 
     /// <summary>
     /// Базистная форма задачи
@@ -106,6 +107,20 @@ namespace CPForm
             IRiver rtask = mrt.Clone(idxRiver);
             IBedLoadTask btask = mbt.Clone(idxBload);
             task = new ChannelProcessPro(rtask, btask);
+
+            switch (rtask.typeTask)
+            {
+                case TypeTask.streamX1D:
+                    tsmConstructor.Visible = false;
+                    break;
+                case TypeTask.streamY1D:
+                    tsmConstructor.Visible = true;
+                    break;
+                case TypeTask.streamXY2D:
+                    tsmConstructor.Visible = true;
+                    tsmEdit.Visible = false;
+                    break;
+            }
             SetHeadToLogger();
             // файлы расширения задачи
             ITaskFileNames taskFileNames = rtask.taskFileNemes();
@@ -515,7 +530,7 @@ namespace CPForm
             // загрузка параметров по умолчанию в созданную задачу
             SetTaskParams();
             // загрузка задачи по умолчанию или тестовых кейсов
-            task.LoadComputationalDomainDefault(testTaskID);
+            this.Text = task.LoadComputationalDomainDefault(testTaskID);
             // установка параметров загруженной задачи в гриды окна управления
             SetGrid();
             // запуск задачи на выполнение
@@ -646,6 +661,24 @@ namespace CPForm
         private void tsm_ClearSavePoint_Click(object sender, EventArgs e)
         {
             task?.sps?.ClearСurve();
+        }
+
+        private void tsmEdit_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+       //     ofd.InitialDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            ofd.Filter = "файл задачи  (*.crf)|*.crf| Все файлы (*.*)|*.*";
+            if(ofd.ShowDialog() == DialogResult.OK)
+            {
+                FCrossSection form = new FCrossSection(ofd.FileName);
+                form.Show();
+            }
+        }
+
+        private void созданиеРасчетнойОбластиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FCreateCloudMesh form = new FCreateCloudMesh();
+            form.Show();
         }
     }
 }

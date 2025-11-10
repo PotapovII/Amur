@@ -15,6 +15,8 @@ namespace MeshGeneratorsLib.StripGenerator
     using MeshLib;
     using MemLogLib;
     using CommonLib;
+    using System.Collections.Generic;
+
     /// <summary>
     /// ОО: Фронтальный генератор КЭ трехузловой сетки для русла реки в 
     /// створе с заданной геометрией дна и уровнем свободной поверхности
@@ -108,17 +110,29 @@ namespace MeshGeneratorsLib.StripGenerator
                
                 int iL = 0;
                 int iR = Count - 1;
-                uint CountR = map1D[iR];
                 uint CountL = map1D[iL];
-                uint CountInR =  CountR > 2 ? CountR - 2 : 0;
-                uint CountInL = CountL > 2 ? CountL - 2 : 0;
-                if(CountInR > 0)
-                    CountBoundKnots += (int)CountInR + 1;
+                uint CountR = map1D[iR];
+                int CointMax = (int)(CountL + CountR) + 2 * Count;
+                //uint CountInR =  CountR > 2 ? CountR - 2 : 0;
+                //uint CountInL = CountL > 2 ? CountL - 2 : 0;
+                //if(CountInR > 0)
+                //    CountBoundKnots += (int)CountInR + 1;
+                //if (CountInL > 0)
+                //    CountBoundKnots += (int)CountInL + 1;
+
+                uint CountInR = CountR > 1 ? CountR : 0;
+                uint CountInL = CountL > 1 ? CountL : 0;
+                if (CountInR > 0)
+                    CountBoundKnots += (int)CountInR;
                 if (CountInL > 0)
-                    CountBoundKnots += (int)CountInL + 1;
+                    CountBoundKnots += (int)CountInL;
+
                 int CountBoundElems = CountBoundKnots;
-                
+
+
+                int WallBed = 0;
                 int WallR = 1;
+                int Wall_WL = 2;
                 int WallL = 3;
                 switch (Option.markerArea)
                 {
@@ -141,10 +155,14 @@ namespace MeshGeneratorsLib.StripGenerator
                 MEM.Alloc(CountKnots, ref mesh.CoordsY);
                 MEM.Alloc(CountElements, ref mesh.AreaElems);
                 MEM.Alloc(CountElements, ref mesh.AreaElemsFFType);
-                MEM.Alloc(CountBoundKnots, ref mesh.BoundKnots);
-                MEM.Alloc(CountBoundKnots, ref mesh.BoundKnotsMark);
-                MEM.Alloc(CountBoundElems, ref mesh.BoundElementsMark);
-                MEM.Alloc(CountBoundElems, ref mesh.BoundElems);
+                List<int> BoundKnots = new List<int>(CointMax);
+                List<int> BoundKnotsMark = new List<int>(CointMax);
+                List<int> BoundElementsMark = new List<int>(CointMax);
+                List<uint[]> BoundElems = new List<uint[]>(CointMax);
+                //MEM.Alloc(CountBoundKnots, ref mesh.BoundKnots);
+                //MEM.Alloc(CountBoundKnots, ref mesh.BoundKnotsMark);
+                //MEM.Alloc(CountBoundElems, ref mesh.BoundElementsMark);
+                //MEM.Alloc(CountBoundElems, ref mesh.BoundElems);
                 // вычисление массивов координат
                 CountKnots = 0;
                 riverGates = new int[Count][];
@@ -202,14 +220,18 @@ namespace MeshGeneratorsLib.StripGenerator
                             if (Option.typeMesh == TypeMesh.Triangle)
                             {
 
-                                double dx1 = mesh.CoordsX[map[i][j]] - mesh.CoordsX[map[i + 1][j + 1]];
-                                double dy1 = mesh.CoordsY[map[i][j]] - mesh.CoordsY[map[i + 1][j + 1]];
-                                double L1 = dx1 * dx1 + dy1 * dy1;
+                                double L1 = 0.5;
+                                double L2 = 1;
+                                if (Option.rectOptima == true)
+                                {
+                                    double dx1 = mesh.CoordsX[map[i][j]] - mesh.CoordsX[map[i + 1][j + 1]];
+                                    double dy1 = mesh.CoordsY[map[i][j]] - mesh.CoordsY[map[i + 1][j + 1]];
+                                    L1 = dx1 * dx1 + dy1 * dy1;
 
-                                double dx2 = mesh.CoordsX[map[i + 1][j]] - mesh.CoordsX[map[i][j + 1]];
-                                double dy2 = mesh.CoordsY[map[i + 1][j]] - mesh.CoordsY[map[i][j + 1]];
-                                double L2 = dx2 * dx2 + dy2 * dy2;
-
+                                    double dx2 = mesh.CoordsX[map[i + 1][j]] - mesh.CoordsX[map[i][j + 1]];
+                                    double dy2 = mesh.CoordsY[map[i + 1][j]] - mesh.CoordsY[map[i][j + 1]];
+                                    L2 = dx2 * dx2 + dy2 * dy2;
+                                }
                                 if (L1 <= 0.95* L2)// || i > Count / 2)
                                 {
                                     //  ij ----- i+1 j
@@ -299,18 +321,20 @@ namespace MeshGeneratorsLib.StripGenerator
                         }
                     }
                 }
-                if(mesh.AreaElems.Length != CountElements)
-                {
+                //if(mesh.AreaElems.Length != CountElements)
+                //{
 
-                }
-
-                CountKnots = 0;
+                //}
+                #region BoundKnots
+                //CountKnots = 0;
                 // свободная поверхность
                 for (int i = 1; i < Count - 1; i++)
                 {
-                    mesh.BoundKnots[CountKnots] = (int)map[i][0];
-                    mesh.BoundKnotsMark[CountKnots] = 2;
-                    CountKnots++;
+                    //mesh.BoundKnots[CountKnots] = (int)map[i][0];
+                    //mesh.BoundKnotsMark[CountKnots] = 2;
+                    BoundKnots.Add((int)map[i][0]);
+                    BoundKnotsMark.Add(Wall_WL);
+                    //CountKnots++;
                 }
                 //  Левая стенка канала
 
@@ -318,9 +342,11 @@ namespace MeshGeneratorsLib.StripGenerator
                 {
                     for (int j = 0; j < CountL - 1; j++)
                     {
-                        mesh.BoundKnots[CountKnots] = (int)map[iL][j];
-                        mesh.BoundKnotsMark[CountKnots] = WallL;
-                        CountKnots++;
+                        BoundKnots.Add((int)map[iL][j]);
+                        BoundKnotsMark.Add(WallL);
+                        //mesh.BoundKnots[CountKnots] = (int)map[iL][j];
+                        //mesh.BoundKnotsMark[CountKnots] = WallL;
+                        //CountKnots++;
                     }
                 }
                 else
@@ -328,53 +354,71 @@ namespace MeshGeneratorsLib.StripGenerator
                     double H0 = mapZ[iL][CountL - 2];
                     for (int j = 0; j < CountL - 1; j++)
                     {
-                        mesh.BoundKnots[CountKnots] = (int)map[iL][j];
-                        if(mapZ[iL][j] < H0 + Option.h) 
-                            mesh.BoundKnotsMark[CountKnots] = 0;
-                        else if (mapZ[iL][j] >= H0 + Option.h + Option.b)
-                            mesh.BoundKnotsMark[CountKnots] = 2;
+                        //mesh.BoundKnots[CountKnots] = (int)map[iL][j];
+                        BoundKnots.Add((int)map[iL][j]);
+                        if (mapZ[iL][j] < H0 + Option.h)
+                            BoundKnotsMark.Add(WallBed);
+                            //mesh.BoundKnotsMark[CountKnots] = 0;
+                        else 
+                            if (mapZ[iL][j] >= H0 + Option.h + Option.b)
+                            BoundKnotsMark.Add(Wall_WL);
+                            //mesh.BoundKnotsMark[CountKnots] = 2;
                         else
-                            mesh.BoundKnotsMark[CountKnots] = WallL;
-                        CountKnots++;
+                            BoundKnotsMark.Add(WallL);
+                            //mesh.BoundKnotsMark[CountKnots] = WallL;
+                        //CountKnots++;
                     }
                 }
                 // дно канала
                 for (int i = 0; i < Count; i++)
                 {
-                    mesh.BoundKnots[CountKnots] = (int)map[i][map1D[i] - 1];
-                    mesh.BoundKnotsMark[CountKnots] = 0;
-                    CountKnots++;
+                    BoundKnots.Add((int)map[i][map1D[i] - 1]);
+                    BoundKnotsMark.Add(WallBed);
+                    //mesh.BoundKnots[CountKnots] = (int)map[i][map1D[i] - 1];
+                    //mesh.BoundKnotsMark[CountKnots] = 0;
+                    //CountKnots++;
                 }
                 // Правая стенка канала
                 //for (int j = 0; j < CountR - 1; j++)
                 for (int j = (int)CountR - 2; j > -1; j--)
                 {
-                    mesh.BoundKnots[CountKnots] = (int)map[iR][j];
-                    mesh.BoundKnotsMark[CountKnots] = WallR;
-                    CountKnots++;
+                    BoundKnots.Add((int)map[iR][j]);
+                    BoundKnotsMark.Add(WallR);
+                    //mesh.BoundKnots[CountKnots] = (int)map[iR][j];
+                    //mesh.BoundKnotsMark[CountKnots] = WallR;
+                    //CountKnots++;
                 }
-                int belem = 0;
+                #endregion
+                mesh.BoundKnots = BoundKnots.ToArray();
+                mesh.BoundKnotsMark = BoundKnotsMark.ToArray();
+
+                //int belem = 0;
+                #region BoundElems
                 // свободная поверхность
                 for (int i = 0; i < Count - 1; i++)
                 {
-                    mesh.BoundElems[belem] = new uint[2]
-                    {
-                         map[i][0], map[i+1][0]
-                    };
-                    mesh.BoundElementsMark[belem] = 2;
-                    belem++;
+                    BoundElementsMark.Add(Wall_WL);
+                    BoundElems.Add(new uint[2] { map[i][0], map[i + 1][0] });
+                    //mesh.BoundElems[belem] = new uint[2]
+                    //{
+                    //     map[i][0], map[i+1][0]
+                    //};
+                    //mesh.BoundElementsMark[belem] = 2;
+                    //belem++;
                 }
                 //  Левая стенка канала
                 if (Option.markerArea != SimpleMarkerArea.boxCrossSectionB)
                 {
                     for (int j = 0; j < CountL - 1; j++)
                     {
-                        mesh.BoundElems[belem] = new uint[2]
-                        {
-                         map[iL][j], map[iL][j+1]
-                        };
-                        mesh.BoundElementsMark[belem] = WallL;
-                        belem++;
+                        BoundElems.Add(new uint[2] { map[iL][j], map[iL][j + 1] });
+                        BoundElementsMark.Add(WallL);
+                        //mesh.BoundElems[belem] = new uint[2]
+                        //{
+                        // map[iL][j], map[iL][j+1]
+                        //};
+                        //mesh.BoundElementsMark[belem] = WallL;
+                        //belem++;
                     }
                 }
                 else 
@@ -382,43 +426,54 @@ namespace MeshGeneratorsLib.StripGenerator
                     double H0 = mapZ[iL][CountL - 2];
                     for (int j = 0; j < CountL - 1; j++)
                     {
-                        mesh.BoundElems[belem] = new uint[2]
-                        {
-                         map[iL][j], map[iL][j+1]
-                        };
-                        mesh.BoundElementsMark[belem] = WallL;
+                        BoundElems.Add(new uint[2] { map[iL][j], map[iL][j + 1] });
+                        //mesh.BoundElems[belem] = new uint[2]
+                        //{
+                        // map[iL][j], map[iL][j+1]
+                        //};
+                        //mesh.BoundElementsMark[belem] = WallL;
                         double ce =  0.5 * (mapZ[iL][j] + mapZ[iL][j + 1]);
                         if (ce < H0 + Option.h)
-                            mesh.BoundElementsMark[belem] = 0;
+                            BoundElementsMark.Add(WallBed);
+                            //mesh.BoundElementsMark[belem] = 0;
                         else if (ce >= H0 + Option.h + Option.b)
-                            mesh.BoundElementsMark[belem] = 2;
+                            //mesh.BoundElementsMark[belem] = 2;
+                            BoundElementsMark.Add(Wall_WL);
                         else
-                            mesh.BoundElementsMark[belem] = WallL;
-                        belem++;
+                            BoundElementsMark.Add(WallL);
+                            //mesh.BoundElementsMark[belem] = WallL;
+                        //belem++;
                     }
                 }
                 // дно канала
                 for (int i = 0; i < Count - 1; i++)
                 {
-                    mesh.BoundElems[belem] = new uint[2]
-                    {
-                         map[i][map1D[i] - 1], map[i+1][map1D[i+1] - 1]
-                    };
-                    mesh.BoundElementsMark[belem] = 0;
-                    belem++;
+                    BoundElems.Add(new uint[2] { map[i][map1D[i] - 1], map[i + 1][map1D[i + 1] - 1] });
+                    BoundElementsMark.Add(WallBed);
+                    //mesh.BoundElems[belem] = new uint[2]
+                    //{
+                    //     map[i][map1D[i] - 1], map[i+1][map1D[i+1] - 1]
+                    //};
+                    //mesh.BoundElementsMark[belem] = 0;
+                    //belem++;
                 }
                 // Правая стенка канала
                 for (int j =(int)CountR - 2; j > - 1; j--)
                 {
-                    mesh.BoundElems[belem] = new uint[2]
-                    {
-                         map[iR][j], map[iR][j+1]
-                    };
-                    mesh.BoundElementsMark[belem] = WallR;
-                    belem++;
+                    BoundElems.Add(new uint[2] { map[iR][j], map[iR][j + 1] });
+                    BoundElementsMark.Add(WallR);
+                    //mesh.BoundElems[belem] = new uint[2]
+                    //{
+                    //     map[iR][j], map[iR][j+1]
+                    //};
+                    //mesh.BoundElementsMark[belem] = WallR;
+                    //belem++;
                 }
+                mesh.BoundElems = BoundElems.ToArray(); 
+                mesh.BoundElementsMark = BoundElementsMark.ToArray();
+                #endregion
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.Instance.Exception(ex);
                 Logger.Instance.Info("ОШИБКА: Проверте согласованность данных по геометрии створа");

@@ -54,8 +54,17 @@
     <Compile Include="Archive\GPT\GMRES_1.cs" />
     <Compile Include="Archive\GPT\SparseMatrix.cs" />
     <Compile Include="Archive\GPT\GMRES_0.cs" />
+    <Compile Include="LocalAlgebra.cs" />
+    <Compile Include="Sparse\CRS\Class1.cs" />
+    <Compile Include="Sparse\CRS\Class2.cs" />
+    <Compile Include="Sparse\CRS\Class3.cs" />
+    <Compile Include="Sparse\CRS\Class4.cs" />
+    <Compile Include="Sparse\CRS\ILU1Preconditioner.cs" />
+    <Compile Include="Sparse\CRS\SparseMatrixCSC.cs" />
+    <Compile Include="Sparse\CRS\SparseMatrixCSR.cs" />
     <Compile Include="Sparse\Elements\SparseAlgebra.cs" />
     <Compile Include="Sparse\River\GMRES\ASparseMatrixSolver.cs" />
+    <Compile Include="Sparse\CRS\CRSCSC.cs" />
     <Compile Include="Sparse\River\GMRES\IMP\SparseMatrixSolverTest.cs" />
     <Compile Include="Sparse\River\GMRES\IMP\SparseMatrixSolver.cs" />
     <Compile Include="Sparse\River\GMRES\SparseAlgebraRiver.cs" />

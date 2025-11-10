@@ -22,7 +22,7 @@ namespace BedLoadLib
     /// Реализация на ортогональной сетке в прямоугольном массиве
     /// </summary>
     [Serializable]
-    public class Avalanche2DQ : AvalancheX
+    public class Avalanche2DQ : Avalanche1D
     {
         RectFVMesh Mesh = null;
         double[][] Zeta = null;
@@ -31,7 +31,7 @@ namespace BedLoadLib
         /// <summary>
         /// длины сторон треугольных КЭ
         /// </summary>
-        public Avalanche2DQ(IMesh mesh, double tf, DirectAvalanche directAvalanche = DirectAvalanche.AvalancheX, double Relax = 0.5) : 
+        public Avalanche2DQ(IMesh mesh, double tf, DirectAvalanche directAvalanche = DirectAvalanche.Avalanche1D, double Relax = 0.5) : 
             base(mesh, tf, Relax)
         {
             this.directAvalanche = directAvalanche;
@@ -58,6 +58,11 @@ namespace BedLoadLib
                 Logger.Instance.Error("Ошибка в приведении типпа сетки", "Avalanche2DQ.Lavina");
             }
         }
+        public override void Lavina(ref double[] Z, double[] mtf)
+        {
+            Lavina(ref Z);
+        }
+
         public void Lavina2D(ref double[][] Z)
         {
             if (Mesh != null)
@@ -87,7 +92,7 @@ namespace BedLoadLib
         /// при 0 лавина проходит полностью</param>
         public bool Lavina(ref double[][] Zeta)
         {
-            if (directAvalanche == DirectAvalanche.AvalancheX ||
+            if (directAvalanche == DirectAvalanche.Avalanche1D ||
                 directAvalanche == DirectAvalanche.AvalancheXY)
             {
                 maxDz = 0;

@@ -12,6 +12,7 @@ namespace NPRiverLib.APRiver_1XD
 {
     using System;
     using CommonLib;
+    using CommonLib.IO;
     using NPRiverLib.ABaseTask;
 
     [Serializable]

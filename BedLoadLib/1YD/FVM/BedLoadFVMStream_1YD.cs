@@ -48,11 +48,11 @@ namespace BedLoadLib
         /// <summary>
         /// Конструктор по умолчанию/тестовый
         /// </summary>
-        public BedLoadFVMStream_1YD() : this(new BedLoadParams1D ()){}
+        public BedLoadFVMStream_1YD() : this(new BedLoadParams1YD()){}
         /// <summary>
         /// Конструктор по умолчанию/тестовый
         /// </summary>
-        public BedLoadFVMStream_1YD(BedLoadParams1D p) : base(p)
+        public BedLoadFVMStream_1YD(BedLoadParams1YD p) : base(p)
         {
             normaTheta = SPhysics.PHYS.normaTheta;
             name = "деформация поперечного дна (d50) FVM + dGx";
@@ -72,10 +72,10 @@ namespace BedLoadLib
                 Calk_Gs(ref Gs, ref dGs, tau);
                 if (Gs != null)
                 {
-                    MEM.AllocClear(Count, ref Theta);
-                    for (int i = 0; i < tau.Length; i++)
-                        Theta[i] = tau[i] / normaTheta;
-                    sp.AddCurve("Параметр Шильдса", X, Theta);
+                    //MEM.AllocClear(Count, ref Theta);
+                    //for (int i = 0; i < tau.Length; i++)
+                    //    Theta[i] = tau[i] / normaTheta;
+                    //sp.AddCurve("Параметр Шильдса", X, Theta);
 
                     if (Gs.Length == 3)
                     {
@@ -100,6 +100,7 @@ namespace BedLoadLib
                         sp.AddCurve("Градиент полного расхода наносов", X, dGs[idxAll]);
                     }
                 }
+
             }
         }
         /// <summary>

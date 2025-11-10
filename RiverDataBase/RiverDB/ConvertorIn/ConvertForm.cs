@@ -7,6 +7,7 @@
     using System.Windows.Forms;
     using System.Collections.Generic;
     using ConnectLib;
+    using RiverDB.FormsDB;
 
     public partial class ConvertForm : Form
     {
@@ -181,11 +182,16 @@
         }
         private void Sin()
         {
-            string strCom = "update[dbo].knot set knot_latitude = forknot_latitude," +
-            "knot_longitude = forknot_longitude, knot_datetime = " +
-            "forknot_datetime,knot_fulldepth = forknot_fulldepth, knot_temperature =" +
-            "forknot_temperature from knot, forknot where knot_datetime = forknot_datetime," +
-            "knot_N = forknot_latitude, knot_E = forknot_longitude";
+          string strCom = "update[RiverDB].[dbo].[knot] set " +
+          " [RiverDB].[dbo].[knot].knot_latitude = [RiverDB].[dbo].[forknot].forknot_latitude," +
+          " [RiverDB].[dbo].[knot].knot_longitude = [RiverDB].[dbo].[forknot].forknot_longitude, " +
+          " [RiverDB].[dbo].[knot].knot_datetime = [RiverDB].[dbo].[forknot].forknot_datetime," +
+          " [RiverDB].[dbo].[knot].knot_fulldepth = [RiverDB].[dbo].[forknot].forknot_fulldepth, " +
+          " [RiverDB].[dbo].[knot].knot_temperature = [RiverDB].[dbo].[forknot].forknot_temperature," +
+          " [RiverDB].[dbo].[knot].knot_N = [RiverDB].[dbo].[forknot].forknot_latitude, " +
+          " [RiverDB].[dbo].[knot].knot_E = [RiverDB].[dbo].[forknot].forknot_longitude" +
+          " from[RiverDB].[dbo].[knot], [RiverDB].[dbo].[forknot]" +
+          " where[knot].knot_datetime = [forknot].forknot_datetime";
             // если успешно, обновляем поля
             ConnectDB.DoSqlTransactionCommand(strCom);
         }

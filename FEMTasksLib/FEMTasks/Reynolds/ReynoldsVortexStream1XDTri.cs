@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2019 - 2024  Potapov Igor Ivanovich, Khabarovsk
+Copyright (c) 2019 - 2025  Potapov Igor Ivanovich, Khabarovsk
 
 Permission is hereby granted, free of charge, to any person
 obtaining dNdx copy of this software and associated documentation
@@ -55,13 +55,17 @@ namespace FEMTasksLib.FEMTasks.VortexStream
     public class ReynoldsVortexStream1XDTri : AWRAP_FETaskTri
     {
         /// <summary>
-        /// Маркер дырок
+        /// Параметр SUPG стабилизации 
         /// </summary>
-        protected int MarkHoles = 4;
+        protected double omega = 0.7;
         /// <summary>
         /// Релаксация при шаге по нелинейности
         /// </summary>
-        protected double relax = 0.9;
+        protected double relax = 0.7;
+        /// <summary>
+        /// Маркер дырок
+        /// </summary>
+        protected int MarkHoles = 4;
         /// <summary>
         /// Итераций по нелинейности
         /// </summary>
@@ -70,10 +74,6 @@ namespace FEMTasksLib.FEMTasks.VortexStream
         /// Флаг сборки рекурсивной системы
         /// </summary>
         protected bool flagStart = true;
-        /// <summary>
-        /// Параметр SUPG стабилизации 
-        /// </summary>
-        protected double omega = 0.5;
         /// <summary>
         /// Плотность воды
         /// </summary>
@@ -398,18 +398,24 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                 // итераций по нелинейности на текущем шаге по времени
                 for (int nIdx = 0; nIdx < NLine; nIdx++)
                 {
-                    if (flagStart == true)
-                    {
-                        // На первом шаге решаем задачу Стокса
-                        SolveStokesTask(ref _Phi, ref _Vortex, eddyViscosity);
-                        flagStart = false;
-                    }
-                    else
+                    //if (flagStart == true)
+                    //{
+                    //    // На первом шаге решаем задачу Стокса
+                    //    SolveStokesTask(ref _Phi, ref _Vortex, eddyViscosity);
+                    //    flagStart = false;
+                    //    for (int i = 0; i < mesh.CountKnots; i++)
+                    //    {
+                    //        Phi[i] = _Phi[i];
+                    //        Vortex[i] = _Vortex[i];
+                    //    }
+                    //}
+                    //else
                     {
                         testflag = 0;
                         // расчет функции тока и функции вихря
-
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("Calk Phi & Vortex in st Reynolds problem: шаг по нелинейности: " + nIdx.ToString());
+                        Console.ForegroundColor = ConsoleColor.White;
                         MEM.Alloc((int)algebra.N, ref result);
                         algebra.Clear();
                         int li, lj;
@@ -514,13 +520,23 @@ namespace FEMTasksLib.FEMTasks.VortexStream
 
                         for (int i = 0; i < result.Length; i++)
                         {
-                            normVortex += result_cur[i] * result_cur[i];
+                            normVortex += result[i] * result[i];
                             epsVortex += (result_cur[i] - result[i]) * (result_cur[i] - result[i]);
                         }
                         double residual = Math.Sqrt(epsVortex / normVortex);
-                        Console.WriteLine("n {0} residual {1}", nIdx, residual);
                         if (residual < MEM.Error5)
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkCyan;
+                            Console.WriteLine("n {0} residual {1}", nIdx, residual);
+                            Console.ForegroundColor = ConsoleColor.White;
                             break;
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor. Cyan;
+                            Console.WriteLine("n {0} residual {1}", nIdx, residual);
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
                         MEM.MemCopy(ref result_cur, result);
                     }
                 }
@@ -530,15 +546,17 @@ namespace FEMTasksLib.FEMTasks.VortexStream
             }
             catch (Exception ex)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("ee = " + ee.ToString() + " " + ex.Message + " этап: " + testflag.ToString());
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
-
+   
         /// <summary>
         /// Решение одного шага по времени для задачи Рейнольдса
         /// </summary>
         /// <param name="result"></param>
-        public void SolveReynoldsTask(ref double[] _Phi, ref double[] _Vortex,  double[] eddyViscosity, double dt)
+        public void SolveReynoldsTaskM(ref double[] _Phi, ref double[] _Vortex,  double[] eddyViscosity, double dt)
         {
             uint ee = 0;
             uint testflag = 0;
@@ -549,15 +567,15 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                 // итераций по нелинейности на текущем шаге по времени
                 for (int nIdx = 0; nIdx < NLine10; nIdx++)
                 {
-                    if (flagStart == true)
-                    {
-                        // На первом шаге решаем задачу Стокса
-                        SolveStokesTask(ref _Phi, ref _Vortex, eddyViscosity);
-                        MEM.MemCopy(ref result_old, result);
-                        flagStart = false;
-                        continue;
-                    }
-                    else
+                    //if (flagStart == true)
+                    //{
+                    //    // На первом шаге решаем задачу Стокса
+                    //    SolveStokesTask(ref _Phi, ref _Vortex, eddyViscosity);
+                    //    MEM.MemCopy(ref result_old, result);
+                    //    flagStart = false;
+                    //    continue;
+                    //}
+                    //else
                     {
                         testflag = 0;
                         // расчет функции тока и функции вихря
@@ -585,10 +603,8 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                             double eMu = (eddyViscosity[i0] + eddyViscosity[i1] + eddyViscosity[i2]) / 3.0;
                             double Ax = 0;
                             double Ay = 0;
-                            double Radius = 1;
-                            
-                            double eVy = (c[0] * Phi[i0] + c[1] * Phi[i1] + c[2] * Phi[i2]) / Radius;
-                            double eVz = -(b[0] * Phi[i0] + b[1] * Phi[i1] + b[2] * Phi[i2]) / Radius;
+                            double eVy = (c[0] * Phi[i0] + c[1] * Phi[i1] + c[2] * Phi[i2]);
+                            double eVz = -(b[0] * Phi[i0] + b[1] * Phi[i1] + b[2] * Phi[i2]);
                             double mV = Math.Sqrt(eVy * eVy + eVz * eVz);
                             double Hk = Math.Sqrt(Se) / 1.4;
                             double Pe = rho_w * mV * Hk / (2 * mu);
@@ -617,14 +633,196 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                                     // конверктивные члены - скорости
                                     double C_agb = _Fa * rho_w * ((c[0] * b[aj] - b[0] * c[aj]) * Phi[i0] +
                                                                   (c[1] * b[aj] - b[1] * c[aj]) * Phi[i1] +
-                                                                  (c[2] * b[aj] - b[2] * c[aj]) * Phi[i2]) / Radius;
+                                                                  (c[2] * b[aj] - b[2] * c[aj]) * Phi[i2]);
                                     // конверктивные члены - вязкости
                                     double D_agb = _Fa * ((b[0] * b[aj] + c[0] * c[aj]) * eddyViscosity[i0] +
                                                           (b[1] * b[aj] + c[1] * c[aj]) * eddyViscosity[i1] +
                                                           (b[2] * b[aj] + c[2] * c[aj]) * eddyViscosity[i2]);
 
-                                    LaplMatrix[li][lj] = K_ab + Se3 * b[aj] / Radius;
-                                    LaplMatrix[li][lj + 1] = -M_ab * Radius;
+                                    LaplMatrix[li][lj] = K_ab;
+                                    LaplMatrix[li][lj + 1] = -M_ab;
+                                    LaplMatrix[li + 1][lj] = 0;
+                                    LaplMatrix[li + 1][lj + 1] = rho_w * _M_ab + dt * (eMu * K_ab);
+
+                                    RMatrix[li][lj] = 0;
+                                    RMatrix[li][lj + 1] = 0;
+                                    RMatrix[li + 1][lj] = 0;
+                                    RMatrix[li + 1][lj + 1] = rho_w * _M_ab - dt * (C_agb - D_agb);
+                                }
+                            }
+                            // получем значения адресов неизвестных
+                            FEMUtils.GetAdress(knots, ref adressBound);
+                            // добавление вновь сформированной ЛЖМ в ГМЖ
+                            algebra.AddToMatrix(LaplMatrix, adressBound);
+                            // добавление вновь сформированной ЛЖМ в ГМЖ
+                            Ralgebra.AddToMatrix(RMatrix, adressBound);
+                        }
+                    }
+                    testflag = 1;
+                    // Расчет
+                    Ralgebra.GetResidual(ref MRight, result_old, 0);
+                    testflag = 2;
+                    algebra.CopyRight(MRight);
+                    testflag = 3;
+                    // Выполнение граничных условий для функции вихря
+                    VortexBC();
+                    testflag = 4;
+                    // Выполнение граничных условий для функции тока
+                    algebra.BoundConditions(bcValuePhi, bcIndex);
+                    // Выполнение однородных граничных условий для функции вихря
+                    // на свободной поверхности
+                    if (bcTypeOnWL == 0)
+                        algebra.BoundConditions(0, bcIndexVortex);
+
+                    testflag = 5;
+                    // решение
+                    algebra.Solve(ref result);
+                    testflag = 6;
+                    //for (int i = 0; i < result.Length; i++)
+                    //    result_cur[i] = relax * result[i] + (1 - relax) * result_cur[i];
+                    for (int i = 0; i < mesh.CountKnots; i++)
+                    {
+                        Phi[i] = result[2 * i];
+                        _Phi[i] = Phi[i];
+                        Vortex[i] = result[2 * i + 1];
+                        _Vortex[i] = Vortex[i];
+                    }
+                    testflag = 7;
+                    //************************************************************************************************************************
+                    // Считаем невязку
+                    //************************************************************************************************************************
+                    double epsVortex = 0.0;
+                    double normVortex = 0.0;
+                    for (int i = 0; i < result.Length; i++)
+                    {
+                        normVortex += result[i] * result[i];
+                        epsVortex += (result_cur[i] - result[i]) * (result_cur[i] - result[i]);
+                    }
+                    double residual = Math.Sqrt(epsVortex / normVortex);
+                    if (residual < MEM.Error5)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("n {0} residual {1}", nIdx, residual);
+                        Console.ForegroundColor = ConsoleColor.White;
+                        break;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("n {0} residual {1}", nIdx, residual);
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    if (residual < MEM.Error4)
+                        break;
+                    MEM.MemCopy(ref result_cur, result);
+                }
+                // расчет поля скорости
+                Console.WriteLine("Vy ~ Vz:");
+                CalcVelosityPlane(Phi, ref Vy, ref Vz);
+                MEM.MemCopy(ref result_old, result);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ee = " + ee.ToString() + " " + ex.Message + " этап: " + testflag.ToString());
+            }
+        }
+        /// <summary>
+        /// Решение одного шага по времени для задачи Рейнольдса методом Кранка - Николсона
+        /// </summary>
+        /// <param name="result"></param>
+        public void SolveReynoldsTask(ref double[] _Phi, ref double[] _Vortex, double[] eddyViscosity, double dt)
+        {
+            uint ee = 0;
+            uint testflag = 0;
+            uint NLine10 = 10;
+            try
+            {
+                MEM.MemCopy(ref result_cur, result_old);
+                for (int i = 0; i < mesh.CountKnots; i++)
+                {
+                    Phi[i] = result_cur[2 * i];
+                    Vortex[i] = result_cur[2 * i + 1];
+                }
+                // итераций по нелинейности на текущем шаге по времени
+                for (int nIdx = 0; nIdx < 3; nIdx++)
+                //for (int nIdx = 0; nIdx < NLine10; nIdx++)
+                {
+                    //if (flagStart == true)
+                    //{
+                    //    // На первом шаге решаем задачу Стокса
+                    //    SolveStokesTask(ref _Phi, ref _Vortex, eddyViscosity);
+                    //    MEM.MemCopy(ref result_old, result);
+                    //    flagStart = false;
+                    //    continue;
+                    //}
+                    //else
+                    {
+                        testflag = 0;
+                        // расчет функции тока и функции вихря
+                        Console.WriteLine("Calk Phi & Vortex in nst Reynolds problem: шаг по нелинейности: " + nIdx.ToString());
+                        MEM.Alloc((int)algebra.N, ref result);
+                        algebra.Clear();
+                        Ralgebra.Clear();
+                        int li, lj;
+                        int Count = cu * cs;
+                        for (uint elem = 0; elem < mesh.CountElements; elem++)
+                        {
+                            ee = elem;
+                            // локальная матрица часть СЛАУ
+                            MEM.Alloc2DClear(Count, ref LaplMatrix);
+                            MEM.Alloc2DClear(Count, ref RMatrix);
+                            double[] b = dNdx[elem];
+                            double[] c = dNdy[elem];
+                            uint i0 = eKnots[elem].Vertex1;
+                            uint i1 = eKnots[elem].Vertex2;
+                            uint i2 = eKnots[elem].Vertex3;
+                            // получить узлы КЭ
+                            uint[] knots = { i0, i1, i2 };
+                            double Se = S[elem];
+                            double Se3 = Se / 3;
+                            double eMu = (eddyViscosity[i0] + eddyViscosity[i1] + eddyViscosity[i2]) / 3.0;
+                            double Ax = 0;
+                            double Ay = 0;
+                            //double Radius = 1;
+
+                            double eVy = (c[0] * Phi[i0] + c[1] * Phi[i1] + c[2] * Phi[i2]);
+                            double eVz = -(b[0] * Phi[i0] + b[1] * Phi[i1] + b[2] * Phi[i2]);
+                            double mV = Math.Sqrt(eVy * eVy + eVz * eVz);
+                            double Hk = Math.Sqrt(Se) / 1.4;
+                            double Pe = rho_w * mV * Hk / (2 * mu);
+                            if (MEM.Equals(mV, 0) != true)
+                            {
+                                Ax = eVy / mV;
+                                Ay = eVz / mV;
+                            }
+                            // вычисление ЛЖМ для задачи Рейнольдса
+                            for (int ai = 0; ai < cu; ai++)
+                            {
+                                li = cs * ai;
+                                double L_SUPG = omega * (Hx[elem] * Ax * b[ai] + Hy[elem] * Ay * c[ai]);
+                                double La = (1 / 3.0 + L_SUPG);
+                                // правая часть SUPG : \int (L_alpha) d Omega
+                                double _Fa = Se * La;
+                                for (int aj = 0; aj < cu; aj++)
+                                {
+                                    lj = cs * aj;
+                                    // матрица масс
+                                    double M_ab = MM[ai][aj] * Se;
+                                    // матрица масс SUPG : \int (L_alpha * N_beta) d Omega
+                                    double _M_ab = M_ab + L_SUPG * Se3;
+                                    // матрица жосткости - вязкие члены плоские
+                                    double K_ab = (b[ai] * b[aj] + c[ai] * c[aj]) * Se;
+                                    // конверктивные члены - скорости
+                                    double C_agb = _Fa * rho_w * ((c[0] * b[aj] - b[0] * c[aj]) * Phi[i0] +
+                                                                  (c[1] * b[aj] - b[1] * c[aj]) * Phi[i1] +
+                                                                  (c[2] * b[aj] - b[2] * c[aj]) * Phi[i2]);
+                                    // конверктивные члены - вязкости
+                                    double D_agb = _Fa * ((b[0] * b[aj] + c[0] * c[aj]) * eddyViscosity[i0] +
+                                                          (b[1] * b[aj] + c[1] * c[aj]) * eddyViscosity[i1] +
+                                                          (b[2] * b[aj] + c[2] * c[aj]) * eddyViscosity[i2]);
+
+                                    LaplMatrix[li][lj] = K_ab;
+                                    LaplMatrix[li][lj + 1] = -M_ab;
                                     LaplMatrix[li + 1][lj] = 0;
                                     LaplMatrix[li + 1][lj + 1] = rho_w * _M_ab + dt * (1 - theta) * (C_agb - D_agb + eMu * K_ab);
 
@@ -683,7 +881,21 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                         epsVortex += (result_cur[i] - result[i]) * (result_cur[i] - result[i]);
                     }
                     double residual = Math.Sqrt(epsVortex / normVortex);
-                    Console.WriteLine("n {0} residual {1}", nIdx, residual);
+
+                    if (residual < MEM.Error5)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("n {0} residual {1}", nIdx, residual);
+                        Console.ForegroundColor = ConsoleColor.White;
+                        break;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("n {0} residual {1}", nIdx, residual);
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+
                     if (residual < MEM.Error4)
                         break;
                     MEM.MemCopy(ref result_cur, result);
@@ -698,6 +910,7 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                 Console.WriteLine("ee = " + ee.ToString() + " " + ex.Message + " этап: " + testflag.ToString());
             }
         }
+
         /// <summary>
         /// Выполнение граничных условий для функции вихря
         /// </summary>

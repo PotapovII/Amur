@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2019 - 2024  Potapov Igor Ivanovich, Khabarovsk
+Copyright (c) 2019 - 2025  Potapov Igor Ivanovich, Khabarovsk
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -155,7 +155,7 @@ namespace CommonLib
         /// <param name="curve"></param>
         void AddCurve(IGraphicsCurve curve);
         /// <summary>
-        /// Добавить кривую в контейнер кривых IGraphicsData 
+        /// Очистить кривые в контейнере кривых IGraphicsData 
         /// </summary>
         /// <param name="curve"></param>
         void ClearСurve(TypeGraphicsCurve TGraphicsCurve = TypeGraphicsCurve.TimeCurve);

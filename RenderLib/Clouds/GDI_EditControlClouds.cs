@@ -359,7 +359,7 @@ namespace RenderLib
             control.colorScheme = colorScheme;
             control.renderOptions = renderOptions;
 
-            int indexPole = renderOptions.indexValues;
+            // int indexPole = renderOptions.indexValues;
             int Dim = 0;
             double MinV = 0;
             double MaxV = 0;
@@ -957,6 +957,9 @@ namespace RenderLib
         public void SetCrossLine(IHLine crossLine)
         {
             control.crossLine = crossLine;
+            listBoxCLine.Items.Clear();
+            if ( crossLine != null)
+                listBoxCLine.Items.Add("Створ0");
         }
 
         /// <summary>

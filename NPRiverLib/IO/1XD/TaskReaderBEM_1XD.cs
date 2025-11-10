@@ -36,7 +36,7 @@ namespace NPRiverLib.IO
             SupportImport = true;
             SupportExport = true;
         }
-        public override void Read(string filename, ref IRiver river, uint testID = 0)
+        public override string Read(string filename, ref IRiver river, uint testID = 0)
         {
             // расширение файла
             string FileEXT = Path.GetExtension(filename).ToLower();
@@ -44,9 +44,10 @@ namespace NPRiverLib.IO
             {
                 case Ext_RvY:
                     Read_1X(filename, ref river);
-                    return;
+                    return river.Name + ": " + filename;
             }
             DefaultRead(filename, ref river, testID);
+            return river.Name + ": " + filename;
         }
         /// <summary>
         /// Сохраняем сетку на диск речной формат данных 1DX для створа

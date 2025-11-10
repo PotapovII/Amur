@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2019 - 2024  Potapov Igor Ivanovich, Khabarovsk
+Copyright (c) 2019 - 2025  Potapov Igor Ivanovich, Khabarovsk
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -58,6 +58,20 @@ namespace GeometryLib.Geometry
         {
             A = a.IClone();
             B = b.IClone();
+        }
+        public HLine(HLine line)
+        {
+            A = new HKnot(line.A);
+            B = new HKnot(line.B);
+        }
+        public HLine(IHLine line)
+        {
+            A = line.A.IClone();
+            B = line.B.IClone();
+        }
+        public override string ToString()
+        {
+            return ((HKnot)A).ToString() + " " + ((HKnot)B).ToString();
         }
         /// <summary>
         /// Проверить существование точки пересечения двух линий

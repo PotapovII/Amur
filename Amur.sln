@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amur", "Amur\Amur.csproj", "{053A6D29-FB58-444D-998C-E96D0685B42C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderLib", "RenderLib\RenderLib.csproj", "{3330D65D-E283-47A3-B43C-CE8C4EB2B201}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPRiverLib", "NPRiverLib\NPRiverLib.csproj", "{954912E8-F132-4779-8300-520F1C534665}"
@@ -97,14 +95,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{053A6D29-FB58-444D-998C-E96D0685B42C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{053A6D29-FB58-444D-998C-E96D0685B42C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{053A6D29-FB58-444D-998C-E96D0685B42C}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{053A6D29-FB58-444D-998C-E96D0685B42C}.Debug|x86.Build.0 = Debug|Any CPU
-		{053A6D29-FB58-444D-998C-E96D0685B42C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{053A6D29-FB58-444D-998C-E96D0685B42C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{053A6D29-FB58-444D-998C-E96D0685B42C}.Release|x86.ActiveCfg = Release|Any CPU
-		{053A6D29-FB58-444D-998C-E96D0685B42C}.Release|x86.Build.0 = Release|Any CPU
 		{3330D65D-E283-47A3-B43C-CE8C4EB2B201}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3330D65D-E283-47A3-B43C-CE8C4EB2B201}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3330D65D-E283-47A3-B43C-CE8C4EB2B201}.Debug|x86.ActiveCfg = Debug|Any CPU

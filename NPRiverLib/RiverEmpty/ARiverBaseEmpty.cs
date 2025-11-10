@@ -63,6 +63,12 @@ namespace NPRiverLib.RiverEmpty
             return null;
         }
         /// <summary>
+        /// Получить буффер обмена параметрами
+        /// </summary>
+        /// <param name="args"></param>
+        public virtual void GetRiverTaskArgs(ref ITaskArgs args) { args = null; }
+
+        /// <summary>
         ///  Сетка для расчета донных деформаций
         /// </summary>
         public override IMesh BedMesh() { return new TwoMesh(x, y); }

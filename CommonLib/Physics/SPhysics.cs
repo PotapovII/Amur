@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2019 - 2024  Potapov Igor Ivanovich, Khabarovsk
+Copyright (c) 2019 - 2025  Potapov Igor Ivanovich, Khabarovsk
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -629,7 +629,7 @@ namespace CommonLib.Physics
             //Cp = 1.0;  // воздух
             Cp = 4183.0; // вода
             rho_s = 2650;
-            phi = 30;
+            phi = 32;
             //
             //d50 = 0.00071;
             //d50 = 0.00022;
@@ -637,7 +637,7 @@ namespace CommonLib.Physics
             // 
             epsilon = 0.35;
             kappa = 0.25;
-            cx = 0.5;
+            cx = 0.4;
             f = 0.1;
             //ks = 0.1;
             ks = 0.15; // Бетон
@@ -655,7 +655,7 @@ namespace CommonLib.Physics
             сritTauType = ECritTauType.Petrov2001;
             _turbViscType = ETurbViscType.Boussinesq1865;
 
-            avtoPhi = true;
+            avtoPhi = false;
             avtoKappa = true;
             Load();
             InitBedLoad();

@@ -19,6 +19,10 @@ namespace GeometryLib
     public class DigFunctionConst : IDigFunction
     {
         /// <summary>
+        /// Количество опорных точек функции
+        /// </summary>
+        public int Count { get => 1; }
+        /// <summary>
         /// Значение
         /// </summary>
         protected double Value;

@@ -148,7 +148,7 @@ namespace BedLoadLib
             MEM.Alloc<double>(Count, ref ps);
 
             //avalanche = new Avalanche2DX(mesh, tanphi, DirectAvalanche.AvalancheXY, 0.3);
-            avalanche = new Avalanche1DX_Old(mesh, tanphi, 0.6);
+            avalanche = new Avalanche1D_Simple(mesh, tanphi, 0.6);
             eTaskReady = ETaskStatus.CreateMesh;
         }
         /// <summary>

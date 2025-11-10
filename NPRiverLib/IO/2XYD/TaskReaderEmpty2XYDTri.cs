@@ -50,7 +50,7 @@ namespace NPRiverLib.IO
         /// <param name="river">созданные объект</param>
         /// <param name="testID">вариант тестовой задачи</param>
         /// <exception cref="NotSupportedException"></exception>
-        public override void Read(string filename, ref IRiver river, uint testID = 0)
+        public override string Read(string filename, ref IRiver river, uint testID = 0)
         {
             RiverEmpty2XYD river2D = river as RiverEmpty2XYD;
             if (river2D == null)
@@ -348,7 +348,8 @@ namespace NPRiverLib.IO
                     }
                     river2D.Set(mesh);
                     river = river2D;
-
+                    
+                    return river.Name + ": " + filename;
                 }
                 catch (Exception ex)
                 {
@@ -359,6 +360,8 @@ namespace NPRiverLib.IO
             }
             else
                 throw new NotSupportedException("Could not load '" + filename + "' file.");
+            
+            return "Тестовая задача не выбрана";
 
         }
 

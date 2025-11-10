@@ -43,40 +43,44 @@ namespace ChannelProcessLib
         public ManagerRiverTask()
         {
             #region 1XD течения 
-            //tasks.Add(new RiverStatic1DSW(new River1DSWParams()));
-            //tasks.Add(new RiverKGD1DSW(new River1DSWParams()));
+            // одномерные потоки
             tasks.Add(new RiverSWEStatic1XD(new RiverSWEParams1XD()));
             tasks.Add(new RiverSWE_KGD1XD(new RiverSWEParams1XD()));
+            // двухмерные потоки
             // КГД (КО/KE)- канал - k -е/w модели (симплексы)
             tasks.Add(new KGD_Eliz2024_1XD());
+            // двухмерные потоки - расчет МКЭ SUPG (вихрь - функция тока)
             tasks.Add(new TriFEMRiver_1XD());
-            #endregion
-
-            #region 2XD течения 
             // Патанкар (КО) - канал - k -е модель (ортогональная криволинейная сетка)
             tasks.Add(new CPatankarStream1XD());
-            // течение под цилиндром
+            // потонцеальное течение под цилиндром 
             tasks.Add(new RiverBEMCircleMesh1XD(new RiverBEMParams1XD()));
             #endregion
 
             #region 1YD течение в створе реки
-                tasks.Add(new TriSecRiver_1YD());
-                tasks.Add(new TriSecRiverTask1YBase());
-                tasks.Add(new TriSecRiverTask1YD());
+                // гидродинамика в створе с учетом вторичных потоков
+                tasks.Add(new CSRiver3_1YD());
+                // гидродинамика в створе с без учета вторичных потоков
+                tasks.Add(new CSRiver1_1YD());
+                // прокси гидродинамика в створе с без учета вторичных потоков
+                tasks.Add(new CSRiverProxy_1YD());
+                // старая гидродинамика в створе с без учета вторичных потоков
+                tasks.Add(new CSRiver1_1YD_old());
+                //tasks.Add(new TriSecRiverTask1YD());
                 tasks.Add(new TriSroSecRiverTask1YD());
                 //tasks.Add(new TriRoseRiverTask1YD());
 
+            #region 1YD  RiverLib
                 tasks.Add(new RiverSectionalQuad(new RiverStreamQuadParams()));
                 tasks.Add(new RiverSectionaChannel(new RiverStreamQuadParams()));
                 tasks.Add(new RiverSectionaChannelQuad(new RiverStreamQuadParams()));
-       //         tasks.Add(new RiverSectionaChannelTrapez(new RiverStreamQuadParams()));
                 tasks.Add(new RiverSectionalQuad_SV(new RiverStreamQuadParams()));
                 tasks.Add(new RiverSectionalQuad_Phi(new RiverStreamQuadParams()));
-
+            #endregion
             #endregion
 
             #region  2XYD 
-                tasks.Add(new TriRiverSWE2XYD());
+            tasks.Add(new TriRiverSWE2XYD());
                 tasks.Add(new RiverSWE_FCT_2XYD());
             #endregion
 

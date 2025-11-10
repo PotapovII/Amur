@@ -20,6 +20,7 @@ namespace EddyViscosityLib
     public class EddyViscosity_PotapovII_2024 : AEddyViscosityDistance
     {
         СontinuumMechanicsTri MECH = null;
+        double h;
         /// <summary>
         /// Конструктор 
         /// </summary>
@@ -31,23 +32,27 @@ namespace EddyViscosityLib
         {
             base.SetTask(mesh, algebra, wMesh);
             MECH = new СontinuumMechanicsTri(wMesh, Params.SigmaTask, Params.RadiusMin);
+            double min = 0;
+            double max = 0;
+            mesh.MinMax(1,ref min,ref max);
+            h = (max - min)/2;
         }
 
+
         /// <summary>
-        ///  Модель Потапова И И. 2024
+        ///  Модель Потапова И И. 2025
         /// </summary>
-        public override void SolveTask(ref double[] eddyViscosity, double[]Ux, double[] Vy, double[] Vz, double[] Phi, double[] Vortex, double dt)
+        public override void SolveTask(ref double[] eddyViscosity, double[] Ux, double[] Vy, double[] Vz, double[] Phi, double[] Vortex, double dt)
         {
             try
             {
                 double[][] tDef = null;
                 double[] E2 = null;
                 MECH.Calk_tensor_deformations(ref tDef, ref E2, Ux, Vy, Vz);
+                double mu_h = rho_w * kappa_w * h * kappa_w * h;
                 for (int node = 0; node < mesh.CountKnots; node++)
                 {
-                    double z = Distance[node];
-                    double lm2 = kappa_w * z * kappa_w * z;
-                    double mu_tn = rho_w * lm2 * E2[node];
+                    double mu_tn = mu_h * E2[node];
                     eddyViscosity[node] = mu_tn + mu;
                 }
             }
@@ -55,6 +60,17 @@ namespace EddyViscosityLib
             {
                 Console.WriteLine("ee = " + ee.ToString() + " " + ee.Message);
             }
+        }
+
+        /// <summary>
+        /// Расчет вихревой вязкости 
+        /// </summary>
+        /// <param name="eddyViscosity">вихревая вязкость</param>
+        /// <param name="Ux">осевая/окружная/осевая/скорость потока</param>
+        /// <param name="dt">шаг по времени</param>
+        public override void SolveTask(ref double[] eddyViscosity, double[] Ux, double dt)
+        {
+            throw new NotImplementedException("Модель вязкость не поддерживается для одномерного потока");
         }
     }
 

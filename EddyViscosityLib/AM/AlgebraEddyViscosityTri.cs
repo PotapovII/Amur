@@ -39,7 +39,7 @@ namespace EddyViscosityLib
         /// Решение задачи
         /// </summary>
         /// <param name="result">результат решения</param>
-        public virtual void SolveTask(ref double[] eddyViscosity, double[] Ux, double J)
+        public override void SolveTask(ref double[] eddyViscosity, double[] Ux, double J)
         {
             this.Ux = Ux;
             this.J = J;

@@ -180,7 +180,8 @@ namespace MeshGeneratorsLib.StripGenerator
                 knotsTmp[0] = new HNumbKnot(rb);
                 knotsTmp[1] = new HNumbKnot(rt);
                 // герерация сетки в затопленной части
-                riverGates[0] = new int[Count];
+                riverGates = new int[Count][];
+                riverGates[0] = new int[1];
                 riverGates[0][0] = lb.ID;
                 for (int i = 1; i < Count; i++)
                 {

@@ -430,6 +430,7 @@ namespace RiverLib.Patankar
         public BCond bcPhi;
         public BCond[] bcF;
         #endregion
+
         #region методы IRiver2D
         /// <summary>
         /// Получить граничные условия для задачи донных деформаций
@@ -597,6 +598,13 @@ namespace RiverLib.Patankar
         /// <param name="_mesh"></param>
         /// <param name="algebra"></param>
         public void Set(IMesh mesh, IAlgebra algebra = null) { }
+
+        /// <summary>
+        /// Получить буффер обмена параметрами
+        /// </summary>
+        /// <param name="args"></param>
+        public void GetRiverTaskArgs(ref ITaskArgs args) { args = null; }
+
         /// <summary>
         /// Установка новых отметок дна
         /// </summary>
@@ -837,6 +845,7 @@ namespace RiverLib.Patankar
         /// <returns></returns>
         public abstract IRiver Clone();
         #endregion
+
         #region Расчет коэффициентов
         /// <summary>
         /// Инициализация данных (праметров мат модели),

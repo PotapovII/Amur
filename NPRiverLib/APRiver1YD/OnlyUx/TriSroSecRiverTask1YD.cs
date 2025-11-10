@@ -188,7 +188,7 @@ namespace NPRiverLib.APRiver1YD
         {
             if (Params.taskVariant == TaskVariant.flowRateFun)
             {
-                riverFlowRate = FlowRate.FunctionValue(time);
+                riverFlowRate = csData.FlowRate.FunctionValue(time);
                 if (time > 0)
                 {
                     double Ck = 0.1;
@@ -210,7 +210,7 @@ namespace NPRiverLib.APRiver1YD
             }
             else
             {
-                waterLevel = WaterLevels.FunctionValue(time);
+                waterLevel = csData.WaterLevels.FunctionValue(time);
             }
         }
         /// <summary>
@@ -955,7 +955,8 @@ namespace NPRiverLib.APRiver1YD
             else
                 taskPoisson.SetTask(mesh, algebra);
 
-  
+            // создание общего враппера сетки для задачи
+            Set(mesh, algebra);
 
             eTaskReady = ETaskStatus.TaskReady;
         }

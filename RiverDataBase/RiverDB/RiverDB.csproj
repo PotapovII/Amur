@@ -65,6 +65,12 @@
     <Compile Include="ConvertorIn\ExtStandart.cs" />
     <Compile Include="ConvertorIn\ExtStandartOld.cs" />
     <Compile Include="ConvertorIn\StandartGPX.cs" />
+    <Compile Include="ConvertorOut\CFRFormEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConvertorOut\CFRFormEdit.Designer.cs">
+      <DependentUpon>CFRFormEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConvertorOut\RiverFlowManager.cs" />
     <Compile Include="ConvertorOut\CreateMeshForm.cs">
       <SubType>Form</SubType>
@@ -151,6 +157,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RAnalytics\CrossLine.cs" />
     <Compile Include="RAnalytics\RiverPoint.cs" />
+    <Compile Include="Report\PDay.cs" />
     <Compile Include="Report\FormReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,6 +167,9 @@
     <Compile Include="Report\RiverFlow.cs" />
     <EmbeddedResource Include="ConvertorIn\ConvertForm.resx">
       <DependentUpon>ConvertForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConvertorOut\CFRFormEdit.resx">
+      <DependentUpon>CFRFormEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConvertorOut\CreateMeshForm.resx">
       <DependentUpon>CreateMeshForm.cs</DependentUpon>
@@ -227,6 +237,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\BedLoadLib\BedLoadLib.csproj">
+      <Project>{b42dff59-7511-4bf7-b85c-e8411cfc372a}</Project>
+      <Name>BedLoadLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\CommonLib\CommonLib.csproj">
       <Project>{45fdf4ae-457a-42ae-a44c-e07a2726822f}</Project>
       <Name>CommonLib</Name>
@@ -287,6 +301,9 @@
     <Content Include="LinkStr\pathconfig.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Prev.bmp" />
+    <None Include="Resources\Next.bmp" />
+    <None Include="Resources\MeshAnalise.bmp" />
     <None Include="Resources\SaveBed.bmp" />
     <None Include="Resources\prev24.png" />
     <None Include="Resources\next24.png" />

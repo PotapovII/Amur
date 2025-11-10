@@ -42,7 +42,7 @@ namespace NPRiverLib.IO
         /// </summary>
         /// <param name="filename">Путь к файлу для чтения..</param>
         /// <returns>Экземпляр интерфейса<see cref="IMesh" /> interface.</returns>
-        public override void Read(string filename, ref IRiver river, uint testID = 0)
+        public override string Read(string filename, ref IRiver river, uint testID = 0)
         {
             string FileEXT = Path.GetExtension(filename).ToLower();
             try
@@ -51,14 +51,16 @@ namespace NPRiverLib.IO
                 {
                     case Ext_mrf:
                         Import_mrf(filename, ref river);
-                        return;
+                        return river.Name + ": " + filename;
                 }
                 DefaultRead(filename, ref river);
+                return river.Name;
             }
             catch (Exception ex)
             {
                 Logger.Instance.Info("Формат файла не корректен: " + ex.Message);
                 Logger.Instance.Info(ex.Message);
+                return "Тестовая задача не выбрана";
             }
         }
         public void Import_mrf(string filename, ref IRiver river)

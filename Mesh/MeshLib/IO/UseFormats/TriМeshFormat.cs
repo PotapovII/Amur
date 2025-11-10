@@ -28,7 +28,7 @@ namespace MeshLib
         /// </summary>
         /// <param name="filename">Путь к файлу для чтения..</param>
         /// <returns>Экземпляр интерфейса<see cref="IMesh" /> interface.</returns>
-        public void Read(string filename, ref IMesh rmesh, uint testID = 0)
+        public string Read(string filename, ref IMesh rmesh, uint testID = 0)
         {
             string ext = Path.GetExtension(filename);
 
@@ -86,7 +86,7 @@ namespace MeshLib
                     }
                 }
                 rmesh = mesh;
-                return;
+                return filename;
             }
             if (ext == ".node")
             {

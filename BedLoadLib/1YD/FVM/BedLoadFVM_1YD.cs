@@ -26,6 +26,7 @@ namespace BedLoadLib
     using CommonLib.Physics;
     using CommonLib.Function;
     using CommonLib.BedLoad;
+    using System.Linq;
 
     /// <summary>
     /// ОО: Класс для решения одномерной задачи о 
@@ -34,6 +35,11 @@ namespace BedLoadLib
     [Serializable]
     public class BedLoadFVM_1YD : ABedLoadFVM_1YD
     {
+        double[] ZetaS = null;
+        double ZetaSMax = 1;
+        double Hmax = 1;
+        double dDepthOld = 0;
+        double waterLevel0 = 0;
         public override IBedLoadTask Clone()
         {
             return new BedLoadFVM_1YD(Params);
@@ -57,9 +63,9 @@ namespace BedLoadLib
         /// <summary>
         /// Конструктор по умолчанию/тестовый
         /// </summary>
-        public BedLoadFVM_1YD() : this(new BedLoadParams1D()){}
+        public BedLoadFVM_1YD() : this(new BedLoadParams1YD()){}
 
-        public BedLoadFVM_1YD(BedLoadParams1D p) : base(p)
+        public BedLoadFVM_1YD(BedLoadParams1YD p) : base(p)
         {
             name = "деформация поперечного дна (d50) FVM";
         }
@@ -72,15 +78,12 @@ namespace BedLoadLib
         /// <param name="dGs">градиент расхода</param>
         public override void Calk_Gs(ref double[][] Gs, ref double[][] dGs, double[] tau, double[] P = null)
         {
-            double tanphi = SPhysics.PHYS.tanphi;
-            double G1 = SPhysics.PHYS.G1;
-            double tau0 = SPhysics.PHYS.tau0;
-    
             if (tau == null)
                 tau = this.tau;
             if (tau == null)
                 return;
-            if (Params.blm == TypeBLModel.BLModel_1991)
+            if (Params.blm == TypeBLModel.BLModel_1991||
+                Params.blm == TypeBLModel.BLModel_2021)
             {
                 MEM.Alloc2DClear(3, Count, ref Gs);
                 MEM.Alloc2DClear(3, Count, ref dGs);
@@ -89,18 +92,18 @@ namespace BedLoadLib
                 {
                     if (DryWet[i] > 1)
                     {
-                        if(Roughness != null)
-                            SPhysics.PHYS.GetLocalBedLoadParams(Roughness[i], ref tau0, ref tanphi,ref G1);
-                        
                         mtau = Math.Abs(tau[i]);
-                        chi = Math.Sqrt(tau0 / mtau);
+                        chi = Math.Sqrt(mTau0[i] / mtau);
                         Ai = Math.Max(0, 1 - Math.Sqrt(chi));
-                        Bi = (chi / 2 + A[i]) / tanphi;
+                        Bi = (chi / 2 + A[i]) / mTau0[i];
                         // Расход массовый! только для отрисовки !!! 
                         // для расчетов - объемный
-                        G0 = G1 * tau[i] * Math.Sqrt(mtau) / CosGamma[i];
+                        if (Ai > 0)
+                            G0 = mG1[i] * tau[i] * Math.Sqrt(mtau) / CosGamma[i];
+                        else
+                            G0 = 0;
                         Gs[idxTransit][i] = G0 * Ai;
-                        double D = 4.0 / 5.0 / tanphi / CosGamma[i];
+                        double D = 4.0 / 5.0 / mTau0[i] / CosGamma[i];
                         Gs[idxZeta][i] = -D * G0 * dZeta[i] / dx;
                     }
                     else
@@ -141,8 +144,46 @@ namespace BedLoadLib
                     X[i] = 0.5 * (x[i + 1] + x[i]);
                 }
                 sp.AddCurve("Отметки дна", x, Zeta0);
-                if (Roughness != null)
-                    sp.AddCurve("Шероховатость дна", x, Roughness);
+                if (mRoughness != null)
+                    sp.AddCurve("Шероховатость дна", x, mRoughness);
+                double[] Theta = null;
+                MEM.AllocClear(Count, ref Theta);
+                for (int i = 0; i < tau.Length; i++)
+                    Theta[i] = tau[i] / SPhysics.PHYS.normaTheta;
+                sp.AddCurve("Параметр Шильдса", X, Theta);
+                double[][] Gs = null;
+                double[][] dGs = null;
+                Calk_Gs(ref Gs, ref dGs, tau);
+                if (Gs != null)
+                {
+                    //MEM.AllocClear(Count, ref Theta);
+                    //for (int i = 0; i < tau.Length; i++)
+                    //    Theta[i] = tau[i] / normaTheta;
+                    //sp.AddCurve("Параметр Шильдса", X, Theta);
+
+                    if (Gs.Length == 3)
+                    {
+                        sp.AddCurve("Транзитный расход наносов", X, Gs[idxTransit]);
+                        sp.AddCurve("Гравитационный расход наносов", X, Gs[idxZeta]);
+                        sp.AddCurve("Полный расход наносов", X, Gs[idxAll]);
+
+                        sp.AddCurve("Градиент транзитного расхода наносов", X, dGs[idxTransit]);
+                        sp.AddCurve("Градиент гравитационного расхода наносов", X, dGs[idxZeta]);
+                        sp.AddCurve("Градиент полного расхода наносов", X, dGs[idxAll]);
+                    }
+                    else
+                    {
+                        sp.AddCurve("Транзитный расход наносов", X, Gs[idxTransit]);
+                        sp.AddCurve("Гравитационный расход наносов", X, Gs[idxZeta]);
+                        sp.AddCurve("Напоный расход наносов", X, Gs[idxPress]);
+                        sp.AddCurve("Полный расход наносов", X, Gs[idxAll]);
+
+                        sp.AddCurve("Градиент транзитного расхода наносов", X, dGs[idxTransit]);
+                        sp.AddCurve("Градиент гравитационного расхода наносов", X, dGs[idxZeta]);
+                        sp.AddCurve("Градиент напорного расхода наносов", X, dGs[idxPress]);
+                        sp.AddCurve("Градиент полного расхода наносов", X, dGs[idxAll]);
+                    }
+                }
             }
         }
         /// <summary>
@@ -156,12 +197,11 @@ namespace BedLoadLib
             double tanphi = SPhysics.PHYS.tanphi;
             double G1 = SPhysics.PHYS.G1;
             double tau0 = SPhysics.PHYS.tau0;
-            
             double Q = 0;
             for (int i = 1; i < tau.Length; i++)
             {
-                if (Roughness != null)
-                    SPhysics.PHYS.GetLocalBedLoadParams(Roughness[i], ref tau0, ref tanphi, ref G1);
+                if (mRoughness != null)
+                    SPhysics.PHYS.GetLocalBedLoadParams(mRoughness[i], ref tau0, ref tanphi, ref G1);
                 if (DryWet[i] > 0)
                 {
                     mtau = Math.Abs(tau[i]);
@@ -191,28 +231,46 @@ namespace BedLoadLib
         /// </summary>
         public override void CalkZetaFDM(ref double[] Zeta, double[] tau, double[] tauY = null, double[] P = null, double[][] CS = null)
         {
-            double tanphi = SPhysics.PHYS.tanphi;
-            double G1 = SPhysics.PHYS.G1;
-            double epsilon = SPhysics.PHYS.epsilon;
-            double tau0 = SPhysics.PHYS.tau0;
             try
             {
                 this.tau = tau;
                 this.P = P;
                 MEM.Alloc(Zeta0.Length, ref Zeta);
+                if (ZetaS == null)
+                {
+                    MEM.Copy(ref ZetaS, Zeta0);
+                    ZetaSMax = Math.Max(ZetaSMax, ZetaS.Max());
+                }
                 // Расчет производных от геометрии
                 double dz;
+                Hmax = 0;
+                if (waterLevel0 == 0)
+                    waterLevel0 = waterLevel;
                 for (int i = 0; i < N; i++)
                 {
                     dx = x[i + 1] - x[i];
                     dz = (Zeta0[i + 1] - Zeta0[i]) / dx;
                     dZeta[i] = dz;
                     CosGamma[i] = Math.Sqrt(1 / (1 + dz * dz));
+                    double Hi = waterLevel0 - 0.5 * (Zeta0[i + 1] + Zeta0[i]);
+                    if (Hi > Hmax)
+                        Hmax = Hi;
                 }
+                double dDepth = (Hmax - Depth0) / Depth0;
+                //if (dDepthOld <= 0)
+                //    dDepthOld = dDepth;
+                //else
+                //{
+                //    if (dDepth > dDepthOld)
+                //        dDepth = dDepthOld;
+                //}
+
                 // Расчет коэффициентов  на грани  P--e--E
                 for (int i = 0; i < N; i++)
                 {
                     mtau = Math.Abs(tau[i]);
+                    if (mTau_Adhesion != null)
+                        mtau = Math.Max(0, mtau - mTau_Adhesion[i]);
                     if (tau[i] < MEM.Error8)
                     {
                         // сухая - не размываемая часть берега
@@ -222,10 +280,8 @@ namespace BedLoadLib
                     }
                     else
                     {
-                        if (Roughness != null)
-                            SPhysics.PHYS.GetLocalBedLoadParams(Roughness[i], ref tau0, ref tanphi, ref G1);
                         // критическое напряжение
-                        tau0Elem[i] = Math.Max(0, tau0 * (1 + dZeta[i] / tanphi));
+                        tau0Elem[i] = Math.Max(0, mTau0[i] * (1 + dZeta[i] / mTanPhi[i]));
                         //chi = Math.Min(1 + MEM.Error10, Math.Sqrt(tau0 / mtau));
                         chi = Math.Min(1 + MEM.Error10, Math.Sqrt(tau0Elem[i] / mtau));
                         if (chi >= 1)
@@ -239,7 +295,7 @@ namespace BedLoadLib
                         {
                             DryWet[i] = 2; // мокрая - размываемая часть дна
                             A[i] = Math.Max(0, 1 - chi);
-                            G0[i] = G1 * tau[i] * Math.Sqrt(mtau) * A[i] / CosGamma[i];
+                            G0[i] = mG1[i] * tau[i] * Math.Sqrt(mtau) * A[i] / CosGamma[i];
                         }
                     }
                 }
@@ -280,7 +336,21 @@ namespace BedLoadLib
                         // расчет ведущего коэффициента
                         AP[i] = AE[i] + AW[i] + AP0[i];
                         // расчет правой части
-                        S[i] = AP0[i] * Zeta0[i];
+                        //S[i] = AP0[i] * Zeta0[i];
+                        // 20 08 2025
+                        // Добален член донного размыва в правую часть уравнения донных деформаций
+                        //double Fh = 0.00;
+                        //double Sh = -Fh * G0[i] * A[i];
+                        int NN = 6;
+                        double alphaH = 0.5;
+                        double dzdy = Math.Abs(1 - Math.Abs(dZeta[i] / mTanPhi[i]));
+                        double Sh = dxp * alphaH * G0[i] * A[i] * dDepth / Depth0 * Math.Pow(dzdy, NN); 
+                        
+                        //double dZmax = (ZetaS[i] - Zeta0[i])/ZetaSMax;
+                        
+                        //double Sh = dxp * alphaH * G0[i] * A[i] / Depth0 * dZmax * Math.Pow(dzdy, NN);
+                        // в стандартной постановке Fh = 0
+                        S[i] = Sh + AP0[i] * Zeta0[i];
                     }
                 }
                 // последний узел
@@ -296,16 +366,15 @@ namespace BedLoadLib
                     }
                     else
                     {
-                        double dxe = x[i + 1] - x[i];
+                        //double dxe = x[i + 1] - x[i];
                         double dxw = x[i] - x[i - 1];
                         double dxp = 0.5 * (x[i + 1] - x[i - 1]);
                         AP0[i] = dxp / dtime;
-
-                        AE[i] = G0[i] / dxe;
-                        AW[i] = 2 * G0[i] * G0[i - 1] / ((G0[i] + G0[i - 1]) * dxw);
-
+                        AE[i] = G0[i] / dxw;
+                        AW[i] = G0[i - 1] / dxw;
+                        //AE[i] = G0[i] / dxe;
+                        //AW[i] = 2 * G0[i] * G0[i - 1] / ((G0[i] + G0[i - 1]) * dxw);
                         AP[i] = AE[i] + AW[i] + AP0[i];
-
                         S[i] = AP0[i] * Zeta0[i];
                     }
                 }
@@ -361,9 +430,15 @@ namespace BedLoadLib
                 //PrintMas("S", S);
                 //Console.WriteLine();
                 //PrintMatrix();
+
                 // Сглаживание дна по лавинной моделе
                 if (Params.isAvalanche == AvalancheType.AvalancheSimple)
-                    avalanche.Lavina(ref Zeta);
+                {
+                    if(mTanPhi == null) 
+                        avalanche.Lavina(ref Zeta);
+                    else
+                        avalanche.Lavina(ref Zeta, mTanPhi);
+                }    
                 // переопределение начального значения zeta 
                 // для следующего шага по времени
                 for (int j = 0; j < Zeta.Length; j++)
@@ -390,7 +465,7 @@ namespace BedLoadLib
             double tau0 = SPhysics.PHYS.tau0;
             double g = SPhysics.GRAV;
             double rho_w = SPhysics.rho_w;
-            BedLoadParams1D blp = new BedLoadParams1D();
+            BedLoadParams1YD blp = new BedLoadParams1YD();
             blp.isAvalanche = AvalancheType.AvalancheSimple;
 
             BedLoadFVM_1YD bltask = new BedLoadFVM_1YD(blp);
@@ -453,7 +528,7 @@ namespace BedLoadLib
             double g = SPhysics.GRAV;
             double rho_w = SPhysics.rho_w;
 
-            BedLoadParams1D blp = new BedLoadParams1D();
+            BedLoadParams1YD blp = new BedLoadParams1YD();
             blp.isAvalanche = AvalancheType.NonAvalanche;
 
             BedLoadFVM_1YD bltask = new BedLoadFVM_1YD(blp);

@@ -20,6 +20,7 @@ namespace NPRiverLib.IO
     using CommonLib.IO;
     using GeometryLib;
     using NPRiverLib.APRiver2XYD.River2DSW;
+    using NPRiverLib.IO._1XD.Tests;
 
     [Serializable]
     public class TaskReader2XYD_CFG : ATaskFormat<IRiver>
@@ -42,22 +43,32 @@ namespace NPRiverLib.IO
             SupportImport = true;
             SupportExport = true;
         }
-        public override void Read(string filename, ref IRiver river, uint testID = 0)
+        public override string Read(string filename, ref IRiver river, uint testID = 0)
         {
             // расширение файла
-            string FileEXT = Path.GetExtension(filename).ToLower();
-            switch (FileEXT)
+            switch(testID)
             {
-                case Ext_cdg:
-                    Import_cdg(filename, ref river);
+                case 0:
+                    string FileEXT = Path.GetExtension(filename).ToLower();
+                    switch (FileEXT)
+                    {
+                        case Ext_cdg:
+                            Import_cdg(filename, ref river);
+                            return river.Name + ": " + filename;
+                        case Ext_mrf:
+                            Import_mrf(filename, ref river);
+                            return river.Name + ": " + filename;
+                        case Ext_bed:
+                            Import_bed(filename, ref river);
+                            return river.Name + ": " + filename;
+                    }
                     break;
-                case Ext_mrf:
-                    Import_mrf(filename, ref river);
-                    break;
-                case Ext_bed:
-                    Import_bed(filename, ref river);
-                    break;
+                    case 1:
+                        Test_CS_1YD.GetTest(ref river, testID);
+                        return river.Name;
+                    //break;
             }
+            return "Тестовая задача не выбрана";
         }
         /// <summary>
         /// Сохраняем сетку на диск.

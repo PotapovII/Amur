@@ -9,17 +9,19 @@
 //---------------------------------------------------------------------------
 namespace RenderLib
 {
+    using System;
+    using System.Linq;
+    using System.Drawing;
+
+    using MeshLib;
     using CommonLib;
     using MemLogLib;
     using GeometryLib;
-    using MeshLib;
-    using System;
-    using System.Drawing;
-    using System.Linq;
-    using GeometryLib.Vector;
+    
     using GeometryLib.World;
-    using CommonLib.DrvGraphics;
+    using GeometryLib.Vector;
     using CommonLib.Geometry;
+    using CommonLib.DrvGraphics;
 
     /// <summary>
     /// ОО: Класс методов для отрисовки данных
@@ -31,10 +33,10 @@ namespace RenderLib
         double MinV = 0;
         double minV, maxV;
         double SumV = 0;
+        float[] LengthLines = null;
         double[] ValuesX = null;
         double[] ValuesY = null;
         FPoint[] VeLLines = null;
-        float[] LengthLines = null;
         /// <summary>
         /// Флаги объектов отрисовки
         /// </summary>
@@ -600,12 +602,11 @@ namespace RenderLib
             float max = LengthLines.Max();
             PointF ps = new PointF(max,max);
             zoom.WorldToScreen(ref ps);
+            
             float maxPS = ((FPoint)ps).Length();
             int line = 50;
             int PixelVel = 100;
             float scale = PixelVel / maxPS;
-
-
             PointF pt, pv,pL,pR,pp;
             float a = 0.15f;
             float b = 0.7f;
@@ -613,34 +614,12 @@ namespace RenderLib
             {
                 pt = new PointF((float)X[i], (float)Y[i]);
                 zoom.WorldToScreen(ref pt);
-               // g.FillEllipse(colorScheme.BrushPoint, pt.X - 1.5f, pt.Y - 1.5f, 3, 3);
-                
-              //  if (MEM.Equals(LengthLines[i], 0) == true) continue;
-              //  pv = (PointF)VeLLines[i];
-              //  zoom.WorldToScreen(ref pv);
-              //  pv.X= pv.X * scale + pt.X; pv.Y = pv.Y * scale + pt.Y;
-              //  g.DrawLine(colorScheme.PenVectorLine, pt, pv);
-
-              ////  Console.WriteLine(pv.ToString());
-              //  // основание наконечника
-              //  pp = new PointF(b * pt.X + (1 - b) * pv.X, b * pt.Y - (1 - b) * pv.X);
-              //  FPoint norm = VeLLines[i].GetOrt();
-              //  FPoint L =  a * norm * PixelVel;
-              //  FPoint R = -L;
-              //  pL = new PointF(pp.X + L.X, pp.Y + L.Y);
-                // pR = new PointF(pp.X + R.X, pp.Y + R.Y);
-
-                //  g.DrawLine(colorScheme.PenVectorLine, pL, pv);
-                // g.DrawLine(colorScheme.PenVectorLine, pR, pv);
-
-
 
                 float dxv = (float)(line * ValuesX[i] / LValue);
                 float dyv = (float)(line * ValuesY[i] / LValue);
                 FPoint norm = new FPoint(-dyv, dxv);
                 FPoint L = norm * a;
-                FPoint R = -L;
-
+                FPoint R = - L;
 
                 pv = new PointF(pt.X + dxv, pt.Y - dyv);
                 pp = new PointF(pt.X + b * dxv, pt.Y - b * dyv);

@@ -11,6 +11,10 @@ namespace MeshLib
     using CommonLib.Areas;
     using System;
     using System.Collections.Generic;
+    using System.IO;
+
+    using System.Runtime.Serialization.Formatters.Binary;
+
     /// <summary>
     /// ОО: Контейнер кривых
     /// </summary>
@@ -140,11 +144,23 @@ namespace MeshLib
             else
             {
                 RectangleWorld a = new RectangleWorld(0, 0, 0, 0);
-                for (int i = 0; i < curves.Count; i++)
+                int i = 0;
+                int ii = 0;
+                for (i = 0; i < curves.Count; i++)
                 {
                     if (curves[i].Check == true)
                     {
-                        RectangleWorld b = GetRegion(curves[i], coordInv);
+                        a = GetRegion(curves[i], coordInv);
+                        ii = i;
+                        break;
+                    }
+                }
+                for (i = ii + 1; i < curves.Count; i++)
+                {
+                    if (curves[i].Check == true)
+                    {
+                        GraphicsCurve curve = curves[i];
+                        RectangleWorld b = GetRegion(curve, coordInv);
                         a = RectangleWorld.Extension(ref a, ref b);
                     }
                 }
@@ -168,9 +184,16 @@ namespace MeshLib
                 x = curve[i].x;
                 y = curve[i].y;
                 if (double.IsNaN(x) == true || double.IsInfinity(x))
+                {
+                    Console.WriteLine("Кривая " + curve.Name + " точка " + i.ToString() + "проблема c X!");
                     x = 0;
+                }
+
                 if (double.IsNaN(y) == true || double.IsInfinity(y))
+                {
+                    Console.WriteLine("Кривая " + curve.Name + " точка " + i.ToString() + "проблема c Y!");
                     y = 0;
+                }
                 xmin = Math.Min(x, xmin);
                 ymin = Math.Min(y, ymin);
                 xmax = Math.Max(x, xmax);
@@ -251,6 +274,41 @@ namespace MeshLib
             {
                 return "Ошибка распознования имени группы";
             }
+        }
+        /// <summary>
+        /// Сериализация GraphicsData
+        /// </summary>
+        /// <param name="sp">точка сохранения</param>
+        /// <param name="NameSave">путь,имя файла</param>
+        public void SerializableGraphicsData(IGraphicsData gd, string NameSave)
+        {
+            DateTime dtime = DateTime.Now;
+            string dstr = dtime.ToString();
+            string str = dstr.Replace(":", ".");
+            string FileName = NameSave + " " + str + ".gd";
+            // создаем объект BinaryFormatter
+            BinaryFormatter formatter = new BinaryFormatter();
+            // получаем поток, куда будем записывать сериализованный объект
+            using (FileStream fs = new FileStream(FileName, FileMode.OpenOrCreate))
+            {
+                formatter.Serialize(fs, gd);
+            }
+        }
+        /// <summary>
+        /// Загрузка GraphicsData
+        /// </summary>
+        /// <param name="FileName">путь,имя файла</param>
+        /// <returns></returns>
+        public IGraphicsData LoadGraphicsData(string FileName)
+        {
+            GraphicsData gd = null;
+            // создаем объект BinaryFormatter
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (FileStream fs = new FileStream(FileName, FileMode.OpenOrCreate))
+            {
+                gd = (GraphicsData)formatter.Deserialize(fs);
+            }
+            return gd;
         }
     }
 }

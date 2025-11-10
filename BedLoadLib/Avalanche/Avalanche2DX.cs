@@ -20,7 +20,7 @@ namespace BedLoadLib
     /// формирующего склон.
     /// </summary>
     [Serializable]
-    public class Avalanche2DX : AvalancheX
+    public class Avalanche2DX : Avalanche1D
     {
         public DirectAvalanche directAvalanche = DirectAvalanche.AvalancheXY;
         /// <summary>
@@ -28,7 +28,7 @@ namespace BedLoadLib
         /// </summary>
         protected double[][] FacetLength = null;
         protected bool[][] FacetFlag = null;
-        public Avalanche2DX(IMesh mesh, double tf, DirectAvalanche directAvalanche = DirectAvalanche.AvalancheX, double Relax = 0.5) :
+        public Avalanche2DX(IMesh mesh, double tf, DirectAvalanche directAvalanche = DirectAvalanche.Avalanche1D, double Relax = 0.5) :
             base(mesh, tf, Relax)
         {
             TriElement[] Elems = mesh.GetAreaElems();
@@ -42,7 +42,7 @@ namespace BedLoadLib
         {
             switch(directAvalanche)
             {
-                case DirectAvalanche.AvalancheX:
+                case DirectAvalanche.Avalanche1D:
                     if (MEM.Equals(dx, 0, MEM.Error6) == false && MEM.Equals(dy, 0, MEM.Error6) == true)
                         return true;
                     else
@@ -111,6 +111,11 @@ namespace BedLoadLib
             }
             //Console.WriteLine( "лавинных итераций : " + i.ToString());
         }
+        public override void Lavina(ref double[] Z, double[] mtf)
+        {
+            Lavina(ref Z);
+        }
+
         /// <summary>
         /// Метод лавинного обрушения правого склона, 
         /// обрушение с правой стороны

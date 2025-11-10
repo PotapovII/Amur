@@ -22,6 +22,13 @@ namespace GeometryLib
     [Serializable]
     public class PieceDigFunction : IDigFunction
     {
+        /// <summary>
+        /// Количество опорных точек функции
+        /// </summary>
+        public int Count { get => digFunctions[0].Count; }
+        /// <summary>
+        /// 
+        /// </summary>
         IDigFunction[] digFunctions = null;
         /// <summary>
         /// загрузка начальной геометрии из файла

@@ -112,7 +112,29 @@ namespace RiverDB.Report
             form.Text = "График уровней реки Амур г.п.: " + tb21.Text;
             form.Show();
         }
-       
+        private void btWaterlevelA_Click(object sender, EventArgs e)
+        {
+            ISavePoint sp = new SavePoint();
+            for (int i = 0; i < cListBoxDates.Items.Count; i++)
+            {
+                CheckState flag = cListBoxDates.GetItemCheckState(i);
+                if (flag == CheckState.Checked)
+                {
+                    string year = cListBoxDates.Items[i].ToString();
+                    List<PDay> fun = null;
+                    GetWaterLevel(year,ref fun);
+
+                    double[] arg = (fun.Select(x => (double)x.day)).ToArray();
+                    double[] ids = (fun.Select(x => (double)x.ID)).ToArray();
+                    double[] wl = (fun.Select(x => x.waterlevel)).ToArray();
+                    sp.AddCurve(year + " код ", arg, ids);
+                    sp.AddCurve(year + " WL ", arg, wl);
+                }
+            }
+            FVCurves form = new FVCurves(sp);
+            form.Text = "График уровней реки Амур г.п.: " + tb21.Text;
+            form.Show();
+        }
         private void btRiverFlow_Click(object sender, EventArgs e)
         {
             ISavePoint sp = new SavePoint();
@@ -167,6 +189,9 @@ namespace RiverDB.Report
             form.Text = rf.RiverName + ", Расходы м^3/c" ;
             form.Show();
         }
+
+        
+
         /// <summary>
         /// Получить 
         /// </summary>
@@ -182,6 +207,43 @@ namespace RiverDB.Report
                           "' AND[place_id] = '" + RowID.Trim() + "'";
             DataTable mapTable = ConnectDB.GetDataTable(sql, TName);
             List<Vector2> fun = new List<Vector2>();
+            List<PDay> funV = new List<PDay>();
+            double waterlevel;
+            foreach (DataRow dr in mapTable.Rows)
+            {
+                if (MiddleWaterLevel == true)
+                    waterlevel = (double)dr["experiment_MiddleWaterLevel"];
+                else
+                    waterlevel = (double)dr["experiment_waterlevel"];
+
+                DateTime now = (DateTime)dr["experiment_datetime"];
+                int day = now.DayOfYear;
+                int ID = (int)dr["experiment_id"];
+                PDay pd = new PDay(waterlevel, now, day, ID);
+                funV.Add(pd);
+                Vector2 d = new Vector2(day, waterlevel);
+                fun.Add(d);
+            }
+            fun.Sort();
+            funV.Sort();
+            return fun;
+        }
+
+        /// <summary>
+        /// Получить 
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        protected void GetWaterLevel(string year,ref List<PDay> fun, bool MiddleWaterLevel = false)
+        {
+            string RowID = tb2.Text;
+            string sql = "SELECT [experiment_id],[place_id],[experiment_datetime]" +
+                          ",[experiment_waterlevel],[experiment_MiddleWaterLevel] " +
+                          " FROM[RiverDB].[dbo].[Experiment] " +
+                          " WHERE datepart(yyyy, [experiment_datetime]) = '" + year +
+                          "' AND[place_id] = '" + RowID.Trim() + "'";
+            DataTable mapTable = ConnectDB.GetDataTable(sql, TName);
+            fun = new List<PDay>();
             double waterlevel;
             foreach (DataRow dr in mapTable.Rows)
             {
@@ -191,16 +253,19 @@ namespace RiverDB.Report
                     waterlevel = (double)dr["experiment_waterlevel"];
                 DateTime now = (DateTime)dr["experiment_datetime"];
                 int day = now.DayOfYear;
-                Vector2 d = new Vector2(day, waterlevel);
-                fun.Add(d);
+                int ID = (int)dr["experiment_id"];
+                PDay pd = new PDay(waterlevel, now, day, ID);
+                fun.Add(pd);
             }
             fun.Sort();
-            return fun;
         }
+
 
         private void button2_Click(object sender, EventArgs e)
         {
             Close();
         }
+
+    
     }
 }

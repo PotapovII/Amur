@@ -58,6 +58,7 @@ namespace RenderLib
         /// Настройка цветов для объектов рендеренга
         /// </summary>
         ColorSchemeFields colorScheme;
+        ColorSchemeFields colorSchemeOld = null;
         /// <summary>
         /// Точка сохранения
         /// </summary>
@@ -165,7 +166,7 @@ namespace RenderLib
         #endregion
 
         /// <summary>
-        /// Обновление опций
+        /// Обновление опцийSetRenderOptions
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -185,14 +186,8 @@ namespace RenderLib
                     spData.graphicsData.curves[i].Check = true;
             }
 
-            colorScheme.MaxIsoLine = trackBarMax.Value;
-            colorScheme.MinIsoLine = trackBarMin.Value;
-            colorScheme.CountIsoLine = (int)nUD_CountIsoLine.Value;
-            colorScheme.formatText      = (uint)nUD_formatText.Value;
-            colorScheme.formatTextReper = (uint)nUD_formatReper.Value;
-            // 15 07 24 изменяемый масштаб координатных осей
-            colorScheme.scaleCoords = (int)nUD_formatCoordMan.Value;
-   
+
+            renderOptions.printOp = cb_PrintOp.Checked;
 
             renderOptions.indexValues = listBoxPoles.SelectedIndex;
             renderOptions.showBoudary = cb_showBoudary.Checked;
@@ -222,6 +217,44 @@ namespace RenderLib
             renderOptions.scaleFields = (int)nUD_formatFieldScale.Value;
             renderOptions.opIsoLineValuesShow = cb_opIsoLineValuesShow.Checked;
             renderOptions.opIsoLineSelect = cb_opIsoLineSelect.Checked;
+
+            try
+            {
+                if (renderOptions.printOp == true)
+                {
+                    if (colorSchemeOld == null)
+                        colorSchemeOld = new ColorSchemeFields(colorScheme);
+                    colorScheme.BrushTextReper = new SolidBrush(Color.Black);
+                    colorScheme.BrushReper = new SolidBrush(Color.Black);
+                    colorScheme.PenReper = new Pen(Color.Black, 3);
+                    colorScheme.FontReper = new Font("Times New Roman", 28);
+                    colorScheme.PenGraphLine = new Pen(Color.Black, 2);
+                    colorScheme.formatTextReper = 2;
+                }
+                else
+                {
+                    if (colorSchemeOld != null)
+                    {
+                        colorScheme.BrushTextReper = new SolidBrush(Color.Blue);
+                        colorScheme.BrushReper = new SolidBrush(Color.Green);
+                        colorScheme.PenReper = new Pen(Color.Blue, 1);
+                        colorScheme.FontReper = new Font("Arial", 14);
+                        colorScheme.PenGraphLine = new Pen(Color.Black);
+                        colorScheme.formatTextReper = colorSchemeOld.formatTextReper;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Exception(ex);
+            }
+            colorScheme.MaxIsoLine = trackBarMax.Value;
+            colorScheme.MinIsoLine = trackBarMin.Value;
+            colorScheme.CountIsoLine = (int)nUD_CountIsoLine.Value;
+            colorScheme.formatText = (uint)nUD_formatText.Value;
+            colorScheme.formatTextReper = (uint)nUD_formatReper.Value;
+            // 15 07 24 изменяемый масштаб координатных осей
+            colorScheme.scaleCoords = (int)nUD_formatCoordMan.Value;
 
             CValue(ref renderOptions.opIsoLineSelectValue, tb_opIsoLineSelectValue);
 
@@ -347,6 +380,7 @@ namespace RenderLib
             cb_showBoudaryKnots.Checked = renderOptions.showBoudaryKnots;
             cb_showElementNamber.Checked = renderOptions.showElementNamber;
             cb_showMesh.Checked = renderOptions.showMesh;
+            cb_PrintOp.Checked = renderOptions.printOp;
             cb_showKnotNamber.Checked = renderOptions.showKnotNamber;
             cb_showBoudaryElems.Checked = renderOptions.showBoudaryElems;
             cb_opFillValues.Checked = renderOptions.opFillValues;

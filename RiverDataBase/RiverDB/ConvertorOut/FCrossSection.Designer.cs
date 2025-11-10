@@ -32,11 +32,11 @@
             this.btClose = new System.Windows.Forms.Button();
             this.bt_CreateTaskFile = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btChangeData = new System.Windows.Forms.Button();
             this.cbMeshGenerator = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.cbRetask = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.cbDataEnd = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tb_DataEnd = new System.Windows.Forms.TextBox();
             this.tb_RF = new System.Windows.Forms.TextBox();
@@ -81,20 +81,30 @@
             this.lbKs = new System.Windows.Forms.ListBox();
             this.btLoad = new System.Windows.Forms.Button();
             this.btCSMesh = new System.Windows.Forms.Button();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.tb_tau_s = new System.Windows.Forms.TextBox();
+            this.tb_tf = new System.Windows.Forms.TextBox();
+            this.cbTau_s = new System.Windows.Forms.CheckBox();
+            this.cbTF = new System.Windows.Forms.CheckBox();
+            this.statusPanel = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tbMessage = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1.SuspendLayout();
             this.pnRF.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.statusPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // btClose
             // 
             this.btClose.BackColor = System.Drawing.SystemColors.Control;
             this.btClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btClose.Location = new System.Drawing.Point(521, 536);
+            this.btClose.Location = new System.Drawing.Point(521, 165);
             this.btClose.Margin = new System.Windows.Forms.Padding(4);
             this.btClose.Name = "btClose";
-            this.btClose.Size = new System.Drawing.Size(133, 30);
+            this.btClose.Size = new System.Drawing.Size(95, 30);
             this.btClose.TabIndex = 1;
             this.btClose.Text = "Выход";
             this.btClose.UseVisualStyleBackColor = false;
@@ -104,10 +114,10 @@
             // 
             this.bt_CreateTaskFile.BackColor = System.Drawing.SystemColors.Control;
             this.bt_CreateTaskFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bt_CreateTaskFile.Location = new System.Drawing.Point(521, 476);
+            this.bt_CreateTaskFile.Location = new System.Drawing.Point(521, 105);
             this.bt_CreateTaskFile.Margin = new System.Windows.Forms.Padding(4);
             this.bt_CreateTaskFile.Name = "bt_CreateTaskFile";
-            this.bt_CreateTaskFile.Size = new System.Drawing.Size(133, 30);
+            this.bt_CreateTaskFile.Size = new System.Drawing.Size(95, 30);
             this.bt_CreateTaskFile.TabIndex = 0;
             this.bt_CreateTaskFile.Text = "Создать";
             this.bt_CreateTaskFile.UseVisualStyleBackColor = false;
@@ -117,11 +127,11 @@
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.btChangeData);
             this.panel1.Controls.Add(this.cbMeshGenerator);
             this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.cbRetask);
             this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.cbDataEnd);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.tb_DataEnd);
             this.panel1.Controls.Add(this.tb_RF);
@@ -136,6 +146,19 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(649, 203);
             this.panel1.TabIndex = 50;
+            // 
+            // btChangeData
+            // 
+            this.btChangeData.BackColor = System.Drawing.SystemColors.Control;
+            this.btChangeData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btChangeData.Location = new System.Drawing.Point(436, 58);
+            this.btChangeData.Margin = new System.Windows.Forms.Padding(4);
+            this.btChangeData.Name = "btChangeData";
+            this.btChangeData.Size = new System.Drawing.Size(97, 27);
+            this.btChangeData.TabIndex = 552;
+            this.btChangeData.Text = "Обновить";
+            this.btChangeData.UseVisualStyleBackColor = false;
+            this.btChangeData.Click += new System.EventHandler(this.btChangeData_Click);
             // 
             // cbMeshGenerator
             // 
@@ -161,7 +184,7 @@
             // cbRetask
             // 
             this.cbRetask.AutoSize = true;
-            this.cbRetask.Location = new System.Drawing.Point(491, 151);
+            this.cbRetask.Location = new System.Drawing.Point(491, 149);
             this.cbRetask.Name = "cbRetask";
             this.cbRetask.Size = new System.Drawing.Size(15, 14);
             this.cbRetask.TabIndex = 548;
@@ -179,16 +202,6 @@
             this.label3.TabIndex = 547;
             this.label3.Text = "Учет вторичных - створовых течений при решении задачи";
             // 
-            // cbDataEnd
-            // 
-            this.cbDataEnd.AutoSize = true;
-            this.cbDataEnd.Location = new System.Drawing.Point(491, 63);
-            this.cbDataEnd.Name = "cbDataEnd";
-            this.cbDataEnd.Size = new System.Drawing.Size(15, 14);
-            this.cbDataEnd.TabIndex = 544;
-            this.cbDataEnd.UseVisualStyleBackColor = true;
-            this.cbDataEnd.CheckedChanged += new System.EventHandler(this.cbDataEnd_CheckedChanged);
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -203,7 +216,6 @@
             // 
             // tb_DataEnd
             // 
-            this.tb_DataEnd.Enabled = false;
             this.tb_DataEnd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tb_DataEnd.Location = new System.Drawing.Point(544, 59);
             this.tb_DataEnd.Margin = new System.Windows.Forms.Padding(4);
@@ -482,10 +494,10 @@
             // 
             this.button1.BackColor = System.Drawing.SystemColors.Control;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.Location = new System.Drawing.Point(521, 381);
+            this.button1.Location = new System.Drawing.Point(521, 10);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(133, 30);
+            this.button1.Size = new System.Drawing.Size(95, 30);
             this.button1.TabIndex = 52;
             this.button1.Text = "Уровни";
             this.button1.UseVisualStyleBackColor = false;
@@ -495,10 +507,10 @@
             // 
             this.button2.BackColor = System.Drawing.SystemColors.Control;
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.Location = new System.Drawing.Point(521, 446);
+            this.button2.Location = new System.Drawing.Point(521, 75);
             this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(133, 30);
+            this.button2.Size = new System.Drawing.Size(95, 30);
             this.button2.TabIndex = 53;
             this.button2.Text = "Створ";
             this.button2.UseVisualStyleBackColor = false;
@@ -512,7 +524,7 @@
             this.pGridTask.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.pGridTask.Location = new System.Drawing.Point(667, 12);
             this.pGridTask.Name = "pGridTask";
-            this.pGridTask.Size = new System.Drawing.Size(288, 539);
+            this.pGridTask.Size = new System.Drawing.Size(395, 721);
             this.pGridTask.TabIndex = 55;
             // 
             // tbS0
@@ -595,7 +607,7 @@
             this.panel4.Controls.Add(this.label4);
             this.panel4.Controls.Add(this.label5);
             this.panel4.Controls.Add(this.tbSL);
-            this.panel4.Location = new System.Drawing.Point(12, 384);
+            this.panel4.Location = new System.Drawing.Point(15, 13);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(492, 183);
             this.panel4.TabIndex = 549;
@@ -669,7 +681,7 @@
             this.lbKs.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lbKs.FormattingEnabled = true;
             this.lbKs.ItemHeight = 20;
-            this.lbKs.Location = new System.Drawing.Point(166, 38);
+            this.lbKs.Location = new System.Drawing.Point(166, 35);
             this.lbKs.Name = "lbKs";
             this.lbKs.Size = new System.Drawing.Size(316, 104);
             this.lbKs.TabIndex = 548;
@@ -679,10 +691,10 @@
             // 
             this.btLoad.BackColor = System.Drawing.SystemColors.Control;
             this.btLoad.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btLoad.Location = new System.Drawing.Point(522, 506);
+            this.btLoad.Location = new System.Drawing.Point(522, 135);
             this.btLoad.Margin = new System.Windows.Forms.Padding(4);
             this.btLoad.Name = "btLoad";
-            this.btLoad.Size = new System.Drawing.Size(133, 30);
+            this.btLoad.Size = new System.Drawing.Size(95, 30);
             this.btLoad.TabIndex = 550;
             this.btLoad.Text = "Загрузить";
             this.btLoad.UseVisualStyleBackColor = false;
@@ -692,29 +704,110 @@
             // 
             this.btCSMesh.BackColor = System.Drawing.SystemColors.Control;
             this.btCSMesh.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btCSMesh.Location = new System.Drawing.Point(521, 414);
+            this.btCSMesh.Location = new System.Drawing.Point(521, 43);
             this.btCSMesh.Margin = new System.Windows.Forms.Padding(4);
             this.btCSMesh.Name = "btCSMesh";
-            this.btCSMesh.Size = new System.Drawing.Size(133, 30);
+            this.btCSMesh.Size = new System.Drawing.Size(95, 30);
             this.btCSMesh.TabIndex = 551;
             this.btCSMesh.Text = "Сетка";
             this.btCSMesh.UseVisualStyleBackColor = false;
             this.btCSMesh.Click += new System.EventHandler(this.btCSMesh_Click);
             // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel3.Controls.Add(this.tb_tau_s);
+            this.panel3.Controls.Add(this.tb_tf);
+            this.panel3.Controls.Add(this.cbTau_s);
+            this.panel3.Controls.Add(this.cbTF);
+            this.panel3.Controls.Add(this.panel4);
+            this.panel3.Controls.Add(this.btCSMesh);
+            this.panel3.Controls.Add(this.bt_CreateTaskFile);
+            this.panel3.Controls.Add(this.btLoad);
+            this.panel3.Controls.Add(this.btClose);
+            this.panel3.Controls.Add(this.button1);
+            this.panel3.Controls.Add(this.button2);
+            this.panel3.Location = new System.Drawing.Point(11, 384);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(649, 275);
+            this.panel3.TabIndex = 552;
+            // 
+            // tb_tau_s
+            // 
+            this.tb_tau_s.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tb_tau_s.Location = new System.Drawing.Point(522, 238);
+            this.tb_tau_s.Margin = new System.Windows.Forms.Padding(4);
+            this.tb_tau_s.Name = "tb_tau_s";
+            this.tb_tau_s.Size = new System.Drawing.Size(119, 26);
+            this.tb_tau_s.TabIndex = 554;
+            this.tb_tau_s.Text = "0.00";
+            // 
+            // tb_tf
+            // 
+            this.tb_tf.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tb_tf.Location = new System.Drawing.Point(576, 207);
+            this.tb_tf.Margin = new System.Windows.Forms.Padding(4);
+            this.tb_tf.Name = "tb_tf";
+            this.tb_tf.Size = new System.Drawing.Size(65, 26);
+            this.tb_tf.TabIndex = 553;
+            this.tb_tf.Text = "80";
+            // 
+            // cbTau_s
+            // 
+            this.cbTau_s.AutoSize = true;
+            this.cbTau_s.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbTau_s.Location = new System.Drawing.Point(15, 240);
+            this.cbTau_s.Name = "cbTau_s";
+            this.cbTau_s.Size = new System.Drawing.Size(386, 24);
+            this.cbTau_s.TabIndex = 556;
+            this.cbTau_s.Text = "Напряжение сцепления берегового материала";
+            this.cbTau_s.UseVisualStyleBackColor = true;
+            // 
+            // cbTF
+            // 
+            this.cbTF.AutoSize = true;
+            this.cbTF.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbTF.Location = new System.Drawing.Point(15, 210);
+            this.cbTF.Name = "cbTF";
+            this.cbTF.Size = new System.Drawing.Size(558, 24);
+            this.cbTF.TabIndex = 554;
+            this.cbTF.Text = "Приведенный угол внутреннего трения берега для лавинной модели";
+            this.cbTF.UseVisualStyleBackColor = true;
+            // 
+            // statusPanel
+            // 
+            this.statusPanel.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.statusPanel.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1,
+            this.tbMessage});
+            this.statusPanel.Location = new System.Drawing.Point(0, 731);
+            this.statusPanel.Name = "statusPanel";
+            this.statusPanel.Size = new System.Drawing.Size(1074, 26);
+            this.statusPanel.TabIndex = 553;
+            this.statusPanel.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(60, 21);
+            this.toolStripStatusLabel1.Text = "Статус:";
+            // 
+            // tbMessage
+            // 
+            this.tbMessage.Name = "tbMessage";
+            this.tbMessage.Size = new System.Drawing.Size(56, 21);
+            this.tbMessage.Text = "норма";
+            // 
             // FCrossSection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(967, 575);
-            this.Controls.Add(this.btCSMesh);
-            this.Controls.Add(this.btLoad);
-            this.Controls.Add(this.panel4);
+            this.ClientSize = new System.Drawing.Size(1074, 757);
+            this.Controls.Add(this.statusPanel);
+            this.Controls.Add(this.panel3);
             this.Controls.Add(this.pGridTask);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.btClose);
-            this.Controls.Add(this.bt_CreateTaskFile);
             this.Controls.Add(this.panel1);
             this.Name = "FCrossSection";
             this.Text = "Создание задачи в створе русла";
@@ -726,7 +819,12 @@
             this.panel2.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            this.statusPanel.ResumeLayout(false);
+            this.statusPanel.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -760,7 +858,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tb_DataEnd;
-        private System.Windows.Forms.CheckBox cbDataEnd;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.PropertyGrid pGridTask;
@@ -783,5 +880,14 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btLoad;
         private System.Windows.Forms.Button btCSMesh;
+        private System.Windows.Forms.Button btChangeData;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.TextBox tb_tau_s;
+        private System.Windows.Forms.TextBox tb_tf;
+        private System.Windows.Forms.CheckBox cbTau_s;
+        private System.Windows.Forms.CheckBox cbTF;
+        private System.Windows.Forms.StatusStrip statusPanel;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel tbMessage;
     }
 }

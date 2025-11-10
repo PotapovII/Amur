@@ -41,5 +41,15 @@ namespace EddyViscosityLib
         {
             SolveTask(ref eddyViscosity);
         }
+        /// <summary>
+        /// Расчет вихревой вязкости 
+        /// </summary>
+        /// <param name="eddyViscosity">вихревая вязкость</param>
+        /// <param name="Ux">осевая/окружная/осевая/скорость потока</param>
+        /// <param name="dt">шаг по времени</param>
+        public override void SolveTask(ref double[] eddyViscosity, double[] Ux, double dt)
+        {
+            SolveTask(ref eddyViscosity);
+        }
     }
 }

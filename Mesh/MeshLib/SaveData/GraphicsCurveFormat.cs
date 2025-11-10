@@ -29,7 +29,7 @@
         /// </summary>
         /// <param name="filename">Путь к файлу для чтения..</param>
         /// <returns>Экземпляр интерфейса<see cref="IGraphicsCurve" /> interface.</returns>
-        public override void Read(string filename, ref IGraphicsCurve Curve, uint testID = 0)
+        public override string Read(string filename, ref IGraphicsCurve Curve, uint testID = 0)
         {
             var curve = Curve as GraphicsCurve;
             if (curve == null)
@@ -69,7 +69,6 @@
                                 Logger.Instance.Info(" Number of points = " + (curve.Count).ToString());
 
                                 file.Close();
-                                return;
                             }
                             break;
                     }
@@ -82,6 +81,7 @@
             }
             else
                 throw new NotSupportedException("Could not load '" + filename + "' file.");
+            return filename;
         }
         /// <summary>
         /// Сохраняем функцию

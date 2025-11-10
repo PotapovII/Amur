@@ -64,7 +64,7 @@ namespace GeometryLib.Areas
             this.figuraLink = FiguraLink;
             this.CountKnots = CountKnots;
             this.Marker = Marker;
-            this.Name = "segment" + index.ToString();
+            this.Name = "сегмент" + index.ToString();
             this.Status = FigureStatus.SelectedShape;
         }
         public MSegment(IMSegment p)

@@ -70,6 +70,14 @@ namespace GeometryLib
             SetFunctionData(x, y, name);
         }
 
+        public DigFunction(IDigFunction fun)
+        : base(fun.Smoothness, fun.isParametric)
+        {
+            double[] x = null, y = null;
+            fun.GetFunctionData(ref name, ref x, ref y);
+            SetFunctionData(x, y, name);
+        }
+
         public DigFunction(DigFunctionPolynom p) : base(p.Smoothness, false)
         {
             name = p.Name;

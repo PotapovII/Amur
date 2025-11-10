@@ -37,22 +37,23 @@ namespace NPRiverLib.IO
         /// </summary>
         /// <param name="filename">Путь к файлу для чтения..</param>
         /// <returns>Экземпляр интерфейса<see cref="IMesh" /> interface.</returns>
-        public override void Read(string filename, ref IRiver river, uint testID = 0)
+        public override string Read(string filename, ref IRiver river, uint testID = 0)
         {
             CPatankarStream1XD river1D = river as CPatankarStream1XD;
             if (river1D != null)
             {
-                river1D.DefaultCalculationDomain(); 
-                return;
+                river1D.DefaultCalculationDomain();
+                return river.Name;
             }
             river1D = river as CPatankarStream1XD;
             if (river1D != null)
             {
-                river1D.DefaultCalculationDomain(); 
-                return;
+                river1D.DefaultCalculationDomain();
+                return river.Name;
             }
             if (river1D == null)
                 throw new NotSupportedException("Не возможно открыть выбранный формат задачи river == null");
+            return "Тестовая задача не выбрана";
         }
         /// <summary>
         /// Сохраняем сетку на диск.

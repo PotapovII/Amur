@@ -83,11 +83,36 @@ namespace RenderLib
                 [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 2)] TriVertex[] pVertex,
                 uint nVertex, TwoElement[] pMesh, uint nMesh, GradientFillMode ulMode);
 
+            /// <summary>
+            /// Функция GradientFill заполняет прямоугольные и треугольные структуры
+            /// </summary>
             [DllImport("msimg32.dll", EntryPoint = "GradientFill", SetLastError = true)]
             [return: MarshalAs(UnmanagedType.Bool)]
             public static extern bool GradientFill([In] IntPtr hdc,
                 [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 2)] TriVertex[] pVertex,
                 uint nVertex, TriElement[] pMesh, uint nMesh, GradientFillMode ulMode);
+
+            #region Дополнение из wingdi.h
+            /// <summary>
+            /// Функция PolylineTo  рисует одну или несколько прямых линий
+            /// </summary>
+            [DllImport("msimg32.dll", EntryPoint = "PolylineTo", SetLastError = true)]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            public static extern bool PolylineTo([In] IntPtr hdc,
+                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 2)] LPoint[] pVertex,
+                uint nVertex);
+
+            /// <summary>
+            /// Функция PolyTextOut рисует несколько строк, используя цвета шрифта и текста, 
+            /// выбранные в данный момент в указанном контексте устройства.
+            /// </summary>
+            [DllImport("msimg32.dll", EntryPoint = "PolyTextOutW", SetLastError = true)]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            public static extern bool PolyTextOutW([In] IntPtr hdc,
+                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 2)] PolyTexta[] pVertex,
+                uint nVertex);
+
+            #endregion
         }
     }
 }

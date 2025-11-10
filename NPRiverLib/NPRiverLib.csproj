@@ -71,12 +71,15 @@
     <Compile Include="APRiver1XD\FVM_ke_River2D\CPatankarStream1XD.cs" />
     <Compile Include="APRiver1XD\FVM_ke_River2D\VPatankarStream1XD.cs" />
     <Compile Include="APRiver1XD\FVM_ke_River2D\PatankarParams1XD.cs" />
+    <Compile Include="APRiver1YD\CrossSectionData.cs" />
+    <Compile Include="APRiver1YD\CSRiver1_1YD.cs" />
     <Compile Include="APRiver1YD\MFD\FDMRiverSectionaChannel.cs" />
     <Compile Include="APRiver1YD\Params\RiverStreamQuadParams.cs" />
     <Compile Include="APRiver1YD\Params\TurbulentViscosityQuadModel.cs" />
-    <Compile Include="APRiver1YD\TriSecRiver_1YD.cs" />
+    <Compile Include="APRiver1YD\CSRiverProxy_1YD.cs" />
+    <Compile Include="APRiver1YD\CSRiver3_1YD.cs" />
     <Compile Include="APRiver1YD\OnlyUx\TriSecRiverTask1YD.cs" />
-    <Compile Include="APRiver1YD\OnlyUx\TriSecRiverTask1YBase.cs" />
+    <Compile Include="APRiver1YD\CSRiver1_1YD_old.cs" />
     <Compile Include="APRiver2XYD\APRiver2XYD.cs" />
     <Compile Include="APRiver2XYD\River2DFST\ARiverSWE_FCT_2XYD.cs" />
     <Compile Include="APRiver2XYD\River2DFST\GasDynamics_FCT.cs" />

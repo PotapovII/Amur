@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2019 - 2024  Potapov Igor Ivanovich, Khabarovsk
+Copyright (c) 2019 - 2025  Potapov Igor Ivanovich, Khabarovsk
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -241,7 +241,101 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                 Logger.Instance.Info("Элементов обработано :" + elemEx.ToString());
             }
         }
-     
+
+        /// <summary>
+        /// Нахождение поля скорости в створе потока с учетом вторичных скоростей в створе  
+        /// </summary>
+        /// <param name="U">искомая компонента скорости</param>
+        /// <param name="eddyViscosity">турбулентная вязкость</param>
+        /// <param name="R0">радиус звкругления створа</param>
+        /// <param name="Ring">флаг задачи 0 - плоская 1 - цилиндрические координаты</param>
+        /// <param name="Phi"></param>
+        /// <param name="bc">узлы для граничных условий</param>
+        /// <param name="bv">граничные условия</param>
+        /// <param name="Q">правая часть</param>
+        public void SolveTaskUx(ref double[] U, double[] eddyViscosity)
+        {
+            int elemEx = 0;
+            try
+            {
+                MEM.Alloc(mesh.CountKnots, ref U);
+                algebra.Clear();
+                // выделить память под локальные массивы
+                for (int elem = 0; elem < mesh.CountElements; elem++)
+                {
+                    elemEx = elem;
+                    // локальная матрица часть СЛАУ
+                    double[][] LaplMatrix = new double[3][]
+                    {
+                       new double[3]{ 0,0,0 },
+                       new double[3]{ 0,0,0 },
+                       new double[3]{ 0,0,0 }
+                    };
+                    // локальная правая часть СЛАУ
+                    double[] LocalRight = { 0, 0, 0 };
+                    double[] b = dNdx[elem];
+                    double[] c = dNdy[elem];
+                    uint i0 = eKnots[elem].Vertex1;
+                    uint i1 = eKnots[elem].Vertex2;
+                    uint i2 = eKnots[elem].Vertex3;
+                    uint[] knots = { i0, i1, i2 };
+                    double R;
+                    double dMu_dy = 0;
+                    double mu_R1 = 0, mu_R2 = 0;
+                    double mU = (eddyViscosity[i0] + eddyViscosity[i1] + eddyViscosity[i2]) / 3;
+
+                    if (SigmaTask == 0)
+                    {
+                        R = 1;
+                    }
+                    else
+                    {
+                        R = RadiusMin + (X[i0] + X[i1] + X[i2]) / 3;
+                        // градингт вязкости по радиусу
+                        dMu_dy = eddyViscosity[i0] * b[0] + eddyViscosity[i1] * b[1] + eddyViscosity[i2] * b[2];
+                        mu_R1 = dMu_dy / R + mU / (R * R);
+                        mu_R2 = mU / R;
+                    }
+                    double Hk = (Hx[elem] + Hy[elem]) / 2;
+                    // Вычисление ЛЖМ
+                    for (int i = 0; i < cu; i++)
+                    {
+                        for (int j = 0; j < cu; j++)
+                        {
+                            //  вязкие члены плоские
+                            double additionD = mU * (b[i] * b[j] + c[i] * c[j]) * S[elem];
+                            //  вязкие члены цилиндрические 
+                            double additionD_R1 = SigmaTask * (C[i][j] * mu_R1 - mu_R2 * b[i] / 3) * S[elem];
+                            //  вязкие члены цилиндрические SUPG 
+                            LaplMatrix[i][j] = additionD + additionD_R1;
+                        }
+                    }
+                    algebra.AddToMatrix(LaplMatrix, knots);
+                    // Вычисление ЛПЧ
+                    for (int i = 0; i < cu; i++)
+                    {
+                        LocalRight[i] = mQ * S[elem] / 3.0;
+                    }
+                    // добавление вновь сформированной ЛПЧ в ГПЧ
+                    algebra.AddToRight(LocalRight, knots);
+                }
+                //Удовлетворение ГУ
+                algebra.BoundConditions(bCondUx, bIndexUx);
+                algebra.Solve(ref U);
+                if (Debug > 0)
+                    foreach (var ee in U)
+                        if (double.IsNaN(ee) == true)
+                            throw new Exception("FEPoissonTask >> algebra");
+
+                MEM.Copy(Ux, U);
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Exception(ex);
+                Logger.Instance.Info("Элементов всего :" + mesh.CountKnots.ToString());
+                Logger.Instance.Info("Элементов обработано :" + elemEx.ToString());
+            }
+        }
         /// <summary>
         /// Решение задачи
         /// </summary>

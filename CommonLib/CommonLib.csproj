@@ -69,6 +69,7 @@
     <Compile Include="FEM\IBaseFEMTask.cs" />
     <Compile Include="FEM\IFETask.cs" />
     <Compile Include="Fields\IField.cs" />
+    <Compile Include="Function\IDigTimeFunction.cs" />
     <Compile Include="Function\IFunction2D.cs" />
     <Compile Include="Function\IDigFunction.cs" />
     <Compile Include="Function\IFunction1D.cs" />
@@ -77,7 +78,9 @@
     <Compile Include="Geometry\IHLine.cs" />
     <Compile Include="Geometry\IHEdge.cs" />
     <Compile Include="Geometry\IHFigure.cs" />
+    <Compile Include="IO\CRF_Title.cs" />
     <Compile Include="IO\IBaseFormater.cs" />
+    <Compile Include="IO\ITaskArg.cs" />
     <Compile Include="Mesh\Elements\Triangles.cs" />
     <Compile Include="Mesh\FVM\ISFacet.cs" />
     <Compile Include="Mesh\MWrapper\IMWCrossSection.cs" />

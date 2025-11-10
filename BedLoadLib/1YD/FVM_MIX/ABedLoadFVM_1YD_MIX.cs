@@ -131,7 +131,7 @@ namespace BedLoadLib
             // инициализация массивов для расчета донных фракций
             ParamsEx.InitParamsForMesh(Count, Count - 1);
 
-            avalanche = new Avalanche1DX_Old(mesh, tanphi, 0.6);
+            avalanche = new Avalanche1D_Simple(mesh, tanphi, 0.6);
 
             taskReady = true;
         }

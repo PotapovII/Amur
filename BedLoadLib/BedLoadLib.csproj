@@ -71,11 +71,11 @@
     <Compile Include="ABedLoadFVM_1D.cs" />
     <Compile Include="ABedLoadTask_2D.cs" />
     <Compile Include="Avalanche\Avalanche1DX.cs" />
-    <Compile Include="Avalanche\Avalanche1DX_Old.cs" />
+    <Compile Include="Avalanche\Avalanche1D_Simple.cs" />
     <Compile Include="Avalanche\Avalanche2DFV.cs" />
     <Compile Include="Avalanche\Avalanche2DQ.cs" />
     <Compile Include="Avalanche\Avalanche2DX.cs" />
-    <Compile Include="Avalanche\AvalancheX.cs" />
+    <Compile Include="Avalanche\Avalanche1D.cs" />
     <Compile Include="Avalanche\DirectAvalanche.cs" />
     <Compile Include="Avalanche\IAvalanche.cs" />
     <Compile Include="Avalanche\OLD\Avalanche2D.cs" />
@@ -84,6 +84,7 @@
     <Compile Include="Avalanche\SAvalanche.cs" />
     <Compile Include="Avalanche\AvalancheType.cs" />
     <Compile Include="Params\ABedLoadParams.cs" />
+    <Compile Include="1YD\BedLoadParams1YD.cs" />
     <Compile Include="Params\BedLoadParams1D.cs" />
     <Compile Include="Params\BedLoadParams1D_MIX.cs" />
     <Compile Include="Params\BedLoadParams2D1.cs" />

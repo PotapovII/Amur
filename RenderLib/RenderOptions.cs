@@ -107,7 +107,7 @@ namespace RenderLib
         /// <summary>
         /// Автомасштаб 0 - нет, 1 - |max| 3 - задан
         /// </summary>
-        public int opCurveScale = 1;
+        public int opCurveScale = 0;
         /// <summary>
         /// Фиксация масштаба
         /// </summary>

@@ -34,6 +34,16 @@ namespace EddyViscosityLib
         /// </summary>
         public override void SolveTask(ref double[] eddyViscosity, double[] Ux, double[] Vy, double[] Vz, double[] Phi, double[] Vortex, double dt)
         {
+            SolveTask(ref eddyViscosity, Ux, dt);
+        }
+        /// <summary>
+        /// Расчет вихревой вязкости 
+        /// </summary>
+        /// <param name="eddyViscosity">вихревая вязкость</param>
+        /// <param name="Ux">осевая/окружная/осевая/скорость потока</param>
+        /// <param name="dt">шаг по времени</param>
+        public override void SolveTask(ref double[] eddyViscosity, double[] Ux, double dt)
+        {
             try
             {
                 switch (Params.u_start)
@@ -72,6 +82,7 @@ namespace EddyViscosityLib
                 Console.WriteLine("ee = " + ee.ToString() + " " + ee.Message);
             }
         }
+
         public double GetMuAbsi_2012(double H, double D, double u_star)
         {
             double mu_t0 = 0;

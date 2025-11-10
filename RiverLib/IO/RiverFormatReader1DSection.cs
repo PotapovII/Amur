@@ -39,7 +39,7 @@ namespace RiverLib.IO
         /// </summary>
         /// <param name="filename">Путь к файлу для чтения..</param>
         /// <returns>Экземпляр интерфейса<see cref="IMesh" /> interface.</returns>
-        public override void Read(string filename, ref IRiver river, uint testID = 0)
+        public override string Read(string filename, ref IRiver river, uint testID = 0)
         {
             RiverStreamTask river1D = river as RiverStreamTask;
             if (river1D == null)
@@ -205,6 +205,7 @@ namespace RiverLib.IO
                 {
                     Logger.Instance.Info(ex.Message);
                 }
+                return river.Name + ": " + filename;
             }
             else
                 throw new NotSupportedException("Could not load '" + filename + "' file.");

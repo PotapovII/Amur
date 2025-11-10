@@ -26,7 +26,7 @@ namespace NPRiverLib.APRiver_1XD
     using System.Collections.Generic;
     using CommonLib.Mesh;
     using MeshLib.Wrappers;
-    using static alglib;
+   // using static alglib;
 
 
     /// <summary>
@@ -63,6 +63,10 @@ namespace NPRiverLib.APRiver_1XD
         /// Поле напряжений dy
         /// </summary>
         public double[] TauY;
+        /// <summary>
+        /// Поле напряжений 
+        /// </summary>
+        public double[] TauYZ;
         /// <summary>
         /// Поле придонных напряжений 
         /// </summary>

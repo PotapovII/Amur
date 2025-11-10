@@ -42,7 +42,7 @@ namespace RiverLib.IO
             SupportImport = true;
             SupportExport = true;
         }
-        public override void Read(string filename, ref IRiver river, uint testID = 0)
+        public override string Read(string filename, ref IRiver river, uint testID = 0)
         {
             // расширение файла
             string FileEXT = Path.GetExtension(filename).ToLower();
@@ -58,6 +58,7 @@ namespace RiverLib.IO
                     Import_bed(filename, ref river);
                     break;
             }
+            return river.Name + ": " + filename;
         }
         /// <summary>
         /// Сохраняем сетку на диск.

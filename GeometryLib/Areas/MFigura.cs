@@ -155,7 +155,7 @@ namespace GeometryLib.Areas
             this.h = h;
             for (int i = 0; i < ps.Count; i++)
             {
-                string name = "point" + i.ToString();
+                string name = "точка" + i.ToString();
                 IMPoint pp = new MPoint(name, ps[i], this);
                 this.points.Add(pp);
             }
@@ -185,7 +185,7 @@ namespace GeometryLib.Areas
                 {
                     if (segments[i].CountKnots == 2)
                     {
-                        string name = "point" + k.ToString();
+                        string name = "точка" + k.ToString();
                         k++;
                         IMPoint pp = new MPoint(name, segments[i].pointA.Point, this);
                         newPoints.Add(pp);
@@ -248,7 +248,7 @@ namespace GeometryLib.Areas
         /// <param name="point"></param>
         public void Add(IHPoint point)
         {
-            string name = "Point" + points.Count.ToString();
+            string name = "точка" + points.Count.ToString();
             IMPoint p = new MPoint(name, point, this);
             points.Add(p);
             segmentStatus = false;
@@ -256,7 +256,7 @@ namespace GeometryLib.Areas
         }
         public void Add(CloudKnot point)
         {
-            string name = "Point" + points.Count.ToString();
+            string name = "точка" + points.Count.ToString();
             IMPoint p = new MPoint(name, point, this);
             points.Add(p);
             segmentStatus = false;

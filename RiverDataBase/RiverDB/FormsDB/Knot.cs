@@ -18,7 +18,8 @@ namespace RiverDB.FormsDB
         // public Microsoft.Office.Interop.Excel.Application excelapp = new Microsoft.Office.Interop.Excel.Application();
         public string TName;
         public string VName;
-        int[] sizeColum;
+        int[] sizeColum = new int[] { 15, 20, 20, 20, 20, 20, 20, 20, 20 };
+        Catalogue book = new Catalogue("place", true);
         public Knot(string TName)
         {
             this.TName = TName;
@@ -28,7 +29,6 @@ namespace RiverDB.FormsDB
 
         private void Knot_Load(object sender, EventArgs e)
         {
-            sizeColum = new int[] { 15, 20, 20, 20, 20, 20, 20, 20, 20  };
             string strAccessSelect = "exec SP_" + TName + "_SEL";
             dataGridView1.DataSource = ConnectDB.GetDataTable(strAccessSelect, TName);
             Knot_Resize(sender, e);
@@ -143,6 +143,13 @@ namespace RiverDB.FormsDB
         private void button1_Click(object sender, EventArgs e)
         {
             CFValue(sender, e);
+        }
+
+        private void tsbGPost_Click(object sender, EventArgs e)
+        {
+            book.ShowDialog();
+            tsbText.Text = book.RowName;
+            string ID = book.RowID;
         }
     }
 }

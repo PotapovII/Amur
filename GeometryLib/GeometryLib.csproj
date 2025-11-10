@@ -56,11 +56,14 @@
     <Compile Include="Areas\MFigura.cs" />
     <Compile Include="Areas\MPoint.cs" />
     <Compile Include="Areas\MSegment.cs" />
+    <Compile Include="DigFunction\DigDateTimeFunction.cs" />
+    <Compile Include="DigFunction\FunctionSinDune.cs" />
     <Compile Include="DigFunction\PieceDigFunction.cs" />
     <Compile Include="DigFunction\DigFunctionTSpline.cs" />
     <Compile Include="DigFunction\DigFunctionPolynom.cs" />
     <Compile Include="DigFunction\DigFunctionConst.cs" />
     <Compile Include="DigFunction\FunctionСhannelRose.cs" />
+    <Compile Include="DigTimeFunction\DigTimeFunction.cs" />
     <Compile Include="Fields\Unknowns\SUnknown.cs" />
     <Compile Include="Geometry\HContour.cs" />
     <Compile Include="Geometry\CrossLine.cs" />

@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2019 - 2024  Potapov Igor Ivanovich, Khabarovsk
+Copyright (c) 2019 - 2025  Potapov Igor Ivanovich, Khabarovsk
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -144,26 +144,38 @@ namespace FEMTasksLib
                         uint i0 = eKnots[elem].Vertex1;
                         uint i1 = eKnots[elem].Vertex2;
                         uint i2 = eKnots[elem].Vertex3;
-
-                        eE_xy[elem] = 0.5 * (Ux[i0] * b[0] + Ux[i1] * b[1] + Ux[i2] * b[2]);
-                        eE_xz[elem] = 0.5 * (Ux[i0] * c[0] + Ux[i1] * c[1] + Ux[i2] * c[2]);
-
+                        if (Ux != null)
+                        {
+                            eE_xy[elem] = 0.5 * (Ux[i0] * b[0] + Ux[i1] * b[1] + Ux[i2] * b[2]);
+                            eE_xz[elem] = 0.5 * (Ux[i0] * c[0] + Ux[i1] * c[1] + Ux[i2] * c[2]);
+                        }
                         eE_yz[elem] = 0.5 * Vz[i0] * b[0] + Vz[i1] * b[1] + Vz[i2] * b[2] +
                                              Vy[i0] * c[0] + Vy[i1] * c[1] + Vy[i2] * c[2];
                         eE_yy[elem] = Vy[i0] * b[0] + Vy[i1] * b[1] + Vy[i2] * b[2];
                         eE_zz[elem] = Vz[i0] * c[0] + Vz[i1] * c[1] + Vz[i2] * c[2];
                     }
                 }
-                wMesh.ConvertField(ref E_xy, eE_xy);
-                wMesh.ConvertField(ref E_xz, eE_xz);
+                if (Ux != null)
+                {
+                    wMesh.ConvertField(ref E_xy, eE_xy);
+                    wMesh.ConvertField(ref E_xz, eE_xz);
+                }
                 wMesh.ConvertField(ref E_yz, eE_yz);
                 wMesh.ConvertField(ref E_yy, eE_yy);
                 wMesh.ConvertField(ref E_zz, eE_zz);
 
                 for (uint k = 0; k < mesh.CountKnots; k++)
                 {
-                    tDef[k][0] = E_xy[k];
-                    tDef[k][1] = E_xz[k];
+                    if (Ux != null)
+                    {
+                        tDef[k][0] = E_xy[k];
+                        tDef[k][1] = E_xz[k];
+                    }
+                    else
+                    {
+                        tDef[k][0] = 0;
+                        tDef[k][1] = 0;
+                    }
                     tDef[k][2] = E_yz[k];
                     tDef[k][3] = E_yy[k];
                     tDef[k][4] = E_zz[k];

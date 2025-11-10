@@ -14,7 +14,9 @@ namespace RiverDB.ConvertorOut
 
     using MemLogLib;
     using ConnectLib;
+
     using CommonLib;
+    using CommonLib.IO;
     using CommonLib.Function;
 
     using GeometryLib;
@@ -30,46 +32,32 @@ namespace RiverDB.ConvertorOut
 
     using MeshLib;
     using MeshGeneratorsLib.StripGenerator;
+    using CommonLib.Geometry;
+    using GeometryLib.Geometry;
+    using CommonLib.Physics;
+    using NPRiverLib.APRiver1YD;
 
     public partial class FCrossSection : Form
     {
         /// <summary>
-        ///  начальная геометрия русла
+        /// Данные о створе
         /// </summary>
-        protected IDigFunction Geometry;
+        CrossSectionData csData = new CrossSectionData();
         /// <summary>
-        /// уровни(нь) свободной поверхности потока во времени
-        /// </summary>
-        protected IDigFunction WaterLevels;
-        /// <summary>
-        /// уровни(нь) свободной поверхности потока во времени
+        /// Вспомогательная функция срезанных отметок
         /// </summary>
         protected IDigFunction CSWaterLevels;
         /// <summary>
-        /// расход потока во времени
-        /// </summary>
-        protected IDigFunction FlowRate;
-        /// <summary>
-        /// скорости на сободной поверхности потока
-        /// </summary>
-        protected IDigFunction VelocityX;
-        /// <summary>
-        /// радиальные скорости на сободной поверхности потока
-        /// </summary>
-        protected IDigFunction VelocityY;
-        /// <summary>
-        /// шероховатость дна
-        /// </summary>
-        protected IDigFunction Roughness;
-        /// <summary>
-        /// Данные о створе
-        /// </summary>
-        public IDigFunction[] crossFunctions = null;
-        /// <summary>
-        /// 
+        /// Справочник гидропостов
         /// </summary>
         Catalogue book = new Catalogue("place", true);
+        /// <summary>
+        /// дата замера в формате строки
+        /// </summary>
         string Data;
+        /// <summary>
+        /// Номер гидропоста
+        /// </summary>
         int placeID = 1;
         /// <summary>
         /// Уровнень реки по гидропосту
@@ -83,6 +71,9 @@ namespace RiverDB.ConvertorOut
         /// Расход
         /// </summary>
         double QRiver = 0;
+        /// <summary>
+        /// название гидропоста
+        /// </summary>
         string NameGP = "", X = "", Y = "";
         /// <summary>
         /// 0 графика гидропоста по балтийской ситеме
@@ -100,6 +91,10 @@ namespace RiverDB.ConvertorOut
         double[] Uy = null;
         double[] Ux = null;
         double[] sx = null;
+
+        double[] t = null;
+        double[] wl = null;
+        double[] qr = null;
         /// <summary>
         /// Сдвиг дна на берегах
         /// </summary>
@@ -107,22 +102,45 @@ namespace RiverDB.ConvertorOut
         double ks0 = 0.1;
         FVCurves formCL = new FVCurves();
         FVCurves formTM = new FVCurves();
-        public FCrossSection(double[] s, double[] Depth,
-                             double[] Vx, double[] Vy,
-                             double[] Vn, double[] Vt, string Data)
+        /// <summary>
+        /// Линия створа основания
+        /// </summary>
+        HLine crossLine;
+        /// <summary>
+        /// титул формата CRF
+        /// </summary>
+        CRF_Title crfTitle = new CRF_Title();
+        RSCrossParams p = new RSCrossParams();
+        //BedLoadParams1YD bp = new BedLoadParams1YD();
+        public FCrossSection(IHLine crossLine, double[] s, double[] Depth, double[] Vn, double[] Vt, string Data)
         {
+            this.crossLine = new HLine((HPoint)crossLine.A, (HPoint)crossLine.B);
             InitializeComponent();
+            Text = "Создание задачи в створе русла";
+            string filter = "(*" + Ext_Crf + ")|*" + Ext_Crf + "| ";
+            filter += "(*" + Ext_RvY + ")|*" + Ext_RvY + "| ";
+            filter += " All files (*.*)|*.*";
+            saveFileDialog1.Filter = filter;
+            crfTitle.Set(s, Depth, Vn, Vt);
+            SetFCrossSection(s, Depth, Vn, Vt, Data, Data);
+            tbMessage.Text = "Создание нового створа";
+        }
+        public void SetFCrossSection(double[] s, double[] Depth, double[] Vn, double[] Vt, string Data, string DataEnd)
+        {
             var names = SMGManager.GetNames();
             cbMeshGenerator.Items.AddRange(names.ToArray());
             cbMeshGenerator.SelectedIndex = 2;
             this.Data = Data;
             tb_Data.Text = Data;
-            tb_DataEnd.Text = Data;
-            string filter = "(*" + Ext_Crf + ")|*" + Ext_Crf + "| ";
-            filter += "(*" + Ext_RvY + ")|*" + Ext_RvY + "| ";
-            filter += " All files (*.*)|*.*";
-            saveFileDialog1.Filter = filter;
+            tb_DataEnd.Text = DataEnd;
             SetData(s, Depth, Vn, Vt);
+        }
+
+        public FCrossSection(string FileName)
+        {
+            Text = "Редактирование задачи в створе русла";
+            InitializeComponent();
+            LoadCRF(FileName);
         }
         private void btLoad_Click(object sender, EventArgs e)
         {
@@ -130,21 +148,109 @@ namespace RiverDB.ConvertorOut
             string filter = "(*" + Ext_Crf + ")|*" + Ext_Crf + "| ";
             filter += " All files (*.*)|*.*";
             ofd.Filter = filter;
+            if (ofd.ShowDialog() == DialogResult.OK)
+                LoadCRF(ofd.FileName);
+            tbMessage.Text = "Загружен стврор из файла :" + Path.GetFileName(ofd.FileName);
+        }
+        public void LoadCRF(string FileName)
+        {
             try
             {
-                if (ofd.ShowDialog() == DialogResult.OK)
+                using (StreamReader file = new StreamReader(FileName))
                 {
-                    using (StreamReader  file = new StreamReader(saveFileDialog1.FileName))
+                    p.Load(file);
+                    pGridTask.SelectedObject = p;
+                    pGridTask.Update();
+                    csData = new CrossSectionData();
+                    csData.Load(file);
+                    #region ++ 02 09 2025
+                    if (csData.TanPhi.Count == 2) cbTF.Checked = false; else cbTF.Checked = true;
+                    tb_tf.Text = (180 * Math.Atan(csData.TanPhi.Ymax) / Math.PI).ToString("F2");
+                    if (csData.Tau_Adhesion.Count == 2) cbTau_s.Checked = false; else cbTau_s.Checked = true;
+                    tb_tau_s.Text = csData.Tau_Adhesion.Ymax.ToString("F4");
+                    #endregion
+                    #region Расширение формата
+                    crfTitle = new CRF_Title();
+                    crfTitle.Load(file);
+                    string lineA = file.ReadLine();
+                    string lineB = file.ReadLine();
+                    crossLine = new HLine(HPoint.Parse(lineA), HPoint.Parse(lineB));
+                    SetFCrossSection(crfTitle.s, crfTitle.Depth, crfTitle.Vn, crfTitle.Vt, p.DataStart, p.DataEnd);// crfTitle.start.ToString(), crfTitle.end.ToString());
+                    SetLocRiver(crfTitle.idx);
+                    lbKs.Items.Clear();
+                    for (int ii = 0; ii < crfTitle.values.Count; ii++)
                     {
-                        RSCrossParams p = new RSCrossParams();
-                        p.Load(file);
-                        for (int i = 0; i < crossFunctions.Length; i++)
-                            crossFunctions[i].Load(file);
-                        tb_Data.Text = p.DataStart;
-                        tb_DataEnd.Text = p.DataEnd;
-                        if (p.DataStart != p.DataEnd)
-                            cbDataEnd.Checked = true;
-                        cbMeshGenerator.SelectedIndex = (int)p.typeMeshGenerator;
+                        var (s0, s1, ks) = crfTitle.values[ii];
+                        string line = s0.ToString("F4") + " " + s1.ToString("F4") + " " + ks.ToString("F6");
+                        lbKs.Items.Add(line);
+                        SetRoughness();
+                    }
+                    tb_Data.Text = p.DataStart;
+                    tb_DataEnd.Text = p.DataEnd;
+                    ChangeData();
+                    #endregion
+                    file.Close();
+                    cbMeshGenerator.SelectedIndex = (int)p.typeMeshGenerator;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Info(ex.Message);
+            }
+        }
+
+        private void bt_CreateTaskFile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                saveFileDialog1.Filter = "файл задачи  (*.crf)|*.crf| Все файлы (*.*)|*.*";
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    using (StreamWriter file = new StreamWriter(saveFileDialog1.FileName))
+                    {
+                        ChangeData();
+                        UpDate();
+                        string FileEXT = Path.GetExtension(saveFileDialog1.FileName).ToLower();
+                        switch (FileEXT)
+                        {
+                            case Ext_RvY:
+                                file.WriteLine(Data);
+                                file.WriteLine(NameGP);
+                                csData.Save(file);
+                                //for (int i = 0; i < crossFunctions.Length; i++)
+                                //    crossFunctions[i].Save(file);
+                                break;
+                            case Ext_Crf:
+                                // параметры задачи
+                                p = (RSCrossParams)pGridTask.SelectedObject;
+                                if (cbRetask.Checked == false)
+                                    p.ReTask = 3;
+                                p.DataStart = tb_Data.Text;
+                                p.DataEnd = tb_DataEnd.Text;
+                                p.typeMeshGenerator = (StripGenMeshType)cbMeshGenerator.SelectedIndex;
+                                p.SaveA(file);
+                                // функции задачи
+                                csData.Save(file);
+                                // титул задачи
+                                int idx = LocRiver();
+                                crfTitle.SetTitle(placeID, idx);
+                                crfTitle.Clrar();
+                                for (int ii = 0; ii < lbKs.Items.Count; ii++)
+                                {
+                                    string line = lbKs.Items[ii].ToString();
+                                    string[] lines = line.Split(' ');
+                                    double s0 = double.Parse(lines[0]);
+                                    double s1 = double.Parse(lines[1]);
+                                    double ks = double.Parse(lines[2]);
+                                    crfTitle.AddKs(s0, s1, ks);
+                                }
+                                crfTitle.Save(file);
+                                // координаты створа
+                                file.WriteLine(((HPoint)crossLine.A).ToString());
+                                file.WriteLine(((HPoint)crossLine.B).ToString());
+
+                                break;
+                        }
                         file.Close();
                     }
                 }
@@ -153,8 +259,8 @@ namespace RiverDB.ConvertorOut
             {
                 Logger.Instance.Info(ex.Message);
             }
-            //SetData(s, Depth, Vn, Vt);
         }
+
 
         private void SetData(double[] s, double[] Depth, double[] Vn, double[] Vt)
         {
@@ -164,9 +270,7 @@ namespace RiverDB.ConvertorOut
             MEM.Alloc(Zeta.Length, ref Ux);
             MEM.Alloc(Zeta.Length, ref Uy);
             MEM.Alloc(Zeta.Length, ref sx);
-
             ChangGP_WL();
-
             //    геометрия дна
             //     A ---                                              floodplain + 1  возвышение над поймой
             //          ----
@@ -189,13 +293,18 @@ namespace RiverDB.ConvertorOut
             double H1 = floodplain - waterLevel;
             // ширина участка между отметками от WL до  floodplain (уклон 30 градусов) + 1 метр
             double L1 = 2 * H1 + 1; 
+            //double L1 = H1;
             // если вода вышла на пойму
-            if (L1 > Ls)  Ls = 2 *L1;
-            
-            Zeta[0] = floodplain + 5;
+            if (L1 > Ls) Ls = 2 * L1;
+
+            //Zeta[0] = floodplain + 5;
+            //Zeta[1] = floodplain;
+            //Zeta[Zeta.Length - 2] = floodplain;
+            //Zeta[Zeta.Length - 1] = floodplain + 5;
+            Zeta[0] = floodplain;
             Zeta[1] = floodplain;
             Zeta[Zeta.Length - 2] = floodplain;
-            Zeta[Zeta.Length - 1] = floodplain + 5;
+            Zeta[Zeta.Length - 1] = floodplain;
 
             double[] wx = new double[2];
             if (s[0] < xMax)
@@ -240,26 +349,85 @@ namespace RiverDB.ConvertorOut
                 Ux[i + 2] = Vn[i] / 3.6;
                 Uy[i + 2] = Vt[i] / 3.6;
             }
-            
+
             for (int i = 0; i < ks.Length; i++)
                 ks[i] = ks0;
-            Geometry = new DigFunction(sx, Zeta, "Геометрия створа");
-            Roughness = new DigFunction(sx, ks, "Шероховатость дна");
+            csData.Geometry = new DigFunction(sx, Zeta, "Геометрия створа");
+            csData.Roughness = new DigFunction(sx, ks, "Шероховатость дна");
             // скорости на сободной поверхности потока
-            VelocityX = new DigFunction(sx, Ux, "Нормальные скорости на сободной поверхности потока");
-            VelocityY = new DigFunction(sx, Uy, "Радиальные скорости на сободной поверхности потока");
+            csData.VelocityX = new DigFunction(sx, Ux, "Нормальные скорости на сободной поверхности потока");
+            csData.VelocityY = new DigFunction(sx, Uy, "Радиальные скорости на сободной поверхности потока");
             // скорости на сободной поверхности потока
-            crossFunctions = new IDigFunction[6] { Geometry, WaterLevels, FlowRate, VelocityX, VelocityY, Roughness };
-            RSCrossParams p = new RSCrossParams();
+            UpDate();
+            //if (cbTF.Checked == true)
+            //{
+            //    double tmpGr = double.Parse(tb_tf.Text, MEM.formatter);
+            //    double tmpTf = Math.Tan(Math.PI * tmpGr / 180);
+            //    double[] xx = { sx[0], sx[1], sx[2], sx[sx.Length - 3], sx[sx.Length - 2], sx[sx.Length - 1] };
+            //    double[] tf = { tmpTf, tmpTf, SPhysics.PHYS.tanphi, SPhysics.PHYS.tanphi, tmpTf, tmpTf };
+            //    csData.TanPhi = new DigFunction(xx, tf, "Угол естественного откоса");
+            //}
+            //else
+            //{
+            //    double[] xx = { sx[0], sx[sx.Length - 1] };
+            //    double[] tf = { SPhysics.PHYS.tanphi, SPhysics.PHYS.tanphi };
+            //    csData.TanPhi = new DigFunction(xx, tf, "Угол естественного откоса");
+            //}
+            //if (cbTau_s.Checked == true)
+            //{
+            //    double tmp = double.Parse(tb_tau_s.Text, MEM.formatter);
+            //    double[] xx = { sx[0], sx[1], sx[2], sx[sx.Length - 3], sx[sx.Length - 2], sx[sx.Length - 1] };
+            //    double[] cc = { tmp, tmp, 0, 0, tmp, tmp };
+            //    csData.Tau_s = new DigFunction(xx, cc, "Напряжние удельного сцепления");
+            //}
+            //else
+            //{
+            //    double[] xx = { sx[0], sx[sx.Length - 1] };
+            //    double[] cc = { 0, 0 };
+            //    csData.Tau_s = new DigFunction(xx, cc, "Напряжние удельного сцепления");
+            //}
+            //crossFunctions = new IDigFunction[8]
+            //{ Geometry, WaterLevels, FlowRate, VelocityX, VelocityY, Roughness, TanPhi, Tau_s };
             p.DataStart = tb_Data.Text;
             p.DataEnd = tb_DataEnd.Text;
             pGridTask.SelectedObject = p;
             int splitterPositionCP = pGridTask.GetInternalLabelWidth();
         }
-        /// <summary>
-        /// Определение времени расчета, уровня свободной поверхности, и расхода
-        /// </summary>
-        public void ChangGP_WL()
+        public void UpDate()
+        {
+            // скорости на сободной поверхности потока
+            if (cbTF.Checked == true)
+            {
+                double tmpGr = double.Parse(tb_tf.Text, MEM.formatter);
+                double tmpTf = Math.Tan(Math.PI * tmpGr / 180);
+                double[] xx = { sx[0], sx[1], sx[2], sx[sx.Length - 3], sx[sx.Length - 2], sx[sx.Length - 1] };
+                double[] tf = { tmpTf, tmpTf, SPhysics.PHYS.tanphi, SPhysics.PHYS.tanphi, tmpTf, tmpTf };
+                csData.TanPhi = new DigFunction(xx, tf, "Угол естественного откоса");
+            }
+            else
+            {
+                double[] xx = { sx[0], sx[sx.Length - 1] };
+                double[] tf = { SPhysics.PHYS.tanphi, SPhysics.PHYS.tanphi };
+                csData.TanPhi = new DigFunction(xx, tf, "Угол естественного откоса");
+            }
+            if (cbTau_s.Checked == true)
+            {
+                double tmp = double.Parse(tb_tau_s.Text, MEM.formatter);
+                double[] xx = { sx[0], sx[1], sx[2], sx[sx.Length - 3], sx[sx.Length - 2], sx[sx.Length - 1] };
+                double[] cc = { tmp, tmp, 0, 0, tmp, tmp };
+                csData.Tau_Adhesion = new DigFunction(xx, cc, "Напряжние удельного сцепления");
+            }
+            else
+            {
+                double[] xx = { sx[0], sx[sx.Length - 1] };
+                double[] cc = { 0, 0 };
+                csData.Tau_Adhesion = new DigFunction(xx, cc, "Напряжние удельного сцепления");
+            }
+            csData.UpDate();
+        }
+
+
+        private void SetplaceID(int placeID)
         {
             ConnectDB.PlaceInfo(placeID, ref NameGP, ref X, ref Y, ref Zerro, ref floodplain);
             tb2.Text = placeID.ToString();
@@ -267,19 +435,24 @@ namespace RiverDB.ConvertorOut
             tb_latitudeArea.Text = X;
             tb_longitude.Text = Y;
             tb_BaltikLvl.Text = Zerro.ToString("F4");
-            double[] t = null;
-            double[] wl = null;
-            double[] qr = null;
+        }
+
+        /// <summary>
+        /// Определение времени расчета, уровня свободной поверхности, и расхода
+        /// </summary>
+        public void ChangGP_WL()
+        {
+            SetplaceID(placeID);
+            // WLRiver хранится в БД в сантиметрах
+            WLRiver = ConnectDB.WaterLevelData(Data, placeID);
+            QRiver = riverFlow(WLRiver);
+            tb_RF.Text = QRiver.ToString("F1");
+            WL = Zerro + 0.01 * WLRiver;
+            tb_RiverLvl.Text = WL.ToString("F2");
             // если дата начала и конца расчетного периода совподают
             // ставим текущий уровень свободной поверхности, и расхода
             if (tb_DataEnd.Text.Trim() == tb_Data.Text.Trim())
             {
-                // WLRiver хранится в БД в сантиметрах
-                WLRiver = ConnectDB.WaterLevelData(Data, placeID);
-                QRiver = riverFlow(WLRiver);
-                tb_RF.Text = QRiver.ToString("F1");
-                WL = Zerro + 0.01 * WLRiver;
-                tb_RiverLvl.Text = WL.ToString("F2");
                 // Текуший период с получением уровня и расхода
                 t = new double[2] { 0, 100000 };
                 wl = new double[2] { WL, WL };
@@ -292,31 +465,25 @@ namespace RiverDB.ConvertorOut
                 try
                 {
                     DataEnd = tb_DataEnd.Text;
-                    DateTime now = DateTime.Parse(DataEnd);
                     ConnectDB.WaterLevelsData(Zerro, tb_Data.Text, tb_DataEnd.Text, ref t, ref wl, placeID);
                     MEM.Alloc(wl.Length, ref qr);
                     for (int i = 0; i < wl.Length; i++)
                         qr[i] = riverFlow(wl[i]);
                 }
-                catch 
+                catch
                 {
-                    WLRiver = ConnectDB.WaterLevelData(Data, placeID);
-                    QRiver = riverFlow(WLRiver);
-                    tb_RF.Text = QRiver.ToString("F1");
-                    WL = Zerro + 0.01 * WLRiver;
-                    tb_RiverLvl.Text = WL.ToString("F2");
                     // Текуший период с получением уровня и расхода
                     t = new double[2] { 0, 100000 };
                     wl = new double[2] { WL, WL };
                     qr = new double[2] { QRiver, QRiver };
                     Console.WriteLine("Формат даты " + DataEnd + "не верен!");
                 }
-
             }
             // свободная поверхность
-            WaterLevels = new DigFunction(t, wl, "Эволюция свободной поверхности");
+            csData.WaterLevels = new DigFunction(t, wl, "Эволюция свободной поверхности");
             // расход потока
-            FlowRate = new DigFunction(t, qr, "Эволюция расхода в створе");
+            csData.FlowRate = new DigFunction(t, qr, "Эволюция расхода в створе");
+            csData.UpDate();
         }
         private double riverFlow(double H)
         {
@@ -343,24 +510,14 @@ namespace RiverDB.ConvertorOut
             Close();
         }
 
-        private void cbDataEnd_CheckedChanged(object sender, EventArgs e)
-        {
-            tb_DataEnd.Enabled = cbDataEnd.Checked;
-            if (cbDataEnd.Checked == false && tb_DataEnd.Text.Trim() != tb_Data.Text.Trim())
-            {
-                ChangGP_WL();
-                crossFunctions = new IDigFunction[6] { Geometry, WaterLevels, FlowRate, VelocityX, VelocityY, Roughness };
-            }
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             ISavePoint sp = new SavePoint("Створ");
-            sp.AddCurve(Geometry);
-            sp.AddCurve(VelocityX);
-            sp.AddCurve(VelocityY);
-            sp.AddCurve(Roughness);
-            if(CSWaterLevels!=null)
+            sp.AddCurve(csData.Geometry);
+            sp.AddCurve(csData.VelocityX);
+            sp.AddCurve(csData.VelocityY);
+            sp.AddCurve(csData.Roughness);
+            if (CSWaterLevels != null)
                 sp.AddCurve(CSWaterLevels);
 
             if (formCL.CloseDO == true)
@@ -386,32 +543,32 @@ namespace RiverDB.ConvertorOut
         private void button1_Click(object sender, EventArgs e)
         {
             ISavePoint sp = new SavePoint("Створ");
-            sp.AddCurve(WaterLevels);
-            sp.AddCurve(FlowRate);
-            if (formTM.CloseDO == true)
+            if (csData.WaterLevels.Count > 2)
             {
-                formTM = new FVCurves(sp);
-                formTM.Show();
+                string name = "";
+                csData.WaterLevels.GetFunctionData(ref name, ref t, ref wl);
+                csData.FlowRate.GetFunctionData(ref name, ref t, ref qr);
+                for (int i = 0; i < t.Length; i++)
+                {
+                    wl[i] = wl[i] * 100;
+                    t[i] = t[i] / 86400;
+                }
+                sp.AddCurve(new DigFunction(t, wl, "Эволюция свободной поверхности"));
+                sp.AddCurve(new DigFunction(t, qr, "Эволюция расхода в створе"));
             }
             else
             {
-                try
-                {
-                    formTM.SetSavePoint(sp);
-                    formTM.Show();
-                }
-                catch 
-                {
-                    formTM = new FVCurves(sp);
-                    formTM.Show();
-                }
+                sp.AddCurve(csData.WaterLevels);
+                sp.AddCurve(csData.FlowRate);
             }
+            formTM = new FVCurves(sp);
+            formTM.Show();
         }
 
         private void btAdd_Click(object sender, EventArgs e)
         {
             string line = tbS0.Text + " " + tbSL.Text + " " + tbks.Text;
-            if(lbKs.Items.Contains(line) == false)
+            if (lbKs.Items.Contains(line) == false)
             {
                 lbKs.Items.Add(line);
                 SetRoughness();
@@ -427,7 +584,7 @@ namespace RiverDB.ConvertorOut
                 line = tbS0.Text + " " + tbSL.Text + " " + tbks.Text;
             if (lbKs.Items.Contains(line) == false)
             {
-                    lbKs.Items[lbKs.SelectedIndex] = line;
+                lbKs.Items[lbKs.SelectedIndex] = line;
                 SetRoughness();
             }
         }
@@ -438,35 +595,35 @@ namespace RiverDB.ConvertorOut
             {
                 object obj = lbKs.Items[lbKs.SelectedIndex];
                 lbKs.Items.Remove(obj);
-                if(lbKs.Items.Count == 0)
+                if (lbKs.Items.Count == 0)
                 {
                     tbS0.Text = sx[0].ToString("F4");
                     tbSL.Text = sx[sx.Length - 1].ToString("F4");
                     tbks.Text = ks0.ToString("F4");
                     string line = tbS0.Text + " " + tbSL.Text + " " + tbks.Text;
                     lbKs.Items.Add(line);
-                    
+
                 }
                 SetRoughness();
             }
         }
         private void SetRoughness()
         {
-            for (int i = 0; i < lbKs.Items.Count; i++) 
+            for (int i = 0; i < lbKs.Items.Count; i++)
             {
                 string line = lbKs.Items[i].ToString();
                 string[] lines = line.Split(' ');
                 double x0 = double.Parse(lines[0]);
                 double xL = double.Parse(lines[1]);
                 double kss = double.Parse(lines[2]);
-                for (int j = 0; j < sx.Length; j++) 
+                for (int j = 0; j < sx.Length; j++)
                 {
                     if (sx[j] >= x0 && sx[j] <= xL)
                         ks[j] = kss;
                 }
             }
-            Roughness = new DigFunction(sx, ks, "Шероховатость дна");
-            crossFunctions[5] = Roughness;
+            csData.Roughness = new DigFunction(sx, ks, "Шероховатость дна");
+            csData.UpDate();
         }
 
         private void lbKs_DoubleClick(object sender, EventArgs e)
@@ -499,7 +656,7 @@ namespace RiverDB.ConvertorOut
 
         private void btCSMesh_Click(object sender, EventArgs e)
         {
-            try 
+            try
             {
                 /// координаты дна по оси х
                 double[] bottom_x = null;
@@ -509,13 +666,13 @@ namespace RiverDB.ConvertorOut
                 /// Длина смоченного периметра
                 /// </summary>
                 double WetBed = 0;
-                RSCrossParams p = (RSCrossParams)pGridTask.SelectedObject;
+                p = (RSCrossParams)pGridTask.SelectedObject;
                 // получение отметок дна
-                Geometry.GetFunctionData(ref bottom_x, ref bottom_y, p.CountBLKnots);
+                csData.Geometry.GetFunctionData(ref bottom_x, ref bottom_y, p.CountBLKnots);
                 // начальный уровень свободной поверхности
-                var waterLevel = WaterLevels.FunctionValue(0);
+                var waterLevel = csData.WaterLevels.FunctionValue(0);
                 // начальный расход потока
-                var riverFlowRate = FlowRate.FunctionValue(0);
+                var riverFlowRate = csData.FlowRate.FunctionValue(0);
 
                 bool axisOfSymmetry = p.axisSymmetry == 1 ? true : false;
                 CrossStripMeshOption op = new CrossStripMeshOption();
@@ -523,10 +680,10 @@ namespace RiverDB.ConvertorOut
                 var meshGenerator = SMGManager.GetMeshGenerator(p.typeMeshGenerator, op);
                 /// сечения створа
                 int[][] riverGates = null;
-                IMesh mesh = meshGenerator.CreateMesh(ref WetBed,ref riverGates, waterLevel, bottom_x, bottom_y);
-                ShowMesh(mesh, crossFunctions);
-            } 
-            catch(Exception ex) 
+                IMesh mesh = meshGenerator.CreateMesh(ref WetBed, ref riverGates, waterLevel, bottom_x, bottom_y);
+                ShowMesh(mesh, csData.crossFunctions);
+            }
+            catch (Exception ex)
             {
                 Logger.Instance.Info(ex.Message);
             }
@@ -545,9 +702,9 @@ namespace RiverDB.ConvertorOut
                 double[] y = mesh.GetCoords(1);
                 data.Add("Координата Х", x);
                 data.Add("Координата Y", y);
-                if(curves != null)
+                if (curves != null)
                 {
-                    for(int i=0; i<curves.Length; i++)
+                    for (int i = 0; i < curves.Length; i++)
                         if (curves[i] != null)
                             data.AddCurve(curves[i]);
                 }
@@ -556,49 +713,40 @@ namespace RiverDB.ConvertorOut
             }
         }
 
+        int LocRiver()
+        {
+            if (rbAmur.Checked == true)
+                return 0;
+            else
+                if (rbPemza.Checked == true)
+                return 1;
+            else
+                return 2;
+        }
+
+        private void btChangeData_Click(object sender, EventArgs e)
+        {
+            ChangeData();
+        }
+        private void ChangeData()
+        {
+            if (tb_DataEnd.Text.Trim() != tb_Data.Text.Trim())
+            {
+                ChangGP_WL();
+                csData.UpDate();
+            }
+        }
+
+        void SetLocRiver(int idx)
+        {
+            if (idx == 0) rbAmur.Checked = true;
+            if (idx == 1) rbPemza.Checked = true;
+            if (idx == 2) rbMad.Checked = true;
+        }
         private void rbAmur_CheckedChanged(object sender, EventArgs e)
         {
             ChangGP_WL();
-            crossFunctions = new IDigFunction[6] { Geometry, WaterLevels, FlowRate, VelocityX, VelocityY, Roughness };
-        }
-
-        private void bt_CreateTaskFile_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-                {
-                    using (StreamWriter file = new StreamWriter(saveFileDialog1.FileName))
-                    {
-                        string FileEXT = Path.GetExtension(saveFileDialog1.FileName).ToLower();
-                        switch (FileEXT)
-                        {
-                            case Ext_RvY:
-                                file.WriteLine(Data);
-                                file.WriteLine(NameGP);
-                                for (int i = 0; i < crossFunctions.Length; i++)
-                                    crossFunctions[i].Save(file);
-                                break;
-                            case Ext_Crf:
-                                RSCrossParams p = (RSCrossParams)pGridTask.SelectedObject;
-                                if (cbRetask.Checked == false)
-                                    p.ReTask = 3;
-                                p.DataStart = tb_Data.Text;
-                                p.DataEnd = tb_DataEnd.Text;
-                                p.typeMeshGenerator = (StripGenMeshType)cbMeshGenerator.SelectedIndex;
-                                p.SaveA(file);
-                                for (int i = 0; i < crossFunctions.Length; i++)
-                                    crossFunctions[i].Save(file);
-                                break;
-                        }
-                        file.Close();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Instance.Info(ex.Message);
-            }
+            csData.UpDate();
         }
     }
 }

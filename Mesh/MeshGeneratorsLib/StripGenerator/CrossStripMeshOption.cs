@@ -80,6 +80,10 @@ namespace MeshGeneratorsLib.StripGenerator
         /// Способ маркировки
         /// </summary>
         public SimpleMarkerArea markerArea;
+        /// <summary>
+        /// Разбиение прямоугольника на два треугольника по короткой гиппотенузе
+        /// </summary>
+        public bool rectOptima = true;
 
         #region только для SimpleMarkerArea.boxCrossSectionB
         /// <summary>
@@ -92,27 +96,29 @@ namespace MeshGeneratorsLib.StripGenerator
         public double b;
         #endregion
 
-        public CrossStripMeshOption(SimpleMarkerArea markerArea, TypeMesh typeMesh, int boundaryClose)
+        public CrossStripMeshOption(SimpleMarkerArea markerArea, TypeMesh typeMesh, int boundaryClose,bool rectOptima = true)
         {
             h = 0;
             b = 0;
+            
             this.typeMesh = typeMesh;
             this.BoundaryClose = boundaryClose;
             this.markerArea = markerArea;
-
+            this.rectOptima = rectOptima;
             this.AxisOfSymmetry = false;
             this.channelSectionForms =  SСhannelForms.porabolic;
+
         }
 
-        public CrossStripMeshOption(SimpleMarkerArea markerArea, TypeMesh typeMesh, int boundaryClose, SСhannelForms channelSectionForms, bool axisOfSymmetry)
+        public CrossStripMeshOption(SimpleMarkerArea markerArea, TypeMesh typeMesh, int boundaryClose, SСhannelForms channelSectionForms, bool axisOfSymmetry, bool rectOptima = true)
         {
             this.typeMesh = typeMesh;
             this.BoundaryClose = boundaryClose;
             this.markerArea = markerArea;
-
+            this.rectOptima = rectOptima;
             this.AxisOfSymmetry = axisOfSymmetry;
             this.channelSectionForms = channelSectionForms;
         }
-        public CrossStripMeshOption() : this(SimpleMarkerArea.crossSectionRiver, TypeMesh.Triangle, 0, SСhannelForms.porabolic, false) { }
+        public CrossStripMeshOption() : this(SimpleMarkerArea.crossSectionRiver, TypeMesh.Triangle, 0, SСhannelForms.porabolic, false, true) { }
     }
 }

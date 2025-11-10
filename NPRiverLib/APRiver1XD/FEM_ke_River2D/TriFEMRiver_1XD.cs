@@ -26,11 +26,11 @@ namespace NPRiverLib.APRiver_1XD
     using FEMTasksLib.FEMTasks.VortexStream;
     using NPRiverLib.IO._1XD.Tests;
     using CommonLib.BedLoad;
-    using static alglib;
+    using System.Collections.Generic;
 
     /// <summary>
-    ///  ОО: Определение класса TriFEMRiver_1XD - расчет полей скорости, вязкости 
-    ///       и напряжений в живом сечении потока методом КЭ (симплекс элементы)
+    ///  ОО: Определение класса TriFEMRiver_1XD -класс для расчет полей тока, завихренности,
+    ///  скорости, вязкости и касательных напряжений в канальной 1XD задаче методом КЭ (симплекс элементы)
     /// </summary>
     [Serializable]
     public class TriFEMRiver_1XD : APRiverFEM1XD
@@ -144,6 +144,25 @@ namespace NPRiverLib.APRiver_1XD
                             taskPV.SolveStokesTask(ref Phi, ref Vortex, eddyViscosity);
                             break;
                     }
+                    if(Params.VelocityBedZerro == true)
+                    {
+                        //double[] Vy = taskPV.Vy;
+                        //double[] Vz = taskPV.Vz;
+                        TwoElement[] beKnots = mesh.GetBoundElems();
+                        int[] marks = mesh.GetBElementsBCMark();
+                        for (uint belem = 0; belem < mesh.CountBoundElements; belem++)
+                        {
+                            if (marks[belem] == 0)
+                            {
+                                uint i = beKnots[belem].Vertex1;
+                                uint j = beKnots[belem].Vertex2;
+                                taskPV.Vy[i] = 0;
+                                taskPV.Vz[i] = 0;
+                                taskPV.Vy[j] = 0;
+                                taskPV.Vz[j] = 0;
+                            }
+                        }
+                    }
                     FlagStartMu = true;
                     flagErr=3;
                     // расчет  придонных касательных напряжений на дне
@@ -165,26 +184,31 @@ namespace NPRiverLib.APRiver_1XD
                             taskCon.SetTask(mesh, algebra, wMesh);
                         }
                         taskCon.SolveTaskConcentS(ref concentration, eddyViscosity, Phi, tau, (int)Params.CalkConcentration);
-                        //double[] X = mesh.GetCoords(0);
-                        //double[] Y = mesh.GetCoords(1);
-                        //MEM.Alloc(riverGates.Length, ref xCon);
-                        //MEM.Alloc(riverGates.Length, ref Con);
-                        //for (int i = 0; i < riverGates.Length; i++)
-                        //{
-                        //    xCon[i] = X[riverGates[i][0]];
-                        //    if (riverGates[i].Length == 1)
-                        //        Con[i] = 0;
-                        //    else
-                        //    {
-                        //        Con[i] = 0;
-                        //        for (int j = 0; j < riverGates[i].Length - 1; j++)
-                        //        {
-                        //            double h = Math.Abs(Y[riverGates[i][j]] - Y[riverGates[i][j + 1]]);
-                        //            Con[i] += h * (Gcon[riverGates[i][j]] + Gcon[riverGates[i][j + 1]]);
-                        //        }
-                        //    }
-                        //}
-                        //fGcon = new DigFunction(xCon, Con, "Взвешенный расход наносов");
+                        // если определены вертикальные створы, выполняем по ним интегрирование для
+                        // определении расходов взвешенных наносов
+                        if (riverGates != null)
+                        {
+                            double[] X = mesh.GetCoords(0);
+                            double[] Y = mesh.GetCoords(1);
+                            MEM.Alloc(riverGates.Length, ref xCon);
+                            MEM.Alloc(riverGates.Length, ref Con);
+                            for (int i = 0; i < riverGates.Length; i++)
+                            {
+                                xCon[i] = X[riverGates[i][0]];
+                                if (riverGates[i].Length == 1)
+                                    Con[i] = 0;
+                                else
+                                {
+                                    Con[i] = 0;
+                                    for (int j = 0; j < riverGates[i].Length - 1; j++)
+                                    {
+                                        double h = Math.Abs(Y[riverGates[i][j]] - Y[riverGates[i][j + 1]]);
+                                        Con[i] += h * (Gcon[riverGates[i][j]] + Gcon[riverGates[i][j + 1]]);
+                                    }
+                                }
+                            }
+                            fGcon = new DigFunction(xCon, Con, "Взвешенный расход наносов");
+                        }
                     }    
                     flagErr = 7;
                     time += dtime;
@@ -208,37 +232,74 @@ namespace NPRiverLib.APRiver_1XD
         /// <param name="yv">координаты У узлов КО</param>
         protected override double[] TausToVols(in double[] xv, in double[] yv, bool elements = false)
         {
-            uint i1;
-            uint i2;
-            int CountElVortexWL = 0;
-            for (uint belem = 0; belem < mesh.CountBoundElements; belem++)
-            {
-                int mark = mesh.GetBoundElementMarker(belem);
-                if (mark == 2)
-                    CountElVortexWL++;
-            }
-            // массив касательных напряжений
-            MEM.Alloc(CountElVortexWL, ref tau);
-            MEM.Alloc(CountElVortexWL, ref xtau);
-            CountElVortexWL = -1;
+            SolveTaus();
+            uint i;
+            uint j;
+            List<double> lx = new List<double>(mesh.CountBoundKnots);
+            List<double> lt = new List<double>(mesh.CountBoundKnots);
             TwoElement[] beKnots = mesh.GetBoundElems();
-            int k = 0;
             double[] X = mesh.GetCoords(0);
             for (uint belem = 0; belem < mesh.CountBoundElements; belem++)
             {
                 int mark = mesh.GetBoundElementMarker(belem);
                 if (mark == 0)
                 {
-                    i1 = beKnots[belem].Vertex1;
-                    i2 = beKnots[belem].Vertex2;
-                    xtau[k] = 0.5 * (X[i1] + X[i2]);
-                    tau[k++] = -0.5 * (eddyViscosity[i1] * Vortex[i1]
-                                     + eddyViscosity[i2] * Vortex[i2]);
+                    i = beKnots[belem].Vertex1;
+                    j = beKnots[belem].Vertex2;
+                    if (MEM.Equals(X[i] - X[j], 0) == false) // убераем вертикальные стенки
+                    {
+                        double s = 0.5 * (X[i] + X[j]);
+                        double T = -0.5 * (eddyViscosity[i] * Vortex[i]
+                                         + eddyViscosity[j] * Vortex[j]);
+                        lx.Add(s);
+                        lt.Add(T);
+                    }
                 }
             }
+            xtau = lx.ToArray();
+            tau  = lt.ToArray();
             return tau;
         }
-
+        /// <summary>
+        /// Нахождение поля напряжений и их сглаживание по методу Галеркина
+        /// </summary>
+        protected void SolveTaus()
+        {
+            try
+            {
+                double[] Se = wMesh.GetS();
+                double[] Sfo = wMesh.GetElemS();
+                double[][] dNdx = wMesh.GetdNdx();
+                double[][] dNdy = wMesh.GetdNdy();
+                double[] Vy = taskPV.Vy;
+                double[] Vz = taskPV.Vz;
+                MEM.Alloc(mesh.CountKnots, ref TauYZ, 0);
+                TriElement[] elems = mesh.GetAreaElems();
+                for (uint ei = 0; ei < mesh.CountElements; ei++)
+                {
+                    uint i = elems[ei].Vertex1;
+                    uint j = elems[ei].Vertex2;
+                    uint k = elems[ei].Vertex3;
+                    // получить среднюю вязкость на КЭ
+                    double Mu = (eddyViscosity[i] + eddyViscosity[j] + eddyViscosity[k]) / 3;
+                    // площадь КЭ
+                    double S = Se[ei];
+                    // деформации
+                    double dWdy = Vz[i] * dNdx[ei][0] + Vz[j] * dNdx[ei][1] + Vz[k] * dNdx[ei][2];
+                    double dVdz = Vy[i] * dNdy[ei][0] + Vy[j] * dNdy[ei][1] + Vy[k] * dNdy[ei][2];
+                    double tmpTauYZ = Mu * (dVdz + dWdy);
+                    TauYZ[i] += S * tmpTauYZ / 3;
+                    TauYZ[j] += S * tmpTauYZ / 3;
+                    TauYZ[k] += S * tmpTauYZ / 3;
+                }
+                for (int i = 0; i < TauYZ.Length; i++)
+                    TauYZ[i] /= Sfo[i];
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Exception(ex);
+            }
+        }
         /// <summary>
         /// Создать расчетную область
         /// </summary>
@@ -311,8 +372,8 @@ namespace NPRiverLib.APRiver_1XD
             switch (Params.typeAlgebra)
             {
                 case TypeAlgebra.GMRES_P_Sparce:
-                    uint MK = 25;
-                    uint MaxIters = 100;
+                    uint MK = 30;
+                    uint MaxIters = 70;
                     algebra = new SparseAlgebraGMRES_P((uint)mesh.CountKnots, MK, isPrecond, MaxIters);
                     algebra2 = new SparseAlgebraGMRES_P((uint)(2 * mesh.CountKnots), MK, isPrecond, MaxIters);
                     break;
@@ -341,15 +402,27 @@ namespace NPRiverLib.APRiver_1XD
             MEM.Alloc(mesh.CountKnots, ref Phi, "Phi");
             MEM.Alloc(mesh.CountKnots, ref Vortex, "Vortex");
             // память под напряжения в области
-            MEM.Alloc(mesh.CountKnots, ref TauY, "TauY");
-            MEM.Alloc(mesh.CountKnots, ref TauZ, "TauZ");
+            MEM.Alloc(mesh.CountKnots, ref TauYZ, "TauYZ");
             
-            uint[] bedKnots = mesh.GetBoundKnotsByMarker(0);
-            MEM.Alloc(bedKnots.Length, ref bottom_x, "TauY");
-            MEM.Alloc(bedKnots.Length, ref bottom_y, "TauZ");
-
             double[] X = mesh.GetCoords(0);
             double[] Y = mesh.GetCoords(1);
+
+            //uint[] bedKnots = mesh.GetBoundKnotsByMarker(0);
+            TwoElement[] belems = mesh.GetBoundElems();
+            int[] bmarks = mesh.GetBElementsBCMark();
+            List<uint> BoundBedKnots = new List<uint>(mesh.CountBoundKnots);
+            for (int k = 0; k < belems.Length; k++)
+            {
+                if (bmarks[k] == 0 &&
+                    MEM.Equals(X[belems[k].Vertex2] - X[belems[k].Vertex1], 0) == false)
+                    BoundBedKnots.Add(belems[k].Vertex1);
+            }
+            uint[] bedKnots = BoundBedKnots.ToArray();
+
+            MEM.Alloc(bedKnots.Length, ref bottom_x, "bottom_x");
+            MEM.Alloc(bedKnots.Length, ref bottom_y, "bottom_y");
+
+       
             for (int i = 0; i < bedKnots.Length; i++)
             {
                 bottom_x[i] = X[bedKnots[i]];
@@ -401,9 +474,10 @@ namespace NPRiverLib.APRiver_1XD
                 unknowns.Add(new Unknown("Концентрация", concentration, TypeFunForm.Form_2D_Rectangle_L1));
 
             unknowns.Add(new CalkPapams("Турб. вязкость", eddyViscosity, TypeFunForm.Form_2D_Rectangle_L1));
-            unknowns.Add(new CalkPapams("Поле напряжений T_xy", TauY, TypeFunForm.Form_2D_Rectangle_L1));
-            unknowns.Add(new CalkPapams("Поле напряжений T_xz", TauZ, TypeFunForm.Form_2D_Rectangle_L1));
-            unknowns.Add(new CalkPapams("Поле напряжений", TauY, TauZ, TypeFunForm.Form_2D_Rectangle_L1));
+            unknowns.Add(new CalkPapams("Поле напряжений TauYZ", TauYZ, TypeFunForm.Form_2D_Rectangle_L1));
+            //unknowns.Add(new CalkPapams("Поле напряжений T_yy", TauY, TypeFunForm.Form_2D_Rectangle_L1));
+            //unknowns.Add(new CalkPapams("Поле напряжений T_zz", TauZ, TypeFunForm.Form_2D_Rectangle_L1));
+            //unknowns.Add(new CalkPapams("Поле напряжений", TauY, TauZ, TypeFunForm.Form_2D_Rectangle_L1));
 
             if (eddyViscosity0 == null)
                 MEM.Copy(ref eddyViscosity0, eddyViscosity);

@@ -27,6 +27,10 @@ namespace MeshLib
     public class GraphicsCurve : IGraphicsCurve
     {
         /// <summary>
+        /// Список точек кривой
+        /// </summary>
+        List<HPoint> points;
+        /// <summary>
         /// Тип кривой
         /// </summary>
         public TypeGraphicsCurve TGraphicsCurve { get; set; }
@@ -169,10 +173,7 @@ namespace MeshLib
                 return p;
             }
         }
-        /// <summary>
-        /// Список точек кривой
-        /// </summary>
-        List<HPoint> points;
+
         public GraphicsCurve(string Name = "без имени",
         TypeGraphicsCurve tGraphicsCurve = TypeGraphicsCurve.AreaCurve, bool Check = true)
         {
@@ -360,14 +361,42 @@ namespace MeshLib
         {
             double sum = 0;
             double N = 0;
+            double dxR;
+            double dxL;
+            double dx;
+            double L0 = 0;
             for (int i = 0; i < points.Count; i++)
                 if ( (points[i].x >= xa) && (points[i].x <= xb) )
                 {
-                    sum += points[i].y;
-                    N++;
+                    if (i > 0)
+                        dxL = (points[i].x - points[i - 1].x) / 2;
+                    else
+                        dxL = 0;
+                    if (i < points.Count - 1)
+                        dxR = (points[i + 1].x - points[i].x) / 2;
+                    else
+                        dxR = 0;
+                    dx = dxR + dxL;
+                    sum += points[i].y * dx;
+                    L0 += dx;
                 }
-            return sum / N;
+            //if (L0 > xb - xa)
+            //    L0 = xb - xa;
+            return sum / L0;
         }
+
+        //public double AverageCurve(double xa, double xb)
+        //{
+        //    double sum = 0;
+        //    double N = 0;
+        //    for (int i = 0; i < points.Count; i++)
+        //        if ((points[i].x >= xa) && (points[i].x <= xb))
+        //        {
+        //            sum += points[i].y;
+        //            N++;
+        //        }
+        //    return sum / N;
+        //}
         /// <summary>
         /// Среднеквадратическое отклонение
         /// </summary>

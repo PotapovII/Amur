@@ -16,11 +16,14 @@ namespace RiverDB.FormsDB
 
     public partial class LevelsRiver : Form
     {
-        //public Microsoft.Office.Interop.Excel.Application excelapp = new Microsoft.Office.Interop.Excel.Application();
+        int ColumnIndex = 0;
+        string placeID = "";
         LevelsRiverUp form;
         public string TName;
         public string VName;
-        int[] sizeColum;
+        int[] sizeColum = new int[] { 10, 35, 25, 15, 15 };
+        Catalogue book = new Catalogue("place", true);
+
         public LevelsRiver(string TName)
         {
             this.TName = TName;
@@ -58,7 +61,6 @@ namespace RiverDB.FormsDB
         private void LevelsRiver_Load(object sender, EventArgs e)
         {
             this.Text = TName;
-            sizeColum = new int[] { 10, 35, 25, 15, 15 };
             string strAccessSelect = "exec SP_" + TName + "_SEL";
             dataGridView1.DataSource = ConnectDB.GetDataTable(strAccessSelect, TName);
             LevelsRiver_Resize(sender, e);
@@ -124,8 +126,7 @@ namespace RiverDB.FormsDB
              "[experiment_datetime] as [дата и время], [experiment_waterlevel] as" +
              " [уровень воды],[experiment_middlewaterlevel] as [норма] " +
              " from dbo.view_experiment where [experiment_ID] LIKE @POLE ";
-            
-            switch (dataGridView1.FirstDisplayedScrollingColumnIndex)
+            switch (ColumnIndex)
             {
                 case 1:
                     strAccessSelect = strAccessSelectPN;
@@ -137,6 +138,10 @@ namespace RiverDB.FormsDB
                 default:
                     strAccessSelect = strAccessSelectID;
                     break;
+            }
+            if(placeID!="")
+            {
+                strAccessSelect+= " and  place_id = '" + placeID + "'";
             }
             DataTable mapTable = ConnectDB.SelectTableBystrKey(strAccessSelect, TName, pole);
             dataGridView1.DataSource = mapTable;
@@ -153,6 +158,26 @@ namespace RiverDB.FormsDB
                 ConnectDB.DeleteRow(TName, id);
                 LevelsRiver_Resize(sender, e);
             }
+        }
+
+        private void tsbGPost_Click(object sender, EventArgs e)
+        {
+            book.ShowDialog();
+            tsbText.Text = book.RowName;
+            placeID = book.RowID;
+            CFValue(sender, e);
+        }
+
+        private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            ColumnIndex = e.ColumnIndex;
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            placeID = "";
+            tsbText.Text = "";
+            CFValue(sender, e);
         }
     }
 }

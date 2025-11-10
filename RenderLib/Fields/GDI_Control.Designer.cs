@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            RenderLib.ColorSchemeFields colorSchemeFields2 = new RenderLib.ColorSchemeFields();
+            RenderLib.ColorSchemeFields colorSchemeFields1 = new RenderLib.ColorSchemeFields();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GDI_Control));
-            RenderLib.RenderOptionsFields renderOptionsFields2 = new RenderLib.RenderOptionsFields();
+            RenderLib.RenderOptionsFields renderOptionsFields1 = new RenderLib.RenderOptionsFields();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btCrossSection = new System.Windows.Forms.Button();
             this.btCurve = new System.Windows.Forms.Button();
@@ -182,6 +182,7 @@
             this.toolStripStatusLabel10 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tss_TaskName = new System.Windows.Forms.ToolStripStatusLabel();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.cb_PrintOp = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             this.tbc_Task.SuspendLayout();
             this.tabPage6.SuspendLayout();
@@ -988,11 +989,12 @@
             // 
             this.panel10.BackColor = System.Drawing.Color.White;
             this.panel10.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel10.Controls.Add(this.cb_PrintOp);
             this.panel10.Controls.Add(this.cb_ckScaleUpdate);
             this.panel10.Controls.Add(this.cb_AccountingСurves);
             this.panel10.Location = new System.Drawing.Point(12, 200);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(209, 70);
+            this.panel10.Size = new System.Drawing.Size(209, 98);
             this.panel10.TabIndex = 98;
             // 
             // cb_ckScaleUpdate
@@ -1673,19 +1675,19 @@
             // renderControl1
             // 
             this.renderControl1.BackColor = System.Drawing.Color.White;
-            colorSchemeFields2.Background = System.Drawing.Color.White;
-            colorSchemeFields2.FontKnot = new System.Drawing.Font("Arial", 8F);
-            colorSchemeFields2.FontReper = new System.Drawing.Font("Arial", 8F);
-            colorSchemeFields2.FontValue = null;
-            colorSchemeFields2.formatTextReper = ((uint)(2u));
-            this.renderControl1.colorScheme = colorSchemeFields2;
+            colorSchemeFields1.Background = System.Drawing.Color.White;
+            colorSchemeFields1.FontKnot = new System.Drawing.Font("Arial", 8F);
+            colorSchemeFields1.FontReper = new System.Drawing.Font("Arial", 8F);
+            colorSchemeFields1.FontValue = null;
+            colorSchemeFields1.formatTextReper = ((uint)(2u));
+            this.renderControl1.colorScheme = colorSchemeFields1;
             this.renderControl1.IndexTask = 0;
             this.renderControl1.Location = new System.Drawing.Point(209, 3);
             this.renderControl1.Name = "renderControl1";
             this.renderControl1.Points = new System.Drawing.PointF[] {
         ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points"))),
         ((System.Drawing.PointF)(resources.GetObject("renderControl1.Points1")))};
-            this.renderControl1.renderOptions = renderOptionsFields2;
+            this.renderControl1.renderOptions = renderOptionsFields1;
             this.renderControl1.Size = new System.Drawing.Size(32, 22);
             this.renderControl1.TabIndex = 0;
             this.renderControl1.Text = "renderControl1";
@@ -1947,6 +1949,17 @@
             this.tss_TaskName.Size = new System.Drawing.Size(17, 21);
             this.tss_TaskName.Text = "_";
             // 
+            // cb_PrintOp
+            // 
+            this.cb_PrintOp.AutoSize = true;
+            this.cb_PrintOp.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cb_PrintOp.Location = new System.Drawing.Point(10, 65);
+            this.cb_PrintOp.Name = "cb_PrintOp";
+            this.cb_PrintOp.Size = new System.Drawing.Size(166, 24);
+            this.cb_PrintOp.TabIndex = 102;
+            this.cb_PrintOp.Text = "Схема для статей";
+            this.cb_PrintOp.UseVisualStyleBackColor = true;
+            // 
             // GDI_Control
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2161,5 +2174,6 @@
         private System.Windows.Forms.CheckBox cbTauNormals;
         private System.Windows.Forms.Button btGraph;
         private System.Windows.Forms.Button btEvalGraph;
+        private System.Windows.Forms.CheckBox cb_PrintOp;
     }
 }

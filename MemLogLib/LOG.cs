@@ -102,6 +102,17 @@ namespace MemLogLib
             string[] sline = line.Split(Spliter);
             return sline[1].Trim();
         }
+        /// <summary>
+        /// Чтение второго слова строки (первое слово комментарий)
+        /// и конвертация его в DateTime 
+        /// </summary>
+        /// <param name="line">строка</param>
+        /// <returns></returns>
+        public static DateTime GetDateTime(string line)
+        {
+            string[] sline = line.Split(Spliter);
+            return DateTime.Parse(sline[1].Trim());
+        }
         #endregion
         /// <summary>
         /// добавление строки в файл
@@ -243,6 +254,7 @@ namespace MemLogLib
                 }
             }
         }
+
         /// <summary>
         /// ф-я контрольной печати одномерного массива (си 1D формат)
         /// </summary>
@@ -597,6 +609,19 @@ namespace MemLogLib
             }
         }
         /// <summary>
+        /// Загрузка сетки КЭ, координат вершин и дна, придонных касательных напряжений и давления
+        /// </summary>
+        /// <param name="FileName">имя файла</param>
+        /// <param name="V">напряжение ...</param>
+        public static void LoadMasLine(StreamReader file, ref double[] V)
+        {
+                string line = file.ReadLine().Trim('(', ')', '\t');
+                string[] slines = line.Split(' ', '\t');
+                MEM.Alloc(slines.Length, ref V);    
+                for (int i = 0; i < slines.Length; i++)
+                    V[i] = double.Parse(slines[i], formatter);
+        }
+        /// <summary>
         /// Запись в файл одномерного массива
         /// </summary>
         /// <param name="FileName">имя файла</param>
@@ -604,13 +629,25 @@ namespace MemLogLib
         /// <param name="FP">мантиса числе</param>
         public static void SaveMasLine(string FileName, double[] V, int FP = 8)
         {
-            string Format = "F" + FP.ToString();
             using (StreamWriter file = new StreamWriter(FileName))
             {
-                for (int i = 0; i < V.Length; i++)
-                    file.Write(DoubleToString(V[i], Format) + " ");
+                SaveMasLine(file, V, FP);
                 file.Close();
             }
+        }
+        /// <summary>
+        /// Запись в файл одномерного массива
+        /// </summary>
+        /// <param name="FileName">имя файла</param>
+        /// <param name="V">массив</param>
+        /// <param name="FP">мантиса числе</param>
+        public static void SaveMasLine(StreamWriter file, double[] V, int FP = 8)
+        {
+            string Format = "F" + FP.ToString();
+            file.Write(V[0].ToString(Format));
+            for (int i = 1; i < V.Length; i++)
+                file.Write(" " + V[i].ToString(Format));
+            file.WriteLine();
         }
     }
 }

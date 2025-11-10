@@ -18,6 +18,8 @@ namespace RenderLib
     using GeometryLib;
     using System.IO;
     using System.Xml.Linq;
+    using System.Runtime.Serialization.Formatters.Binary;
+    using System.Drawing.Drawing2D;
 
     public partial class GDI_Curves_Control : UserControl
     {
@@ -126,6 +128,7 @@ namespace RenderLib
                     break;
                 case 1:
                     radioButton02.Checked = true;
+                    
                     break;
                 case 2:
                     radioButton03.Checked = true;
@@ -299,16 +302,17 @@ namespace RenderLib
                 tSS_Integral.Text = graphicsData.curves[indexPole].IntegtalCurve().ToString("F4");
                 tsLabel.Text = graphicsData.curves[indexPole].Name;
                 // масштабирование
-                for (int i = 0; i < checkedListBoxCurve.Items.Count; i++)
+                string nameX = tbScaleX.Text;
+                string nameY = tbScaleY.Text;
+                double sx = MEM.ParserABS(ref nameX, 1);
+                double sy = MEM.ParserABS(ref nameY, 1);
+                tbScaleX.Text = nameX;
+                tbScaleY.Text = nameY;
+                //for (int i = 0; i < checkedListBoxCurve.Items.Count; i++)
+                for (int i = 0; i < graphicsData.curves.Count; i++)
                 {
-                    string nameX = tbScaleX.Text;
-                    string nameY = tbScaleY.Text;
-                    double sx = MEM.ParserABS(ref nameX, 1);
-                    double sy = MEM.ParserABS(ref nameY, 1);
-                    tbScaleX.Text = nameX;
-                    tbScaleY.Text = nameY;
                     graphicsData.curves[i].SetScale(renderOptions.opCurveScale,
-                                                    renderOptions.opAutoScaleX, 
+                                                    renderOptions.opAutoScaleX,
                                                     renderOptions.opAutoScaleY, sx, sy);
                 }
             }
@@ -943,11 +947,13 @@ namespace RenderLib
         private void nud_X_ValueChanged(object sender, EventArgs e)
         {
             GV(nud_X, tbScaleX,ref oldX);
+            SetRB(3);
         }
 
         private void nud_Y_ValueChanged(object sender, EventArgs e)
         {
             GV(nud_Y, tbScaleY,ref oldY);
+            SetRB(3);
         }
 
         /// <summary>
@@ -1076,6 +1082,55 @@ namespace RenderLib
             GraphicsCurve curve = graphicsData.curves[indexPole];
             isp.RemoveCurve(curve.Name);
             SendSavePoint(isp);
+        }
+
+        private void btSaveGD_Click(object sender, EventArgs e)
+        {
+            if (isp != null)
+            {
+                saveFileDialog1.Filter = "файл - точка сохранения rpsp (*.gd)|*.gd|" +
+                                     "All files (*.*)|*.*";
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        IGraphicsData graphicsData = isp.graphicsData;
+                        graphicsData.SerializableGraphicsData(graphicsData, saveFileDialog1.FileName);
+                        Logger.Instance.Info("Сохранение успешно:");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Instance.Info("Сохранение потрачено: " + ex.Message);
+                        Logger.Instance.Error(ex.Message, "btSaveGD_Click");
+                    }
+                }
+            }
+        }
+
+        private void btLoadGD_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Filter = "файл - графики для точки сохранения (*.gd)|*.gd|" +
+                                     "All files (*.*)|*.*";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    GraphicsData gd = new GraphicsData();
+                    gd = (GraphicsData)gd.LoadGraphicsData(openFileDialog1.FileName);
+                    SavePoint sp = new SavePoint();
+                    sp.SetGraphicsData(gd);
+                    if (gd != null)
+                    {
+                        SendSavePoint(sp);
+                    }
+                    SendOption();
+                }
+                catch(Exception ex)
+                {
+                    Logger.Instance.Info("Загрузка потрачено: " + ex.Message);
+                    Logger.Instance.Error(ex.Message, "btLoadGD_Click");
+                }
+            }
         }
 
         private void GV(NumericUpDown nud, TextBox tb, ref int old)

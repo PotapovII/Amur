@@ -61,5 +61,15 @@ namespace EddyViscosityLib
                 Console.WriteLine("ee = " + ee.ToString() + " " + ee.Message);
             }
         }
+        /// <summary>
+        /// Расчет вихревой вязкости 
+        /// </summary>
+        /// <param name="eddyViscosity">вихревая вязкость</param>
+        /// <param name="Ux">осевая/окружная/осевая/скорость потока</param>
+        /// <param name="dt">шаг по времени</param>
+        public override void SolveTask(ref double[] eddyViscosity, double[] Ux, double dt)
+        {
+            throw new NotImplementedException("Модель вязкость не поддерживается для одномерного потока");
+        }
     }
 }

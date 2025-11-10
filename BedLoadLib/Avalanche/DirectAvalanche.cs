@@ -20,7 +20,7 @@ namespace BedLoadLib
         /// <summary>
         ///  обруение по направлению Х
         /// </summary>
-        AvalancheX,
+        Avalanche1D,
         /// <summary>
         ///  обруение по направлению Y
         /// </summary>

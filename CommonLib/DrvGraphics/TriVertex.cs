@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2019 - 2024  Potapov Igor Ivanovich, Khabarovsk
+Copyright (c) 2019 - 2025  Potapov Igor Ivanovich, Khabarovsk
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -36,6 +36,84 @@ namespace CommonLib.DrvGraphics
     using CommonLib.Geometry;
     using System.Drawing;
     using System.Runtime.InteropServices;
+
+    /// <summary>
+    /// Структура POLYTEXT описывает, как функция PolyText Out должна нарисовать строку текста.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PolyTexta
+    {
+        /// <summary>
+        /// Горизонтальная эталонная точка строки.
+        /// </summary>
+        int x;
+        /// <summary>
+        /// Вертикальная эталонная точка строки. 
+        /// </summary>
+        int y;
+        /// <summary>
+        /// Длина строки, на которую указывает
+        /// </summary>
+        uint n;
+        /// <summary>
+        /// Указатель на строку текста для рисования
+        /// </summary>
+        char[] lpstr;
+        /// <summary>
+        /// Указывает, должна ли строка быть непрозрачной или обрезанной, 
+        /// а строка сопровождается массивом значений ширины символов. 
+        /// Этот элемент может быть одним или несколькими из следующих значений 
+        /// ETO_OPAQUE - (Для заполнения прямоугольника должен использоваться текущий цвет фона)
+        /// или ETO_CLIPPED - Текст будет обрезаться по прямоугольнику
+        /// </summary>
+        uint uiFlags;
+        /// <summary>
+        /// Прямоугольная структура, содержащая размеры непрозрачного или 
+        /// вырезающего прямоугольника. Этот элемент игнорируется, если ни
+        /// ETO_OPAQUE, ни значение ETO_CLIPPED не указано для элемента uiFlags.
+        /// </summary>
+        RECT rcl;
+        /// <summary>
+        /// Указатель на массив, содержащий значение ширины для каждого символа в строке
+        /// </summary>
+        int[] pdx;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct RECT
+    {
+        int left;
+        int top;
+        int right;
+        int bottom;
+    }
+
+    /// <summary>
+    /// Структура TriVertex содержит информацию положении о цвете точки.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct LPoint
+    {
+        /// <summary>
+        /// Экранная координата x левого верхнего угла прямоугольника
+        /// </summary>
+        public int x;
+        /// <summary>
+        /// Экранная координата y левого верхнего угла прямоугольника
+        /// </summary>
+        public int y;
+        public LPoint(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+        public void SetTriVertex(ref PointF p)
+        {
+            x = (int)p.X;
+            y = (int)p.Y;
+        }
+    }
+
     /// <summary>
     /// Структура TriVertex содержит информацию положении о цвете точки.
     /// </summary>

@@ -21,6 +21,10 @@ namespace GeometryLib
     public abstract class AbDigFunction : IDigFunction
     {
         /// <summary>
+        /// Количество опорных точек функции
+        /// </summary>
+        public int Count { get=> x0.Count; }
+        /// <summary>
         /// Гладкость функции
         /// </summary>
         public SmoothnessFunction Smoothness { get; set; }

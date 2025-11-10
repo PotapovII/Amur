@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2019 - 2024  Potapov Igor Ivanovich, Khabarovsk
+Copyright (c) 2019 - 2025  Potapov Igor Ivanovich, Khabarovsk
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -300,7 +300,7 @@ namespace MeshLib.Wrappers
         #region Дополнительная ленивая функциональность
         /// <summary>
         /// Вычисление минимального растояния от узла до стенки
-        /// В плпнпх - хеширование узлов на масштабе глубины
+        /// В планах - хеширование узлов на масштабе глубины
         /// </summary>
         public void CalkDistance(ref double[] distance, ref double[] Hp, TypeTask typeTask)
         {
@@ -325,7 +325,8 @@ namespace MeshLib.Wrappers
                     for (int belem = 0; belem < mesh.CountBoundElements; belem++)
                     {
                         bool flag = true;
-                        if (BoundElementsMark[belem] == 2)
+                        // WL
+                        if (BoundElementsMark[belem] == 2) 
                             flag = false;
                         if (typeTask == TypeTask.streamX1D)
                             if (BoundElementsMark[belem] == 1 || BoundElementsMark[belem] == 3)
@@ -388,6 +389,14 @@ namespace MeshLib.Wrappers
                     HPoint C = A + HPoint.Dot(AP,bTau[idx]) * bTau[idx];
                     double cosGamma = Math.Abs(bNormals[idx].Y) + MEM.Error14;
                     Hp[nod] = Math.Max(0.01 * Hmax, Math.Min(Hmax, (Y_max - C.Y + MEM.Error8) / cosGamma));
+                    //Hp[nod] = Hmax;// Math.Max(0.01 * Hmax, Math.Min(Hmax, (Y_max - C.Y + MEM.Error8) ));
+
+                    //uint i1 = BoundElems[idx].Vertex1;
+                    //uint i2 = BoundElems[idx].Vertex2;
+                    //double N2 = (X[nod] - X[i1]) / (X[i2] - X[i1]);
+                    //double N1 = 1 - N2;
+                    //Hp[nod] = Y_max - ( N1 * Y[i1] +  N2 * Y[i2]);
+
                 }
             }
             catch (Exception ex)

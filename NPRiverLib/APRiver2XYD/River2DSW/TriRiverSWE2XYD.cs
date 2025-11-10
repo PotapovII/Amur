@@ -26,14 +26,11 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
 
     using System.IO;
     using System.Runtime.CompilerServices;
-    using System.Collections.Generic;
+    
     using GeometryLib;
     using CommonLib.Function;
     using AlgebraLib;
     using FEMTasksLib.FEMTasks.Utils;
-    using System.Xml.Linq;
-    using System.Text.RegularExpressions;
-    using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
     /// <summary>
     /// Решение плановой задачи мелкой воды методом конечных элементов
@@ -231,15 +228,16 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
             
             AbFunForm FunN = FunFormsManager.CreateKernel(meshRiver.First);
             AbFunForm FunL = FunFormsManager.CreateKernel(meshRiver.First);
-
+            RiverNode[] nodes = meshRiver.nodes;
+            TriElementRiver[] AreaElems = meshRiver.AreaElems;
             for (uint elem = 0; elem < meshRiver.CountElements; elem++)
             {
                 // очистка массивов ЛМЖ ММ...
                 ClearLocal();
 
-                RiverNode[] element = { meshRiver.nodes[meshRiver.AreaElems[elem].Vertex1],
-                                         meshRiver.nodes[meshRiver.AreaElems[elem].Vertex2],
-                                         meshRiver.nodes[meshRiver.AreaElems[elem].Vertex3] };
+                RiverNode[] element = { nodes[AreaElems[elem].Vertex1],
+                                        nodes[AreaElems[elem].Vertex2],
+                                        nodes[AreaElems[elem].Vertex3] };
                 // получить узлы КЭ
                 meshRiver.ElementKnots(elem, ref knots);
                 // Получить координаты узлов
@@ -250,9 +248,9 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
 
                 if (riverBankGaussPoints.CheckRiverBankDryWet(element) == 1)
                 {
-                    TriElementRiver currentFElement = meshRiver.AreaElems[elem];
+                    TriElementRiver currentFElement = AreaElems[elem];
                     // плучить точки интегрирования для полузатопленного КЭ
-                    riverBankGaussPoints.GetMixedGPS(meshRiver.nodes, currentFElement, ref pIntegration, CountElementKnots);
+                    riverBankGaussPoints.GetMixedGPS(nodes, currentFElement, ref pIntegration, CountElementKnots);
                 }
                 else
                 {
@@ -261,7 +259,7 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
                 }
                 // флаг для отметки точек интегрирования попадающих на берег
                 for (int i = 0; i < pIntegration.CountIntegr; i++)
-                    meshRiver.AreaElems[elem].gpcode[i] = 1;
+                    AreaElems[elem].gpcode[i] = 1;
                 // цикл по точкам интегрирования
                 for (int pi = 0; pi < pIntegration.CountIntegr; pi++)
                 {
@@ -507,7 +505,8 @@ namespace NPRiverLib.APRiver2XYD.River2DSW
         /// <param name="tauY">придонное касательное напряжение по у</param>
         /// <param name="P">придонных давления/свободная поверхности потока, по контексту задачи</param>
         
-        public override void GetTau(ref double[] tauX, ref double[] tauY, ref double[] P, ref double[][] CS, StressesFlag stressFlag)
+        public override void GetTau(ref double[] tauX, ref double[] tauY, ref double[] P,
+                                    ref double[][] CS, StressesFlag stressFlag)
         {
             double[] Area = null;
             if (StressesFlag.Nod == stressFlag)

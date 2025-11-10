@@ -20,7 +20,7 @@ namespace BedLoadLib
     /// формирующего склон.
     /// </summary>
     [Serializable]
-    public class Avalanche1DX : AvalancheX
+    public class Avalanche1DX : Avalanche1D
     {
         public Avalanche1DX(IMesh mesh, double tf, double Relax = 0.8) : base(mesh, tf, Relax)
         {
@@ -40,6 +40,21 @@ namespace BedLoadLib
             }
             //Console.WriteLine( "лавинных итераций : " + i.ToString());
         }
+        /// <summary>
+        /// Лавинное обрушение дна
+        /// </summary>
+        /// <param name="Z">дно</param>
+        public override void Lavina(ref double[] Z, double[] mtf = null)
+        {
+            int i = 0;
+            for (; i < 100; i++)
+            {
+                if (LavinaLine(ref Z) == false)
+                    break;
+            }
+            //Console.WriteLine( "лавинных итераций : " + i.ToString());
+        }
+
         /// <summary>
         /// Метод лавинного обрушения правого склона, 
         /// обрушение с правой стороны

@@ -117,18 +117,16 @@ namespace NPRiverLib.APRiver_1XD.River1DSW
                     break;
                 case 1:
                     {
-                        double[] x = { 0, 2, 2.5, 4.5, 5, L };
-                        double[] y = { 0, 0, -0.1, -0.1, 0, 0 };
-                        Geometry = new DigFunction(x, y);
-                        Geometry.GetFunctionData(ref x, ref zeta, Params.CountKnots);
+                        double[] x1 = { 0, 2, 2.5, 4.5, 5, L };
+                        double[] y1 = { 0, 0, -0.1, -0.1, 0, 0 };
+                        Geometry = new DigFunction(x1, y1);
                     }
                     break;
                 case 2:
                     {
-                        double[] x = { 0, 2, 2.5, 4.5, 5, L };
-                        double[] y = { 0, 0, 0.1, 0.1, 0, 0 };
-                        Geometry = new DigFunction(x, y);
-                        Geometry.GetFunctionData(ref x, ref zeta, Params.CountKnots);
+                        double[] x1 = { 0, 2, 2.5, 4.5, 5, L };
+                        double[] y1 = { 0, 0, 0.1, 0.1, 0, 0 };
+                        Geometry = new DigFunction(x1, y1);
                     }
                     break;
             }

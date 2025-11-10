@@ -16,15 +16,44 @@ namespace BedLoadLib
     using System;
     using CommonLib;
     using CommonLib.BedLoad;
-    using CommonLib.Physics;
+    using CommonLib.IO;
 
     [Serializable]
     public abstract class ABedLoadFVM_1YD : 
-        ABedLoadFVM_1D<BedLoadParams1D>, IBedLoadTask
+        ABedLoadFVM_1D<BedLoadParams1YD>, IBedLoadTask
     {
-        public ABedLoadFVM_1YD(BedLoadParams1D p) 
+        /// <summary>
+        /// текущий уровень свободной поверхности
+        /// </summary>
+        protected double waterLevel;
+        /// <summary>
+        /// текущий уровень свободной поверхности
+        /// </summary>
+        protected double maxDeapth = 0;
+        /// <summary>
+        /// Режимная лубина потока
+        /// </summary>
+        protected double Depth0;
+
+        public ABedLoadFVM_1YD(BedLoadParams1YD p) 
             : base(p, TypeTask.streamY1D) 
         { 
+        }
+        /// <summary>
+        /// Получить буффер обмена параметрами
+        /// </summary>
+        /// <param name="args"></param>
+        public override void SetTaskArgs(ITaskArgs args)
+        {
+            TaskArgs a = args as TaskArgs;
+            if( a != null)
+            {
+                mTanPhi = a.GetValues("mTanPhi");
+                mTau_Adhesion = a.GetValues("mTau_Adhesion");
+                mRoughness = a.GetValues("mRoughness");
+                waterLevel = a.GetSValues("waterLevel");
+                Depth0 = a.GetSValues("Depth0");
+            }
         }
         /// <summary>
         /// Расчет производных и критических напряжений 
@@ -32,9 +61,6 @@ namespace BedLoadLib
         /// </summary>
         protected void CalkCritTauType()
         {
-            double tanphi = SPhysics.PHYS.tanphi;
-            double tau0 = SPhysics.PHYS.tau0;
-
             for (int i = 0; i < N; i++)
             {
                 dZeta[i] = (Zeta0[i + 1] - Zeta0[i]) / (x[i + 1] - x[i]);
@@ -47,16 +73,17 @@ namespace BedLoadLib
                 for (int i = 0; i < N; i++)
                 {
                     //tau0Elem[i] = CosGamma[i] * Math.Max(0.05 * tau0, tau0 * (1 + dZeta[i] / tanphi));
-                    tau0Elem[i] = CosGamma[i] * Math.Max(tau0, tau0 * (1 + dZeta[i] / tanphi));
+                    tau0Elem[i] = CosGamma[i] * Math.Max(mTau0[i], mTau0[i] * (1 + dZeta[i] / mTanPhi[i]));
                 }
             else
             {
                 for (int i = 0; i < N; i++)
                 {
                     //tau0Elem[i] = CosGamma[i] * Math.Max(0.05 * tau0, tau0 * (1 + dZeta[i] / tanphi));
-                    tau0Elem[i] = CosGamma[i] * tau0;
+                    tau0Elem[i] = CosGamma[i] * mTau0[i];
                 }
             }
         }
+
     }
 }

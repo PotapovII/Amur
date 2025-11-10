@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2019 - 2024  Potapov Igor Ivanovich, Khabarovsk
+Copyright (c) 2019 - 2025  Potapov Igor Ivanovich, Khabarovsk
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -51,5 +51,11 @@ namespace CommonLib.BedLoad
         /// </summary>
         /// <param name="Z">дно</param>
         void Lavina(ref double[] Z);
+        /// <summary>
+        /// Лавинное обрушение дна c переменным углом естественного откоса 
+        /// (фиктивная модель сцепдения грунта по берегу)
+        /// </summary>
+        /// <param name="Z">дно</param>
+        void Lavina(ref double[] Z, double[] mtf);
     }
 }

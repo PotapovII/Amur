@@ -63,13 +63,16 @@ namespace CPForm
             this.tsm_ClearSavePoint = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.smDelSaveTask = new System.Windows.Forms.ToolStripMenuItem();
+            this.smDelSaveCurve = new System.Windows.Forms.ToolStripMenuItem();
             this.smDelSavePointTask = new System.Windows.Forms.ToolStripMenuItem();
             this.smObaut = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmConstructor = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             this.gdI_Control1 = new RenderLib.GDI_Control();
-            this.smDelSaveCurve = new System.Windows.Forms.ToolStripMenuItem();
+            this.созданиеРасчетнойОбластиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.tcParam.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -228,7 +231,8 @@ namespace CPForm
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.smFiles,
             this.smtTask,
-            this.smOptions});
+            this.smOptions,
+            this.tsmConstructor});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1290, 29);
@@ -373,6 +377,13 @@ namespace CPForm
             this.smDelSaveTask.Text = "Удалить файлы по расширению .tsk";
             this.smDelSaveTask.Click += new System.EventHandler(this.smDelSaveTask_Click);
             // 
+            // smDelSaveCurve
+            // 
+            this.smDelSaveCurve.Name = "smDelSaveCurve";
+            this.smDelSaveCurve.Size = new System.Drawing.Size(359, 26);
+            this.smDelSaveCurve.Text = "Удалить файлы по расширению .cvs";
+            this.smDelSaveCurve.Click += new System.EventHandler(this.smDelSaveCurve_Click);
+            // 
             // smDelSavePointTask
             // 
             this.smDelSavePointTask.Name = "smDelSavePointTask";
@@ -386,6 +397,22 @@ namespace CPForm
             this.smObaut.Size = new System.Drawing.Size(359, 26);
             this.smObaut.Text = "О программе";
             this.smObaut.Click += new System.EventHandler(this.smObaut_Click);
+            // 
+            // tsmConstructor
+            // 
+            this.tsmConstructor.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.созданиеРасчетнойОбластиToolStripMenuItem,
+            this.tsmEdit});
+            this.tsmConstructor.Name = "tsmConstructor";
+            this.tsmConstructor.Size = new System.Drawing.Size(113, 25);
+            this.tsmConstructor.Text = "Конструктор";
+            // 
+            // tsmEdit
+            // 
+            this.tsmEdit.Name = "tsmEdit";
+            this.tsmEdit.Size = new System.Drawing.Size(289, 26);
+            this.tsmEdit.Text = "Редакция *.crf";
+            this.tsmEdit.Click += new System.EventHandler(this.tsmEdit_Click);
             // 
             // openFileDialog1
             // 
@@ -407,12 +434,12 @@ namespace CPForm
             this.gdI_Control1.Size = new System.Drawing.Size(914, 768);
             this.gdI_Control1.TabIndex = 174;
             // 
-            // smDelSaveCurve
+            // созданиеРасчетнойОбластиToolStripMenuItem
             // 
-            this.smDelSaveCurve.Name = "smDelSaveCurve";
-            this.smDelSaveCurve.Size = new System.Drawing.Size(359, 26);
-            this.smDelSaveCurve.Text = "Удалить файлы по расширению .cvs";
-            this.smDelSaveCurve.Click += new System.EventHandler(this.smDelSaveCurve_Click);
+            this.созданиеРасчетнойОбластиToolStripMenuItem.Name = "созданиеРасчетнойОбластиToolStripMenuItem";
+            this.созданиеРасчетнойОбластиToolStripMenuItem.Size = new System.Drawing.Size(289, 26);
+            this.созданиеРасчетнойОбластиToolStripMenuItem.Text = "Создание расчетной области";
+            this.созданиеРасчетнойОбластиToolStripMenuItem.Click += new System.EventHandler(this.созданиеРасчетнойОбластиToolStripMenuItem_Click);
             // 
             // TaskForm
             // 
@@ -485,5 +512,8 @@ namespace CPForm
         private System.Windows.Forms.ToolStripMenuItem tsm_ClearSavePoint;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem smDelSaveCurve;
+        private System.Windows.Forms.ToolStripMenuItem tsmConstructor;
+        private System.Windows.Forms.ToolStripMenuItem tsmEdit;
+        private System.Windows.Forms.ToolStripMenuItem созданиеРасчетнойОбластиToolStripMenuItem;
     }
 }

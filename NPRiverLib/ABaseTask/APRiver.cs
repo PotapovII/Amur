@@ -190,7 +190,11 @@ namespace NPRiverLib.ABaseTask
                     sp.Add(fi.NameUnknow, fi.ValuesX, fi.ValuesY);
             }
         }
-
+        /// <summary>
+        /// Получить буффер обмена параметрами
+        /// </summary>
+        /// <param name="args"></param>
+        public virtual void GetRiverTaskArgs(ref ITaskArgs args) { args = null; }
         #region абстрактные методы 
         #region методы предстартовой подготовки задачи
         /// <summary>

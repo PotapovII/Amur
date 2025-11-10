@@ -21,6 +21,8 @@ namespace NPRiverLib.APRiver1YD
     using GeometryLib;
     using CommonLib.Function;
     using CommonLib.BedLoad;
+    using CommonLib.IO;
+    using CommonLib.Physics;
 
     /// <summary>
     ///  ОО: Определение класса APRiverFEM1YD - расчет полей скорости, 
@@ -95,11 +97,11 @@ namespace NPRiverLib.APRiver1YD
         {
             Q = rho_w * GRAV * Params.J;
             // получение отметок дна
-            Geometry.GetFunctionData(ref bottom_x, ref bottom_y, Params.CountBLKnots);
+            csData.Geometry.GetFunctionData(ref bottom_x, ref bottom_y, Params.CountBLKnots);
             // начальный уровень свободной поверхности
-            waterLevel = WaterLevels.FunctionValue(0);
+            waterLevel = csData.WaterLevels.FunctionValue(0);
             // начальный расход потока
-            riverFlowRate = FlowRate.FunctionValue(0);
+            riverFlowRate = csData.FlowRate.FunctionValue(0);
         }
         public virtual void Scan()
         {
@@ -117,7 +119,7 @@ namespace NPRiverLib.APRiver1YD
             double waterLevel0 = waterLevel;
             if (Params.taskVariant == TaskVariant.flowRateFun)
             {
-                riverFlowRate = FlowRate.FunctionValue(time);
+                riverFlowRate = csData.FlowRate.FunctionValue(time);
                 if (time > 0)
                 {
                     double Ck = 0.1;
@@ -138,7 +140,7 @@ namespace NPRiverLib.APRiver1YD
             }
             else
             {
-                waterLevel = WaterLevels.FunctionValue(time);
+                waterLevel = csData.WaterLevels.FunctionValue(time);
             }
             if (MEM.Equals(waterLevel0, waterLevel, 0.001) != true)
                 return true;
@@ -189,7 +191,7 @@ namespace NPRiverLib.APRiver1YD
                 {
                     double L = HPoint.Length(bottom_x[i + 1], bottom_y[i + 1], bottom_x[i], bottom_y[i]);
                     double CosG = (bottom_x[i + 1] - bottom_x[i]) / L;
-                    double SinG = (bottom_y[i + 1] - bottom_y[i]) / L;
+                    double SinG = -(bottom_y[i + 1] - bottom_y[i]) / L;
                     tauBed[i] = tauZ.FunctionValue(xtau) * CosG +
                                 tauY.FunctionValue(xtau) * SinG;
                     if (double.IsNaN(tauBed[i]) == true)
@@ -205,6 +207,7 @@ namespace NPRiverLib.APRiver1YD
             tauMid = tauBed.Sum() / tauBed.Length;
 
         }
+        
         /// <summary>
         /// Нахождение полей напряжений и их сглаживание по методу Галеркина
         /// </summary>
@@ -273,7 +276,22 @@ namespace NPRiverLib.APRiver1YD
             }
         }
         #endregion
-
+        /// <summary>
+        /// Вернуть буффер обмена параметрами
+        /// </summary>
+        /// <param name="args"></param>
+        public override void GetRiverTaskArgs(ref ITaskArgs args)
+        {
+            base.GetRiverTaskArgs(ref args);
+            TaskArgs a = args as TaskArgs;
+            a.Add("waterLevel", waterLevel);
+            //double Depth0 = 1.6 * SPhysics.PHYS.rho_b * SPhysics.PHYS.tanphi * SPhysics.PHYS.d50 / Params.J;
+            //double Depth0 = 1.142 * SPhysics.PHYS.rho_b * SPhysics.PHYS.tanphi * SPhysics.PHYS.d50 / Params.J;
+            //double Depth0 = 1.45 * SPhysics.PHYS.rho_b * SPhysics.PHYS.tanphi * SPhysics.PHYS.d50 / Params.J;
+            double Depth0 = 1.07 * SPhysics.PHYS.rho_b * SPhysics.PHYS.tanphi * SPhysics.PHYS.d50 / Params.J;
+            a.Add("Depth0", Depth0);
+            args = a;
+        }
         /// <summary>
         /// Формирование данных для отрисовки связанных с сеткой IMesh со сороны задачи
         /// </summary>
@@ -284,6 +302,7 @@ namespace NPRiverLib.APRiver1YD
             // кривые 
             // дно - берег
             sp.AddCurve("Русловой профиль", bottom_x, bottom_y);
+       //     LOG.Print("Русловой профиль", bottom_y);
             double[] xx = null;
             MEM.Alloc(tau.Length, ref xx);
             for (int i = 0; i < xx.Length; i++)

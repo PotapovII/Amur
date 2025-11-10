@@ -60,6 +60,7 @@ namespace BedLoadLib
         public ABedLoadParams()
         {
             isAvalanche = AvalancheType.AvalancheSimple;
+            //isAvalanche = AvalancheType.NonAvalanche;
             blm = TypeBLModel.BLModel_2021;
             sedimentShow = false;
         }

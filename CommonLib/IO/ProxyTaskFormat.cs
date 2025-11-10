@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2019 - 2024  Potapov Igor Ivanovich, Khabarovsk
+Copyright (c) 2019 - 2025  Potapov Igor Ivanovich, Khabarovsk
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -54,7 +54,10 @@ namespace CommonLib.IO
         /// <summary>
         /// Прочитать файл задачи.
         /// </summary>
-        public override void Read(string filename, ref Task task, uint testID = 0) { }
+        public override string Read(string filename, ref Task task, uint testID = 0) 
+        {
+            return "прокси";
+        }
         /// <summary>
         /// Сохраняем задачи на диск.
         /// </summary>

@@ -47,7 +47,7 @@ namespace NPRiverLib.IO
         /// </summary>
         /// <param name="filename">Путь к файлу для чтения..</param>
         /// <returns>Экземпляр интерфейса<see cref="IMesh" /> interface.</returns>
-        public override void Read(string filename, ref IRiver river, uint testID = 0)
+        public override string Read(string filename, ref IRiver river, uint testID = 0)
         {
             RiverEmpty2XYD river2D = river as RiverEmpty2XYD;
             if (river2D == null)
@@ -95,6 +95,9 @@ namespace NPRiverLib.IO
             }
             else
                 throw new NotSupportedException("Could not load '" + filename + "' file.");
+            //return river.Name;
+            return river.Name + ": " + filename;
+            //return "Тестовая задача не выбрана";
 
         }
 

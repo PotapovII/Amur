@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2019 - 2024  Potapov Igor Ivanovich, Khabarovsk
+Copyright (c) 2019 - 2025  Potapov Igor Ivanovich, Khabarovsk
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -321,18 +321,21 @@ namespace FEMTasksLib.FEMTasks.VortexStream
                     int mark = mesh.GetBoundElementMarker(belem);
                     if (mark == 0) // Дно
                     {
-                        uint i1 = beKnots[belem].Vertex1;
-                        uint i2 = beKnots[belem].Vertex2;
-                        double tauBed = tauBE[belemTau++];
-                        double sinG = tau[belem].Y;
-                        double cosG = tau[belem].X;
-                        double tanG = sinG/cosG;
-                        double tau0c = tau0 * Math.Sqrt(Math.Max(MEM.Error8, 1 - tanG * tanG));
-                        bcS = alphaB * Math.Max(0, tauBed - tau0c) / tau0c;
-                        tmpIndex[i1]++;
-                        tmpIndex[i2]++;
-                        tmpValue[i1] += bcS;
-                        tmpValue[i2] += bcS;
+                        uint i = beKnots[belem].Vertex1;
+                        uint j = beKnots[belem].Vertex2;
+                        if (MEM.Equals(X[i] - X[j], 0) == false) // убераем вертикальные стенки
+                        {
+                            double tauBed = tauBE[belemTau++];
+                            double sinG = tau[belem].Y;
+                            double cosG = tau[belem].X;
+                            double tanG = sinG / cosG;
+                            double tau0c = tau0 * Math.Sqrt(Math.Max(MEM.Error8, 1 - tanG * tanG));
+                            bcS = alphaB * Math.Max(0, tauBed - tau0c) / tau0c;
+                            tmpIndex[i]++;
+                            tmpIndex[j]++;
+                            tmpValue[i] += bcS;
+                            tmpValue[j] += bcS;
+                        }
                     }
                 }
                 for (uint bknot = 0; bknot < mesh.CountBoundKnots; bknot++)

@@ -20,19 +20,14 @@ namespace BedLoadLib
     [Serializable]
     public abstract class ABedLoadTask_2D<TParam> : ABedLoad<TParam> where TParam : class, ITProperty<TParam>
     {
-        /// <summary>
-        /// Текщий уровень дна
-        /// </summary>
-        public double[] CZeta { get => Zeta0; }
+        ///// <summary>
+        ///// Текщий уровень дна
+        ///// </summary>
+        //public double[] CZeta { get => Zeta0; }
         /// <summary>
         /// Флаг отладки
         /// </summary>
         public int debug = 0;
-        /// <summary>
-        /// относительная точность при вычислении 
-        /// изменения донной поверхности
-        /// </summary>
-        protected double eZeta = 0.000001;
         /// <summary>
         /// Конструктор по умолчанию/тестовый
         /// </summary>

@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2019 - 2024  Potapov Igor Ivanovich, Khabarovsk
+Copyright (c) 2019 - 2025  Potapov Igor Ivanovich, Khabarovsk
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -82,6 +82,11 @@ namespace CommonLib
         /// Расчет полей глубины и скоростей на текущем шаге по времени
         /// </summary>
         void SolverStep();
+        /// <summary>
+        /// Получить буффер обмена параметрами
+        /// </summary>
+        /// <param name="args"></param>
+        void GetRiverTaskArgs(ref ITaskArgs args);
         /// <summary>
         /// Чтение входных данных задачи из файла
         /// геометрия канала по умолчанию

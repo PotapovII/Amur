@@ -34,6 +34,39 @@ namespace EddyViscosityLib
         /// </summary>
         public override void SolveTask(ref double[] eddyViscosity, double[] Ux, double[] Vy, double[] Vz, double[] Phi, double[] Vortex, double dt)
         {
+            if(typeTask == TypeTask.streamY1D)
+                SolveTask(ref eddyViscosity, Ux, dt);
+            if (typeTask == TypeTask.streamX1D)
+            {
+                double z0 = 0.0001;
+                double Vmax = Vy.Max();
+                double mu_t0;
+                for (int node = 0; node < mesh.CountKnots; node++)
+                {
+                    double u_star = Vmax * kappa_w / Math.Log(Hp[node] / z0);
+                    if (Math.Abs(Hp[node]) > MEM.Error3)
+                    {
+                        double xi = Math.Min(Distance[node] / Hp[node], 0.5);
+                        double ks_b = SPhysics.PHYS.d50 / Hp[node];
+                        double F = Math.Max(0.0, (1 - xi) * (xi + ks_b));
+                        mu_t0 = rho_w * kappa_w * u_star * Hp[node] * F;
+                    }
+                    else
+                    {
+                        mu_t0 = rho_w * kappa_w * u_star * SPhysics.PHYS.d50;
+                    }
+                    eddyViscosity[node] = mu_t0 + mu;
+                }
+            }
+        }
+        /// <summary>
+        /// Расчет вихревой вязкости 
+        /// </summary>
+        /// <param name="eddyViscosity">вихревая вязкость</param>
+        /// <param name="Ux">осевая/окружная/осевая/скорость потока</param>
+        /// <param name="dt">шаг по времени</param>
+        public override void SolveTask(ref double[] eddyViscosity, double[] Ux, double dt)
+        {
             try
             {
                 switch (Params.u_start)
@@ -41,31 +74,44 @@ namespace EddyViscosityLib
                     case ECalkDynamicSpeed.u_start_J:
                         {
                             // Ширина живого сечения
-                            double Width = wMesh.GetBottom();
-                            double Area = wMesh.GetArea();
-                            double HR = Area / Width;
-                            double u_star = Math.Sqrt(GRAV * HR);
-                            double mu_t0 = 0;
-                            double Hmax = Hp.Max();
-                            for (int node = 0; node < mesh.CountKnots; node++)
+                            if (J > 0)
                             {
-                                u_star = Math.Sqrt(GRAV * Hp[node] * J);
-                                if (Math.Abs(Hp[node]) > MEM.Error4)
+                                double Width = wMesh.GetBottom();
+                                double Area = wMesh.GetArea();
+                                double HR = Area / Width;
+                                double u_star = Math.Sqrt(GRAV * HR * J);
+                                double mu_t0 = 0;
+                                double Hmax = Hp.Max();
+                                for (int node = 0; node < mesh.CountKnots; node++)
                                 {
-                                    //double xi = Distance[node] / Hp[node];
-                                    double xi = Distance[node] / Hmax;
-                                    xi = Math.Min(xi, 0.5);
-                                    double ks_b = SPhysics.PHYS.d50 / Hp[node];
-                                    double F = Math.Max(0.0, (1 - xi) * (xi + ks_b));
-                                    mu_t0 = rho_w * kappa_w * u_star * Hp[node] * F;
+                                    u_star = Math.Sqrt(GRAV * Hp[node] * J);
+                                    if (Math.Abs(Hp[node]) > MEM.Error4)
+                                    {
+                                        //double xi = Distance[node] / Hp[node];
+                                        double xi = Distance[node] / Hp[node];
+                                        //xi = Math.Min(xi, 0.5);
+                                        xi = Math.Min(xi, 0.25);
+                                        double ks_b = SPhysics.PHYS.d50 / Hp[node];
+                                        double F = Math.Max(0.0, (1 - xi) * (xi + ks_b));
+                                        double alpha = 2.4;
+                                        mu_t0 = rho_w * kappa_w * u_star * Hp[node] * F / alpha;
+                                    }
+                                    else
+                                        mu_t0 = rho_w * kappa_w * u_star * SPhysics.PHYS.d50;
+                                    eddyViscosity[node] = mu_t0 + mu;
                                 }
-                                else
-                                    mu_t0 = rho_w * kappa_w * u_star * SPhysics.PHYS.d50;
-                                eddyViscosity[node] = mu_t0 + mu;
+                            }
+                            else
+                            {
+                                for (int node = 0; node < mesh.CountKnots; node++)
+                                {
+                                    eddyViscosity[node] = mu;
+                                }
                             }
                         }
                         break;
                     case ECalkDynamicSpeed.u_start_M:
+                    case ECalkDynamicSpeed.u_start_U:
                         {
                             double Width = wMesh.GetBottom();
                             double Area = wMesh.GetArea();
@@ -90,40 +136,40 @@ namespace EddyViscosityLib
                             }
                         }
                         break;
-                    case ECalkDynamicSpeed.u_start_U:
-                        {
-                            //if (wMesh as MWCrossSectionTri != null)
-                            //    this.wMesh = wMesh as MWCrossSectionTri;
-                            //else
-                            //    this.wMesh = new MWCrossSectionTri(mesh, 1, 0, false);
-                            //IMWCrossSection wmc = (IMWCrossSection)wMesh;
-                            //double[] Us = null;
-                            //wmc.CalkBoundary_U_star(Ux, ref Us);
-                            //double mu_t0;
-                            //for (int node = 0; node < mesh.CountKnots; node++)
-                            //{
+                    //case ECalkDynamicSpeed.u_start_U:
+                    //    {
+                    //        //if (wMesh as MWCrossSectionTri != null)
+                    //        //    this.wMesh = wMesh as MWCrossSectionTri;
+                    //        //else
+                    //        //    this.wMesh = new MWCrossSectionTri(mesh, 1, 0, false);
+                    //        //IMWCrossSection wmc = (IMWCrossSection)wMesh;
+                    //        //double[] Us = null;
+                    //        //wmc.CalkBoundary_U_star(Ux, ref Us);
+                    //        //double mu_t0;
+                    //        //for (int node = 0; node < mesh.CountKnots; node++)
+                    //        //{
 
-                            //    double xi = Distance[node] / Hp[node];
-                            //    if (xi > 0)
-                            //    {
-                            //        double u_star = Us[node];
-                            //        if (Math.Abs(Hp[node]) > MEM.Error3 && u_star > 0)
-                            //        {
-                            //            xi = Math.Max(0, Math.Min(xi, 0.5));
-                            //            double F = Math.Max(0.0, (1 - xi) * xi);
-                            //            mu_t0 = rho_w * kappa_w * u_star * Hp[node] * F;
-                            //        }
-                            //        else
-                            //        {
-                            //            mu_t0 = rho_w * kappa_w * u_star * SPhysics.PHYS.d50;
-                            //        }
-                            //    }
-                            //    else
-                            //        mu_t0 = 0;
-                            //    eddyViscosity[node] = mu_t0 + mu;
-                            //}
-                        }
-                        break;
+                    //        //    double xi = Distance[node] / Hp[node];
+                    //        //    if (xi > 0)
+                    //        //    {
+                    //        //        double u_star = Us[node];
+                    //        //        if (Math.Abs(Hp[node]) > MEM.Error3 && u_star > 0)
+                    //        //        {
+                    //        //            xi = Math.Max(0, Math.Min(xi, 0.5));
+                    //        //            double F = Math.Max(0.0, (1 - xi) * xi);
+                    //        //            mu_t0 = rho_w * kappa_w * u_star * Hp[node] * F;
+                    //        //        }
+                    //        //        else
+                    //        //        {
+                    //        //            mu_t0 = rho_w * kappa_w * u_star * SPhysics.PHYS.d50;
+                    //        //        }
+                    //        //    }
+                    //        //    else
+                    //        //        mu_t0 = 0;
+                    //        //    eddyViscosity[node] = mu_t0 + mu;
+                    //        //}
+                    //    }
+                    //    break;
                 }
             }
             catch (Exception ee)

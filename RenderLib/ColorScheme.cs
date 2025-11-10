@@ -789,6 +789,24 @@ namespace RenderLib
             MinIsoLine = 0;
             MaxIsoLine = 100;
         }
+
+        public ColorSchemeFields(ColorSchemeFields p) : base()
+        {
+            brushBoundaryPoint = p.brushBoundaryPoint;
+            brushTextKnot = p.brushTextKnot;
+
+            penBoundaryLine = p.penBoundaryLine;
+            penIsoLine = p.penIsoLine;
+
+            penVectorLine = p.penVectorLine;
+            penMeshLine =  p.penVectorLine;
+
+            fontKnot = p.fontKnot;
+            fontValue = p.fontValue;
+            CountIsoLine = p.CountIsoLine;
+            MinIsoLine = p.MinIsoLine;
+            MaxIsoLine = p.MinIsoLine;
+        }
         #region Публичные свойства
         public PointF MinMaxIsoLine
         {
